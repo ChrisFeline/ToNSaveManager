@@ -109,7 +109,7 @@ namespace ToNSaveManager
 
             int end = line.IndexOf(SaveEndKeyword, index);
             if (end < 0) return;
-            end = end - index;
+            end -= index;
 
             string save = line.Substring(index, end);
             string logName = context.FileName.Substring(11, 19);

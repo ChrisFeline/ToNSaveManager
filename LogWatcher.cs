@@ -171,8 +171,6 @@
                             if (ParseLocation(line, logContext) ||
                                 ParseDisplayName(line, logContext)) { }
 
-                            // 2020.10.31 23:36:28 Log        -  [VRCFlowManagerVRC] Destination fetching: wrld_4432ea9b-729c-46e3-8eaf-846aa0a37fdd
-                            // 2021.02.03 10:18:58 Log        -  [ǄǄǅǅǅǄǄǅǅǄǅǅǅǅǄǄǄǅǅǄǄǅǅǅǅǄǅǅǅǅǄǄǄǄǄǅǄǅǄǄǄǅǅǄǅǅǅ] Destination fetching: wrld_4432ea9b-729c-46e3-8eaf-846aa0a37fdd
                             if (OnLine != null)
                                 OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
                         }
