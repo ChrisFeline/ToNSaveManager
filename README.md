@@ -1,2 +1,3 @@
-# ToNSaveManager
- Save data manager for VRChat world: Terrors of Nowhere
+# Terrors of Nowhere: Save Manager
+ 
+This program will keep track of your Saved States so you can play and recover your data later.
