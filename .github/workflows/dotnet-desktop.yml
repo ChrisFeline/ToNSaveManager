@@ -53,3 +53,43 @@ jobs:
       with:
         name: ToNSaveManager
         path: ./publish
+
+  create-release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ToNSaveManager
+  
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+  
+    - name: Zip Artifact
+      run: |
+        python -m zipfile -c ToNSaveManager.zip ToNSaveManager
+  
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+  
+    - name: Upload Release Asset
+      id: upload_release_asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./ToNSaveManager.zip
+        asset_name: ToNSaveManager.zip
+        asset_content_type: application/zip
