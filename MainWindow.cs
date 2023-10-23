@@ -157,7 +157,6 @@ namespace ToNSaveManager
             if (!history.Add(content, timestamp)) return;
 
             Export();
-            // Debug.WriteLine($"{dateKey}: {timestamp}, Saved {content.Length} Bytes");
         }
     }
 
@@ -202,6 +201,8 @@ namespace ToNSaveManager
 
     internal class Entry
     {
+        internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
+
         public DateTime Timestamp;
         public string Content;
 
@@ -213,7 +214,7 @@ namespace ToNSaveManager
 
         public override string ToString()
         {
-            return Timestamp.ToString("MM/dd/yyyy | hh:mm tt") + " | " + Content.Length + " Bytes";
+            return Timestamp.ToString(DateFormat) + " | " + Content.Length + " Bytes";
         }
     }
 
@@ -240,7 +241,7 @@ namespace ToNSaveManager
 
         public override string ToString()
         {
-            return Date.ToString("MM/dd/yyyy | hh:mm tt");
+            return Date.ToString(Entry.DateFormat);
         }
     }
 }
