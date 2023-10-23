@@ -51,6 +51,9 @@ jobs:
     - name: Execute unit tests
       run: dotnet test
 
+    - name: Display workspace directory contents
+      run: ls -R
+
     # Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
