@@ -43,7 +43,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -o ./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -58,5 +58,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Build Artifacts
-        path: ./bin/Release
+        name: ToNSaveManager
+        path: ./publish
