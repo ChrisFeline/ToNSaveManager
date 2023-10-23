@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
-using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager
 {
@@ -158,7 +157,7 @@ namespace ToNSaveManager
             if (!history.Add(content, timestamp)) return;
 
             Export();
-            Debug.WriteLine($"{dateKey}: {timestamp}, Saved {content.Length} Bytes");
+            // Debug.WriteLine($"{dateKey}: {timestamp}, Saved {content.Length} Bytes");
         }
     }
 
@@ -214,7 +213,7 @@ namespace ToNSaveManager
 
         public override string ToString()
         {
-            return Timestamp.ToString() + " | " + Content.Length + " Bytes";
+            return Timestamp.ToString("MM/dd/yyyy | hh:mm tt") + " | " + Content.Length + " Bytes";
         }
     }
 
@@ -227,15 +226,9 @@ namespace ToNSaveManager
         {
             Value = value;
             // "2023-10-22_09-51-29"
-            if (DateTime.TryParseExact(
-                    value,
-                    "yyyy-MM-dd_HH-mm-ss",
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out var date
-                ))
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd_HH-mm-ss",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
             {
-                date = date.ToUniversalTime();
                 Date = date;
             }
         }
@@ -247,7 +240,7 @@ namespace ToNSaveManager
 
         public override string ToString()
         {
-            return Date.ToString();
+            return Date.ToString("MM/dd/yyyy | hh:mm tt");
         }
     }
 }

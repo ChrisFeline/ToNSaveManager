@@ -51,6 +51,13 @@ jobs:
       run: |
         Compress-Archive -Path ./publish/* -DestinationPath ToNSaveManager.zip -Update
 
+    # Upload the build artifacts just in case
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ToNSaveManager
+        path: ToNSaveManager.zip
+
     - name: Get the date
       id: get_date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -61,7 +68,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release_${{ github.ref_name }}
+        tag_name: ${{ steps.get_date.outputs.date }}
         release_name: Release ${{ steps.get_date.outputs.date }}
         draft: true
         prerelease: false

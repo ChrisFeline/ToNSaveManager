@@ -72,7 +72,6 @@
                     }
                     else
                     {
-                        Debug.WriteLine("Added Context: " + fileInfo.Name);
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
                     }
@@ -123,19 +122,11 @@
                                 continue;
                             }
 
-                            if (DateTime.TryParseExact(
-                                    line.Substring(0, 19),
-                                    "yyyy.MM.dd HH:mm:ss",
-                                    CultureInfo.InvariantCulture,
-                                    DateTimeStyles.None,
-                                    out var lineDate
-                                ))
+                            DateTime lineDate;
+                            if (!DateTime.TryParseExact(line.Substring(0, 19), "yyyy.MM.dd HH:mm:ss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None, out lineDate))
                             {
-                                lineDate = lineDate.ToUniversalTime();
-                            }
-                            else
-                            {
-                                lineDate = DateTime.Now.ToUniversalTime();
+                                lineDate = DateTime.Now;   
                             }
 
                             if (ParseLocation(line, logContext) ||
