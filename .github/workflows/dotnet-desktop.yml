@@ -47,26 +47,25 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
     - name: Zip Artifact
       run: |
-        python -m zipfile -c ToNSaveManager.zip ./publish
+        Compress-Archive -Path ./publish/* -DestinationPath ToNSaveManager.zip -Update
 
     - name: Get the date
       id: get_date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
   
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
         release_name: Release ${{ steps.get_date.outputs.date }}
         draft: true
         prerelease: false
