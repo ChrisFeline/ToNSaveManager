@@ -6,7 +6,7 @@
     using System.Globalization;
     using System.IO;
     using System.Text;
-    using System.Threading;
+    using Timer = System.Windows.Forms.Timer;
 
     // Based on: https://github.com/vrcx-team/VRCX/blob/634f465927bfaef51bc04e67cf1659170953fac9/LogWatcher.cs
     public class LogWatcher
@@ -29,51 +29,25 @@
 
         private DirectoryInfo m_LogDirectoryInfo;
         private readonly Dictionary<string, LogContext> m_LogContextMap = new Dictionary<string, LogContext>();
-        private DateTime tillDate = DateTime.UtcNow;
-
-        private Thread m_Thread;
 
         public LogWatcher()
         {
             var logPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat\VRChat";
             m_LogDirectoryInfo = new DirectoryInfo(logPath);
-
-            m_Thread = new Thread(LogLoop)
-            {
-                IsBackground = true
-            };
         }
 
         public void Start()
         {
-            m_Thread.Start();
+            Timer timer = new Timer();
+            timer.Interval = 1000;
+            timer.Enabled = true;
+
+            LogTick(null, null);
+            timer.Tick += LogTick;
+            timer.Start();
         }
 
-        public void SetDateTill(string date)
-        {
-            tillDate = DateTime.Parse(date, CultureInfo.InvariantCulture, DateTimeStyles.None);
-            tillDate = tillDate.ToUniversalTime();
-        }
-
-        public bool FirstLogOnly = false;
-
-        private void LogLoop()
-        {
-            while (m_Thread != null)
-            {
-                LogUpdate();
-
-                try
-                {
-                    Thread.Sleep(1000);
-                }
-                catch (ThreadInterruptedException)
-                {
-                }
-            }
-        }
-
-        private void LogUpdate()
+        private void LogTick(object? sender, EventArgs? e)
         {
             var deletedNameSet = new HashSet<string>(m_LogContextMap.Keys);
             m_LogDirectoryInfo.Refresh();
@@ -83,12 +57,8 @@
                 var fileInfos = m_LogDirectoryInfo.GetFiles("output_log_*.txt", SearchOption.TopDirectoryOnly);
                 Array.Sort(fileInfos, (a, b) => a.CreationTimeUtc.CompareTo(b.CreationTimeUtc));
 
-                int index = 0;
                 foreach (var fileInfo in fileInfos)
                 {
-                    if (FirstLogOnly && index > 0) break;
-                    index++;
-
                     fileInfo.Refresh();
                     if (!fileInfo.Exists)
                     {

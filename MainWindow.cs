@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager
 {
@@ -25,8 +26,10 @@ namespace ToNSaveManager
             if (Started) return;
 
             Import();
-            LogWatcher.Start();
+
             LogWatcher.OnLine += LogWatcher_OnLine;
+            LogWatcher.Start();
+
             Started = true;
         }
 
@@ -64,26 +67,20 @@ namespace ToNSaveManager
                 }
             }
 
-            listBoxKeys.Invoke((MethodInvoker)delegate
-            {
-                listBoxKeys.Items.Insert(index, logKey);
-            });
+            listBoxKeys.Items.Insert(index, logKey);
         }
         private void UpdateEntries()
         {
-            listBoxKeys.Invoke((MethodInvoker)delegate
-            {
-                listBoxEntries.Items.Clear();
-                if (listBoxKeys.SelectedItem == null) return;
+            listBoxEntries.Items.Clear();
+            if (listBoxKeys.SelectedItem == null) return;
 
-                LogKey key = (LogKey)listBoxKeys.SelectedItem;
-                if (!SaveData.ContainsKey(key.Value)) return;
+            LogKey key = (LogKey)listBoxKeys.SelectedItem;
+            if (!SaveData.ContainsKey(key.Value)) return;
 
-                History history = SaveData[key.Value];
+            History history = SaveData[key.Value];
 
-                foreach (Entry entry in history.Entries)
-                    listBoxEntries.Items.Add(entry);
-            });
+            foreach (Entry entry in history.Entries)
+                listBoxEntries.Items.Add(entry);
         }
 
         const string WorldNameKeyword = "Terrors of Nowhere";
