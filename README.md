@@ -2,7 +2,7 @@
 
 <img src="https://i.imgur.com/eQvudxo.png" alt="preview">
 
-This tool will keep track of your Saved States so you can play and recover your data later. It also saves every save state into a local json file to keep them in your computer.
+This tool will keep track of your Saved States so you can play and recover your data later. It also stores every save state into a local json file to keep them in your computer.
 
 ## How does it work?
 
