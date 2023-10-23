@@ -27,6 +27,7 @@ namespace ToNSaveManager
             Import();
 
             LogWatcher.OnLine += LogWatcher_OnLine;
+            LogWatcher.OnTick += LogWatcher_OnTick;
             LogWatcher.Start();
 
             Started = true;
@@ -85,6 +86,9 @@ namespace ToNSaveManager
         const string WorldNameKeyword = "Terrors of Nowhere";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
+
+        private bool Dirty = false;
+
         private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
         {
             string line = e.Content;
@@ -113,6 +117,11 @@ namespace ToNSaveManager
             AddEntry(logName, save, timestamp);
         }
 
+        private void LogWatcher_OnTick(object? sender, EventArgs e)
+        {
+            Export();
+        }
+
         private Dictionary<string, History> SaveData;
         private void Import()
         {
@@ -139,10 +148,13 @@ namespace ToNSaveManager
 
         private void Export()
         {
+            if (!Dirty) return;
+
             string json = JsonConvert.SerializeObject(SaveData, Formatting.Indented);
             File.WriteAllText(Destination, json);
 
             UpdateEntries();
+            Dirty = false;
         }
 
         public void AddEntry(string dateKey, string content, DateTime timestamp)
@@ -156,7 +168,7 @@ namespace ToNSaveManager
             History history = SaveData[dateKey];
             if (!history.Add(content, timestamp)) return;
 
-            Export();
+            Dirty = true;
         }
     }
 

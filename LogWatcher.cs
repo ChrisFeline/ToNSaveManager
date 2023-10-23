@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -26,6 +25,7 @@
         }
 
         public event EventHandler<OnLineArgs>? OnLine;
+        public event EventHandler<EventArgs>? OnTick;
 
         private DirectoryInfo m_LogDirectoryInfo;
         private readonly Dictionary<string, LogContext> m_LogContextMap = new Dictionary<string, LogContext>();
@@ -90,6 +90,9 @@
             {
                 m_LogContextMap.Remove(name);
             }
+
+            if (OnTick != null)
+                OnTick.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
