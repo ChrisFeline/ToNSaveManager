@@ -47,30 +47,18 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Upload the build artifacts
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: ToNSaveManager
-        path: ./publish
-
-  create-release:
-    needs: build
-    runs-on: windows-latest
-    steps:
-    - name: Download build artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: ToNSaveManager
-  
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-  
+
     - name: Zip Artifact
       run: |
-        python -m zipfile -c ToNSaveManager.zip ToNSaveManager
+        python -m zipfile -c ToNSaveManager.zip ./publish
+
+    - name: Get the date
+      id: get_date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
   
     - name: Create Release
       id: create_release
@@ -79,8 +67,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
-        draft: false
+        release_name: Release ${{ steps.get_date.outputs.date }}
+        draft: true
         prerelease: false
   
     - name: Upload Release Asset
@@ -93,4 +81,3 @@ jobs:
         asset_path: ./ToNSaveManager.zip
         asset_name: ToNSaveManager.zip
         asset_content_type: application/zip
-        
