@@ -1,7 +1,12 @@
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
+using System.Security.Policy;
+using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.DataFormats;
 
 namespace ToNSaveManager
 {
@@ -17,9 +22,14 @@ namespace ToNSaveManager
         public MainWindow() => InitializeComponent();
 #pragma warning restore CS8618
 
+        #region Form Events
+
+        #region Main Window
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
             checkBoxAutoCopy.Checked = Settings.AutoCopy;
+            TooltipUtil.Set(checkBoxAutoCopy, "Automatically copy new Save Codes to clipboard while you play.");
+            TooltipUtil.Set(linkLabel1, "Source Code and Documentation for this tool can be found in my GitHub.\n" + SourceLink + "\n\nYou can also find me in discord as Kittenji.");
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -34,18 +44,112 @@ namespace ToNSaveManager
 
             Started = true;
         }
+        #endregion
+
+        #region ListBox Entries
+        private bool IsMouseUp;
 
         private void listBoxEntries_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBoxEntries.SelectedIndex < 0 || listBoxEntries.SelectedItem == null) return;
+            int index = listBoxEntries.SelectedIndex;
+            if (!IsValidIndex(index) || listBoxEntries.SelectedItem == null) return;
 
             Entry entry = (Entry)listBoxEntries.SelectedItem;
-            entry.CopyToClipboard();
+            if (IsMouseUp)
+            {
+                IsMouseUp = false;
+                // Open note editor
+                EditResult edit = EditWindow.Show(entry.Note, this);
+                if (edit.Accept && !edit.Text.Equals(entry.Note, StringComparison.Ordinal))
+                {
+                    entry.Note = edit.Text;
+                    listBoxEntries.Refresh();
 
-            MessageBox.Show("Save string have been copied to Clipboard.\n" + entry.ToString(), "Copied");
+                    Dirty = true;
+                    Export();
+                }
+            }
+            else
+            {
+                // Copy to clipboard
+                entry.CopyToClipboard();
+                MessageBox.Show("Save string have been copied to Clipboard.\n" + entry.ToString(), "Copied");
+            }
+
             listBoxEntries.ClearSelected();
         }
 
+        private void listBoxEntries_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int index = listBoxEntries.IndexFromPoint(e.Location);
+                if (!IsValidIndex(index)) return;
+
+                IsMouseUp = true;
+                listBoxEntries.SelectedIndex = index;
+            }
+        }
+
+        int LastHoveredIndex = -1;
+        private void listBoxEntries_MouseMove(object sender, MouseEventArgs e)
+        {
+            int index = listBoxEntries.IndexFromPoint(e.Location);
+
+            if (LastHoveredIndex != index)
+            {
+                LastHoveredIndex = index;
+                if (IsValidIndex(index))
+                {
+                    Entry entry = (Entry)listBoxEntries.Items[index];
+                    TooltipUtil.Set(listBoxEntries, entry.GetTooltip());
+                }
+            }
+        }
+
+        private void listBoxEntries_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+
+            ListBox listBox = (ListBox)sender;
+            string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
+            e.DrawBackground();
+
+            int maxWidth = e.Bounds.Width;
+            TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.Left);
+
+            e.DrawFocusRectangle();
+        }
+
+        private void listBoxEntries_Resize(object sender, EventArgs e)
+        {
+            listBoxEntries.Refresh();
+        }
+
+        // Helper Methods for ListBox Entries
+        private bool IsValidIndex(int index)
+        {
+            return index > -1 && index < listBoxEntries.Items.Count;
+        }
+
+        private static string GetTruncatedText(string text, Font font, int maxWidth)
+        {
+            Size textSize = TextRenderer.MeasureText(text, font);
+            if (textSize.Width <= maxWidth) return text;
+
+            int ellipsisWidth = TextRenderer.MeasureText("...", font).Width;
+            while (textSize.Width + ellipsisWidth > maxWidth && text.Length > 0)
+            {
+                text = text.Substring(0, text.Length - 1);
+                textSize = TextRenderer.MeasureText(text, font);
+            }
+
+            return text + "...";
+        }
+        #endregion
+
+        #region ListBox Keys
         private void listBoxKeys_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateEntries();
@@ -70,7 +174,9 @@ namespace ToNSaveManager
                 }
             }
         }
+        #endregion
 
+        #region Options & Settings
         private void checkBoxAutoCopy_CheckedChanged(object sender, EventArgs e)
         {
             Settings.AutoCopy = checkBoxAutoCopy.Checked;
@@ -82,7 +188,26 @@ namespace ToNSaveManager
                 CopyRecent();
             }
         }
+        #endregion
 
+        const string SourceLink = "https://github.com/ChrisFeline/ToNSaveManager/";
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs ev)
+        {
+            try
+            {
+                using (Process.Start("explorer.exe", SourceLink))
+                {
+                    Debug.WriteLine("Opened source link");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"An error ocurred while trying to open a link to: {SourceLink}.\n\nMake sure that the program contains permissions to open processes in your machine.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region Form Methods
         private void PushKey(LogKey logKey)
         {
             int index = listBoxKeys.Items.Count;
@@ -116,13 +241,14 @@ namespace ToNSaveManager
             foreach (Entry entry in history.Entries)
                 listBoxEntries.Items.Add(entry);
         }
+        #endregion
 
+        #region Log Handling
         const string WorldNameKeyword = "Terrors of Nowhere";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
 
         private bool Dirty = false;
-
         private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
         {
             string line = e.Content;
@@ -156,10 +282,11 @@ namespace ToNSaveManager
             CopyRecent();
             Export();
         }
+        #endregion
 
+        #region Data
         private Entry? RecentData;
         private Dictionary<string, History> SaveData;
-
         private void Import()
         {
             if (!File.Exists(Destination))
@@ -247,99 +374,8 @@ namespace ToNSaveManager
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;
         }
-    }
+        #endregion
 
-    internal class History
-    {
-        public List<Entry> Entries = new List<Entry>();
-        [JsonIgnore] public int Count => Entries.Count;
-
-        private int FindIndex(string content, DateTime timestamp)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                Entry e = Entries[i]; // Prevent doubles
-                if (e.Content.Equals(content, StringComparison.OrdinalIgnoreCase))
-                    return -1;
-
-                if (e.Timestamp < timestamp)
-                    return i;
-            }
-
-            return Count;
-        }
-
-        public bool Add(string content, DateTime timestamp, out Entry? entry)
-        {
-            int index = FindIndex(content, timestamp);
-            if (index < 0)
-            {
-                entry = null;
-                return false;
-            }
-
-            entry = new Entry(content, timestamp);
-            Entries.Insert(index, entry);
-            return true;
-        }
-
-        public void Sort()
-        {
-            Entries.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
-        }
-    }
-
-    internal class Entry
-    {
-        internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
-
-        public DateTime Timestamp;
-        public string Content;
-        public bool Fresh;
-
-        public Entry(string content, DateTime timestamp)
-        {
-            Fresh = true;
-            Content = content;
-            Timestamp = timestamp;
-        }
-
-        public override string ToString()
-        {
-            return Timestamp.ToString(DateFormat) + " | " + Content.Length + " Bytes";
-        }
-
-        public void CopyToClipboard()
-        {
-            Debug.WriteLine("Copied to clipboard: " + ToString());
-            Clipboard.SetText(Content);
-        }
-    }
-
-    internal struct LogKey : IEquatable<LogKey>
-    {
-        public string Value;
-        public DateTime Date;
-
-        public LogKey(string value)
-        {
-            Value = value;
-            // "2023-10-22_09-51-29"
-            if (DateTime.TryParseExact(value, "yyyy-MM-dd_HH-mm-ss",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
-            {
-                Date = date;
-            }
-        }
-
-        public bool Equals(LogKey other)
-        {
-            return Value.Equals(other);
-        }
-
-        public override string ToString()
-        {
-            return Date.ToString(Entry.DateFormat);
-        }
+        
     }
 }

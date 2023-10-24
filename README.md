@@ -11,6 +11,7 @@ It also stores every **Save Code** found into a local data file called `data.jso
 - While the tool is running, it will detect new codes as you play.
 - If the option `Auto Save to Clipboard` is enabled, it will automatically copy new codes to the clipboard as you play (*I got you covered, instance hoppers*)
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
+- You can add notes to **Save Codes** by using right-click on the entry in the left panel.
 ### Limitations
 - This is a Windows only tool. (*Sorry Linux users*)
 - VRChat will delete old logs over the span of a few days (Like 4 or 5 days) so if the tool wasn't run before the logs got deleted, those saves are gone.
