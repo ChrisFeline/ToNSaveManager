@@ -1,13 +1,15 @@
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace ToNSaveManager
 {
     public partial class MainWindow : Form
     {
         const string Destination = "data.json";
-        static LogWatcher LogWatcher = new LogWatcher();
+        static readonly LogWatcher LogWatcher = new LogWatcher();
+        static readonly AppSettings Settings = AppSettings.Import();
         private bool Started;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -17,7 +19,7 @@ namespace ToNSaveManager
 
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
-            Debug.WriteLine("Loaded Window");
+            checkBoxAutoCopy.Checked = Settings.AutoCopy;
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -38,7 +40,7 @@ namespace ToNSaveManager
             if (listBoxEntries.SelectedIndex < 0 || listBoxEntries.SelectedItem == null) return;
 
             Entry entry = (Entry)listBoxEntries.SelectedItem;
-            Clipboard.SetText(entry.Content);
+            entry.CopyToClipboard();
 
             MessageBox.Show("Save string have been copied to Clipboard.\n" + entry.ToString(), "Copied");
             listBoxEntries.ClearSelected();
@@ -47,6 +49,38 @@ namespace ToNSaveManager
         private void listBoxKeys_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateEntries();
+        }
+
+        private void listBoxKeys_KeyUp(object sender, KeyEventArgs e)
+        {
+            int selectedIndex = listBoxKeys.SelectedIndex;
+            if (selectedIndex != -1 && listBoxKeys.SelectedItem != null && e.KeyCode == Keys.Delete)
+            {
+                LogKey logKey = (LogKey)listBoxKeys.SelectedItem;
+                DialogResult result = MessageBox.Show($"Are you SURE that you want to delete this entry?\n\nEvery code from {logKey.Date} will be permanently deleted.\nThis operation is not reversible!", "Deleting Entry: " + logKey.ToString(), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.OK)
+                {
+                    // Try to warn and prevent the user deleting the most recent code history
+                    if (selectedIndex == 0 && MessageBox.Show("This is the most recent log history, it contains the most recent save codes! Are you really sure you want to delete this entry?\n\nYou can't undo this action.", "WARNING", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+
+                    listBoxKeys.Items.RemoveAt(selectedIndex);
+                    SaveData.Remove(logKey.Value);
+                    Dirty = true; // Save to .json next tick
+                }
+            }
+        }
+
+        private void checkBoxAutoCopy_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.AutoCopy = checkBoxAutoCopy.Checked;
+            Settings.Export();
+
+            if (RecentData != null)
+            {
+                RecentData.Fresh = true;
+                CopyRecent();
+            }
         }
 
         private void PushKey(LogKey logKey)
@@ -119,10 +153,13 @@ namespace ToNSaveManager
 
         private void LogWatcher_OnTick(object? sender, EventArgs e)
         {
+            CopyRecent();
             Export();
         }
 
+        private Entry? RecentData;
         private Dictionary<string, History> SaveData;
+
         private void Import()
         {
             if (!File.Exists(Destination))
@@ -141,23 +178,42 @@ namespace ToNSaveManager
             catch { }
 
             if (data == null) data = new Dictionary<string, History>();
-            else foreach (var item in data) PushKey(new LogKey(item.Key));
+            else
+            {
+                foreach (var item in data)
+                {
+                    item.Value.Sort(); // Sort by dates just in case
+                    PushKey(new LogKey(item.Key));
+
+                    Entry? first = item.Value.Entries.FirstOrDefault(); // First should always be the most recent
+                    if (first != null) SetRecent(first);
+                }
+            }
 
             SaveData = data;
+            CopyRecent();
         }
 
         private void Export()
         {
             if (!Dirty) return;
 
-            string json = JsonConvert.SerializeObject(SaveData, Formatting.Indented);
-            File.WriteAllText(Destination, json);
+            try
+            {
+                // Removed indentation to save space and make Serializing faster.
+                string json = JsonConvert.SerializeObject(SaveData);
+                File.WriteAllText(Destination, json);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             UpdateEntries();
             Dirty = false;
         }
 
-        public void AddEntry(string dateKey, string content, DateTime timestamp)
+        private void AddEntry(string dateKey, string content, DateTime timestamp)
         {
             if (!SaveData.ContainsKey(dateKey))
             {
@@ -166,9 +222,30 @@ namespace ToNSaveManager
             }
 
             History history = SaveData[dateKey];
-            if (!history.Add(content, timestamp)) return;
+            if (!history.Add(content, timestamp, out Entry? entry)) return;
 
+#pragma warning disable CS8604 // Nullability is handled along with the return value of <History>.Add
+            SetRecent(entry);
+#pragma warning restore CS8604
             Dirty = true;
+        }
+
+        private void SetRecent(Entry entry)
+        {
+            if (entry == null) return;
+            if (RecentData == null || RecentData.Timestamp < entry.Timestamp)
+            {
+                entry.Fresh = true;
+                RecentData = entry;
+            }
+        }
+
+        private void CopyRecent()
+        {
+            if (!Settings.AutoCopy || RecentData == null || !RecentData.Fresh) return;
+
+            RecentData.CopyToClipboard();
+            RecentData.Fresh = false;
         }
     }
 
@@ -177,37 +254,38 @@ namespace ToNSaveManager
         public List<Entry> Entries = new List<Entry>();
         [JsonIgnore] public int Count => Entries.Count;
 
-        public int FindIndex(Entry entry)
+        private int FindIndex(string content, DateTime timestamp)
         {
             for (int i = 0; i < Count; i++)
             {
                 Entry e = Entries[i]; // Prevent doubles
-                if (e.Content.Equals(entry.Content, StringComparison.OrdinalIgnoreCase))
+                if (e.Content.Equals(content, StringComparison.OrdinalIgnoreCase))
                     return -1;
 
-                if (e.Timestamp < entry.Timestamp)
+                if (e.Timestamp < timestamp)
                     return i;
             }
 
             return Count;
         }
 
-        public bool Add(Entry entry)
+        public bool Add(string content, DateTime timestamp, out Entry? entry)
         {
-            int index = FindIndex(entry);
-            if (index < 0) return false;
+            int index = FindIndex(content, timestamp);
+            if (index < 0)
+            {
+                entry = null;
+                return false;
+            }
 
+            entry = new Entry(content, timestamp);
             Entries.Insert(index, entry);
             return true;
-        }
-        public bool Add(string content, DateTime timestamp)
-        {
-            return Add(new Entry(content, timestamp));
         }
 
         public void Sort()
         {
-            Entries.Sort((a, b) => a.Timestamp.CompareTo(b.Timestamp));
+            Entries.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
         }
     }
 
@@ -217,9 +295,11 @@ namespace ToNSaveManager
 
         public DateTime Timestamp;
         public string Content;
+        public bool Fresh;
 
         public Entry(string content, DateTime timestamp)
         {
+            Fresh = true;
             Content = content;
             Timestamp = timestamp;
         }
@@ -227,6 +307,12 @@ namespace ToNSaveManager
         public override string ToString()
         {
             return Timestamp.ToString(DateFormat) + " | " + Content.Length + " Bytes";
+        }
+
+        public void CopyToClipboard()
+        {
+            Debug.WriteLine("Copied to clipboard: " + ToString());
+            Clipboard.SetText(Content);
         }
     }
 
