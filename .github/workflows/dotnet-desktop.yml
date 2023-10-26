@@ -72,14 +72,6 @@ jobs:
         release_name: Release ${{ steps.get_date.outputs.date }}
         draft: true
         prerelease: false
-        release_notes: |
-          ## Notes
-          If you are unsure what to do, go check the [README](https://github.com/ChrisFeline/ToNSaveManager/blob/main/README.md#how-do-i-use-this) Basically just extract and run.
-
-          * If you already downloaded and want to update an old release you have two options
-              * Copy the generated file `data.json` from the old release to the location of this release. This will transfer all your previous save codes.
-              * Copy the content of this folder and replace every file in the older program location.
-              * Or you can just open the file `update.bat` and it will try to re-download the latest release from this GitHub.
     
     - name: Upload Release Asset
       id: upload_release_asset

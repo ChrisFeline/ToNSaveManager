@@ -115,7 +115,7 @@
             // 
             ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, toolStripMenuItem2, ctxMenuEntriesDelete });
             ctxMenuEntries.Name = "ctxMenuEntries";
-            ctxMenuEntries.Size = new Size(138, 76);
+            ctxMenuEntries.Size = new Size(181, 98);
             ctxMenuEntries.Closed += ctxMenuEntries_Closed;
             ctxMenuEntries.Opened += ctxMenuEntries_Opened;
             // 
@@ -123,14 +123,13 @@
             // 
             ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
             ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
-            ctxMenuEntriesCopyTo.Size = new Size(137, 22);
+            ctxMenuEntriesCopyTo.Size = new Size(180, 22);
             ctxMenuEntriesCopyTo.Text = "Add to";
-            ctxMenuEntriesCopyTo.ToolTipText = "Copy this entry to a custom collection.";
             // 
             // ctxMenuEntriesNew
             // 
             ctxMenuEntriesNew.Name = "ctxMenuEntriesNew";
-            ctxMenuEntriesNew.Size = new Size(172, 22);
+            ctxMenuEntriesNew.Size = new Size(180, 22);
             ctxMenuEntriesNew.Text = "New Collection";
             ctxMenuEntriesNew.ToolTipText = "Add this entry to a new collection.";
             ctxMenuEntriesNew.Click += ctxMenuEntriesNew_Click;
@@ -138,19 +137,19 @@
             // ctxMenuEntriesNote
             // 
             ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
-            ctxMenuEntriesNote.Size = new Size(137, 22);
+            ctxMenuEntriesNote.Size = new Size(180, 22);
             ctxMenuEntriesNote.Text = "Edit Note";
             ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(134, 6);
+            toolStripMenuItem2.Size = new Size(177, 6);
             // 
             // ctxMenuEntriesDelete
             // 
             ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
-            ctxMenuEntriesDelete.Size = new Size(137, 22);
+            ctxMenuEntriesDelete.Size = new Size(180, 22);
             ctxMenuEntriesDelete.Text = "Delete";
             ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
             // 

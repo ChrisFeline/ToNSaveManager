@@ -200,7 +200,7 @@ namespace ToNSaveManager
             History h = (History)listBoxKeys.SelectedItem;
             if (!h.IsCustom) return;
 
-            EditResult edit = EditWindow.Show(h.Name, "Import Code", this);
+            EditResult edit = EditWindow.Show(string.Empty, "Import Code", this);
             if (edit.Accept && !string.IsNullOrWhiteSpace(edit.Text))
             {
                 string content = edit.Text.Trim();
