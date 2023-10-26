@@ -1,13 +1,4 @@
-using Newtonsoft.Json;
-using System;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
-using System.Security.Policy;
-using System.Text;
-using System.Windows.Forms;
-using static System.Windows.Forms.DataFormats;
 
 namespace ToNSaveManager
 {
@@ -188,11 +179,6 @@ namespace ToNSaveManager
         private void listBoxKeys_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateEntries();
-        }
-
-        private void listBoxKeys_KeyUp(object sender, KeyEventArgs e)
-        {
-
         }
 
         private void listBoxKeys_MouseUp(object sender, MouseEventArgs e)

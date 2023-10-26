@@ -40,10 +40,10 @@
             toolStripMenuItem2 = new ToolStripSeparator();
             ctxMenuEntriesDelete = new ToolStripMenuItem();
             ctxMenuKeys = new ContextMenuStrip(components);
+            importToolStripMenuItem = new ToolStripMenuItem();
             renameToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             deleteToolStripMenuItem = new ToolStripMenuItem();
-            importToolStripMenuItem = new ToolStripMenuItem();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             SuspendLayout();
@@ -63,7 +63,6 @@
             listBoxKeys.TabIndex = 0;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
             listBoxKeys.SelectedIndexChanged += listBoxKeys_SelectedIndexChanged;
-            listBoxKeys.KeyUp += listBoxKeys_KeyUp;
             listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
             // listBoxEntries
@@ -159,33 +158,33 @@
             // 
             ctxMenuKeys.Items.AddRange(new ToolStripItem[] { importToolStripMenuItem, renameToolStripMenuItem, toolStripMenuItem1, deleteToolStripMenuItem });
             ctxMenuKeys.Name = "ctxMenuKeys";
-            ctxMenuKeys.Size = new Size(181, 98);
+            ctxMenuKeys.Size = new Size(117, 76);
+            // 
+            // importToolStripMenuItem
+            // 
+            importToolStripMenuItem.Name = "importToolStripMenuItem";
+            importToolStripMenuItem.Size = new Size(116, 22);
+            importToolStripMenuItem.Text = "Import";
+            importToolStripMenuItem.Click += ctxMenuKeysImport_Click;
             // 
             // renameToolStripMenuItem
             // 
             renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            renameToolStripMenuItem.Size = new Size(180, 22);
+            renameToolStripMenuItem.Size = new Size(116, 22);
             renameToolStripMenuItem.Text = "Rename";
             renameToolStripMenuItem.Click += ctxMenuKeysRename_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(177, 6);
+            toolStripMenuItem1.Size = new Size(113, 6);
             // 
             // deleteToolStripMenuItem
             // 
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new Size(180, 22);
+            deleteToolStripMenuItem.Size = new Size(116, 22);
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
-            // 
-            // importToolStripMenuItem
-            // 
-            importToolStripMenuItem.Name = "importToolStripMenuItem";
-            importToolStripMenuItem.Size = new Size(180, 22);
-            importToolStripMenuItem.Text = "Import";
-            importToolStripMenuItem.Click += ctxMenuKeysImport_Click;
             // 
             // MainWindow
             // 
