@@ -28,16 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             listBoxKeys = new ListBox();
             listBoxEntries = new ListBox();
             checkBoxAutoCopy = new CheckBox();
             linkLabel1 = new LinkLabel();
+            ctxMenuEntries = new ContextMenuStrip(components);
+            ctxMenuEntriesCopyTo = new ToolStripMenuItem();
+            ctxMenuEntriesNew = new ToolStripMenuItem();
+            ctxMenuEntriesNote = new ToolStripMenuItem();
+            toolStripMenuItem2 = new ToolStripSeparator();
+            ctxMenuEntriesDelete = new ToolStripMenuItem();
+            ctxMenuKeys = new ContextMenuStrip(components);
+            renameToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
+            deleteToolStripMenuItem = new ToolStripMenuItem();
+            importToolStripMenuItem = new ToolStripMenuItem();
+            ctxMenuEntries.SuspendLayout();
+            ctxMenuKeys.SuspendLayout();
             SuspendLayout();
             // 
             // listBoxKeys
             // 
             listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             listBoxKeys.BackColor = Color.FromArgb(59, 66, 82);
+            listBoxKeys.DrawMode = DrawMode.OwnerDrawVariable;
             listBoxKeys.ForeColor = Color.FromArgb(236, 239, 244);
             listBoxKeys.FormattingEnabled = true;
             listBoxKeys.IntegralHeight = false;
@@ -46,8 +61,10 @@
             listBoxKeys.Name = "listBoxKeys";
             listBoxKeys.Size = new Size(192, 229);
             listBoxKeys.TabIndex = 0;
+            listBoxKeys.DrawItem += listBoxEntries_DrawItem;
             listBoxKeys.SelectedIndexChanged += listBoxKeys_SelectedIndexChanged;
             listBoxKeys.KeyUp += listBoxKeys_KeyUp;
+            listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
             // listBoxEntries
             // 
@@ -64,7 +81,6 @@
             listBoxEntries.TabIndex = 1;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
             listBoxEntries.SelectedIndexChanged += listBoxEntries_SelectedIndexChanged;
-            listBoxEntries.MouseMove += listBoxEntries_MouseMove;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
             // 
@@ -85,6 +101,7 @@
             // 
             // linkLabel1
             // 
+            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = Color.DodgerBlue;
             linkLabel1.Location = new Point(433, 248);
@@ -94,6 +111,81 @@
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Source Code";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
+            // ctxMenuEntries
+            // 
+            ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, toolStripMenuItem2, ctxMenuEntriesDelete });
+            ctxMenuEntries.Name = "ctxMenuEntries";
+            ctxMenuEntries.Size = new Size(138, 76);
+            ctxMenuEntries.Closed += ctxMenuEntries_Closed;
+            ctxMenuEntries.Opened += ctxMenuEntries_Opened;
+            // 
+            // ctxMenuEntriesCopyTo
+            // 
+            ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
+            ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
+            ctxMenuEntriesCopyTo.Size = new Size(137, 22);
+            ctxMenuEntriesCopyTo.Text = "Add to";
+            ctxMenuEntriesCopyTo.ToolTipText = "Copy this entry to a custom collection.";
+            // 
+            // ctxMenuEntriesNew
+            // 
+            ctxMenuEntriesNew.Name = "ctxMenuEntriesNew";
+            ctxMenuEntriesNew.Size = new Size(172, 22);
+            ctxMenuEntriesNew.Text = "New Collection";
+            ctxMenuEntriesNew.ToolTipText = "Add this entry to a new collection.";
+            ctxMenuEntriesNew.Click += ctxMenuEntriesNew_Click;
+            // 
+            // ctxMenuEntriesNote
+            // 
+            ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
+            ctxMenuEntriesNote.Size = new Size(137, 22);
+            ctxMenuEntriesNote.Text = "Edit Note";
+            ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
+            // 
+            // toolStripMenuItem2
+            // 
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new Size(134, 6);
+            // 
+            // ctxMenuEntriesDelete
+            // 
+            ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
+            ctxMenuEntriesDelete.Size = new Size(137, 22);
+            ctxMenuEntriesDelete.Text = "Delete";
+            ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
+            // 
+            // ctxMenuKeys
+            // 
+            ctxMenuKeys.Items.AddRange(new ToolStripItem[] { importToolStripMenuItem, renameToolStripMenuItem, toolStripMenuItem1, deleteToolStripMenuItem });
+            ctxMenuKeys.Name = "ctxMenuKeys";
+            ctxMenuKeys.Size = new Size(181, 98);
+            // 
+            // renameToolStripMenuItem
+            // 
+            renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            renameToolStripMenuItem.Size = new Size(180, 22);
+            renameToolStripMenuItem.Text = "Rename";
+            renameToolStripMenuItem.Click += ctxMenuKeysRename_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(177, 6);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            deleteToolStripMenuItem.Size = new Size(180, 22);
+            deleteToolStripMenuItem.Text = "Delete";
+            deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
+            // 
+            // importToolStripMenuItem
+            // 
+            importToolStripMenuItem.Name = "importToolStripMenuItem";
+            importToolStripMenuItem.Size = new Size(180, 22);
+            importToolStripMenuItem.Text = "Import";
+            importToolStripMenuItem.Click += ctxMenuKeysImport_Click;
             // 
             // MainWindow
             // 
@@ -112,6 +204,8 @@
             Text = "ToN Save Manager";
             Load += mainWindow_Loaded;
             Shown += mainWindow_Shown;
+            ctxMenuEntries.ResumeLayout(false);
+            ctxMenuKeys.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -122,5 +216,16 @@
         private ListBox listBoxEntries;
         private CheckBox checkBoxAutoCopy;
         private LinkLabel linkLabel1;
+        private ContextMenuStrip ctxMenuEntries;
+        private ToolStripMenuItem ctxMenuEntriesCopyTo;
+        private ToolStripMenuItem ctxMenuEntriesNew;
+        private ToolStripMenuItem ctxMenuEntriesNote;
+        private ContextMenuStrip ctxMenuKeys;
+        private ToolStripMenuItem renameToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem deleteToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripMenuItem ctxMenuEntriesDelete;
+        private ToolStripMenuItem importToolStripMenuItem;
     }
 }

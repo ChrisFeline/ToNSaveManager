@@ -32,8 +32,9 @@ namespace ToNSaveManager
             InitializeComponent();
         }
 
-        public static EditResult Show(string content, Form parent)
+        public static EditResult Show(string content, string title, Form parent)
         {
+            Instance.Text = title;
             Instance.Owner = parent;
             Instance.StartPosition = FormStartPosition.CenterParent;
             Instance.Content = content;

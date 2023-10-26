@@ -16,5 +16,12 @@ namespace ToNSaveManager
             Instance.SetToolTip(control, text);
             Instance.Active = true;
         }
+
+        public static void Show(Control control, string text, Point point)
+        {
+            Instance.Active = false;
+            Instance.Show(text, control, point);
+            Instance.Active = true;
+        }
     }
 }
