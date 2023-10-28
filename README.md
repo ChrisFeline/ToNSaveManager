@@ -13,6 +13,8 @@ It also stores every **Save Code** found into a local data file called `data.jso
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
 - You can add notes to **Save Codes** by using right-click on the entry in the left panel.
 - You can favorite or bookmark save codes into your own collections (Use right click).
+- You can hear a notification whenever a save code have been detected while playing. (Enable it in settings)
+- You can see the list of players that were playing with you at the time of saving. (Enable it in settings)
 ### Limitations
 - This is a Windows only tool. (*Sorry Linux users*)
 - VRChat will delete old logs over the span of a few days (Like 4 or 5 days) so if the tool wasn't run before the logs got deleted, those saves are gone.
