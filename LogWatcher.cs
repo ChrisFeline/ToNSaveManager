@@ -186,7 +186,7 @@
             if (line.Contains(UserJoinKeyword))
             {
                 index = line.IndexOf(UserJoinKeyword) + UserJoinKeyword.Length;
-                displayName = line.Substring(index + 1);
+                displayName = line.Substring(index + 1).Trim();
 
                 logContext.Join(displayName);
                 return true;
@@ -195,7 +195,7 @@
             if (line.Contains(UserLeaveKeyword))
             {
                 index = line.IndexOf(UserLeaveKeyword) + UserLeaveKeyword.Length;
-                displayName = line.Substring(index);
+                displayName = line.Substring(index + 1).Trim();
 
                 logContext.Leave(displayName);
                 return true;
