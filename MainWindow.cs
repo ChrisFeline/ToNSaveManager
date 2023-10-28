@@ -500,7 +500,8 @@ namespace ToNSaveManager
             else collection.Timestamp = DateTime.Now; // Update edited timestamp
 
             int ind = collection.Add(entry);
-            listBoxEntries.Items.Insert(ind, entry);
+            if (listBoxKeys.SelectedItem == collection)
+                InsertSafe(listBoxEntries, ind, entry);
 
             Export(true);
         }
