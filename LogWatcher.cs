@@ -132,8 +132,9 @@
                                 lineDate = DateTime.Now;   
                             }
 
-                            if (ParseLocation(line, logContext) ||
-                                ParseDisplayName(line, logContext)) { }
+                            if (ParseLocation(line, lineDate, logContext) ||
+                                ParseDisplayName(line, lineDate, logContext) ||
+                                ParsePlayerJoin(line, lineDate, logContext)) { }
 
                             if (OnLine != null)
                                 OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
@@ -148,7 +149,7 @@
         }
 
         const string UserAuthKeyword = "User Authenticated: ";
-        private bool ParseDisplayName(string line, LogContext logContext)
+        private bool ParseDisplayName(string line, DateTime lineDate, LogContext logContext)
         {
             if (!line.Contains(UserAuthKeyword)) return false;
 
@@ -162,7 +163,7 @@
         }
 
         const string LocationKeyword = "[Behaviour] Entering Room: ";
-        private bool ParseLocation(string line, LogContext logContext)
+        private bool ParseLocation(string line, DateTime lineDate, LogContext logContext)
         {
             if (!line.Contains(LocationKeyword)) return false;
 
@@ -170,9 +171,37 @@
             if (index >= line.Length) return false;
 
             var worldName = line.Substring(index);
-            logContext.RecentWorld = worldName;
+            logContext.Enter(worldName, lineDate);
 
             return true;
+        }
+
+        const string UserJoinKeyword = "[Behaviour] OnPlayerJoined ";
+        const string UserLeaveKeyword = "[Behaviour] OnPlayerLeft ";
+        private bool ParsePlayerJoin(string line, DateTime lineDate, LogContext logContext)
+        {
+            int index;
+            string displayName;
+
+            if (line.Contains(UserJoinKeyword))
+            {
+                index = line.IndexOf(UserJoinKeyword) + UserJoinKeyword.Length;
+                displayName = line.Substring(index);
+
+                logContext.Join(displayName);
+                return true;
+            }
+
+            if (line.Contains(UserLeaveKeyword))
+            {
+                index = line.IndexOf(UserLeaveKeyword) + UserLeaveKeyword.Length;
+                displayName = line.Substring(index);
+
+                logContext.Leave(displayName);
+                return true;
+            }
+
+            return false;
         }
 
         public class LogContext
@@ -180,13 +209,56 @@
             public long Length;
             public long Position;
 
-            public string FileName;
+            public readonly string FileName;
             public string? DisplayName;
-            public string? RecentWorld;
+
+            // Recent Instance info
+            public string? RoomName { get; private set; }
+            public DateTime RoomDate { get; private set; }
+            public readonly HashSet<string> Players;
 
             public LogContext(string fileName)
             {
                 FileName = fileName;
+                Players = new HashSet<string>();
+            }
+
+            /// <summary>
+            /// Called when a player leaves the room.
+            /// </summary>
+            public void Join(string displayName)
+            {
+                if (!Players.Contains(displayName))
+                    Players.Add(displayName);
+            }
+
+            /// <summary>
+            /// Called when a player joins the room.
+            /// </summary>
+            public void Leave(string displayName)
+            {
+                if (Players.Contains(displayName))
+                    Players.Remove(displayName);
+            }
+
+            /// <summary>
+            /// Called when user joins a new room.
+            /// </summary>
+            public void Enter(string name, DateTime date)
+            {
+                RoomName = name;
+                RoomDate = date;
+                Players.Clear();
+            }
+
+            /// <summary>
+            /// Get's a list of players in this room as a string.
+            /// </summary>
+            public string GetRoomString(bool lineBreak = true)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendJoin(lineBreak ? Environment.NewLine : ", ", Players);
+                return sb.ToString();
             }
         }
     }

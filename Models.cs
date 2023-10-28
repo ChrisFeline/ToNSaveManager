@@ -1,14 +1,27 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
 namespace ToNSaveManager
 {
-    internal class History : IComparable<History>
+    internal class History : IComparable<History>, INotifyPropertyChanged
     {
+        // Implementation for 'INotifyPropertyChanged'
+        public event PropertyChangedEventHandler? PropertyChanged;
+        [JsonIgnore] private string m_Name = string.Empty;
+        public string Name
+        {
+            get { return m_Name; }
+            set
+            {
+                m_Name = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
+            }
+        }
+
         public string Guid = string.Empty;
-        public string Name = string.Empty;
         public DateTime Timestamp;
         public bool IsCustom;
 
@@ -16,7 +29,6 @@ namespace ToNSaveManager
         private History()
         {
             Guid = string.Empty;
-            Name = string.Empty;
             Timestamp = DateTime.MinValue;
             IsCustom = false;
         }
@@ -48,8 +60,22 @@ namespace ToNSaveManager
             IsCustom = true;
         }
 
-        public List<Entry> Entries = new List<Entry>();
+        public BindingList<Entry> Entries = new BindingList<Entry>();
         [JsonIgnore] public int Count => Entries.Count;
+
+        public Entry this[int i]
+        {
+            get
+            {
+                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
+                return Entries[i];
+            }
+            set
+            {
+                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
+                Entries[i] = value;
+            }
+        }
 
         private int FindIndex(string content, DateTime timestamp)
         {
@@ -103,13 +129,25 @@ namespace ToNSaveManager
         }
     }
 
-    internal class Entry
+    internal class Entry : INotifyPropertyChanged
     {
         internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        [JsonIgnore] private string m_Note = string.Empty;
+        public string Note
+        {
+            get { return m_Note; }
+            set
+            {
+                m_Note = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Note)));
+            }
+        }
+
         public DateTime Timestamp;
         public string Content;
-        public string Note;
+        public string? Players;
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
 
@@ -118,7 +156,6 @@ namespace ToNSaveManager
             Fresh = true;
             Content = content;
             Timestamp = timestamp;
-            Note = string.Empty;
         }
 
         public override string ToString()
@@ -157,7 +194,7 @@ namespace ToNSaveManager
         const string LegacyDestination = "data.json";
         const string Destination = "SaveData.json";
 
-        public List<History> Collection { get; private set; } = new List<History>();
+        public BindingList<History> Collection { get; private set; } = new BindingList<History>();
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
 
@@ -184,11 +221,10 @@ namespace ToNSaveManager
 
         public void SetDirty() => IsDirty = true;
 
-        public int Add(History h)
+        public void Add(History h)
         {
             int index = FindIndex(h);
             Collection.Insert(index, h);
-            return index;
         }
         public void Remove(string id)
         {
@@ -264,11 +300,31 @@ namespace ToNSaveManager
                 }
             }
 
-            // Sort results
-            Debug.WriteLine("Sorting: " + data.Count);
-            Program.QuickSort(data.Collection, (a, b) => {
-                return b.CompareTo(a);
-            });
+            // Sort them by dates, and keep collections on top
+            Program.QuickSort(data.Collection, (a, b) => b.CompareTo(a));
+
+            // Check items that might be the same between collections
+            List<Entry> uniqueEntries = new List<Entry>();
+            int i, j;
+            Entry entry;
+            for (i = 0; i < data.Count; i++)
+            {
+                History item = data[i];
+                
+                for (j = 0; j < item.Count; j++)
+                {
+                    entry = item[j];
+
+                    int index = uniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
+                    if (index != -1) {
+                        entry = uniqueEntries[index];
+                        item[j] = entry;
+                    } else {
+                        uniqueEntries.Add(entry);
+                    }
+                }
+            }
+            uniqueEntries.Clear();
 
             return data;
         }

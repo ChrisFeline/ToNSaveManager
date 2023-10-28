@@ -4,11 +4,14 @@ namespace ToNSaveManager
 {
     internal class AppSettings
     {
-        const string Destination = "settings.json";
+        const string LegacyDestination = "settings.json";
+        const string Destination = "Settings.json";
 
         private bool IsDirty;
 
-        [JsonIgnore] private bool m_AutoCopy = true;
+        [JsonIgnore] private bool m_AutoCopy = false;
+        [JsonIgnore] private bool m_PlayAudio = false;
+
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
@@ -16,8 +19,21 @@ namespace ToNSaveManager
             get { return m_AutoCopy; }
             set {
                 if (value == m_AutoCopy) return;
-
                 m_AutoCopy = value;
+                IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Play notification audio when a new save is detected.
+        /// </summary>
+        public bool PlayAudio
+        {
+            get { return m_PlayAudio; }
+            set
+            {
+                if (value == m_PlayAudio) return;
+                m_PlayAudio = value;
                 IsDirty = true;
             }
         }
@@ -30,9 +46,12 @@ namespace ToNSaveManager
         {
             AppSettings? settings;
 
-            if (!File.Exists(Destination)) return new AppSettings();
-
             try {
+                if (File.Exists(LegacyDestination))
+                    File.Move(LegacyDestination, Destination);
+
+                if (!File.Exists(Destination)) return new AppSettings();
+
                 string content = File.ReadAllText(Destination);
                 settings = JsonConvert.DeserializeObject<AppSettings>(content);
             } catch {

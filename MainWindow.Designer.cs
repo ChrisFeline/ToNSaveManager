@@ -52,7 +52,7 @@
             // 
             listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             listBoxKeys.BackColor = Color.FromArgb(59, 66, 82);
-            listBoxKeys.DrawMode = DrawMode.OwnerDrawVariable;
+            listBoxKeys.BorderStyle = BorderStyle.FixedSingle;
             listBoxKeys.ForeColor = Color.FromArgb(236, 239, 244);
             listBoxKeys.FormattingEnabled = true;
             listBoxKeys.IntegralHeight = false;
@@ -61,15 +61,16 @@
             listBoxKeys.Name = "listBoxKeys";
             listBoxKeys.Size = new Size(192, 229);
             listBoxKeys.TabIndex = 0;
-            listBoxKeys.DrawItem += listBoxEntries_DrawItem;
-            listBoxKeys.SelectedIndexChanged += listBoxKeys_SelectedIndexChanged;
+            listBoxKeys.TabStop = false;
+            listBoxKeys.MouseDown += listBoxKeys_MouseDown;
             listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
             // listBoxEntries
             // 
             listBoxEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listBoxEntries.BackColor = Color.FromArgb(59, 66, 82);
-            listBoxEntries.DrawMode = DrawMode.OwnerDrawVariable;
+            listBoxEntries.BorderStyle = BorderStyle.FixedSingle;
+            listBoxEntries.DrawMode = DrawMode.OwnerDrawFixed;
             listBoxEntries.ForeColor = Color.FromArgb(236, 239, 244);
             listBoxEntries.FormattingEnabled = true;
             listBoxEntries.IntegralHeight = false;
@@ -78,8 +79,9 @@
             listBoxEntries.Name = "listBoxEntries";
             listBoxEntries.Size = new Size(307, 229);
             listBoxEntries.TabIndex = 1;
+            listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
-            listBoxEntries.SelectedIndexChanged += listBoxEntries_SelectedIndexChanged;
+            listBoxEntries.MouseDown += listBoxEntries_MouseDown;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
             // 
@@ -115,7 +117,7 @@
             // 
             ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, toolStripMenuItem2, ctxMenuEntriesDelete });
             ctxMenuEntries.Name = "ctxMenuEntries";
-            ctxMenuEntries.Size = new Size(181, 98);
+            ctxMenuEntries.Size = new Size(138, 76);
             ctxMenuEntries.Closed += ctxMenuEntries_Closed;
             ctxMenuEntries.Opened += ctxMenuEntries_Opened;
             // 
@@ -123,13 +125,13 @@
             // 
             ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
             ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
-            ctxMenuEntriesCopyTo.Size = new Size(180, 22);
+            ctxMenuEntriesCopyTo.Size = new Size(137, 22);
             ctxMenuEntriesCopyTo.Text = "Add to";
             // 
             // ctxMenuEntriesNew
             // 
             ctxMenuEntriesNew.Name = "ctxMenuEntriesNew";
-            ctxMenuEntriesNew.Size = new Size(180, 22);
+            ctxMenuEntriesNew.Size = new Size(172, 22);
             ctxMenuEntriesNew.Text = "New Collection";
             ctxMenuEntriesNew.ToolTipText = "Add this entry to a new collection.";
             ctxMenuEntriesNew.Click += ctxMenuEntriesNew_Click;
@@ -137,19 +139,19 @@
             // ctxMenuEntriesNote
             // 
             ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
-            ctxMenuEntriesNote.Size = new Size(180, 22);
+            ctxMenuEntriesNote.Size = new Size(137, 22);
             ctxMenuEntriesNote.Text = "Edit Note";
             ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(177, 6);
+            toolStripMenuItem2.Size = new Size(134, 6);
             // 
             // ctxMenuEntriesDelete
             // 
             ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
-            ctxMenuEntriesDelete.Size = new Size(180, 22);
+            ctxMenuEntriesDelete.Size = new Size(137, 22);
             ctxMenuEntriesDelete.Text = "Delete";
             ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
             // 

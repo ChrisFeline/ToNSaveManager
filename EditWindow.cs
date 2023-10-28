@@ -19,7 +19,7 @@ namespace ToNSaveManager
     public partial class EditWindow : Form
     {
         static readonly EditWindow Instance = new EditWindow();
-        public static Size GetSize () => Instance.Size;
+        public static Size GetSize() => Instance.Size;
 
         string Content
         {
@@ -55,6 +55,12 @@ namespace ToNSaveManager
         private void button2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+        }
+
+        private void EditWindow_Shown(object sender, EventArgs e)
+        {
+            // Focus the text input please!!!
+            Instance.textBox1.Focus();
         }
     }
 }

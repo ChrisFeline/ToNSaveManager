@@ -82,6 +82,7 @@
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Note Editor";
+            Shown += EditWindow_Shown;
             ResumeLayout(false);
             PerformLayout();
         }
