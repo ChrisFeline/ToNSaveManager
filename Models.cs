@@ -42,7 +42,7 @@ namespace ToNSaveManager
             Name = Timestamp.ToString(Entry.DateFormat);
         }
 
-        public BindingList<Entry> Entries = new BindingList<Entry>();
+        public List<Entry> Entries = new List<Entry>();
         [JsonIgnore] public int Count => Entries.Count;
 
         public Entry this[int i]
@@ -174,7 +174,7 @@ namespace ToNSaveManager
         const string LegacyDestination = "data.json";
         const string Destination = "SaveData.json";
 
-        public BindingList<History> Collection { get; private set; } = new BindingList<History>();
+        public List<History> Collection { get; private set; } = new List<History>();
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
 
@@ -282,7 +282,7 @@ namespace ToNSaveManager
             }
 
             // Sort them by dates, and keep collections on top
-            Program.QuickSort(data.Collection, (a, b) => b.CompareTo(a));
+            data.Collection.Sort((a, b) => b.CompareTo(a));
 
             // Check items that might be the same between collections
             List<Entry> uniqueEntries = new List<Entry>();
