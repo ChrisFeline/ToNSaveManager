@@ -11,6 +11,7 @@ namespace ToNSaveManager
 
         [JsonIgnore] private bool m_AutoCopy = false;
         [JsonIgnore] private bool m_PlayAudio = false;
+        [JsonIgnore] private bool m_SaveNames = false;
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -34,6 +35,20 @@ namespace ToNSaveManager
             {
                 if (value == m_PlayAudio) return;
                 m_PlayAudio = value;
+                IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Saves a list of players that were in the same room as you at the time of the save.
+        /// </summary>
+        public bool SaveNames
+        {
+            get { return m_SaveNames; }
+            set
+            {
+                if (value == m_SaveNames) return;
+                m_SaveNames = value;
                 IsDirty = true;
             }
         }

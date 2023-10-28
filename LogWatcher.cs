@@ -176,8 +176,8 @@
             return true;
         }
 
-        const string UserJoinKeyword = "[Behaviour] OnPlayerJoined ";
-        const string UserLeaveKeyword = "[Behaviour] OnPlayerLeft ";
+        const string UserJoinKeyword = "[Behaviour] OnPlayerJoined";
+        const string UserLeaveKeyword = "[Behaviour] OnPlayerLeft";
         private bool ParsePlayerJoin(string line, DateTime lineDate, LogContext logContext)
         {
             int index;
@@ -186,7 +186,7 @@
             if (line.Contains(UserJoinKeyword))
             {
                 index = line.IndexOf(UserJoinKeyword) + UserJoinKeyword.Length;
-                displayName = line.Substring(index);
+                displayName = line.Substring(index + 1);
 
                 logContext.Join(displayName);
                 return true;
@@ -257,7 +257,9 @@
             public string GetRoomString(bool lineBreak = true)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendJoin(lineBreak ? Environment.NewLine : ", ", Players);
+                const string start = "- ";
+                sb.Append(start);
+                sb.AppendJoin(lineBreak ? Environment.NewLine + start : ", ", Players);
                 return sb.ToString();
             }
         }

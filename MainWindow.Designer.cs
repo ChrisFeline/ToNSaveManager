@@ -31,7 +31,6 @@
             components = new System.ComponentModel.Container();
             listBoxKeys = new ListBox();
             listBoxEntries = new ListBox();
-            checkBoxAutoCopy = new CheckBox();
             linkLabel1 = new LinkLabel();
             ctxMenuEntries = new ContextMenuStrip(components);
             ctxMenuEntriesCopyTo = new ToolStripMenuItem();
@@ -44,8 +43,16 @@
             renameToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             deleteToolStripMenuItem = new ToolStripMenuItem();
+            optionsLabel = new LinkLabel();
+            ctxMenuSettings = new ContextMenuStrip(components);
+            ctxMenuSettingsAutoCopy = new ToolStripMenuItem();
+            ctxMenuSettingsNotifSounds = new ToolStripMenuItem();
+            ctxMenuSettingsCollectNames = new ToolStripMenuItem();
+            toolStripMenuItem3 = new ToolStripSeparator();
+            ctxMenuSettingsClose = new ToolStripMenuItem();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
+            ctxMenuSettings.SuspendLayout();
             SuspendLayout();
             // 
             // listBoxKeys
@@ -53,15 +60,17 @@
             listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             listBoxKeys.BackColor = Color.FromArgb(59, 66, 82);
             listBoxKeys.BorderStyle = BorderStyle.FixedSingle;
+            listBoxKeys.DrawMode = DrawMode.OwnerDrawFixed;
             listBoxKeys.ForeColor = Color.FromArgb(236, 239, 244);
             listBoxKeys.FormattingEnabled = true;
             listBoxKeys.IntegralHeight = false;
             listBoxKeys.ItemHeight = 15;
             listBoxKeys.Location = new Point(12, 12);
             listBoxKeys.Name = "listBoxKeys";
-            listBoxKeys.Size = new Size(192, 229);
+            listBoxKeys.Size = new Size(192, 230);
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
+            listBoxKeys.DrawItem += listBoxEntries_DrawItem;
             listBoxKeys.MouseDown += listBoxKeys_MouseDown;
             listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
@@ -77,35 +86,23 @@
             listBoxEntries.ItemHeight = 15;
             listBoxEntries.Location = new Point(210, 12);
             listBoxEntries.Name = "listBoxEntries";
-            listBoxEntries.Size = new Size(307, 229);
+            listBoxEntries.Size = new Size(307, 230);
             listBoxEntries.TabIndex = 1;
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
             listBoxEntries.MouseDown += listBoxEntries_MouseDown;
+            listBoxEntries.MouseMove += listBoxEntries_MouseMove;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
             // 
-            // checkBoxAutoCopy
-            // 
-            checkBoxAutoCopy.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            checkBoxAutoCopy.AutoSize = true;
-            checkBoxAutoCopy.Checked = true;
-            checkBoxAutoCopy.CheckState = CheckState.Checked;
-            checkBoxAutoCopy.ForeColor = Color.White;
-            checkBoxAutoCopy.Location = new Point(12, 247);
-            checkBoxAutoCopy.Name = "checkBoxAutoCopy";
-            checkBoxAutoCopy.Size = new Size(180, 19);
-            checkBoxAutoCopy.TabIndex = 2;
-            checkBoxAutoCopy.Text = "Auto Save to Clipboard";
-            checkBoxAutoCopy.UseVisualStyleBackColor = true;
-            checkBoxAutoCopy.CheckedChanged += checkBoxAutoCopy_CheckedChanged;
-            // 
             // linkLabel1
             // 
+            linkLabel1.ActiveLinkColor = Color.PowderBlue;
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             linkLabel1.AutoSize = true;
+            linkLabel1.BackColor = Color.Transparent;
             linkLabel1.LinkColor = Color.DodgerBlue;
-            linkLabel1.Location = new Point(433, 248);
+            linkLabel1.Location = new Point(433, 247);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(84, 15);
             linkLabel1.TabIndex = 4;
@@ -187,14 +184,77 @@
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
             // 
+            // optionsLabel
+            // 
+            optionsLabel.ActiveLinkColor = Color.Red;
+            optionsLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            optionsLabel.AutoSize = true;
+            optionsLabel.LinkColor = Color.Gainsboro;
+            optionsLabel.Location = new Point(12, 247);
+            optionsLabel.Name = "optionsLabel";
+            optionsLabel.Size = new Size(63, 15);
+            optionsLabel.TabIndex = 5;
+            optionsLabel.TabStop = true;
+            optionsLabel.Text = "Settings";
+            optionsLabel.LinkClicked += optionsLabel_LinkClicked;
+            // 
+            // ctxMenuSettings
+            // 
+            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsClose });
+            ctxMenuSettings.Name = "ctxMenuSettings";
+            ctxMenuSettings.Size = new Size(215, 98);
+            ctxMenuSettings.Closing += ctxMenuSettings_Closing;
+            // 
+            // ctxMenuSettingsAutoCopy
+            // 
+            ctxMenuSettingsAutoCopy.Checked = true;
+            ctxMenuSettingsAutoCopy.CheckState = CheckState.Checked;
+            ctxMenuSettingsAutoCopy.Name = "ctxMenuSettingsAutoCopy";
+            ctxMenuSettingsAutoCopy.Size = new Size(214, 22);
+            ctxMenuSettingsAutoCopy.Text = "Auto Clipboard Copy";
+            ctxMenuSettingsAutoCopy.ToolTipText = "Automatically copy to clipboard new saves found while you play Terrors.";
+            ctxMenuSettingsAutoCopy.Click += ctxMenuSettingsAutoCopy_Click;
+            // 
+            // ctxMenuSettingsNotifSounds
+            // 
+            ctxMenuSettingsNotifSounds.Checked = true;
+            ctxMenuSettingsNotifSounds.CheckState = CheckState.Checked;
+            ctxMenuSettingsNotifSounds.Name = "ctxMenuSettingsNotifSounds";
+            ctxMenuSettingsNotifSounds.Size = new Size(214, 22);
+            ctxMenuSettingsNotifSounds.Text = "Notification Sounds";
+            ctxMenuSettingsNotifSounds.ToolTipText = "Plays an audio when a new save is found.\r\nYou can replace 'notifications.wav' to change it.";
+            ctxMenuSettingsNotifSounds.Click += ctxMenuSettingsNotifSounds_Click;
+            // 
+            // ctxMenuSettingsCollectNames
+            // 
+            ctxMenuSettingsCollectNames.Checked = true;
+            ctxMenuSettingsCollectNames.CheckState = CheckState.Checked;
+            ctxMenuSettingsCollectNames.Name = "ctxMenuSettingsCollectNames";
+            ctxMenuSettingsCollectNames.Size = new Size(214, 22);
+            ctxMenuSettingsCollectNames.Text = "Collect Player Names";
+            ctxMenuSettingsCollectNames.ToolTipText = "Stores the names of players that were with you at the time of saving.";
+            ctxMenuSettingsCollectNames.Click += ctxMenuSettingsCollectNames_Click;
+            // 
+            // toolStripMenuItem3
+            // 
+            toolStripMenuItem3.Name = "toolStripMenuItem3";
+            toolStripMenuItem3.Size = new Size(211, 6);
+            // 
+            // ctxMenuSettingsClose
+            // 
+            ctxMenuSettingsClose.Name = "ctxMenuSettingsClose";
+            ctxMenuSettingsClose.Size = new Size(214, 22);
+            ctxMenuSettingsClose.Text = "Close";
+            ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(529, 270);
+            ClientSize = new Size(529, 271);
+            Controls.Add(optionsLabel);
             Controls.Add(linkLabel1);
-            Controls.Add(checkBoxAutoCopy);
             Controls.Add(listBoxEntries);
             Controls.Add(listBoxKeys);
             MaximizeBox = false;
@@ -206,6 +266,7 @@
             Shown += mainWindow_Shown;
             ctxMenuEntries.ResumeLayout(false);
             ctxMenuKeys.ResumeLayout(false);
+            ctxMenuSettings.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -214,7 +275,6 @@
 
         private ListBox listBoxKeys;
         private ListBox listBoxEntries;
-        private CheckBox checkBoxAutoCopy;
         private LinkLabel linkLabel1;
         private ContextMenuStrip ctxMenuEntries;
         private ToolStripMenuItem ctxMenuEntriesCopyTo;
@@ -227,5 +287,14 @@
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem ctxMenuEntriesDelete;
         private ToolStripMenuItem importToolStripMenuItem;
+        private LinkLabel optionsLabel;
+        private ContextMenuStrip ctxMenuSettings;
+        private ToolStripMenuItem autoClipboardCopyToolStripMenuItem;
+        private ToolStripMenuItem notificationsToolStripMenuItem;
+        private ToolStripMenuItem ctxMenuSettingsAutoCopy;
+        private ToolStripMenuItem ctxMenuSettingsNotifSounds;
+        private ToolStripMenuItem ctxMenuSettingsCollectNames;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem ctxMenuSettingsClose;
     }
 }

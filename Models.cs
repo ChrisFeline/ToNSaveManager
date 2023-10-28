@@ -6,46 +6,16 @@ using System.Text;
 
 namespace ToNSaveManager
 {
-    internal class History : IComparable<History>, INotifyPropertyChanged
+    internal class History : IComparable<History>
     {
-        // Implementation for 'INotifyPropertyChanged'
-        public event PropertyChangedEventHandler? PropertyChanged;
-        [JsonIgnore] private string m_Name = string.Empty;
-        public string Name
-        {
-            get { return m_Name; }
-            set
-            {
-                m_Name = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
-            }
-        }
 
         public string Guid = string.Empty;
-        public DateTime Timestamp;
-        public bool IsCustom;
+        public string Name = string.Empty;
+        public DateTime Timestamp = DateTime.MinValue;
+        public bool IsCustom = false;
 
         [JsonConstructor]
-        private History()
-        {
-            Guid = string.Empty;
-            Timestamp = DateTime.MinValue;
-            IsCustom = false;
-        }
-
-        public void SetLogKey(string logKey)
-        {
-            if (IsCustom) return;
-            Guid = logKey;
-
-            // "2023-10-22_09-51-29"
-            if (DateTime.TryParseExact(logKey, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
-            {
-                Timestamp = date;
-            }
-
-            Name = Timestamp.ToString(Entry.DateFormat);
-        }
+        private History() { }
 
         public History(string logKey)
         {
@@ -58,6 +28,18 @@ namespace ToNSaveManager
             Name = name;
             Timestamp = timestamp;
             IsCustom = true;
+        }
+
+        public void SetLogKey(string logKey)
+        {
+            if (IsCustom) return;
+            Guid = logKey;
+
+            // "2023-10-22_09-51-29"
+            if (DateTime.TryParseExact(logKey, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                Timestamp = date;
+
+            Name = Timestamp.ToString(Entry.DateFormat);
         }
 
         public BindingList<Entry> Entries = new BindingList<Entry>();
@@ -92,26 +74,26 @@ namespace ToNSaveManager
             return Count;
         }
 
-        public bool Add(Entry entry)
+        public int Add(Entry entry)
         {
             int index = FindIndex(entry.Content, entry.Timestamp);
-            if (index < 0) return false;
-            Entries.Insert(index, entry);
-            return true;
+            if (index > -1) Entries.Insert(index, entry);
+            return index;
         }
 
-        public bool Add(string content, DateTime timestamp, out Entry? entry)
+        public int Add(string content, DateTime timestamp, out Entry? entry)
         {
             int index = FindIndex(content, timestamp);
             if (index < 0)
             {
                 entry = null;
-                return false;
+                return index;
             }
 
             entry = new Entry(content, timestamp);
             Entries.Insert(index, entry);
-            return true;
+
+            return index;
         }
 
         public override string ToString()
@@ -129,21 +111,11 @@ namespace ToNSaveManager
         }
     }
 
-    internal class Entry : INotifyPropertyChanged
+    internal class Entry
     {
         internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        [JsonIgnore] private string m_Note = string.Empty;
-        public string Note
-        {
-            get { return m_Note; }
-            set
-            {
-                m_Note = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Note)));
-            }
-        }
+        public string Note = string.Empty;
 
         public DateTime Timestamp;
         public string Content;
@@ -170,15 +142,23 @@ namespace ToNSaveManager
             return sb.ToString();
         }
 
-        public string GetTooltip()
+        public string GetTooltip(bool full)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Timestamp.ToString("F"));
             if (!string.IsNullOrEmpty(Note))
             {
                 sb.AppendLine();
-                sb.Append("Note: ");
+                sb.AppendLine();
+                sb.Append("Note: \n- ");
                 sb.Append(Note);
+            }
+            if (full && !string.IsNullOrEmpty(Players))
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine("Players in room:");
+                sb.Append(Players);
             }
             return sb.ToString();
         }
@@ -221,10 +201,11 @@ namespace ToNSaveManager
 
         public void SetDirty() => IsDirty = true;
 
-        public void Add(History h)
+        public int Add(History h)
         {
             int index = FindIndex(h);
             Collection.Insert(index, h);
+            return index;
         }
         public void Remove(string id)
         {

@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="notification.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="update.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

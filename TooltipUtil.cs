@@ -10,17 +10,19 @@ namespace ToNSaveManager
     {
         static readonly TooltipUtil Instance = new TooltipUtil();
 
-        public static void Set(Control control, string text)
+        TooltipUtil()
+        {
+            this.UseAnimation = true;
+            this.UseFading = true;
+            // this.ShowAlways = true;
+            this.AutomaticDelay = 0;
+            this.AutoPopDelay = 10000;
+        }
+
+        public static void Set(Control control, string? text)
         {
             Instance.Active = false;
             Instance.SetToolTip(control, text);
-            Instance.Active = true;
-        }
-
-        public static void Show(Control control, string text, Point point)
-        {
-            Instance.Active = false;
-            Instance.Show(text, control, point);
             Instance.Active = true;
         }
     }
