@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Media;
@@ -34,7 +35,7 @@ namespace ToNSaveManager
             this.Text = "Loading, please wait...";
 
             InitializeOptions();
-            TooltipUtil.Set(linkLabel1, "Source Code and Documentation for this tool can be found in my GitHub.\n" + SourceLink + "\n\nYou can also find me in discord as Kittenji.");
+            // TooltipUtil.Set(linkLabel1, "Source Code and Documentation for this tool can be found in my GitHub.\n" + SourceLink + "\n\nYou can also find me in discord as Kittenji.");
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -305,6 +306,7 @@ namespace ToNSaveManager
             ctxMenuSettingsAutoCopy.Checked = Settings.AutoCopy;
             ctxMenuSettingsNotifSounds.Checked = Settings.PlayAudio;
             ctxMenuSettingsCollectNames.Checked = Settings.SaveNames;
+            ctxMenuSettingsSoundControl_Set();
         }
 
         private void optionsLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -334,11 +336,42 @@ namespace ToNSaveManager
             }
         }
 
+        private void ctxMenuSettingsSoundControl_Set()
+        {
+            ctxMenuSettingsClearSound.Enabled = !string.IsNullOrEmpty(Settings.AudioLocation);
+            ctxMenuSettingsClearSound.ToolTipText = ctxMenuSettingsClearSound.Enabled ? "Custom Audio Path: " + Settings.AudioLocation : null;
+        }
+
         private void ctxMenuSettingsNotifSounds_Click(object sender, EventArgs e)
         {
             Settings.PlayAudio = ToggleCheckState(Settings.PlayAudio, ctxMenuSettingsNotifSounds);
             Settings.Export();
             PlayNotification();
+            if (!Settings.PlayAudio) NotificationPlayer.Stop();
+        }
+
+        private void ctxMenuSettingsSelectSound_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.InitialDirectory = "./";
+                fileDialog.Title = "Select Custom Sound";
+                fileDialog.Filter = "Waveform Audio (*.wav)|*.wav";
+
+                if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName))
+                {
+                    Settings.AudioLocation = fileDialog.FileName;
+                    Settings.Export();
+                    ctxMenuSettingsSoundControl_Set();
+                }
+            }
+        }
+
+        private void ctxMenuSettingsClearSound_Click(object sender, EventArgs e)
+        {
+            Settings.AudioLocation = null;
+            Settings.Export();
+            ctxMenuSettingsSoundControl_Set();
         }
 
         private void ctxMenuSettingsCollectNames_Click(object sender, EventArgs e)
@@ -377,14 +410,20 @@ namespace ToNSaveManager
 
         #region Form Methods
         #region Notifications
-        const string NotificationFile = "notification.wav";
-        static readonly SoundPlayer NotificationPlayer = new SoundPlayer(NotificationFile);
+        static string DefaultNotificationFile = "notification.wav";
+        static readonly SoundPlayer NotificationPlayer = new SoundPlayer();
         private void PlayNotification()
         {
+            if (!Settings.PlayAudio || !Started) return;
+
             try
             {
-                if (Settings.PlayAudio && Started && File.Exists(NotificationFile))
+                string fileLocation = (string.IsNullOrEmpty(Settings.AudioLocation) || !File.Exists(Settings.AudioLocation)) ? DefaultNotificationFile : Settings.AudioLocation;
+                if (File.Exists(fileLocation))
+                {
+                    NotificationPlayer.SoundLocation = fileLocation;
                     NotificationPlayer.Play();
+                }
             }
             catch { }
         }
@@ -554,5 +593,6 @@ namespace ToNSaveManager
             RecentData.Fresh = false;
         }
         #endregion
+
     }
 }

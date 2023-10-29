@@ -14,7 +14,6 @@ namespace ToNSaveManager
         {
             this.UseAnimation = true;
             this.UseFading = true;
-            // this.ShowAlways = true;
             this.AutomaticDelay = 0;
             this.AutoPopDelay = 10000;
         }

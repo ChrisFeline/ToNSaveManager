@@ -47,6 +47,8 @@
             ctxMenuSettings = new ContextMenuStrip(components);
             ctxMenuSettingsAutoCopy = new ToolStripMenuItem();
             ctxMenuSettingsNotifSounds = new ToolStripMenuItem();
+            ctxMenuSettingsSelectSound = new ToolStripMenuItem();
+            ctxMenuSettingsClearSound = new ToolStripMenuItem();
             ctxMenuSettingsCollectNames = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
             ctxMenuSettingsClose = new ToolStripMenuItem();
@@ -202,7 +204,7 @@
             // 
             ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 98);
+            ctxMenuSettings.Size = new Size(215, 120);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy
@@ -219,11 +221,26 @@
             // 
             ctxMenuSettingsNotifSounds.Checked = true;
             ctxMenuSettingsNotifSounds.CheckState = CheckState.Checked;
+            ctxMenuSettingsNotifSounds.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuSettingsSelectSound, ctxMenuSettingsClearSound });
             ctxMenuSettingsNotifSounds.Name = "ctxMenuSettingsNotifSounds";
             ctxMenuSettingsNotifSounds.Size = new Size(214, 22);
             ctxMenuSettingsNotifSounds.Text = "Notification Sounds";
-            ctxMenuSettingsNotifSounds.ToolTipText = "Plays an audio when a new save is found.\r\nYou can replace 'notifications.wav' to change it.";
+            ctxMenuSettingsNotifSounds.ToolTipText = "Plays an audio when a new save is found. You can select a custom sound too.";
             ctxMenuSettingsNotifSounds.Click += ctxMenuSettingsNotifSounds_Click;
+            // 
+            // ctxMenuSettingsSelectSound
+            // 
+            ctxMenuSettingsSelectSound.Name = "ctxMenuSettingsSelectSound";
+            ctxMenuSettingsSelectSound.Size = new Size(207, 22);
+            ctxMenuSettingsSelectSound.Text = "Select Custom Sound";
+            ctxMenuSettingsSelectSound.Click += ctxMenuSettingsSelectSound_Click;
+            // 
+            // ctxMenuSettingsClearSound
+            // 
+            ctxMenuSettingsClearSound.Name = "ctxMenuSettingsClearSound";
+            ctxMenuSettingsClearSound.Size = new Size(207, 22);
+            ctxMenuSettingsClearSound.Text = "Clear Custom Sound";
+            ctxMenuSettingsClearSound.Click += ctxMenuSettingsClearSound_Click;
             // 
             // ctxMenuSettingsCollectNames
             // 
@@ -296,5 +313,7 @@
         private ToolStripMenuItem ctxMenuSettingsCollectNames;
         private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem ctxMenuSettingsClose;
+        private ToolStripMenuItem ctxMenuSettingsSelectSound;
+        private ToolStripMenuItem ctxMenuSettingsClearSound;
     }
 }

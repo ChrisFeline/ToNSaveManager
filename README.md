@@ -14,6 +14,7 @@ It also stores every **Save Code** found into a local data file called `data.jso
 - You can add notes to **Save Codes** by using right-click on the entry in the left panel.
 - You can favorite or bookmark save codes into your own collections (Use right click).
 - You can hear a notification whenever a save code have been detected while playing. (Enable it in settings)
+  - If you want to play a custom sound click on **Select Custom Sound**
 - You can see the list of players that were playing with you at the time of saving. (Enable it in settings)
 ### Limitations
 - This is a Windows only tool. (*Sorry Linux users*)

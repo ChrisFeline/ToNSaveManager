@@ -1,5 +1,7 @@
 @echo off
 
+taskkill /im ToNSaveManager.exe
+
 set "github_repo=ChrisFeline/ToNSaveManager"
 set "release_tag=ToNSaveManager"
 
@@ -16,6 +18,6 @@ powershell -NoLogo -NonInteractive -command "Expand-Archive -Path '%zip_file%' -
 del "%zip_file%"
 
 cls
-echo Download complete.
+echo Download Completed
 
 pause

@@ -10,8 +10,9 @@ namespace ToNSaveManager
         private bool IsDirty;
 
         [JsonIgnore] private bool m_AutoCopy = false;
-        [JsonIgnore] private bool m_PlayAudio = false;
         [JsonIgnore] private bool m_SaveNames = false;
+        [JsonIgnore] private bool m_PlayAudio = false;
+        [JsonIgnore] private string? m_AudioLocation = null;
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -35,6 +36,20 @@ namespace ToNSaveManager
             {
                 if (value == m_PlayAudio) return;
                 m_PlayAudio = value;
+                IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Custom audio location, must be .wav
+        /// </summary>
+        public string? AudioLocation
+        {
+            get { return m_AudioLocation; }
+            set
+            {
+                if (value == m_AudioLocation) return;
+                m_AudioLocation = value;
                 IsDirty = true;
             }
         }
