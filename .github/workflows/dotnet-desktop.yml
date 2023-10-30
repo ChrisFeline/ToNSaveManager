@@ -36,7 +36,7 @@ jobs:
 
     # Add MSBuild to the PATH
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.3.1
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
@@ -48,7 +48,7 @@ jobs:
       id: get_date
       run: |
         $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
-        echo "::set-output name=date::$(date +'%Y.%m.%d.')$time"
+        echo "date=$(date +'%Y.%m.%d.')$time" >> $GITHUB_OUTPUT
       shell: pwsh
 
     - name: Update project version
@@ -63,7 +63,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish
       env:
         Configuration: ${{ matrix.configuration }}
 

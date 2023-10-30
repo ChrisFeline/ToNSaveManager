@@ -307,8 +307,6 @@
         private ToolStripMenuItem importToolStripMenuItem;
         private LinkLabel optionsLabel;
         private ContextMenuStrip ctxMenuSettings;
-        private ToolStripMenuItem autoClipboardCopyToolStripMenuItem;
-        private ToolStripMenuItem notificationsToolStripMenuItem;
         private ToolStripMenuItem ctxMenuSettingsAutoCopy;
         private ToolStripMenuItem ctxMenuSettingsNotifSounds;
         private ToolStripMenuItem ctxMenuSettingsCollectNames;

@@ -17,5 +17,13 @@ namespace ToNSaveManager
             ApplicationConfiguration.Initialize();
             Application.Run(new MainWindow());
         }
+
+        // Updater
+        /*
+        static void CheckForUpdate()
+        {
+
+        }
+        */
     }
 }
