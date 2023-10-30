@@ -8,6 +8,7 @@ on:
       - '**.png' # Ignore image files
       - '**.yml' # Ignore YAML files
       - '**.bat' # Ignore batch files
+  workflow_dispatch:
 
 jobs:
 
@@ -47,7 +48,10 @@ jobs:
 
     - name: Get the date
       id: get_date
-      run: echo "::set-output name=date::$(date +'%Y.%m.%d.%H%M')"
+      run: |
+        $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
+        echo "::set-output name=date::$(date +'%Y.%m.%d.')$time"
+      shell: pwsh
 
     - name: Update project version
       run: |
@@ -92,7 +96,6 @@ jobs:
           ### If you already downloaded and want to update an old release you have these options:
           * Open the file `update.bat` in your previous manager, the new files will be downloaded. (Tool must be closed to update)
           * If you don't have such file, you can download it here [update.bat](https://github.com/ChrisFeline/ToNSaveManager/blob/main/update.bat), place it in the older folder, and open it. It will download the new release files automatically.
-
         draft: true
         prerelease: false
     
