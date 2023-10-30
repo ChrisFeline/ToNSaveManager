@@ -6,7 +6,6 @@ on:
     paths-ignore:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
-      - '**.yml' # Ignore YAML files
       - '**.bat' # Ignore batch files
 
 jobs:
