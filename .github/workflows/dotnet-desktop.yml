@@ -49,7 +49,8 @@ jobs:
       run: |
         $timestamp = Get-Date -Format "yyyy.M.d"
         $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
-        echo "date=$timestamp.$time" >> $GITHUB_OUTPUT
+        echo "date=$timestamp.$time"
+        echo "date=$timestamp.$time" >> "$GITHUB_OUTPUT"
       shell: pwsh
 
     - name: Update project version
@@ -64,16 +65,19 @@ jobs:
 
     # Build the application
     - name: Build the application
+      if: startsWith(github.ref, 'refs/heads/main')
       run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
     - name: Zip Artifact
+      if: startsWith(github.ref, 'refs/heads/main')
       run: |
         Compress-Archive -Path ./publish/* -DestinationPath ToNSaveManager.zip -Update
 
     # Upload the build artifacts just in case
     - name: Upload build artifacts
+      if: startsWith(github.ref, 'refs/heads/main')
       uses: actions/upload-artifact@v3
       with:
         name: ToNSaveManager
