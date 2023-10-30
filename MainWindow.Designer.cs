@@ -93,6 +93,7 @@
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
             listBoxEntries.MouseDown += listBoxEntries_MouseDown;
+            listBoxEntries.MouseLeave += listBoxEntries_MouseLeave;
             listBoxEntries.MouseMove += listBoxEntries_MouseMove;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
@@ -204,7 +205,7 @@
             // 
             ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 120);
+            ctxMenuSettings.Size = new Size(215, 98);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy

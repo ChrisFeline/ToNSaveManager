@@ -203,6 +203,7 @@ namespace ToNSaveManager
             if (PreviousTooltipIndex != index)
             {
                 PreviousTooltipIndex = index;
+                Debug.WriteLine(index);
 
                 if (index < 0)
                 {
@@ -213,6 +214,15 @@ namespace ToNSaveManager
                 Entry entry = (Entry)listBoxEntries.Items[index];
                 TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.SaveNames));
             }
+        }
+
+        // Reset tooltip when mouse leaves the control.
+        // This prevents accidental tooltip display when doing ALT+TAB.
+        private void listBoxEntries_MouseLeave(object sender, EventArgs e)
+        {
+            if (PreviousTooltipIndex < 0) return;
+            PreviousTooltipIndex = -1;
+            TooltipUtil.Set(listBoxEntries, null);
         }
 
         #region Context Menu | Entries

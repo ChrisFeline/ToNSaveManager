@@ -2,7 +2,7 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
 
 jobs:
 
@@ -39,6 +39,17 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Get the date
+      id: get_date
+      run: echo "::set-output name=date::$(date +'%Y.%m.%d.%H%M')"
+
+    - name: Append Version
+      run: |
+        [xml]$projectFile = Get-Content $env:Solution_Name
+        $versionElement = $projectFile.Project.PropertyGroup.Version
+        $versionElement.'#text' = (Get-Date -Format "${{ steps.get_date.outputs.date }}")
+        $projectFile.Save($projectFilePath)
+
     # Build the application
     - name: Build the application
       run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
@@ -56,11 +67,8 @@ jobs:
         name: ToNSaveManager
         path: ToNSaveManager.zip
 
-    - name: Get the date
-      id: get_date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
     - name: Create Release
+      if: startsWith(github.ref, 'refs/heads/main')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -72,6 +80,7 @@ jobs:
         prerelease: false
     
     - name: Upload Release Asset
+      if: startsWith(github.ref, 'refs/heads/main')
       id: upload_release_asset
       uses: actions/upload-release-asset@v1
       env:
