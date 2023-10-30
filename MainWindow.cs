@@ -203,7 +203,6 @@ namespace ToNSaveManager
             if (PreviousTooltipIndex != index)
             {
                 PreviousTooltipIndex = index;
-                Debug.WriteLine(index);
 
                 if (index < 0)
                 {
