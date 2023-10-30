@@ -16,6 +16,7 @@ jobs:
 
     env:
       Solution_Name: ToNSaveManager.sln
+      Project_Name: ToNSaveManager.csproj
 
     steps:
     - name: Checkout
@@ -45,7 +46,7 @@ jobs:
 
     - name: Append Version
       run: |
-        [xml]$projectFile = Get-Content $env:Solution_Name
+        [xml]$projectFile = Get-Content $env:Project_Name
         $versionElement = $projectFile.Project.PropertyGroup.Version
         $versionElement.'#text' = (Get-Date -Format "${{ steps.get_date.outputs.date }}")
         $projectFile.Save($projectFilePath)
