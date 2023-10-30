@@ -31,7 +31,7 @@ namespace ToNSaveManager
             if (currentVersion == null) return false; // No current version?
 
             GitHubRelease? release = GitHubRelease.GetLatest();
-            if (release == null || release.tag_name == MainWindow.Settings.IgnoreRelease || release.assets.Length == 0) return false;
+            if (release == null || release.assets.Length == 0 || (!showUpToDate && release.tag_name == MainWindow.Settings.IgnoreRelease)) return false;
             GitHubRelease.Asset? asset = release.assets.FirstOrDefault(v => v.name == "ToNSaveManager.zip" && v.content_type == "application/zip" && v.state == "uploaded");
             if (asset == null) return false;
 
@@ -39,7 +39,7 @@ namespace ToNSaveManager
             {
                 int index = release.body.IndexOf("**NOTE:**");
                 string body = index > 0 ? "\n\n" + release.body.Substring(0, index).Trim() : string.Empty;
-                DialogResult result = MessageBox.Show($"A new update have been released on GitHub.\n\nWould you like to automatically update to the new version?" + body, "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult result = MessageBox.Show($"A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?" + body, "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
                     StartUpdate(asset.browser_download_url);
