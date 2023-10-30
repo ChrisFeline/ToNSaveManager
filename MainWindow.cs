@@ -11,9 +11,9 @@ namespace ToNSaveManager
     public partial class MainWindow : Form
     {
         #region Initialization
-        static readonly LogWatcher LogWatcher = new LogWatcher();
-        static readonly AppSettings Settings = AppSettings.Import();
-        static readonly SaveData SaveData = SaveData.Import();
+        internal static readonly LogWatcher LogWatcher = new LogWatcher();
+        internal static readonly AppSettings Settings = AppSettings.Import();
+        internal static readonly SaveData SaveData = SaveData.Import();
         private bool Started;
 
         public MainWindow() =>
@@ -215,6 +215,15 @@ namespace ToNSaveManager
             }
         }
 
+        // Reset tooltip when mouse leaves the control.
+        // This prevents accidental tooltip display when doing ALT+TAB.
+        private void listBoxEntries_MouseLeave(object sender, EventArgs e)
+        {
+            if (PreviousTooltipIndex < 0) return;
+            PreviousTooltipIndex = -1;
+            TooltipUtil.Set(listBoxEntries, null);
+        }
+
         #region Context Menu | Entries
         private Entry? ContextEntry;
 
@@ -317,6 +326,12 @@ namespace ToNSaveManager
         private void ctxMenuSettingsClose_Click(object sender, EventArgs e)
         {
             ctxMenuSettings.Close();
+        }
+
+        private void ctxMenuSettingsUpdate_Click(object sender, EventArgs e)
+        {
+            ctxMenuSettings.Close();
+            Program.StartCheckForUpdate(true);
         }
 
         private void ctxMenuSettings_Closing(object sender, ToolStripDropDownClosingEventArgs e)

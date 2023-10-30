@@ -13,6 +13,7 @@ namespace ToNSaveManager
         [JsonIgnore] private bool m_SaveNames = false;
         [JsonIgnore] private bool m_PlayAudio = false;
         [JsonIgnore] private string? m_AudioLocation = null;
+        [JsonIgnore] private string? m_IgnoreRelease = null;
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -64,6 +65,20 @@ namespace ToNSaveManager
             {
                 if (value == m_SaveNames) return;
                 m_SaveNames = value;
+                IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Stores a github release tag if the player clicks no when asking for update.
+        /// </summary>
+        public string? IgnoreRelease
+        {
+            get { return m_IgnoreRelease; }
+            set
+            {
+                if (value == m_IgnoreRelease) return;
+                m_IgnoreRelease = value;
                 IsDirty = true;
             }
         }

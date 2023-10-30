@@ -3,6 +3,10 @@ name: .NET Core Desktop
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'  # Ignore markdown files
+      - '**.png' # Ignore image files
+      - '**.bat' # Ignore batch files
 
 jobs:
 
@@ -16,6 +20,7 @@ jobs:
 
     env:
       Solution_Name: ToNSaveManager.sln
+      Project_Name: ToNSaveManager.csproj
 
     steps:
     - name: Checkout
@@ -31,7 +36,7 @@ jobs:
 
     # Add MSBuild to the PATH
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.3.1
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
@@ -39,9 +44,27 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Get the date
+      id: get_date
+      run: |
+        $timestamp = Get-Date -Format "yyyy.M.d"
+        $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
+        echo "date=$timestamp.$time" >> "$env:GITHUB_OUTPUT"
+      shell: pwsh
+
+    - name: Update project version
+      run: |
+        $date = "${{ steps.get_date.outputs.date }}"
+        $csprojPath = "${{ env.Project_Name }}"
+        $csproj = Get-Content $csprojPath -Raw
+        $csproj = $csproj -replace '<Version>.*?</Version>', "<Version>$date</Version>"
+        $csproj = $csproj -replace '<FileVersion>.*?</FileVersion>', "<FileVersion>$date</FileVersion>"
+        Set-Content -Path $csprojPath -Value $csproj
+      shell: pwsh
+
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -56,11 +79,8 @@ jobs:
         name: ToNSaveManager
         path: ToNSaveManager.zip
 
-    - name: Get the date
-      id: get_date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
     - name: Create Release
+      if: startsWith(github.ref, 'refs/heads/main')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -68,10 +88,18 @@ jobs:
       with:
         tag_name: ${{ steps.get_date.outputs.date }}
         release_name: Release ${{ steps.get_date.outputs.date }}
+        body: |
+          ### Changes in this release
+          -
+          **NOTE:** If you are unsure what to do, go check the [README](https://github.com/ChrisFeline/ToNSaveManager/blob/main/README.md#how-do-i-use-this), basically just extract and run.
+          ### If you already downloaded and want to update an old release you have these options:
+          * Open the file `update.bat` in your previous manager, the new files will be downloaded. (Tool must be closed to update)
+          * If you don't have such file, you can download it here [update.bat](https://github.com/ChrisFeline/ToNSaveManager/blob/main/update.bat), place it in the older folder, and open it. It will download the new release files automatically.
         draft: true
         prerelease: false
     
     - name: Upload Release Asset
+      if: startsWith(github.ref, 'refs/heads/main')
       id: upload_release_asset
       uses: actions/upload-release-asset@v1
       env:

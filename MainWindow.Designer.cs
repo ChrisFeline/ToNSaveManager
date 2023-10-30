@@ -52,6 +52,7 @@
             ctxMenuSettingsCollectNames = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
             ctxMenuSettingsClose = new ToolStripMenuItem();
+            ctxMenuSettingsUpdate = new ToolStripMenuItem();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ctxMenuSettings.SuspendLayout();
@@ -93,6 +94,7 @@
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
             listBoxEntries.MouseDown += listBoxEntries_MouseDown;
+            listBoxEntries.MouseLeave += listBoxEntries_MouseLeave;
             listBoxEntries.MouseMove += listBoxEntries_MouseMove;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
@@ -202,9 +204,9 @@
             // 
             // ctxMenuSettings
             // 
-            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsClose });
+            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsUpdate, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 120);
+            ctxMenuSettings.Size = new Size(215, 142);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy
@@ -264,6 +266,13 @@
             ctxMenuSettingsClose.Text = "Close";
             ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
             // 
+            // ctxMenuSettingsUpdate
+            // 
+            ctxMenuSettingsUpdate.Name = "ctxMenuSettingsUpdate";
+            ctxMenuSettingsUpdate.Size = new Size(214, 22);
+            ctxMenuSettingsUpdate.Text = "Check For Updates";
+            ctxMenuSettingsUpdate.Click += ctxMenuSettingsUpdate_Click;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -306,8 +315,6 @@
         private ToolStripMenuItem importToolStripMenuItem;
         private LinkLabel optionsLabel;
         private ContextMenuStrip ctxMenuSettings;
-        private ToolStripMenuItem autoClipboardCopyToolStripMenuItem;
-        private ToolStripMenuItem notificationsToolStripMenuItem;
         private ToolStripMenuItem ctxMenuSettingsAutoCopy;
         private ToolStripMenuItem ctxMenuSettingsNotifSounds;
         private ToolStripMenuItem ctxMenuSettingsCollectNames;
@@ -315,5 +322,6 @@
         private ToolStripMenuItem ctxMenuSettingsClose;
         private ToolStripMenuItem ctxMenuSettingsSelectSound;
         private ToolStripMenuItem ctxMenuSettingsClearSound;
+        private ToolStripMenuItem ctxMenuSettingsUpdate;
     }
 }
