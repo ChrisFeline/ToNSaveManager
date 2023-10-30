@@ -44,12 +44,15 @@ jobs:
       id: get_date
       run: echo "::set-output name=date::$(date +'%Y.%m.%d.%H%M')"
 
-    - name: Append Version
+    - name: Update project version
       run: |
-        [xml]$projectFile = Get-Content $env:Project_Name
-        $versionElement = $projectFile.Project.PropertyGroup.Version
-        $versionElement = ${{ steps.get_date.outputs.date }}
-        $projectFile.Save($env:Project_Name)
+        $date = "${{ steps.get_date.outputs.date }}"
+        $csprojPath = "${{ env.Project_Name }}"
+        $csproj = Get-Content $csprojPath -Raw
+        $csproj = $csproj -replace '<Version>.*?</Version>', "<Version>$date</Version>"
+        $csproj = $csproj -replace '<FileVersion>.*?</FileVersion>', "<FileVersion>$date</FileVersion>"
+        Set-Content -Path $csprojPath -Value $csproj
+      shell: pwsh
 
     # Build the application
     - name: Build the application
