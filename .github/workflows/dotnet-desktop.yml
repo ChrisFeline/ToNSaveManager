@@ -48,7 +48,7 @@ jobs:
       run: |
         [xml]$projectFile = Get-Content $env:Project_Name
         $versionElement = $projectFile.Project.PropertyGroup.Version
-        $versionElement.'#text' = (Get-Date -Format "${{ steps.get_date.outputs.date }}")
+        $versionElement.'#text' = ${{ steps.get_date.outputs.date }}
         $projectFile.Save($projectFilePath)
 
     # Build the application
