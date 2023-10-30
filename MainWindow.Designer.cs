@@ -52,6 +52,7 @@
             ctxMenuSettingsCollectNames = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
             ctxMenuSettingsClose = new ToolStripMenuItem();
+            ctxMenuSettingsUpdate = new ToolStripMenuItem();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ctxMenuSettings.SuspendLayout();
@@ -203,9 +204,9 @@
             // 
             // ctxMenuSettings
             // 
-            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsClose });
+            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsUpdate, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 98);
+            ctxMenuSettings.Size = new Size(215, 142);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy
@@ -265,6 +266,13 @@
             ctxMenuSettingsClose.Text = "Close";
             ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
             // 
+            // ctxMenuSettingsUpdate
+            // 
+            ctxMenuSettingsUpdate.Name = "ctxMenuSettingsUpdate";
+            ctxMenuSettingsUpdate.Size = new Size(214, 22);
+            ctxMenuSettingsUpdate.Text = "Check For Updates";
+            ctxMenuSettingsUpdate.Click += ctxMenuSettingsUpdate_Click;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -314,5 +322,6 @@
         private ToolStripMenuItem ctxMenuSettingsClose;
         private ToolStripMenuItem ctxMenuSettingsSelectSound;
         private ToolStripMenuItem ctxMenuSettingsClearSound;
+        private ToolStripMenuItem ctxMenuSettingsUpdate;
     }
 }
