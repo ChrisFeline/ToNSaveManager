@@ -47,8 +47,9 @@ jobs:
     - name: Get the date
       id: get_date
       run: |
+        $timestamp = Get-Date -Format "yyyy.M.d"
         $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
-        echo "date=$(date +'%Y.%m.%d.')$time" >> $GITHUB_OUTPUT
+        echo "date=$timestamp.$time" >> $GITHUB_OUTPUT
       shell: pwsh
 
     - name: Update project version
@@ -63,7 +64,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
