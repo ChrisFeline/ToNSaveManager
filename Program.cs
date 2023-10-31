@@ -1,6 +1,9 @@
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.Net;
 using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace ToNSaveManager
@@ -11,11 +14,13 @@ namespace ToNSaveManager
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            UpdateWindow.RunPostUpdate(args);
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }
@@ -37,12 +42,24 @@ namespace ToNSaveManager
 
             if (Version.TryParse(release.tag_name, out Version? releaseVersion) && releaseVersion > currentVersion)
             {
-                int index = release.body.IndexOf("**NOTE:**");
-                string body = index > 0 ? "\n\n" + release.body.Substring(0, index).Trim() : string.Empty;
+                const string log_start = "[changelog]: <> (START)";
+                const string log_end = "[changelog]: <> (END)";
+
+                int start = release.body.IndexOf(log_start);
+                int end = release.body.IndexOf(log_end);
+                string body = string.Empty;
+
+                if (start > -1 && end > (start + log_start.Length) && end > start)
+                {
+                    start += log_start.Length;
+                    body = "\n\n" + release.body.Substring(start, end - start).Trim();
+                }
+
                 DialogResult result = MessageBox.Show($"A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?" + body, "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
-                    StartUpdate(asset.browser_download_url);
+                    UpdateWindow updateWindow = new UpdateWindow(release, asset);
+                    updateWindow.ShowDialog();
                     return true;
                 } else if (!showUpToDate)
                 {
@@ -56,91 +73,52 @@ namespace ToNSaveManager
 
             return false;
         }
+    }
 
-        /// <summary>
-        /// Oversimplified, but horrible method of updating from github.
-        /// </summary>
-        /// <param name="browser_download_url">The asset download url.</param>
-        private static void StartUpdate(string browser_download_url, string temp_file_name = "update.temp.zip")
+    /// <summary>
+    /// GitHub Release JSON Object
+    /// </summary>
+    internal class GitHubRelease
+    {
+        private const string GitHubApiBaseUrl = "https://api.github.com";
+        private const string RepoOwner = "ChrisFeline";
+        private const string RepoName = "ToNSaveManager";
+
+        public int id { get; set; }
+        public string name { get; set; } = string.Empty;
+        public string tag_name { get; set; } = string.Empty;
+        public string body { get; set; } = string.Empty;
+        public DateTime created_at { get; set; }
+        public DateTime published_at { get; set; }
+        public Asset[] assets { get; set; } = new Asset[0];
+
+        internal class Asset
         {
-            var processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = "powershell.exe";
-
-            string[] commands = new string[]
-            {
-                "$Host.UI.RawUI.WindowTitle = 'Downloading Update...'",
-                "$ProgressPreference = 'SilentlyContinue'",
-                "Write-Host \"Terminating app process\"",
-                "taskkill /IM ToNSaveManager.exe",
-                "Clear-Host",
-                "Write-Host \"Downloading Release Asset\"",
-                $"Invoke-WebRequest -Uri \"{browser_download_url}\" -OutFile \"{temp_file_name}\"",
-                "Clear-Host",
-                "Write-Host \"Expanding Release Asset\"",
-                "$ProgressPreference = 'Continue'",
-                $"Expand-Archive -Path '{temp_file_name}' -DestinationPath './' -Force",
-                "Clear-Host",
-                "Write-Host \"Opening ToNSaveManager.exe\"",
-                "Start-Process \"ToNSaveManager.exe\"",
-                $"Remove-Item '{temp_file_name}'"
-            };
-
-            processStartInfo.Arguments = $"-NoLogo -NonInteractive -Command \"{string.Join("; ", commands)}\"";
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.RedirectStandardOutput = false;
-
-            using (Process.Start(processStartInfo))
-            {
-                Debug.WriteLine("Updating");
-                Application.Exit();
-            }
-        }
-
-        /// <summary>
-        /// GitHub Release JSON Object
-        /// </summary>
-        public class GitHubRelease
-        {
-            private const string GitHubApiBaseUrl = "https://api.github.com";
-            private const string RepoOwner = "ChrisFeline";
-            private const string RepoName = "ToNSaveManager";
-
             public int id { get; set; }
             public string name { get; set; } = string.Empty;
-            public string tag_name { get; set; } = string.Empty;
-            public string body { get; set; } = string.Empty;
-            public DateTime created_at { get; set; }
-            public DateTime published_at { get; set; }
-            public Asset[] assets { get; set; } = new Asset[0];
+            public string content_type { get; set; } = string.Empty;
+            public string state { get; set; } = string.Empty;
+            public string browser_download_url { get; set; } = string.Empty;
+        }
 
-            public class Asset
+        public static GitHubRelease? GetLatest()
+        {
+            try
             {
-                public int id { get; set; }
-                public string name { get; set; } = string.Empty;
-                public string content_type { get; set; } = string.Empty;
-                public string state { get; set; } = string.Empty;
-                public string browser_download_url { get; set; } = string.Empty;
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "ToNSaveManager");
+                    httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+
+                    string response = httpClient.GetStringAsync($"{GitHubApiBaseUrl}/repos/{RepoOwner}/{RepoName}/releases/latest").Result;
+                    GitHubRelease? latestRelease = JsonConvert.DeserializeObject<GitHubRelease>(response);
+
+                    return latestRelease;
+                }
             }
-
-            public static GitHubRelease? GetLatest()
+            catch
             {
-                try
-                {
-                    using (var httpClient = new HttpClient())
-                    {
-                        httpClient.DefaultRequestHeaders.Add("User-Agent", "ToNSaveManager");
-                        httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-
-                        string response = httpClient.GetStringAsync($"{GitHubApiBaseUrl}/repos/{RepoOwner}/{RepoName}/releases/latest").Result;
-                        GitHubRelease? latestRelease = JsonConvert.DeserializeObject<GitHubRelease>(response);
-
-                        return latestRelease;
-                    }
-                }
-                catch
-                {
-                    return null;
-                }
+                return null;
             }
         }
     }
