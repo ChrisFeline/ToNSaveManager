@@ -23,7 +23,7 @@ It also stores every **Save Code** found into a local data file called `data.jso
 # FAQ:
 
 ### How do I use this?
-Download the [latest released](https://github.com/ChrisFeline/ToNSaveManager/releases/tag/latest) bundled file called `ToNSaveManager.zip`.
+Download the [latest released](https://github.com/ChrisFeline/ToNSaveManager/releases/latest) bundled file called `ToNSaveManager.zip`.
 
 Extract the contents of the .zip file into a folder. Open the executable called `ToNSaveManager.exe` then click on the most recent log date on the left, and try a **Save Code** on the right.
 
