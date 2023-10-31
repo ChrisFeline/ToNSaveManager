@@ -62,7 +62,7 @@ namespace ToNSaveManager
                 worker.ReportProgress(50, $"Asset downloaded, decompressing...");
                 string outputDir = Path.GetFileNameWithoutExtension(TempFileName);
                 ZipFile.ExtractToDirectory(TempFileName, outputDir, true);
-                File.Delete(TempFileName);
+                File.Delete(TempFileName); // .zip cleanup
 
                 const string tempDir = ".temp";
                 if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
