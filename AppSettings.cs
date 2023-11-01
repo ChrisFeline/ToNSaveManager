@@ -5,7 +5,7 @@ namespace ToNSaveManager
     internal class AppSettings
     {
         const string LegacyDestination = "settings.json";
-        const string Destination = "Settings.json";
+        static string Destination = "Settings.json";
 
         private bool IsDirty;
 
@@ -89,12 +89,20 @@ namespace ToNSaveManager
         /// <returns>Deserialized Settings object, or else Default Settings object.</returns>
         public static AppSettings Import()
         {
+            string destination = Path.Combine(Program.DataLocation, Destination);
             AppSettings? settings;
 
             try {
                 if (File.Exists(LegacyDestination))
                     File.Move(LegacyDestination, Destination);
 
+                if (File.Exists(Destination) && !File.Exists(destination))
+                {
+                    File.Copy(Destination, destination, true);
+                    File.Move(Destination, Destination + ".old");
+                }
+
+                Destination = destination;
                 if (!File.Exists(Destination)) return new AppSettings();
 
                 string content = File.ReadAllText(Destination);

@@ -30,9 +30,12 @@
         private DirectoryInfo m_LogDirectoryInfo;
         private readonly Dictionary<string, LogContext> m_LogContextMap = new Dictionary<string, LogContext>();
 
+        internal static string GetVRChatDataLocation() =>
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
+
         public LogWatcher()
         {
-            var logPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat\VRChat";
+            var logPath = GetVRChatDataLocation() + @"\VRChat";
             m_LogDirectoryInfo = new DirectoryInfo(logPath);
         }
 
