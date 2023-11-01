@@ -21,7 +21,6 @@
 - Automatically scans your logs for previous **Save Codes**.
 - While the tool is running, it will detect new codes as you play.
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
-- You can see the list of players that were playing with you at the time of saving. (Enable it in settings)
 
 ### Settings
 - `Auto Clipboard Copy` If checked, it will automatically copy new save codes to clipboard.
