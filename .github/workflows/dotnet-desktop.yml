@@ -7,6 +7,7 @@ on:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
       - '**.bat' # Ignore batch files
+      - '**.yml' # Ignore yaml files
 
 jobs:
 
@@ -98,8 +99,8 @@ jobs:
           **NOTE:** If you are unsure what to do, go check the [README](https://github.com/ChrisFeline/ToNSaveManager/blob/main/README.md#how-do-i-use-this), basically just extract and run.
 
           ### If you already downloaded and want to update an old release you have these options:
-          * Open the file `update.bat` in your previous manager, the new files will be downloaded. (Tool must be closed to update)
-          * If you don't have such file, you can download it here [update.bat](https://github.com/ChrisFeline/ToNSaveManager/blob/main/update.bat), place it in the older folder, and open it. It will download the new release files automatically.
+          * Click on `Settings`, then click `Check For Updates`.
+          * If previous option doesn't work, open the file `update.bat`, the new files will be downloaded.
         draft: true
         prerelease: false
     
