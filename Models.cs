@@ -169,12 +169,53 @@ namespace ToNSaveManager
         }
     }
 
+    internal class Objective
+    {
+        public bool IsCompleted { get; set; } = false;
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Reference { get; set; } = string.Empty;
+        public bool IsSeparator { get; set; } = false;
+
+        [JsonConstructor]
+        public Objective() { }
+
+        /// <param name="name">Objective name</param>
+        /// <param name="reference">Objective link to wiki</param>
+        public Objective(string name, string description, string reference)
+        {
+            Name = name;
+            Description = description;
+            Reference = reference;
+        }
+
+        public static Objective Separator(string name)
+        {
+            return new Objective()
+            {
+                Name = name,
+                IsSeparator = true
+            };
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public bool ShouldSerializeIsCompleted() => !IsSeparator;
+        public bool ShouldSerializeDescription() => !IsSeparator;
+        public bool ShouldSerializeReference() => !IsSeparator;
+    }
+
     internal class SaveData
     {
         const string LegacyDestination = "data.json";
         const string Destination = "SaveData.json";
 
+        public List<Objective> Objectives { get; private set; } = new List<Objective>();
         public List<History> Collection { get; private set; } = new List<History>();
+
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
 
@@ -307,6 +348,7 @@ namespace ToNSaveManager
             }
             uniqueEntries.Clear();
 
+            if (data.Objectives.Count == 0) data.Objectives = GetDefaultObjectives();
             return data;
         }
 
@@ -326,6 +368,37 @@ namespace ToNSaveManager
             }
 
             IsDirty = false;
+        }
+
+        internal static List<Objective> GetDefaultObjectives()
+        {
+            return new List<Objective>() // Initialize default objectives
+            {
+                // Event items
+                Objective.Separator("Event Items Unlocks"),
+                new Objective("Sealed Sword", "Found in Museum. Break case with a stun tool.", "https://terror.moe/items/sealed_sword"),
+                new Objective("Gran Faust", "Survive Arkus with the Sealed Sword.", "https://terror.moe/items/gran_faust"),
+                new Objective("Divine Avenger", "Survive Arkus with the Sealed Sword after hitting them at least two times.", "https://terror.moe/items/divine_avenger"),
+                new Objective("Maxwell", "Found in Its Maze. (spawns once per round)", "https://terror.moe/items/maxwell"),
+                new Objective("Rock", "Survive Fusion Pilot.", "https://terror.moe/items/rock"),
+                new Objective("Illumina", "Survive Bliss.", "https://terror.moe/items/illumina"),
+                new Objective("Redbull", "Survive Roblander.", "https://terror.moe/items/redbull"),
+                new Objective("Omori Plush", "Survive Something.", "https://terror.moe/items/omori_plush"),
+                new Objective("Paradise Lost", "Beat the shit out of Apostles.", "https://terror.moe/items/paradise_lost"),
+                // Skin Unlocks
+                Objective.Separator("Item Skin Unlocks"),
+                new Objective("Red Medkit", "Survive Virus with Medkit.", "https://terror.moe/items/medkit"),
+                new Objective("Psycho Coil", "Survive Psychosis with Glow Coil.", "https://terror.moe/items/glow_coil"),
+                new Objective("Bloody Teleporter", "Survive a Bloodbath round with Teleporter.", "https://terror.moe/items/teleporter"),
+                new Objective("Pale Suitcase", "Survive an Alternate round with Teleporter.", "https://terror.moe/items/teleporter"),
+                new Objective("Bloody Coil", "Survive a Bloodbath round with Speed Coil.", "https://terror.moe/items/speed_coil"),
+                new Objective("Bloody Bat", "Survive a Bloodbath round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Metal Pipe", "Survive an Alternate round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Colorable Bat", "Survive a Midnight round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Justitia", "Survive a Cracked round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Twilight Coil", "Survive Apocalypse Bird with Chaos Coil.", "https://terror.moe/items/chaos_coil"),
+                new Objective("Pale Pistol", "Survive an Alternate round with Antique Revolver.", "https://terror.moe/items/antique_revolver"),
+            };
         }
     }
 }

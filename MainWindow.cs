@@ -407,16 +407,15 @@ namespace ToNSaveManager
         const string SourceLink = "https://github.com/ChrisFeline/ToNSaveManager/";
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs ev)
         {
-            try
+            OpenExternalLink(SourceLink);
+        }
+
+        internal static void OpenExternalLink(string url)
+        {
+            ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
+            using (Process.Start(psInfo))
             {
-                using (Process.Start("explorer.exe", SourceLink))
-                {
-                    Debug.WriteLine("Opened source link");
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"An error ocurred while trying to open a link to: {SourceLink}.\n\nMake sure that the program contains permissions to open processes in your machine.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.WriteLine("Opening external link: " + url);
             }
         }
         #endregion
@@ -461,7 +460,7 @@ namespace ToNSaveManager
         private static void InsertSafe(ListBox list, int i, object value) =>
             list.Items.Insert(Math.Min(Math.Max(i, 0), list.Items.Count), value);
 
-        private static string GetTruncatedText(string text, Font font, int maxWidth)
+        internal static string GetTruncatedText(string text, Font font, int maxWidth)
         {
             Size textSize = TextRenderer.MeasureText(text, font);
             if (textSize.Width <= maxWidth) return text;
@@ -609,5 +608,9 @@ namespace ToNSaveManager
         }
         #endregion
 
+        private void objectivesLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ObjectivesWindow.Open(this);
+        }
     }
 }

@@ -89,9 +89,14 @@ jobs:
         tag_name: ${{ steps.get_date.outputs.date }}
         release_name: Release ${{ steps.get_date.outputs.date }}
         body: |
+          [changelog]: <> (START)
           ### Changes in this release
           -
+
+          [changelog]: <> (END)
+
           **NOTE:** If you are unsure what to do, go check the [README](https://github.com/ChrisFeline/ToNSaveManager/blob/main/README.md#how-do-i-use-this), basically just extract and run.
+
           ### If you already downloaded and want to update an old release you have these options:
           * Open the file `update.bat` in your previous manager, the new files will be downloaded. (Tool must be closed to update)
           * If you don't have such file, you can download it here [update.bat](https://github.com/ChrisFeline/ToNSaveManager/blob/main/update.bat), place it in the older folder, and open it. It will download the new release files automatically.
