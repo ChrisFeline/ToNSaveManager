@@ -20,7 +20,7 @@ namespace ToNSaveManager
             InitializeComponent();
         }
 
-        public static void RunPostUpdate(string[] args)
+        public static void RunPostUpdateCheck(string[] args)
         {
             int index = Array.IndexOf(args, "--post-update") + 1;
             if (index == 0 || index >= args.Length) return;

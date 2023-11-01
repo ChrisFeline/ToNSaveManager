@@ -15,7 +15,7 @@ namespace ToNSaveManager
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            UpdateWindow.RunPostUpdate(args);
+            UpdateWindow.RunPostUpdateCheck(args);
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }

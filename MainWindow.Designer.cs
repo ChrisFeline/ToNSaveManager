@@ -53,6 +53,7 @@
             toolStripMenuItem3 = new ToolStripSeparator();
             ctxMenuSettingsUpdate = new ToolStripMenuItem();
             ctxMenuSettingsClose = new ToolStripMenuItem();
+            objectivesLabel = new LinkLabel();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ctxMenuSettings.SuspendLayout();
@@ -273,12 +274,26 @@
             ctxMenuSettingsClose.Text = "Close";
             ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
             // 
+            // objectivesLabel
+            // 
+            objectivesLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            objectivesLabel.AutoSize = true;
+            objectivesLabel.LinkColor = Color.Gainsboro;
+            objectivesLabel.Location = new Point(81, 247);
+            objectivesLabel.Name = "objectivesLabel";
+            objectivesLabel.Size = new Size(77, 15);
+            objectivesLabel.TabIndex = 6;
+            objectivesLabel.TabStop = true;
+            objectivesLabel.Text = "Objectives";
+            objectivesLabel.LinkClicked += objectivesLabel_LinkClicked;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(529, 271);
+            Controls.Add(objectivesLabel);
             Controls.Add(optionsLabel);
             Controls.Add(linkLabel1);
             Controls.Add(listBoxEntries);
@@ -323,5 +338,6 @@
         private ToolStripMenuItem ctxMenuSettingsSelectSound;
         private ToolStripMenuItem ctxMenuSettingsClearSound;
         private ToolStripMenuItem ctxMenuSettingsUpdate;
+        private LinkLabel objectivesLabel;
     }
 }
