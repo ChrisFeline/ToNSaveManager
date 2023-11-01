@@ -1,210 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text;
 
-namespace ToNSaveManager
+namespace ToNSaveManager.Models
 {
-    internal class History : IComparable<History>
-    {
-        public string Guid = string.Empty;
-        public string Name = string.Empty;
-        public DateTime Timestamp = DateTime.MinValue;
-        public bool IsCustom = false;
-
-        [JsonConstructor]
-        private History() { }
-
-        public History(string logKey)
-        {
-            IsCustom = false;
-            SetLogKey(logKey);
-        }
-
-        public History(string name, DateTime timestamp) {
-            Guid = System.Guid.NewGuid().ToString();
-            Name = name;
-            Timestamp = timestamp;
-            IsCustom = true;
-        }
-
-        public void SetLogKey(string logKey)
-        {
-            if (IsCustom) return;
-            Guid = logKey;
-
-            // "2023-10-22_09-51-29"
-            if (DateTime.TryParseExact(logKey, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
-                Timestamp = date;
-
-            Name = Timestamp.ToString(Entry.DateFormat);
-        }
-
-        public List<Entry> Entries = new List<Entry>();
-        [JsonIgnore] public int Count => Entries.Count;
-
-        public Entry this[int i]
-        {
-            get
-            {
-                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
-                return Entries[i];
-            }
-            set
-            {
-                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
-                Entries[i] = value;
-            }
-        }
-
-        private int FindIndex(string content, DateTime timestamp)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                Entry e = Entries[i]; // Prevent doubles
-                if (e.Content.Equals(content, StringComparison.OrdinalIgnoreCase))
-                    return -1;
-
-                if (e.Timestamp < timestamp)
-                    return i;
-            }
-
-            return Count;
-        }
-
-        public int Add(Entry entry)
-        {
-            int index = FindIndex(entry.Content, entry.Timestamp);
-            if (index > -1) Entries.Insert(index, entry);
-            return index;
-        }
-
-        public int Add(string content, DateTime timestamp, out Entry? entry)
-        {
-            int index = FindIndex(content, timestamp);
-            if (index < 0)
-            {
-                entry = null;
-                return index;
-            }
-
-            entry = new Entry(content, timestamp);
-            Entries.Insert(index, entry);
-
-            return index;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public int CompareTo(History? other)
-        {
-            if (other == null) return 0;
-
-            if (!IsCustom && other.IsCustom) return -1;
-            if (IsCustom && !other.IsCustom) return 1;
-            return Timestamp.CompareTo(other.Timestamp);
-        }
-    }
-
-    internal class Entry
-    {
-        internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
-
-        public string Note = string.Empty;
-
-        public DateTime Timestamp;
-        public string Content;
-        public string? Players;
-        [JsonIgnore] public bool Fresh;
-        [JsonIgnore] public int Length => Content.Length;
-
-        public Entry(string content, DateTime timestamp)
-        {
-            Fresh = true;
-            Content = content;
-            Timestamp = timestamp;
-        }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Timestamp.ToString(DateFormat));
-            if (!string.IsNullOrEmpty(Note))
-            {
-                sb.Append(" | ");
-                sb.Append(Note);
-            }
-            return sb.ToString();
-        }
-
-        public string GetTooltip(bool full)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Timestamp.ToString("F"));
-            if (!string.IsNullOrEmpty(Note))
-            {
-                sb.AppendLine();
-                sb.AppendLine();
-                sb.Append("Note: \n- ");
-                sb.Append(Note);
-            }
-            if (full && !string.IsNullOrEmpty(Players))
-            {
-                sb.AppendLine();
-                sb.AppendLine();
-                sb.AppendLine("Players in room:");
-                sb.Append(Players);
-            }
-            return sb.ToString();
-        }
-
-        public void CopyToClipboard()
-        {
-            Clipboard.SetText(Content);
-        }
-    }
-
-    internal class Objective
-    {
-        public bool IsCompleted { get; set; } = false;
-        [JsonIgnore] public string Name { get; set; } = string.Empty;
-        [JsonIgnore] public string Description { get; set; } = string.Empty;
-        [JsonIgnore] public string Reference { get; set; } = string.Empty;
-        [JsonIgnore] public bool IsSeparator { get; set; } = false;
-
-        [JsonConstructor]
-        public Objective() { }
-
-        /// <param name="name">Objective name</param>
-        /// <param name="reference">Objective link to wiki</param>
-        public Objective(string name, string description, string reference)
-        {
-            Name = name;
-            Description = description;
-            Reference = reference;
-        }
-
-        public static Objective Separator(string name)
-        {
-            return new Objective()
-            {
-                Name = name,
-                IsSeparator = true
-            };
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public bool ShouldSerializeIsCompleted() => !IsSeparator;
-    }
-
     internal class SaveData
     {
         const string LegacyDestination = "data.json";
@@ -325,7 +123,8 @@ namespace ToNSaveManager
 
                     // Rename the old file
                     File.Move(LegacyDestination, LegacyDestination + ".old", true);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Debug.WriteLine("Could not import old file.\n\n" + e);
                 }
@@ -341,16 +140,19 @@ namespace ToNSaveManager
             for (i = 0; i < data.Count; i++)
             {
                 History item = data[i];
-                
+
                 for (j = 0; j < item.Count; j++)
                 {
                     entry = item[j];
 
                     int index = uniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
-                    if (index != -1) {
+                    if (index != -1)
+                    {
                         entry = uniqueEntries[index];
                         item[j] = entry;
-                    } else {
+                    }
+                    else
+                    {
                         uniqueEntries.Add(entry);
                     }
                 }

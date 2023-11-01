@@ -1,5 +1,5 @@
 ﻿<div align="center">
-  <img src="icon.ico" alt="Your Logo" width="124" style="display:inline; vertical-align:middle;">
+  <img src="Resources/icon.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
 
   # Terrors of Nowhere: Save Manager
   This tool will keep track of your **Save Codes** so you can play and recover your codes later if you forgot to make a backup.
@@ -14,7 +14,7 @@
 </div>
 
 <p align="center">
-  <img src="preview.png" alt="Preview" title="Boo!">
+  <img src="Resources/preview.png" alt="Preview" title="Boo!">
 </p>
 
 # 🛠️ Features & Clarifications
