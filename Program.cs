@@ -11,6 +11,7 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -19,6 +20,8 @@ namespace ToNSaveManager
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }
+
+        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
 
         /// <summary>
         /// Check for updates on the GitHub repo.

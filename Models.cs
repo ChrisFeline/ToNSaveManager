@@ -8,7 +8,6 @@ namespace ToNSaveManager
 {
     internal class History : IComparable<History>
     {
-
         public string Guid = string.Empty;
         public string Name = string.Empty;
         public DateTime Timestamp = DateTime.MinValue;
@@ -172,10 +171,10 @@ namespace ToNSaveManager
     internal class Objective
     {
         public bool IsCompleted { get; set; } = false;
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Reference { get; set; } = string.Empty;
-        public bool IsSeparator { get; set; } = false;
+        [JsonIgnore] public string Name { get; set; } = string.Empty;
+        [JsonIgnore] public string Description { get; set; } = string.Empty;
+        [JsonIgnore] public string Reference { get; set; } = string.Empty;
+        [JsonIgnore] public bool IsSeparator { get; set; } = false;
 
         [JsonConstructor]
         public Objective() { }
@@ -204,14 +203,12 @@ namespace ToNSaveManager
         }
 
         public bool ShouldSerializeIsCompleted() => !IsSeparator;
-        public bool ShouldSerializeDescription() => !IsSeparator;
-        public bool ShouldSerializeReference() => !IsSeparator;
     }
 
     internal class SaveData
     {
         const string LegacyDestination = "data.json";
-        const string Destination = "SaveData.json";
+        static string Destination = "SaveData.json";
 
         public List<Objective> Objectives { get; private set; } = new List<Objective>();
         public List<History> Collection { get; private set; } = new List<History>();
@@ -279,16 +276,28 @@ namespace ToNSaveManager
 
         public static SaveData Import()
         {
+            string destination = Path.Combine(Program.DataLocation, Destination);
             SaveData? data = null;
 
-            if (File.Exists(Destination))
+            try
             {
-                try
+                if (File.Exists(Destination) && !File.Exists(destination))
+                {
+                    File.Copy(Destination, destination, true);
+                    File.Move(Destination, Destination + ".old");
+                }
+
+                Destination = destination;
+
+                if (File.Exists(Destination))
                 {
                     string content = File.ReadAllText(Destination);
                     data = JsonConvert.DeserializeObject<SaveData>(content);
                 }
-                catch { }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error trying to import your save:\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (data == null)
@@ -348,7 +357,15 @@ namespace ToNSaveManager
             }
             uniqueEntries.Clear();
 
-            if (data.Objectives.Count == 0) data.Objectives = GetDefaultObjectives();
+            // Validate Objectives
+            List<Objective> defaultObjectives = GetDefaultObjectives();
+            for (i = 0; i < defaultObjectives.Count; i++)
+            {
+                if (i < data.Objectives.Count)
+                    defaultObjectives[i].IsCompleted = data.Objectives[i].IsCompleted;
+            }
+            data.Objectives = defaultObjectives;
+
             return data;
         }
 
@@ -394,8 +411,8 @@ namespace ToNSaveManager
                 new Objective("Bloody Coil", "Survive a Bloodbath round with Speed Coil.", "https://terror.moe/items/speed_coil"),
                 new Objective("Bloody Bat", "Survive a Bloodbath round with Metal Bat.", "https://terror.moe/items/metal_bat"),
                 new Objective("Metal Pipe", "Survive an Alternate round with Metal Bat.", "https://terror.moe/items/metal_bat"),
-                new Objective("Colorable Bat", "Survive a Midnight round with Metal Bat.", "https://terror.moe/items/metal_bat"),
-                new Objective("Justitia", "Survive a Cracked round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Colorable Bat", "Survive a Cracked round with Metal Bat.", "https://terror.moe/items/metal_bat"),
+                new Objective("Justitia", "Survive a Midnight round with Metal Bat.", "https://terror.moe/items/metal_bat"),
                 new Objective("Twilight Coil", "Survive Apocalypse Bird with Chaos Coil.", "https://terror.moe/items/chaos_coil"),
                 new Objective("Pale Pistol", "Survive an Alternate round with Antique Revolver.", "https://terror.moe/items/antique_revolver"),
             };
