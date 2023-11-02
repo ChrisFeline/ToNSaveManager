@@ -2,12 +2,12 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "null" ]
     paths-ignore:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
       - '**.bat' # Ignore batch files
-      - '**.yml' # Ignore yaml files
+      #- '**.yml' # Ignore yaml files
 
 jobs:
 
@@ -49,7 +49,7 @@ jobs:
       id: get_date
       run: |
         $timestamp = Get-Date -Format "yyyy.M.d"
-        $time = [int]((Get-Date) - (Get-Date).Date).TotalSeconds
+        $time = [int]((Get-Date) - (Get-Date).Date).TotalMinutes
         echo "date=$timestamp.$time" >> "$env:GITHUB_OUTPUT"
       shell: pwsh
 

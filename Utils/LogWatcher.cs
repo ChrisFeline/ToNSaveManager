@@ -1,4 +1,4 @@
-﻿namespace ToNSaveManager
+﻿namespace ToNSaveManager.Utils
 {
     using System;
     using System.Collections.Generic;
@@ -132,7 +132,7 @@
                             if (!DateTime.TryParseExact(line.Substring(0, 19), "yyyy.MM.dd HH:mm:ss",
                                 CultureInfo.InvariantCulture, DateTimeStyles.None, out lineDate))
                             {
-                                lineDate = DateTime.Now;   
+                                lineDate = DateTime.Now;
                             }
 
                             if (ParseLocation(line, lineDate, logContext) ||

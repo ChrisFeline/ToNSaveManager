@@ -1,8 +1,8 @@
 ﻿<div align="center">
-  <img src="icon.ico" alt="Your Logo" width="124" style="display:inline; vertical-align:middle;">
+  <img src="Resources/icon.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
 
   # Terrors of Nowhere: Save Manager
-  This tool will keep track of your **Save Codes** so you can play and recover your codes later if you forgot to make a backup.
+  Simple tool that will keep track of your **Save Codes** so you can play and recover your codes later if you forgot to make a backup.
   And saves your code history locally for later use.
 
   # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip "Use this link to download the latest version directly from GitHub.")
@@ -14,7 +14,7 @@
 </div>
 
 <p align="center">
-  <img src="preview.png" alt="Preview" title="Boo!">
+  <img src="Resources/preview.png" alt="Preview" title="Boo!">
 </p>
 
 # 🛠️ Features & Clarifications
@@ -61,7 +61,8 @@
 > Initially, the program will scan your logs at `%LOCALAPPDATA%Low\VRChat\VRChat` and recover previous **Save Codes** in your logs. Then it will continue detecting new codes as you play.
 
 > ## Why is the .exe so big? >100MB
-> The exe is bundled with the .NET runtime that it's required to run the program. Using a command line argument for dotnet publishing: `--self-contained true -p:PublishSingleFile=true`
+> The exe is bundled with the .NET runtime that it's required to run the program. Using a command line argument for dotnet publishing: `--self-contained true -p:PublishSingleFile=true` <br>
+> This adds size to the file, but ensures that the program runs independently without relying on a previous .NET installation.
 >
 > This is so people that download this program does not have to go download the .NET runtime framework themselves. And it's ready to run without any extra actions from the user.
 >

@@ -1,10 +1,16 @@
-using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Drawing.Text;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using ToNSaveManager.Models;
+using ToNSaveManager.Utils;
 
 namespace ToNSaveManager
 {
     internal static class Program
     {
+        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -16,12 +22,49 @@ namespace ToNSaveManager
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            Application.SetCompatibleTextRenderingDefault(true);
+            InitializeFont();
+
+            Application.ApplicationExit += delegate {
+                Debug.WriteLine("Disposing on exit");
+                FontCollection.Dispose();
+                DefaultFont?.Dispose();
+            };
+
             UpdateWindow.RunPostUpdateCheck(args);
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }
 
-        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
+        static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
+        static Font? DefaultFont;
+        static void InitializeFont()
+        {
+            using (Stream? fontStream = GetEmbededResource("FiraCode.ttf"))
+            {
+                if (fontStream != null)
+                {
+                    Debug.WriteLine("Reading default font stream.");
+
+                    byte[] fontBytes = new byte[fontStream.Length];
+                    fontStream.Read(fontBytes, 0, (int)fontStream.Length);
+                    IntPtr fontPtr = Marshal.AllocCoTaskMem(fontBytes.Length);
+                    Marshal.Copy(fontBytes, 0, fontPtr, fontBytes.Length);
+                    FontCollection.AddMemoryFont(fontPtr, fontBytes.Length);
+                    Marshal.FreeCoTaskMem(fontPtr);
+                }
+            }
+
+            Debug.WriteLine("Applying default font.");
+            DefaultFont = new Font(FontCollection.Families[0], 9f);
+            Application.SetDefaultFont(DefaultFont);
+        }
+
+        internal static Stream? GetEmbededResource(string name)
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream($"ToNSaveManager.Resources.{name}");
+        }
 
         /// <summary>
         /// Check for updates on the GitHub repo.
@@ -70,54 +113,6 @@ namespace ToNSaveManager
             }
 
             return false;
-        }
-    }
-
-    /// <summary>
-    /// GitHub Release JSON Object
-    /// </summary>
-    internal class GitHubRelease
-    {
-        private const string GitHubApiBaseUrl = "https://api.github.com";
-        private const string RepoOwner = "ChrisFeline";
-        private const string RepoName = "ToNSaveManager";
-
-        public int id { get; set; }
-        public string name { get; set; } = string.Empty;
-        public string tag_name { get; set; } = string.Empty;
-        public string body { get; set; } = string.Empty;
-        public DateTime created_at { get; set; }
-        public DateTime published_at { get; set; }
-        public Asset[] assets { get; set; } = new Asset[0];
-
-        internal class Asset
-        {
-            public int id { get; set; }
-            public string name { get; set; } = string.Empty;
-            public string content_type { get; set; } = string.Empty;
-            public string state { get; set; } = string.Empty;
-            public string browser_download_url { get; set; } = string.Empty;
-        }
-
-        public static GitHubRelease? GetLatest()
-        {
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "ToNSaveManager");
-                    httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-
-                    string response = httpClient.GetStringAsync($"{GitHubApiBaseUrl}/repos/{RepoOwner}/{RepoName}/releases/latest").Result;
-                    GitHubRelease? latestRelease = JsonConvert.DeserializeObject<GitHubRelease>(response);
-
-                    return latestRelease;
-                }
-            }
-            catch
-            {
-                return null;
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ToNSaveManager
+namespace ToNSaveManager.Models
 {
     internal class AppSettings
     {
@@ -18,9 +18,11 @@ namespace ToNSaveManager
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
-        public bool AutoCopy {
+        public bool AutoCopy
+        {
             get { return m_AutoCopy; }
-            set {
+            set
+            {
                 if (value == m_AutoCopy) return;
                 m_AutoCopy = value;
                 IsDirty = true;
@@ -92,7 +94,8 @@ namespace ToNSaveManager
             string destination = Path.Combine(Program.DataLocation, Destination);
             AppSettings? settings;
 
-            try {
+            try
+            {
                 if (File.Exists(LegacyDestination))
                     File.Move(LegacyDestination, Destination);
 
@@ -107,7 +110,9 @@ namespace ToNSaveManager
 
                 string content = File.ReadAllText(Destination);
                 settings = JsonConvert.DeserializeObject<AppSettings>(content);
-            } catch {
+            }
+            catch
+            {
                 settings = null;
             }
 
@@ -118,10 +123,13 @@ namespace ToNSaveManager
         {
             if (!IsDirty) return;
 
-            try {
+            try
+            {
                 string json = JsonConvert.SerializeObject(this);
                 File.WriteAllText(Destination, json);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 MessageBox.Show("An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 

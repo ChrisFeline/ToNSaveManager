@@ -3,7 +3,11 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Media;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+using ToNSaveManager.Models;
+using ToNSaveManager.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ToNSaveManager
@@ -362,7 +366,7 @@ namespace ToNSaveManager
             Settings.PlayAudio = ToggleCheckState(Settings.PlayAudio, ctxMenuSettingsNotifSounds);
             Settings.Export();
             PlayNotification();
-            if (!Settings.PlayAudio) NotificationPlayer.Stop();
+            if (!Settings.PlayAudio) ResetNotification();
         }
 
         private void ctxMenuSettingsSelectSound_Click(object sender, EventArgs e)
@@ -410,6 +414,11 @@ namespace ToNSaveManager
             OpenExternalLink(SourceLink);
         }
 
+        private void objectivesLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ObjectivesWindow.Open(this);
+        }
+
         internal static void OpenExternalLink(string url)
         {
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
@@ -424,20 +433,31 @@ namespace ToNSaveManager
 
         #region Form Methods
         #region Notifications
-        static string DefaultNotificationFile = "notification.wav";
-        static readonly SoundPlayer NotificationPlayer = new SoundPlayer();
+        static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
+        static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
+        static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
+            Program.GetEmbededResource("notification.wav");
+
+        private void ResetNotification()
+        {
+            CustomNotificationPlayer.Stop();
+            DefaultNotificationPlayer.Stop();
+        }
         private void PlayNotification()
         {
             if (!Settings.PlayAudio || !Started) return;
 
             try
             {
-                string fileLocation = (string.IsNullOrEmpty(Settings.AudioLocation) || !File.Exists(Settings.AudioLocation)) ? DefaultNotificationFile : Settings.AudioLocation;
-                if (File.Exists(fileLocation))
+                if (!string.IsNullOrEmpty(Settings.AudioLocation) && File.Exists(Settings.AudioLocation))
                 {
-                    NotificationPlayer.SoundLocation = fileLocation;
-                    NotificationPlayer.Play();
+                    CustomNotificationPlayer.SoundLocation = Settings.AudioLocation;
+                    CustomNotificationPlayer.Play();
+                    return;
                 }
+
+                DefaultNotificationPlayer.Stream = DefaultAudioStream;
+                DefaultNotificationPlayer.Play();
             }
             catch { }
         }
@@ -608,9 +628,5 @@ namespace ToNSaveManager
         }
         #endregion
 
-        private void objectivesLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            ObjectivesWindow.Open(this);
-        }
     }
 }
