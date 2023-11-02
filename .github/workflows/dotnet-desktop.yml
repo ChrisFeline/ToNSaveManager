@@ -2,12 +2,12 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "null" ]
+    branches: [ "main", "dev" ]
     paths-ignore:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
       - '**.bat' # Ignore batch files
-      #- '**.yml' # Ignore yaml files
+      # - '**.yml' # Ignore yaml files
 
 jobs:
 
