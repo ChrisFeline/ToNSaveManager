@@ -1,4 +1,7 @@
+using System.Diagnostics;
+using System.Drawing.Text;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 
@@ -6,6 +9,8 @@ namespace ToNSaveManager
 {
     internal static class Program
     {
+        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -17,12 +22,49 @@ namespace ToNSaveManager
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            Application.SetCompatibleTextRenderingDefault(true);
+            InitializeFont();
+
+            Application.ApplicationExit += delegate {
+                Debug.WriteLine("Disposing on exit");
+                FontCollection.Dispose();
+                DefaultFont?.Dispose();
+            };
+
             UpdateWindow.RunPostUpdateCheck(args);
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }
 
-        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
+        static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
+        static Font? DefaultFont;
+        static void InitializeFont()
+        {
+            using (Stream? fontStream = GetEmbededResource("FiraCode.ttf"))
+            {
+                if (fontStream != null)
+                {
+                    Debug.WriteLine("Reading default font stream.");
+
+                    byte[] fontBytes = new byte[fontStream.Length];
+                    fontStream.Read(fontBytes, 0, (int)fontStream.Length);
+                    IntPtr fontPtr = Marshal.AllocCoTaskMem(fontBytes.Length);
+                    Marshal.Copy(fontBytes, 0, fontPtr, fontBytes.Length);
+                    FontCollection.AddMemoryFont(fontPtr, fontBytes.Length);
+                    Marshal.FreeCoTaskMem(fontPtr);
+                }
+            }
+
+            Debug.WriteLine("Applying default font.");
+            DefaultFont = new Font(FontCollection.Families[0], 9f);
+            Application.SetDefaultFont(DefaultFont);
+        }
+
+        internal static Stream? GetEmbededResource(string name)
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream($"ToNSaveManager.Resources.{name}");
+        }
 
         /// <summary>
         /// Check for updates on the GitHub repo.

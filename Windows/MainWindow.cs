@@ -436,7 +436,7 @@ namespace ToNSaveManager
         static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
         static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
         static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
-            Assembly.GetExecutingAssembly().GetManifestResourceStream("ToNSaveManager.Resources.notification.wav");
+            Program.GetEmbededResource("notification.wav");
 
         private void ResetNotification()
         {
