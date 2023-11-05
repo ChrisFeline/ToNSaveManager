@@ -7,6 +7,7 @@ on:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
       - '**.bat' # Ignore batch files
+      - '**.gif' # Ignore gif files
       # - '**.yml' # Ignore yaml files
 
 jobs:
