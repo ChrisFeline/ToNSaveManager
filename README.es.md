@@ -68,6 +68,8 @@
 > Está permitido leer estos archivos ya que no modifican ni alteran el juego de ninguna manera.
 > **Esto no es un mod ni un cheat.**
 
-#
-> ### Di hola si me ves en VRChat.
+# 📫 Contacto:
+> **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
+> **VRChat:** [Kittenji](https://vrchat.com/home/user/usr_7ac745b8-e50e-4c9c-95e5-8e7e3bcde682)
+> ## Dime hola si me ves jugar [Terrors of Nowhere](https://vrchat.com/home/world/wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd)!
 > <p> <img src="Resources/loop.gif" alt="Preview" title="AAAAAA!"> </p>
