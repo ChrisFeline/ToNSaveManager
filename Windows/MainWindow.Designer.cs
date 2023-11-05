@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             listBoxKeys = new ListBox();
             listBoxEntries = new ListBox();
             linkLabel1 = new LinkLabel();
@@ -50,7 +51,12 @@
             ctxMenuSettingsSelectSound = new ToolStripMenuItem();
             ctxMenuSettingsClearSound = new ToolStripMenuItem();
             ctxMenuSettingsCollectNames = new ToolStripMenuItem();
+            ctxMenuSettingsXSOverlay = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
+            ctxMenuSettings24Hour = new ToolStripMenuItem();
+            ctxMenuSettingsInvertMD = new ToolStripMenuItem();
+            ctxMenuSettingsShowSeconds = new ToolStripMenuItem();
+            toolStripMenuItem4 = new ToolStripSeparator();
             ctxMenuSettingsUpdate = new ToolStripMenuItem();
             ctxMenuSettingsClose = new ToolStripMenuItem();
             objectivesLabel = new LinkLabel();
@@ -205,9 +211,9 @@
             // 
             // ctxMenuSettings
             // 
-            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, toolStripMenuItem3, ctxMenuSettingsUpdate, ctxMenuSettingsClose });
+            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, ctxMenuSettingsXSOverlay, toolStripMenuItem3, ctxMenuSettings24Hour, ctxMenuSettingsShowSeconds, ctxMenuSettingsInvertMD, toolStripMenuItem4, ctxMenuSettingsUpdate, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 120);
+            ctxMenuSettings.Size = new Size(215, 214);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy
@@ -255,10 +261,50 @@
             ctxMenuSettingsCollectNames.ToolTipText = "Stores the names of players that were with you at the time of saving.";
             ctxMenuSettingsCollectNames.Click += ctxMenuSettingsCollectNames_Click;
             // 
+            // ctxMenuSettingsXSOverlay
+            // 
+            ctxMenuSettingsXSOverlay.Checked = true;
+            ctxMenuSettingsXSOverlay.CheckState = CheckState.Checked;
+            ctxMenuSettingsXSOverlay.Name = "ctxMenuSettingsXSOverlay";
+            ctxMenuSettingsXSOverlay.Size = new Size(214, 22);
+            ctxMenuSettingsXSOverlay.Text = "XSOverlay Popup";
+            ctxMenuSettingsXSOverlay.Click += ctxMenuSettingsXSOverlay_Click;
+            // 
             // toolStripMenuItem3
             // 
             toolStripMenuItem3.Name = "toolStripMenuItem3";
             toolStripMenuItem3.Size = new Size(211, 6);
+            // 
+            // ctxMenuSettings24Hour
+            // 
+            ctxMenuSettings24Hour.Checked = true;
+            ctxMenuSettings24Hour.CheckOnClick = true;
+            ctxMenuSettings24Hour.CheckState = CheckState.Checked;
+            ctxMenuSettings24Hour.Name = "ctxMenuSettings24Hour";
+            ctxMenuSettings24Hour.Size = new Size(214, 22);
+            ctxMenuSettings24Hour.Text = "24 Hour Time";
+            ctxMenuSettings24Hour.CheckedChanged += ctxMenuSettings24Hour_CheckedChanged;
+            // 
+            // ctxMenuSettingsInvertMD
+            // 
+            ctxMenuSettingsInvertMD.CheckOnClick = true;
+            ctxMenuSettingsInvertMD.Name = "ctxMenuSettingsInvertMD";
+            ctxMenuSettingsInvertMD.Size = new Size(214, 22);
+            ctxMenuSettingsInvertMD.Text = "Invert Month/Day";
+            ctxMenuSettingsInvertMD.CheckedChanged += ctxMenuSettingsInvertMD_CheckedChanged;
+            // 
+            // ctxMenuSettingsShowSeconds
+            // 
+            ctxMenuSettingsShowSeconds.CheckOnClick = true;
+            ctxMenuSettingsShowSeconds.Name = "ctxMenuSettingsShowSeconds";
+            ctxMenuSettingsShowSeconds.Size = new Size(214, 22);
+            ctxMenuSettingsShowSeconds.Text = "Show Seconds";
+            ctxMenuSettingsShowSeconds.CheckedChanged += ctxMenuSettingsShowSeconds_CheckedChanged;
+            // 
+            // toolStripMenuItem4
+            // 
+            toolStripMenuItem4.Name = "toolStripMenuItem4";
+            toolStripMenuItem4.Size = new Size(211, 6);
             // 
             // ctxMenuSettingsUpdate
             // 
@@ -298,10 +344,10 @@
             Controls.Add(linkLabel1);
             Controls.Add(listBoxEntries);
             Controls.Add(listBoxKeys);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimumSize = new Size(412, 256);
             Name = "MainWindow";
-            ShowIcon = false;
             Text = "ToN Save Manager";
             Load += mainWindow_Loaded;
             Shown += mainWindow_Shown;
@@ -339,5 +385,11 @@
         private ToolStripMenuItem ctxMenuSettingsClearSound;
         private ToolStripMenuItem ctxMenuSettingsUpdate;
         private LinkLabel objectivesLabel;
+        private ToolStripMenuItem ctxMenuSettingsXSOverlay;
+        private ToolStripMenuItem dateFormatToolStripMenuItem;
+        private ToolStripMenuItem ctxMenuSettings24Hour;
+        private ToolStripMenuItem ctxMenuSettingsInvertMD;
+        private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripMenuItem ctxMenuSettingsShowSeconds;
     }
 }

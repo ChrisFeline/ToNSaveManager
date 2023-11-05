@@ -35,8 +35,6 @@ namespace ToNSaveManager.Models
             // "2023-10-22_09-51-29"
             if (DateTime.TryParseExact(logKey, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
                 Timestamp = date;
-
-            Name = Timestamp.ToString(Entry.DateFormat);
         }
 
         public List<Entry> Entries = new List<Entry>();
@@ -95,7 +93,7 @@ namespace ToNSaveManager.Models
 
         public override string ToString()
         {
-            return Name;
+            return IsCustom ? Name : Timestamp.ToString(EntryDate.GetDateFormat());
         }
 
         public int CompareTo(History? other)

@@ -3,10 +3,31 @@ using System.Text;
 
 namespace ToNSaveManager.Models
 {
+    internal struct EntryDate
+    {
+        const string Date_MM_DD = "MM/dd/yyyy";
+        const string DateFormat_DD_MM = "dd/MM/yyyy";
+
+        const string Time_24H_S = "HH:mm:ss";
+        const string Time_12H_S = "hh:mm:ss tt";
+        const string Time_24H = "HH:mm";
+        const string Time_12H = "hh:mm tt";
+
+        internal static string GetDateFormat()
+        {
+            bool use24Hour = MainWindow.Settings.Use24Hour;
+            bool invertMD = MainWindow.Settings.InvertMD;
+            bool showSeconds = MainWindow.Settings.ShowSeconds;
+            return (invertMD ? DateFormat_DD_MM : Date_MM_DD) + " | " +
+                // Append Time
+                (use24Hour ?
+                (showSeconds ? Time_24H_S : Time_24H) :
+                (showSeconds ? Time_12H_S : Time_12H));
+        }
+    }
+
     internal class Entry
     {
-        internal const string DateFormat = "MM/dd/yyyy | HH:mm:ss";
-
         public string Note = string.Empty;
 
         public DateTime Timestamp;
@@ -25,7 +46,7 @@ namespace ToNSaveManager.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(Timestamp.ToString(DateFormat));
+            sb.Append(Timestamp.ToString(EntryDate.GetDateFormat()));
             if (!string.IsNullOrEmpty(Note))
             {
                 sb.Append(" | ");

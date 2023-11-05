@@ -126,4 +126,22 @@
   <metadata name="ctxMenuSettings.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>310, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAyJ/8A+v7+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIgAA
+        AAAAAAAAAAACIiIiIiIAAAAAAAAAAAAAAiIiIiIiAAAAAAARAAAAAAIiIiIiIgAAAAAAEQAAAAACIiIi
+        IiIAAAAAAREQAAAAAiIiIAACAAAAAAEREAAAAAIiIiAAAgAAAAABERAAAAACIiIgAiIAAAEAAREQABAA
+        AiIiIAIiAAARAAEREAARAAIiIiIiIgAAEQABERAAEQACIiIgAiIAABEAAREQABEAAiIiIAIiAAARAAER
+        EAARAAIiIiACIgAAEQABERAAEQACIiIgAiIAABEAAREQABEAAiIiIAIiAAABAAEREAAQAAIiIiIiIgAA
+        AAABERAAAAACIiIgAiIAAAAAABEAAAAAAiIiIAIiAAAAAAARAAAAAAIiIiACIgAAAAAAAAAAAAACIiIg
+        AiIAAAAAAAAAAAAAAiIiIAIiAAAAAAAAAAAAAAIiIiIiIiIiIiIiIiIiIiIiIiIgAiIiIiIiIiIiACIi
+        IiIiIAIiIiIiIiIiIgAiIiIiIiAAAgAAAgAAAgAAIiIiIiIgAAIAAAIAAAIAACIiIiIiIiIiIiIiIiIi
+        IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiL/////////////////AAAH/wAAB/8A
+        AAf/AAAH/wAAB+EAAAfhAAAH5wAAB+cAAAf/AAAH5wAAB+cAAAfnAAAH5wAAB+cAAAf/AAAH5wAAB+cA
+        AAfnAAAH5wAAB+cAAAf/////5//8/+f//P/hBBD/4QQQ/////////////////w==
+</value>
+  </data>
 </root>
