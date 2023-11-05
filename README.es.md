@@ -1,5 +1,5 @@
 ﻿<div align="center">
-  <img src="Resources/icon.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
+  <img src="Resources/icon256.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
 
   # Terrors of Nowhere: Save Manager
   Herramienta para administrar tus **Códigos de Guardado** para que puedas jugar y recuperar tus códigos más tarde si olvidaste hacer una copia de seguridad. Además, guarda tu historial de códigos localmente para que puedas usarlos mas tarde.

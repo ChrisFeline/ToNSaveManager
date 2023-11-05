@@ -14,6 +14,11 @@ namespace ToNSaveManager.Models
         [JsonIgnore] private bool m_PlayAudio = false;
         [JsonIgnore] private string? m_AudioLocation = null;
         [JsonIgnore] private string? m_IgnoreRelease = null;
+        [JsonIgnore] private bool m_XSOverlay = false;
+
+        [JsonIgnore] private bool m_24Hour = true;
+        [JsonIgnore] private bool m_InvertMD = false;
+        [JsonIgnore] private bool m_ShowSeconds = true;
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -67,6 +72,52 @@ namespace ToNSaveManager.Models
             {
                 if (value == m_SaveNames) return;
                 m_SaveNames = value;
+                IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Send popup notifications to XSOverlay.
+        /// </summary>
+        public bool XSOverlay
+        {
+            get { return m_XSOverlay; }
+            set
+            {
+                if (value == m_XSOverlay) return;
+                m_XSOverlay = value;
+                IsDirty = true;
+            }
+        }
+        public int XSOverlayPort = Utils.XSOverlay.DefaultPort;
+
+        public bool Use24Hour
+        {
+            get { return m_24Hour; }
+            set
+            {
+                if (value == m_24Hour) return;
+                m_24Hour = value;
+                IsDirty = true;
+            }
+        }
+        public bool InvertMD
+        {
+            get { return m_InvertMD; }
+            set
+            {
+                if (value == m_InvertMD) return;
+                m_InvertMD = value;
+                IsDirty = true;
+            }
+        }
+        public bool ShowSeconds
+        {
+            get { return m_ShowSeconds; }
+            set
+            {
+                if (value == m_ShowSeconds) return;
+                m_ShowSeconds = value;
                 IsDirty = true;
             }
         }

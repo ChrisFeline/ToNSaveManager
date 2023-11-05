@@ -1,5 +1,5 @@
 ﻿<div align="center">
-  <img src="Resources/icon.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
+  <img src="Resources/icon256.ico" alt="App Icon" width="124" style="display:inline; vertical-align:middle;">
 
   # Terrors of Nowhere: Save Manager
   Simple tool that will keep track of your **Save Codes** so you can play and recover your codes later if you forgot to make a backup.
@@ -28,6 +28,7 @@
   * `Select Custom Sound` When clicked, it will open a file select dialog, and you can choose what audio is played when notified. (Must be **.wav**)
   * `Clear Custom Sound` If a sound was selected, it will clear the path and use the default **notification.wav** file.
 - `Collect Player Names` If checked, hovering over a save code will show what players were in the room at the time of saving.
+- `XSOverlay Popup` If checked, a notification will be sent to XSOverlay when a new save is detected.
 - `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
 
 ### Right Click Menus

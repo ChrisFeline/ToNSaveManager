@@ -44,8 +44,6 @@ namespace ToNSaveManager
             {
                 if (fontStream != null)
                 {
-                    Debug.WriteLine("Reading default font stream.");
-
                     byte[] fontBytes = new byte[fontStream.Length];
                     fontStream.Read(fontBytes, 0, (int)fontStream.Length);
                     IntPtr fontPtr = Marshal.AllocCoTaskMem(fontBytes.Length);
@@ -55,7 +53,6 @@ namespace ToNSaveManager
                 }
             }
 
-            Debug.WriteLine("Applying default font.");
             DefaultFont = new Font(FontCollection.Families[0], 9f);
             Application.SetDefaultFont(DefaultFont);
         }

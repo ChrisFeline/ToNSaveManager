@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.Media;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -20,8 +21,7 @@ namespace ToNSaveManager
         internal static readonly SaveData SaveData = SaveData.Import();
         private bool Started;
 
-        public MainWindow() =>
-            InitializeComponent();
+        public MainWindow() => InitializeComponent();
         #endregion
 
         #region Form Events
@@ -316,9 +316,15 @@ namespace ToNSaveManager
         #region Options & Settings
         private void InitializeOptions()
         {
+            ctxMenuSettingsInvertMD.Checked = Settings.InvertMD;
+            ctxMenuSettings24Hour.Checked = Settings.Use24Hour;
+            ctxMenuSettingsShowSeconds.Checked = Settings.ShowSeconds;
+
             ctxMenuSettingsAutoCopy.Checked = Settings.AutoCopy;
             ctxMenuSettingsNotifSounds.Checked = Settings.PlayAudio;
             ctxMenuSettingsCollectNames.Checked = Settings.SaveNames;
+            ctxMenuSettingsXSOverlay.Checked = Settings.XSOverlay;
+            XSOverlay.SetPort(Settings.XSOverlayPort);
             ctxMenuSettingsSoundControl_Set();
         }
 
@@ -345,7 +351,7 @@ namespace ToNSaveManager
 
         private void ctxMenuSettingsAutoCopy_Click(object sender, EventArgs e)
         {
-            Settings.AutoCopy = ToggleCheckState(Settings.AutoCopy, ctxMenuSettingsAutoCopy);
+            Settings.AutoCopy = ToggleCheckState(Settings.AutoCopy, sender);
             Settings.Export();
 
             if (RecentData != null)
@@ -363,7 +369,7 @@ namespace ToNSaveManager
 
         private void ctxMenuSettingsNotifSounds_Click(object sender, EventArgs e)
         {
-            Settings.PlayAudio = ToggleCheckState(Settings.PlayAudio, ctxMenuSettingsNotifSounds);
+            Settings.PlayAudio = ToggleCheckState(Settings.PlayAudio, sender);
             Settings.Export();
             PlayNotification();
             if (!Settings.PlayAudio) ResetNotification();
@@ -395,14 +401,48 @@ namespace ToNSaveManager
 
         private void ctxMenuSettingsCollectNames_Click(object sender, EventArgs e)
         {
-            Settings.SaveNames = ToggleCheckState(Settings.SaveNames, ctxMenuSettingsCollectNames);
+            Settings.SaveNames = ToggleCheckState(Settings.SaveNames, sender);
             Settings.Export();
         }
 
-        private bool ToggleCheckState(bool value, ToolStripMenuItem item)
+        private void ctxMenuSettingsXSOverlay_Click(object sender, EventArgs e)
+        {
+            Settings.XSOverlay = ToggleCheckState(Settings.XSOverlay, sender);
+            Settings.Export();
+            SendXSNotification(true);
+        }
+
+        private void ctxMenuSettings24Hour_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Use24Hour = ctxMenuSettings24Hour.Checked;
+            Settings.Export();
+            RefreshLists();
+        }
+
+        private void ctxMenuSettingsInvertMD_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.InvertMD = ctxMenuSettingsInvertMD.Checked;
+            Settings.Export();
+            RefreshLists();
+        }
+
+        private void ctxMenuSettingsShowSeconds_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.ShowSeconds = ctxMenuSettingsShowSeconds.Checked;
+            Settings.Export();
+            RefreshLists();
+        }
+
+        private void RefreshLists()
+        {
+            listBoxKeys.Refresh();
+            listBoxEntries.Refresh();
+        }
+
+        private bool ToggleCheckState(bool value, object item)
         {
             value = !value;
-            item.Checked = value;
+            ((ToolStripMenuItem)item).Checked = value;
             return value;
         }
         #endregion
@@ -433,6 +473,7 @@ namespace ToNSaveManager
 
         #region Form Methods
         #region Notifications
+        static readonly XSOverlay XSOverlay = new XSOverlay();
         static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
         static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
         static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
@@ -445,7 +486,7 @@ namespace ToNSaveManager
         }
         private void PlayNotification()
         {
-            if (!Settings.PlayAudio || !Started) return;
+            if (!Started || !Settings.PlayAudio) return;
 
             try
             {
@@ -460,6 +501,15 @@ namespace ToNSaveManager
                 DefaultNotificationPlayer.Play();
             }
             catch { }
+        }
+        private void SendXSNotification(bool test = false)
+        {
+            if (!Started || !Settings.XSOverlay) return;
+            const string message = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>";
+            const string msgtest = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>";
+
+            if (test) XSOverlay.Send(msgtest, 1);
+            else XSOverlay.Send(message);
         }
         #endregion
 
@@ -601,6 +651,7 @@ namespace ToNSaveManager
             SaveData.SetDirty();
 
             PlayNotification();
+            SendXSNotification();
         }
 
         private void AddKey(History collection, int i = -1)
@@ -626,7 +677,7 @@ namespace ToNSaveManager
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;
         }
-        #endregion
 
+        #endregion
     }
 }
