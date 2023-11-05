@@ -67,3 +67,7 @@
 > Este es una herramienta externa que utiliza archivos de texto plano locales que VRChat escribe en la carpeta Local APPDATA.
 > Está permitido leer estos archivos ya que no modifican ni alteran el juego de ninguna manera.
 > **Esto no es un mod ni un cheat.**
+
+#
+> ### Di hola si me ves en VRChat.
+> <p> <img src="Resources/loop.gif" alt="Preview" title="AAAAAA!"> </p>
