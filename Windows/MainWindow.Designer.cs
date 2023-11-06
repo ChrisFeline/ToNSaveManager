@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             listBoxKeys = new ListBox();
             listBoxEntries = new ListBox();
-            linkLabel1 = new LinkLabel();
             ctxMenuEntries = new ContextMenuStrip(components);
             ctxMenuEntriesCopyTo = new ToolStripMenuItem();
             ctxMenuEntriesNew = new ToolStripMenuItem();
@@ -44,7 +43,6 @@
             renameToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             deleteToolStripMenuItem = new ToolStripMenuItem();
-            optionsLabel = new LinkLabel();
             ctxMenuSettings = new ContextMenuStrip(components);
             ctxMenuSettingsAutoCopy = new ToolStripMenuItem();
             ctxMenuSettingsNotifSounds = new ToolStripMenuItem();
@@ -54,12 +52,15 @@
             ctxMenuSettingsXSOverlay = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
             ctxMenuSettings24Hour = new ToolStripMenuItem();
-            ctxMenuSettingsInvertMD = new ToolStripMenuItem();
             ctxMenuSettingsShowSeconds = new ToolStripMenuItem();
+            ctxMenuSettingsInvertMD = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripSeparator();
             ctxMenuSettingsUpdate = new ToolStripMenuItem();
+            ctxMenuSettingsOpenData = new ToolStripMenuItem();
             ctxMenuSettingsClose = new ToolStripMenuItem();
-            objectivesLabel = new LinkLabel();
+            btnSettings = new Button();
+            button1 = new Button();
+            button2 = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ctxMenuSettings.SuspendLayout();
@@ -77,7 +78,7 @@
             listBoxKeys.ItemHeight = 15;
             listBoxKeys.Location = new Point(12, 12);
             listBoxKeys.Name = "listBoxKeys";
-            listBoxKeys.Size = new Size(192, 230);
+            listBoxKeys.Size = new Size(192, 217);
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
@@ -96,7 +97,7 @@
             listBoxEntries.ItemHeight = 15;
             listBoxEntries.Location = new Point(210, 12);
             listBoxEntries.Name = "listBoxEntries";
-            listBoxEntries.Size = new Size(307, 230);
+            listBoxEntries.Size = new Size(307, 217);
             listBoxEntries.TabIndex = 1;
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
@@ -105,21 +106,6 @@
             listBoxEntries.MouseMove += listBoxEntries_MouseMove;
             listBoxEntries.MouseUp += listBoxEntries_MouseUp;
             listBoxEntries.Resize += listBoxEntries_Resize;
-            // 
-            // linkLabel1
-            // 
-            linkLabel1.ActiveLinkColor = Color.PowderBlue;
-            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            linkLabel1.AutoSize = true;
-            linkLabel1.BackColor = Color.Transparent;
-            linkLabel1.LinkColor = Color.DodgerBlue;
-            linkLabel1.Location = new Point(433, 247);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(84, 15);
-            linkLabel1.TabIndex = 4;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Source Code";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // ctxMenuEntries
             // 
@@ -195,25 +181,11 @@
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
             // 
-            // optionsLabel
-            // 
-            optionsLabel.ActiveLinkColor = Color.Red;
-            optionsLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            optionsLabel.AutoSize = true;
-            optionsLabel.LinkColor = Color.Gainsboro;
-            optionsLabel.Location = new Point(12, 247);
-            optionsLabel.Name = "optionsLabel";
-            optionsLabel.Size = new Size(63, 15);
-            optionsLabel.TabIndex = 5;
-            optionsLabel.TabStop = true;
-            optionsLabel.Text = "Settings";
-            optionsLabel.LinkClicked += optionsLabel_LinkClicked;
-            // 
             // ctxMenuSettings
             // 
-            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, ctxMenuSettingsXSOverlay, toolStripMenuItem3, ctxMenuSettings24Hour, ctxMenuSettingsShowSeconds, ctxMenuSettingsInvertMD, toolStripMenuItem4, ctxMenuSettingsUpdate, ctxMenuSettingsClose });
+            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, ctxMenuSettingsXSOverlay, toolStripMenuItem3, ctxMenuSettings24Hour, ctxMenuSettingsShowSeconds, ctxMenuSettingsInvertMD, toolStripMenuItem4, ctxMenuSettingsUpdate, ctxMenuSettingsOpenData, ctxMenuSettingsClose });
             ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 214);
+            ctxMenuSettings.Size = new Size(215, 236);
             ctxMenuSettings.Closing += ctxMenuSettings_Closing;
             // 
             // ctxMenuSettingsAutoCopy
@@ -285,14 +257,6 @@
             ctxMenuSettings24Hour.Text = "24 Hour Time";
             ctxMenuSettings24Hour.CheckedChanged += ctxMenuSettings24Hour_CheckedChanged;
             // 
-            // ctxMenuSettingsInvertMD
-            // 
-            ctxMenuSettingsInvertMD.CheckOnClick = true;
-            ctxMenuSettingsInvertMD.Name = "ctxMenuSettingsInvertMD";
-            ctxMenuSettingsInvertMD.Size = new Size(214, 22);
-            ctxMenuSettingsInvertMD.Text = "Invert Month/Day";
-            ctxMenuSettingsInvertMD.CheckedChanged += ctxMenuSettingsInvertMD_CheckedChanged;
-            // 
             // ctxMenuSettingsShowSeconds
             // 
             ctxMenuSettingsShowSeconds.CheckOnClick = true;
@@ -300,6 +264,14 @@
             ctxMenuSettingsShowSeconds.Size = new Size(214, 22);
             ctxMenuSettingsShowSeconds.Text = "Show Seconds";
             ctxMenuSettingsShowSeconds.CheckedChanged += ctxMenuSettingsShowSeconds_CheckedChanged;
+            // 
+            // ctxMenuSettingsInvertMD
+            // 
+            ctxMenuSettingsInvertMD.CheckOnClick = true;
+            ctxMenuSettingsInvertMD.Name = "ctxMenuSettingsInvertMD";
+            ctxMenuSettingsInvertMD.Size = new Size(214, 22);
+            ctxMenuSettingsInvertMD.Text = "Invert Month/Day";
+            ctxMenuSettingsInvertMD.CheckedChanged += ctxMenuSettingsInvertMD_CheckedChanged;
             // 
             // toolStripMenuItem4
             // 
@@ -313,6 +285,13 @@
             ctxMenuSettingsUpdate.Text = "Check For Updates";
             ctxMenuSettingsUpdate.Click += ctxMenuSettingsUpdate_Click;
             // 
+            // ctxMenuSettingsOpenData
+            // 
+            ctxMenuSettingsOpenData.Name = "ctxMenuSettingsOpenData";
+            ctxMenuSettingsOpenData.Size = new Size(214, 22);
+            ctxMenuSettingsOpenData.Text = "Open Data Location";
+            ctxMenuSettingsOpenData.Click += ctxMenuSettingsOpenData_Click;
+            // 
             // ctxMenuSettingsClose
             // 
             ctxMenuSettingsClose.Name = "ctxMenuSettingsClose";
@@ -320,18 +299,53 @@
             ctxMenuSettingsClose.Text = "Close";
             ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
             // 
-            // objectivesLabel
+            // btnSettings
             // 
-            objectivesLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            objectivesLabel.AutoSize = true;
-            objectivesLabel.LinkColor = Color.Gainsboro;
-            objectivesLabel.Location = new Point(81, 247);
-            objectivesLabel.Name = "objectivesLabel";
-            objectivesLabel.Size = new Size(77, 15);
-            objectivesLabel.TabIndex = 6;
-            objectivesLabel.TabStop = true;
-            objectivesLabel.Text = "Objectives";
-            objectivesLabel.LinkClicked += objectivesLabel_LinkClicked;
+            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSettings.BackColor = Color.FromArgb(46, 52, 64);
+            btnSettings.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnSettings.FlatStyle = FlatStyle.Flat;
+            btnSettings.ForeColor = Color.White;
+            btnSettings.Location = new Point(12, 235);
+            btnSettings.Name = "btnSettings";
+            btnSettings.Size = new Size(192, 24);
+            btnSettings.TabIndex = 0;
+            btnSettings.TabStop = false;
+            btnSettings.Text = "Settings";
+            btnSettings.UseVisualStyleBackColor = false;
+            btnSettings.Click += btnSettings_Click;
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            button1.BackColor = Color.FromArgb(46, 52, 64);
+            button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(210, 235);
+            button1.Name = "button1";
+            button1.Size = new Size(243, 24);
+            button1.TabIndex = 0;
+            button1.TabStop = false;
+            button1.Text = "Objectives";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += btnObjectives_Click;
+            // 
+            // button2
+            // 
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button2.BackColor = Color.FromArgb(46, 52, 64);
+            button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(459, 235);
+            button2.Name = "button2";
+            button2.Size = new Size(58, 24);
+            button2.TabIndex = 3;
+            button2.TabStop = false;
+            button2.Text = "Wiki";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += linkWiki_Clicked;
             // 
             // MainWindow
             // 
@@ -339,9 +353,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(529, 271);
-            Controls.Add(objectivesLabel);
-            Controls.Add(optionsLabel);
-            Controls.Add(linkLabel1);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(btnSettings);
             Controls.Add(listBoxEntries);
             Controls.Add(listBoxKeys);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -355,14 +369,12 @@
             ctxMenuKeys.ResumeLayout(false);
             ctxMenuSettings.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private ListBox listBoxKeys;
         private ListBox listBoxEntries;
-        private LinkLabel linkLabel1;
         private ContextMenuStrip ctxMenuEntries;
         private ToolStripMenuItem ctxMenuEntriesCopyTo;
         private ToolStripMenuItem ctxMenuEntriesNew;
@@ -374,7 +386,6 @@
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem ctxMenuEntriesDelete;
         private ToolStripMenuItem importToolStripMenuItem;
-        private LinkLabel optionsLabel;
         private ContextMenuStrip ctxMenuSettings;
         private ToolStripMenuItem ctxMenuSettingsAutoCopy;
         private ToolStripMenuItem ctxMenuSettingsNotifSounds;
@@ -384,12 +395,15 @@
         private ToolStripMenuItem ctxMenuSettingsSelectSound;
         private ToolStripMenuItem ctxMenuSettingsClearSound;
         private ToolStripMenuItem ctxMenuSettingsUpdate;
-        private LinkLabel objectivesLabel;
         private ToolStripMenuItem ctxMenuSettingsXSOverlay;
         private ToolStripMenuItem dateFormatToolStripMenuItem;
         private ToolStripMenuItem ctxMenuSettings24Hour;
         private ToolStripMenuItem ctxMenuSettingsInvertMD;
         private ToolStripSeparator toolStripMenuItem4;
         private ToolStripMenuItem ctxMenuSettingsShowSeconds;
+        private Button btnSettings;
+        private Button button1;
+        private ToolStripMenuItem ctxMenuSettingsOpenData;
+        private Button button2;
     }
 }

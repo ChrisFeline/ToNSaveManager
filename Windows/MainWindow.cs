@@ -7,6 +7,7 @@ using System.Media;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -21,7 +22,12 @@ namespace ToNSaveManager
         internal static readonly SaveData SaveData = SaveData.Import();
         private bool Started;
 
-        public MainWindow() => InitializeComponent();
+        public MainWindow()
+        {
+            InitializeComponent();
+            listBoxKeys.FixItemHeight();
+            listBoxEntries.FixItemHeight();
+        }
         #endregion
 
         #region Form Events
@@ -187,7 +193,7 @@ namespace ToNSaveManager
             string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
 
             int maxWidth = e.Bounds.Width;
-            TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.Left);
+            TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter);
 
             e.DrawFocusRectangle();
         }
@@ -328,7 +334,7 @@ namespace ToNSaveManager
             ctxMenuSettingsSoundControl_Set();
         }
 
-        private void optionsLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnSettings_Click(object sender, EventArgs e)
         {
             ctxMenuSettings.Show(Cursor.Position);
         }
@@ -336,6 +342,12 @@ namespace ToNSaveManager
         private void ctxMenuSettingsClose_Click(object sender, EventArgs e)
         {
             ctxMenuSettings.Close();
+        }
+
+        private void ctxMenuSettingsOpenData_Click(object sender, EventArgs e)
+        {
+            ctxMenuSettings.Close();
+            OpenExternalLink(Program.DataLocation);
         }
 
         private void ctxMenuSettingsUpdate_Click(object sender, EventArgs e)
@@ -448,13 +460,19 @@ namespace ToNSaveManager
         #endregion
 
         #region Extras & Info
-        const string SourceLink = "https://github.com/ChrisFeline/ToNSaveManager/";
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs ev)
+        private void linkSource_Clicked(object sender, EventArgs ev)
         {
-            OpenExternalLink(SourceLink);
+            const string link = "https://github.com/ChrisFeline/ToNSaveManager/";
+            OpenExternalLink(link);
         }
 
-        private void objectivesLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkWiki_Clicked(object sender, EventArgs e)
+        {
+            const string wiki = "https://terror.moe/";
+            OpenExternalLink(wiki);
+        }
+
+        private void btnObjectives_Click(object sender, EventArgs e)
         {
             ObjectivesWindow.Open(this);
         }
@@ -679,5 +697,6 @@ namespace ToNSaveManager
         }
 
         #endregion
+
     }
 }

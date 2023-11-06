@@ -45,6 +45,7 @@
             textBox1.Size = new Size(409, 170);
             textBox1.TabIndex = 1;
             textBox1.TabStop = false;
+            textBox1.UseWaitCursor = true;
             // 
             // UpdateWindow
             // 
