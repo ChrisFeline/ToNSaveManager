@@ -1,4 +1,8 @@
-﻿using ToNSaveManager.Models;
+﻿using System.Diagnostics;
+using System.Security.AccessControl;
+using System.Windows.Forms;
+using ToNSaveManager.Extensions;
+using ToNSaveManager.Models;
 
 namespace ToNSaveManager
 {
@@ -9,6 +13,7 @@ namespace ToNSaveManager
         public ObjectivesWindow()
         {
             InitializeComponent();
+            listBox1.FixItemHeight();
         }
 
         public static void Open(Form parent)
@@ -44,10 +49,11 @@ namespace ToNSaveManager
             ListBox listBox = (ListBox)sender;
             Objective objective = (Objective)listBox.Items[e.Index];
 
+            string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
+            Font itemFont = new Font(listBox.Font, objective.IsCompleted ? FontStyle.Strikeout : FontStyle.Regular);
+
             using (var backColorBrush = new SolidBrush(objective.IsSeparator ? this.BackColor : listBox.BackColor))
                 e.Graphics.FillRectangle(backColorBrush, e.Bounds);
-
-            string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
 
             Color itemColor;
 
@@ -55,10 +61,9 @@ namespace ToNSaveManager
             else if (e.Index == MouseDownIndex) itemColor = MouseRightClick ? Color.Cyan : Color.Red;
             else itemColor = objective.IsCompleted ? Color.Gray : e.ForeColor;
 
-            Font itemFont = new Font(listBox.Font, objective.IsCompleted ? FontStyle.Strikeout : FontStyle.Regular);
-
             int maxWidth = e.Bounds.Width;
-            TextRenderer.DrawText(e.Graphics, MainWindow.GetTruncatedText(itemText, itemFont, maxWidth), itemFont, e.Bounds, itemColor, TextFormatFlags.Left);
+            TextRenderer.DrawText(e.Graphics, MainWindow.GetTruncatedText(itemText, itemFont, maxWidth), itemFont, e.Bounds, itemColor,
+                TextFormatFlags.VerticalCenter);
         }
 
         private int MouseDownIndex = -1;
@@ -69,7 +74,8 @@ namespace ToNSaveManager
             if (MouseRightClick || e.Button == MouseButtons.Left)
             {
                 MouseDownIndex = listBox1.IndexFromPoint(e.Location);
-                InvalidateItem(MouseDownIndex);
+                if (MouseDownIndex > 0) InvalidateItem(MouseDownIndex);
+                else MouseDownIndex = -1;
             }
         }
 
@@ -80,7 +86,7 @@ namespace ToNSaveManager
             {
                 index = MouseDownIndex;
                 MouseDownIndex = -1;
-                InvalidateItem(index);
+                if (index > -1) InvalidateItem(index);
                 return;
             }
 

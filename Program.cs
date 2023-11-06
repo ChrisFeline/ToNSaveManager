@@ -38,22 +38,33 @@ namespace ToNSaveManager
 
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
         static Font? DefaultFont;
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [In] ref uint pcFonts);
+
         static void InitializeFont()
         {
             using (Stream? fontStream = GetEmbededResource("FiraCode.ttf"))
             {
-                if (fontStream != null)
-                {
-                    byte[] fontBytes = new byte[fontStream.Length];
-                    fontStream.Read(fontBytes, 0, (int)fontStream.Length);
-                    IntPtr fontPtr = Marshal.AllocCoTaskMem(fontBytes.Length);
-                    Marshal.Copy(fontBytes, 0, fontPtr, fontBytes.Length);
-                    FontCollection.AddMemoryFont(fontPtr, fontBytes.Length);
-                    Marshal.FreeCoTaskMem(fontPtr);
-                }
+                if (fontStream != null) try
+                    {
+                        IntPtr data = Marshal.AllocCoTaskMem((int)fontStream.Length);
+                        byte[] fontdata = new byte[fontStream.Length];
+                        fontStream.Read(fontdata, 0, (int)fontStream.Length);
+                        Marshal.Copy(fontdata, 0, data, (int)fontStream.Length);
+                        uint cFonts = 0;
+                        AddFontMemResourceEx(data, (uint)fontdata.Length, IntPtr.Zero, ref cFonts);
+                        FontCollection.AddMemoryFont(data, (int)fontStream.Length);
+                        fontStream.Close();
+                        Marshal.FreeCoTaskMem(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                    }
             }
 
-            DefaultFont = new Font(FontCollection.Families[0], 9f);
+            DefaultFont = new Font(FontCollection.Families[0], 8.999999f, GraphicsUnit.Point);
             Application.SetDefaultFont(DefaultFont);
         }
 

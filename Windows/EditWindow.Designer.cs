@@ -36,6 +36,8 @@
             // textBox1
             // 
             textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            textBox1.BackColor = Color.FromArgb(59, 66, 82);
+            textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(12, 12);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(402, 22);
@@ -43,8 +45,10 @@
             // 
             // button1
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(258, 40);
+            button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(12, 40);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
@@ -54,6 +58,10 @@
             // 
             // button2
             // 
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.ForeColor = Color.White;
             button2.Location = new Point(339, 40);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);

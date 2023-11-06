@@ -7,7 +7,12 @@ namespace ToNSaveManager
 {
     public partial class UpdateWindow : Form
     {
-        private void Print(string message) => textBox1.Text += message + Environment.NewLine;
+        private void Print(string message)
+        {
+            textBox1.AppendText(message + Environment.NewLine);
+            textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.ScrollToCaret();
+        }
 
         string TempFileName;
         GitHubRelease Release;
@@ -31,7 +36,8 @@ namespace ToNSaveManager
             {
                 if (Directory.Exists(temp))
                     Directory.Delete(temp, true);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Failed to do post update.\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -81,9 +87,10 @@ namespace ToNSaveManager
                     File.Move(file, f);
                 }
 
-                worker.ReportProgress(100, ($"Cleaning up."));
+                worker.ReportProgress(100, ($"Cleaning up..."));
                 Directory.Delete(outputDir, true);
 
+                worker.ReportProgress(100, ($"Opening post update, please wait."));
                 ProcessStartInfo processInfo = new ProcessStartInfo("ToNSaveManager.exe", $"--post-update \"{tempDir}\"");
                 Process.Start(processInfo);
 

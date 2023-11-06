@@ -40,7 +40,7 @@
             listBox1.ForeColor = Color.FromArgb(236, 239, 244);
             listBox1.FormattingEnabled = true;
             listBox1.IntegralHeight = false;
-            listBox1.ItemHeight = 15;
+            listBox1.ItemHeight = 1;
             listBox1.Location = new Point(12, 12);
             listBox1.Name = "listBox1";
             listBox1.SelectionMode = SelectionMode.None;
