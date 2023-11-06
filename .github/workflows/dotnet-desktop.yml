@@ -91,6 +91,8 @@ jobs:
         tag_name: ${{ steps.get_date.outputs.date }}
         release_name: Release ${{ steps.get_date.outputs.date }}
         body: |
+          # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip)
+
           [changelog]: <> (START)
           ### Changes in this release
           -
