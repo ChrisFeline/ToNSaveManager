@@ -8,9 +8,9 @@
   # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip "Use this link to download the latest version directly from GitHub.")
 
   [View Releases](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
-  [Latest Build](https://github.com/ChrisFeline/ToNSaveManager/releases/latest "Show information about the latest release.") • 
   [Saving Guide](https://terror.moe/save "HOW TO SAVE & LOAD FOR DUMMIES") • 
-  [How To Use](#-faq)
+  [How To Use](#-faq) • 
+  [Español](README.es.md)
 </div>
 
 <p align="center">

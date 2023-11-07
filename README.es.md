@@ -7,7 +7,6 @@
   # [Descargar](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip "Use this link to download the latest version directly from GitHub.")
 
   [Versiones](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
-  [Reciente](https://github.com/ChrisFeline/ToNSaveManager/releases/latest "Show information about the latest release.") • 
   [Como Utilizar](#-faq)
 </div>
 
