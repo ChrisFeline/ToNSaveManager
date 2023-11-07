@@ -61,6 +61,14 @@
 >
 > El programa es compilado directamente a partir del código fuente utilizando las [Acciones de GitHub](https://github.com/ChrisFeline/ToNSaveManager/blob/a0d503b02fe25fde1b36ca9807756f1830c8e7a8/.github/workflows/dotnet-desktop.yml#L46C45-L46C45).
 
+> ## ¿Por qué no está mostrando nada a pesar de haber jugado Terrors?
+> Existe la posibilidad de que tengas **Logging** desactivado.
+> Puedes activarlo usando tu Menu, ve a configuración, navege hacia abajo y active la opción **Logging**.
+> <details>
+> <summary><b>Mostrar Imagen</b></summary>
+> <p> <img src="Resources/logging.png" height="420px" > </p>
+> </details>
+
 > ## ¿Esto va en contra de los Términos de Servicio de VRChat?
 > - **Respuesta breve:** No
 >

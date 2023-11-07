@@ -62,11 +62,11 @@
 > Initially, the program will scan your logs at `%LOCALAPPDATA%Low\VRChat\VRChat` and recover previous **Save Codes** in your logs. Then it will continue detecting new codes as you play.
 
 > ## Why is it not showing anything despite previously playing Terrors?
-> There's the possibility that you have disabled logging.
+> There's the possibility that you have **logging** disabled.
 > You can enable it by opening your Quick Menu, go to settings, scroll all the way down and turn logging **on**.
 > <details>
 > <summary><b>Show Image</b></summary>
-> <p> <img src="Resources/logging.png" height="421px" > </p>
+> <p> <img src="Resources/logging.png" height="420px" > </p>
 > </details>
 
 > ## Why is the .exe so big? >100MB
