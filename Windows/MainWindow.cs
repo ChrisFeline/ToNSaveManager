@@ -568,6 +568,9 @@ namespace ToNSaveManager
         const string WorldNameKeyword = "Terrors of Nowhere";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
+        const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
+
+        private bool SaveInit;
 
         private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
         {
@@ -575,14 +578,26 @@ namespace ToNSaveManager
             DateTime timestamp = e.Timestamp;
 
             LogWatcher.LogContext context = e.Context;
+
+            /*
             if (string.IsNullOrEmpty(context.DisplayName) ||
                 string.IsNullOrEmpty(context.RoomName) ||
                 !context.RoomName.Contains(WorldNameKeyword))
             {
                 return;
             }
+            */
 
-            int index = line.IndexOf(SaveStartKeyword, 32);
+            int index = line.IndexOf(SaveInitKeyword);
+            if (index > -1)
+            {
+                SaveInit = true;
+                return;
+            }
+
+            if (!SaveInit) return;
+
+            index = line.IndexOf(SaveStartKeyword, 32);
             if (index < 0) return;
 
             index += SaveStartKeyword.Length;
@@ -595,6 +610,7 @@ namespace ToNSaveManager
             string logName = context.FileName.Substring(11, 19);
 
             AddLogEntry(logName, save, timestamp, context);
+            SaveInit = false;
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e)
