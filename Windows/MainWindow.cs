@@ -565,7 +565,6 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
-        const string WorldNameKeyword = "Terrors of Nowhere";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
@@ -578,15 +577,6 @@ namespace ToNSaveManager
             DateTime timestamp = e.Timestamp;
 
             LogWatcher.LogContext context = e.Context;
-
-            /*
-            if (string.IsNullOrEmpty(context.DisplayName) ||
-                string.IsNullOrEmpty(context.RoomName) ||
-                !context.RoomName.Contains(WorldNameKeyword))
-            {
-                return;
-            }
-            */
 
             int index = line.IndexOf(SaveInitKeyword);
             if (index > -1)

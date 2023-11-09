@@ -9,7 +9,9 @@ namespace ToNSaveManager
 {
     internal static class Program
     {
-        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), "ToNSaveManager");
+        internal const string ProgramName = "ToNSaveManager";
+        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
+        static Mutex AppMutex = new Mutex(true, ProgramName);
 
         /// <summary>
         ///  The main entry point for the application.
@@ -17,7 +19,12 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
-            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+            if (!AppMutex.WaitOne(TimeSpan.Zero, true))
+            {
+                // Don't run program if it's already running
+                NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
+                return;
+            }
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -29,9 +36,12 @@ namespace ToNSaveManager
                 Debug.WriteLine("Disposing on exit");
                 FontCollection.Dispose();
                 DefaultFont?.Dispose();
+                AppMutex.ReleaseMutex();
             };
 
             UpdateWindow.RunPostUpdateCheck(args);
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
         }
@@ -122,5 +132,34 @@ namespace ToNSaveManager
 
             return false;
         }
+    }
+
+    public partial class MainWindow : Form
+    {
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == NativeMethods.WM_FOCUSINST) FocusInstance();
+            base.WndProc(ref m);
+        }
+
+        private void FocusInstance()
+        {
+            if (WindowState == FormWindowState.Minimized)
+                WindowState = FormWindowState.Normal;
+
+            bool top = TopMost;
+            TopMost = true;
+            TopMost = top;
+        }
+    }
+
+    internal class NativeMethods
+    {
+        public const int HWND_BROADCAST = 0xffff;
+        public static readonly int WM_FOCUSINST = RegisterWindowMessage("WM_FOCUSINST");
+        [DllImport("user32")]
+        public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
+        [DllImport("user32")]
+        public static extern int RegisterWindowMessage(string message);
     }
 }

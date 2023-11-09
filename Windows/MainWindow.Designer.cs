@@ -396,7 +396,6 @@
         private ToolStripMenuItem ctxMenuSettingsClearSound;
         private ToolStripMenuItem ctxMenuSettingsUpdate;
         private ToolStripMenuItem ctxMenuSettingsXSOverlay;
-        private ToolStripMenuItem dateFormatToolStripMenuItem;
         private ToolStripMenuItem ctxMenuSettings24Hour;
         private ToolStripMenuItem ctxMenuSettingsInvertMD;
         private ToolStripSeparator toolStripMenuItem4;
