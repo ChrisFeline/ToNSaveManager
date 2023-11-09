@@ -49,8 +49,7 @@ namespace ToNSaveManager
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
         static Font? DefaultFont;
 
-        [DllImport("gdi32.dll")]
-        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [In] ref uint pcFonts);
+        
 
         static void InitializeFont()
         {
@@ -63,7 +62,7 @@ namespace ToNSaveManager
                         fontStream.Read(fontdata, 0, (int)fontStream.Length);
                         Marshal.Copy(fontdata, 0, data, (int)fontStream.Length);
                         uint cFonts = 0;
-                        AddFontMemResourceEx(data, (uint)fontdata.Length, IntPtr.Zero, ref cFonts);
+                        NativeMethods.AddFontMemResourceEx(data, (uint)fontdata.Length, IntPtr.Zero, ref cFonts);
                         FontCollection.AddMemoryFont(data, (int)fontStream.Length);
                         fontStream.Close();
                         Marshal.FreeCoTaskMem(data);
@@ -147,9 +146,7 @@ namespace ToNSaveManager
             if (WindowState == FormWindowState.Minimized)
                 WindowState = FormWindowState.Normal;
 
-            bool top = TopMost;
-            TopMost = true;
-            TopMost = top;
+            NativeMethods.SetForegroundWindow(this.Handle);
         }
     }
 
@@ -161,5 +158,9 @@ namespace ToNSaveManager
         public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
         [DllImport("user32")]
         public static extern int RegisterWindowMessage(string message);
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [In] ref uint pcFonts);
     }
 }
