@@ -56,13 +56,14 @@ namespace ToNSaveManager.Models
 
         private int FindIndex(string content, DateTime timestamp)
         {
+            timestamp = timestamp.ToUniversalTime();
             for (int i = 0; i < Count; i++)
             {
                 Entry e = Entries[i]; // Prevent doubles
                 if (e.Content.Equals(content, StringComparison.OrdinalIgnoreCase))
                     return -1;
 
-                if (e.Timestamp < timestamp)
+                if (e.Timestamp.ToUniversalTime() < timestamp)
                     return i;
             }
 

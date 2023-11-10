@@ -14,6 +14,8 @@ namespace ToNSaveManager
             textBox1.ScrollToCaret();
         }
 
+        const string OldTempDir = ".temp";
+
         string TempFileName;
         GitHubRelease Release;
         GitHubRelease.Asset Asset;
@@ -71,8 +73,7 @@ namespace ToNSaveManager
                 ZipFile.ExtractToDirectory(TempFileName, outputDir, true);
                 File.Delete(TempFileName); // .zip cleanup
 
-                const string tempDir = ".temp";
-                if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
+                if (!Directory.Exists(OldTempDir)) Directory.CreateDirectory(OldTempDir);
 
                 string[] files = Directory.GetFiles(outputDir);
                 worker.ReportProgress(90, $"Decompressed '{files.Length}' files...");
@@ -82,18 +83,13 @@ namespace ToNSaveManager
                     worker.ReportProgress(95, ($"  > {file}"));
                     string f = Path.GetFileName(file);
                     if (File.Exists(f))
-                        File.Move(f, Path.Combine(tempDir, f), true);
+                        File.Move(f, Path.Combine(OldTempDir, f), true);
 
                     File.Move(file, f);
                 }
 
                 worker.ReportProgress(100, ($"Cleaning up..."));
                 Directory.Delete(outputDir, true);
-
-                worker.ReportProgress(100, ($"Opening post update, please wait."));
-                ProcessStartInfo processInfo = new ProcessStartInfo("ToNSaveManager.exe", $"--post-update \"{tempDir}\"");
-                Process.Start(processInfo);
-
                 e.Result = null;
             }
             catch (Exception ex)
@@ -130,6 +126,13 @@ namespace ToNSaveManager
                 return;
             }
 
+            Print(string.Empty);
+            Print("Running post update... please wait...");
+            Program.ReleaseMutex(); // Release mutex so downloaded app opens properly
+            // Start new process with --post-update
+            ProcessStartInfo processInfo = new ProcessStartInfo("ToNSaveManager.exe", $"--post-update \"{OldTempDir}\"");
+            Process.Start(processInfo);
+            // Exit this app
             Application.Exit();
         }
     }

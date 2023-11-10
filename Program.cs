@@ -11,7 +11,21 @@ namespace ToNSaveManager
     {
         internal const string ProgramName = "ToNSaveManager";
         internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
-        static Mutex AppMutex = new Mutex(true, ProgramName);
+
+        internal static Mutex? AppMutex = new Mutex(true, ProgramName);
+        internal static void ReleaseMutex()
+        {
+            if (AppMutex != null)
+            {
+                AppMutex.ReleaseMutex();
+                AppMutex.Dispose();
+                AppMutex = null;
+            }
+        }
+        internal static bool CheckMutex()
+        {
+            return AppMutex != null && !AppMutex.WaitOne(TimeSpan.Zero, true);
+        }
 
         /// <summary>
         ///  The main entry point for the application.
@@ -19,15 +33,15 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
-            if (!AppMutex.WaitOne(TimeSpan.Zero, true))
+            UpdateWindow.RunPostUpdateCheck(args);
+
+            if (CheckMutex())
             {
-                // Don't run program if it's already running
+                // Don't run program if it's already running, instead we focus the already existing window
                 NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
                 return;
             }
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.SetCompatibleTextRenderingDefault(true);
             InitializeFont();
@@ -36,10 +50,9 @@ namespace ToNSaveManager
                 Debug.WriteLine("Disposing on exit");
                 FontCollection.Dispose();
                 DefaultFont?.Dispose();
-                AppMutex.ReleaseMutex();
+                ReleaseMutex();
             };
 
-            UpdateWindow.RunPostUpdateCheck(args);
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             if (!StartCheckForUpdate())
@@ -48,8 +61,6 @@ namespace ToNSaveManager
 
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
         static Font? DefaultFont;
-
-        
 
         static void InitializeFont()
         {
