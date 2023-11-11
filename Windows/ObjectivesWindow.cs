@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Security.AccessControl;
-using System.Windows.Forms;
-using ToNSaveManager.Extensions;
+﻿using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 
 namespace ToNSaveManager
@@ -22,7 +19,7 @@ namespace ToNSaveManager
 
             if (Instance.Visible)
             {
-                Instance.Close();
+                Instance.BringToFront();
                 return;
             }
 
@@ -31,7 +28,7 @@ namespace ToNSaveManager
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
                 parent.Location.Y + (parent.Height - Instance.Height) / 2
             );
-            Instance.Show(parent);
+            Instance.Show();
         }
 
         private void ObjectivesWindow_Load(object sender, EventArgs e)
