@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace ToNSaveManager.Models
 {
@@ -35,9 +34,9 @@ namespace ToNSaveManager.Models
         public int XSOverlayPort = Utils.XSOverlay.DefaultPort;
 
         /// Time format settings.
-        public bool Use24Hour { get; set; }
+        public bool Use24Hour { get; set; } = true;
+        public bool ShowSeconds { get; set; } = true;
         public bool InvertMD { get; set; }
-        public bool ShowSeconds { get; set; }
 
         /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
