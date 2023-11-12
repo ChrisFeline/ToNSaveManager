@@ -103,6 +103,7 @@
             // 
             // checkPlayAudio
             // 
+            checkPlayAudio.AutoCheck = false;
             checkPlayAudio.Dock = DockStyle.Top;
             checkPlayAudio.Location = new Point(3, 36);
             checkPlayAudio.Name = "checkPlayAudio";
@@ -112,6 +113,7 @@
             checkPlayAudio.Tag = "PlayAudio";
             checkPlayAudio.Text = "Play Sound (default.wav)";
             checkPlayAudio.UseVisualStyleBackColor = true;
+            checkPlayAudio.MouseDown += checkPlayAudio_MouseDown;
             checkPlayAudio.MouseUp += checkPlayAudio_MouseUp;
             // 
             // checkXSOverlay
@@ -180,11 +182,11 @@
             // 
             // btnCheckForUpdates
             // 
-            btnCheckForUpdates.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnCheckForUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 208);
+            btnCheckForUpdates.Location = new Point(8, 204);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -194,11 +196,11 @@
             // 
             // btnOpenData
             // 
-            btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 208);
+            btnOpenData.Location = new Point(223, 204);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -213,7 +215,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 243);
+            ClientSize = new Size(284, 236);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
             Controls.Add(groupBox1);

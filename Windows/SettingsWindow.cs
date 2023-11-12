@@ -1,14 +1,21 @@
-﻿using ToNSaveManager.Extensions;
+﻿using System.Diagnostics;
+using ToNSaveManager.Extensions;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
 {
     public partial class SettingsWindow : Form
     {
+        #region Initialization
         static SettingsWindow? Instance;
+
+        readonly Timer ClickTimer = new Timer() { Interval = 200 };
+        readonly Stopwatch Stopwatch = new Stopwatch();
 
         public SettingsWindow()
         {
             InitializeComponent();
+            ClickTimer.Tick += ClickTimer_Tick;
         }
 
         public static void Open(Form parent)
@@ -28,7 +35,10 @@ namespace ToNSaveManager.Windows
             );
             Instance.Show();
         }
+        #endregion
 
+        #region Form Events
+        // Subscribe to events on load
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
             BindControlsRecursive(Controls);
@@ -41,7 +51,16 @@ namespace ToNSaveManager.Windows
             checkInvertMD.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowSeconds.CheckedChanged += TimeFormat_CheckedChanged;
             // Tooltips
-            toolTip.SetToolTip(checkPlayAudio, "Right click for custom audio file.");
+            toolTip.SetToolTip(checkPlayAudio, "Double click to select custom audio file.\nRight click to reset back to 'default.wav'");
+            toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
+        }
+
+        private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ClickTimer.Dispose();
+
+            MainWindow.RefreshLists();
+            MainWindow.ResetNotification();
         }
 
         private void TimeFormat_CheckedChanged(object? sender, EventArgs e) => MainWindow.RefreshLists();
@@ -62,28 +81,51 @@ namespace ToNSaveManager.Windows
             MainWindow.OpenExternalLink(Program.DataLocation);
         }
 
-        private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
+        private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e)
         {
-            MainWindow.RefreshLists();
-            MainWindow.ResetNotification();
+            if (e.Button != MouseButtons.Left) return;
+            Stopwatch.Start();
+            CancelNext = false;
         }
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right) return;
-
-            if (!string.IsNullOrEmpty(MainWindow.Settings.AudioLocation))
+            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(MainWindow.Settings.AudioLocation))
             {
-                var result = MessageBox.Show($"Reset audio file back to 'default.wav'?\n\nCurrent Audio File:\n{MainWindow.Settings.AudioLocation}", "Clear Custom Sound", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    MainWindow.Settings.AudioLocation = null;
-                    MainWindow.Settings.Export();
-                    PostAudioLocationSet();
-                }
-
+                MainWindow.Settings.AudioLocation = null;
+                MainWindow.Settings.Export();
+                PostAudioLocationSet();
                 return;
             }
+
+            if (e.Button != MouseButtons.Left) return;
+
+            Stopwatch.Stop();
+            long elapsed = Stopwatch.ElapsedMilliseconds;
+            Stopwatch.Reset();
+
+            if (CancelNext)
+            {
+                CancelNext = false;
+                return;
+            }
+
+            if (elapsed > 210)
+            {
+                TogglePlayAudio();
+                return;
+            }
+
+            if (!DoubleClickCheck)
+            {
+                DoubleClickCheck = true;
+                ClickTimer.Stop();
+                ClickTimer.Start();
+                return;
+            }
+
+            DoubleClickCheck = false;
+            ClickTimer.Stop();
 
             using (OpenFileDialog fileDialog = new OpenFileDialog())
             {
@@ -98,6 +140,27 @@ namespace ToNSaveManager.Windows
                     PostAudioLocationSet();
                 }
             }
+        }
+
+        // Double click
+        private bool DoubleClickCheck = false;
+        private bool CancelNext = false;
+        private void ClickTimer_Tick(object? sender, EventArgs e)
+        {
+            ClickTimer.Stop();
+            if (DoubleClickCheck)
+            {
+                DoubleClickCheck = false;
+                CancelNext = true;
+                TogglePlayAudio();
+            }
+        }
+        #endregion
+
+        #region Utils
+        private void TogglePlayAudio()
+        {
+            checkPlayAudio.Checked = !checkPlayAudio.Checked;
         }
 
         private void BindControlsRecursive(Control.ControlCollection controls)
@@ -124,5 +187,6 @@ namespace ToNSaveManager.Windows
             bool hasLocation = string.IsNullOrEmpty(MainWindow.Settings.AudioLocation);
             checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(MainWindow.Settings.AudioLocation)) + ")";
         }
+        #endregion
     }
 }

@@ -94,14 +94,19 @@ namespace ToNSaveManager
                 .GetManifestResourceStream($"ToNSaveManager.Resources.{name}");
         }
 
+        internal static Version? GetVersion()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetName().Version;
+        }
+
         /// <summary>
         /// Check for updates on the GitHub repo.
         /// </summary>
         /// <param name="showUpToDate">Shows a message if there's no updates available.</param>
         internal static bool StartCheckForUpdate(bool showUpToDate = false)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Version? currentVersion = assembly.GetName().Version;
+            Version? currentVersion = GetVersion();
             if (currentVersion == null) return false; // No current version?
 
             GitHubRelease? release = GitHubRelease.GetLatest();
