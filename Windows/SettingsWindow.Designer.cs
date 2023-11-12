@@ -70,7 +70,7 @@
             checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
             checkPlayerNames.Size = new Size(262, 18);
             checkPlayerNames.TabIndex = 1;
-            checkPlayerNames.Tag = "SaveNames";
+            checkPlayerNames.Tag = "SaveNames|Save codes will show players in the instance at the time of saving.";
             checkPlayerNames.Text = "Collect Player Names";
             checkPlayerNames.UseVisualStyleBackColor = true;
             // 
@@ -82,7 +82,7 @@
             checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
             checkAutoCopy.Size = new Size(262, 18);
             checkAutoCopy.TabIndex = 0;
-            checkAutoCopy.Tag = "AutoCopy";
+            checkAutoCopy.Tag = "AutoCopy|Automatically copy new save codes to clipboard.";
             checkAutoCopy.Text = "Auto Clipboard Copy";
             checkAutoCopy.UseVisualStyleBackColor = true;
             // 
@@ -110,7 +110,7 @@
             checkPlayAudio.Padding = new Padding(3, 0, 3, 0);
             checkPlayAudio.Size = new Size(262, 18);
             checkPlayAudio.TabIndex = 1;
-            checkPlayAudio.Tag = "PlayAudio";
+            checkPlayAudio.Tag = "PlayAudio|Double click to select custom audio file.\\nRight click to reset back to 'default.wav'";
             checkPlayAudio.Text = "Play Sound (default.wav)";
             checkPlayAudio.UseVisualStyleBackColor = true;
             checkPlayAudio.MouseDown += checkPlayAudio_MouseDown;
@@ -124,7 +124,7 @@
             checkXSOverlay.Padding = new Padding(3, 0, 3, 0);
             checkXSOverlay.Size = new Size(262, 18);
             checkXSOverlay.TabIndex = 0;
-            checkXSOverlay.Tag = "XSOverlay";
+            checkXSOverlay.Tag = "XSOverlay|XSOverlay popup notifications when saving.";
             checkXSOverlay.Text = "XSOverlay Popup";
             checkXSOverlay.UseVisualStyleBackColor = true;
             // 
@@ -204,6 +204,7 @@
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
+            btnOpenData.Tag = "|Open local app data folder.";
             btnOpenData.Text = "Data";
             btnOpenData.UseVisualStyleBackColor = true;
             btnOpenData.Click += btnOpenData_Click;

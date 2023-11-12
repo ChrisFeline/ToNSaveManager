@@ -51,7 +51,7 @@ namespace ToNSaveManager.Windows
             checkInvertMD.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowSeconds.CheckedChanged += TimeFormat_CheckedChanged;
             // Tooltips
-            toolTip.SetToolTip(checkPlayAudio, "Double click to select custom audio file.\nRight click to reset back to 'default.wav'");
+            // toolTip.SetToolTip(checkPlayAudio, "Double click to select custom audio file.\nRight click to reset back to 'default.wav'");
             toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
         }
 
@@ -167,13 +167,24 @@ namespace ToNSaveManager.Windows
         {
             foreach (Control c in controls)
             {
+                string? tag = c.Tag?.ToString();
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    int index = tag.IndexOf('|', StringComparison.InvariantCulture);
+                    if (index > -1)
+                    {
+                        string tooltip = tag.Substring(index + 1).Replace("\\n", Environment.NewLine, StringComparison.Ordinal);
+                        tag = tag.Substring(0, index);
+                        toolTip.SetToolTip(c, tooltip);
+                    }
+                }
+
                 switch (c)
                 {
                     case GroupBox g:
                         BindControlsRecursive(g.Controls);
                         break;
                     case CheckBox b:
-                        string? tag = b.Tag?.ToString();
                         if (!string.IsNullOrEmpty(tag))
                             b.BindSettings(tag);
                         break;
