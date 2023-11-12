@@ -11,7 +11,7 @@ namespace ToNSaveManager
     {
         #region Initialization
         internal static readonly LogWatcher LogWatcher = new LogWatcher();
-        internal static readonly AppSettings Settings = AppSettings.Import();
+        // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
         internal static MainWindow? Instance;
         private static bool Started;
@@ -39,7 +39,7 @@ namespace ToNSaveManager
             OriginalTitle = this.Text;
             this.Text = "Loading, please wait...";
 
-            XSOverlay.SetPort(Settings.XSOverlayPort);
+            XSOverlay.SetPort(Settings.Get.XSOverlayPort);
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -215,7 +215,7 @@ namespace ToNSaveManager
                 }
 
                 Entry entry = (Entry)listBoxEntries.Items[index];
-                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.SaveNames));
+                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames));
             }
         }
 
@@ -363,13 +363,13 @@ namespace ToNSaveManager
         }
         internal static void PlayNotification()
         {
-            if (!Started || !Settings.PlayAudio) return;
+            if (!Started || !Settings.Get.PlayAudio) return;
 
             try
             {
-                if (!string.IsNullOrEmpty(Settings.AudioLocation) && File.Exists(Settings.AudioLocation))
+                if (!string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation))
                 {
-                    CustomNotificationPlayer.SoundLocation = Settings.AudioLocation;
+                    CustomNotificationPlayer.SoundLocation = Settings.Get.AudioLocation;
                     CustomNotificationPlayer.Play();
                     return;
                 }
@@ -381,7 +381,7 @@ namespace ToNSaveManager
         }
         internal static void SendXSNotification(bool test = false)
         {
-            if (!Started || !Settings.XSOverlay) return;
+            if (!Started || !Settings.Get.XSOverlay) return;
             const string message = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>";
             const string msgtest = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>";
 
@@ -530,7 +530,7 @@ namespace ToNSaveManager
             if (ind < 0) return; // Not added, duplicate
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
-            if (Settings.SaveNames) entry.Players = context.GetRoomString();
+            if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);
@@ -561,7 +561,7 @@ namespace ToNSaveManager
 
         private void CopyRecent()
         {
-            if (!Settings.AutoCopy || RecentData == null || !RecentData.Fresh) return;
+            if (!Settings.Get.AutoCopy || RecentData == null || !RecentData.Fresh) return;
 
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;

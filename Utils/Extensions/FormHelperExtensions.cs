@@ -7,16 +7,16 @@ namespace ToNSaveManager.Extensions
     {
         public static void BindSettings(this CheckBox listBox, string memberName)
         {
-            PropertyInfo? property = typeof(AppSettings).GetProperty(memberName, BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo? property = typeof(Settings).GetProperty(memberName, BindingFlags.Public | BindingFlags.Instance);
             if (property == null)
                 throw new NullReferenceException("Member name not found: " + memberName);
 
-            object? value = property.GetValue(MainWindow.Settings);
+            object? value = property.GetValue(Settings.Get);
             
             listBox.Checked = value != null && (bool)value;
             listBox.CheckedChanged += (o, e) => {
-                property.SetValue(MainWindow.Settings, listBox.Checked);
-                MainWindow.Settings.Export();
+                property.SetValue(Settings.Get, listBox.Checked);
+                Settings.Export();
             };
         }
 

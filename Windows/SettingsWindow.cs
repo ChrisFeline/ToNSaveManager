@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ToNSaveManager.Extensions;
+using ToNSaveManager.Models;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
@@ -50,8 +51,10 @@ namespace ToNSaveManager.Windows
             check24Hour.CheckedChanged += TimeFormat_CheckedChanged;
             checkInvertMD.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowSeconds.CheckedChanged += TimeFormat_CheckedChanged;
+            // Refresh list when style is changed
+            checkColorObjectives.CheckedChanged += CheckColorObjectives_CheckedChanged;
+
             // Tooltips
-            // toolTip.SetToolTip(checkPlayAudio, "Double click to select custom audio file.\nRight click to reset back to 'default.wav'");
             toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
         }
 
@@ -90,10 +93,10 @@ namespace ToNSaveManager.Windows
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(MainWindow.Settings.AudioLocation))
+            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation))
             {
-                MainWindow.Settings.AudioLocation = null;
-                MainWindow.Settings.Export();
+                Settings.Get.AudioLocation = null;
+                Settings.Export();
                 PostAudioLocationSet();
                 return;
             }
@@ -135,11 +138,16 @@ namespace ToNSaveManager.Windows
 
                 if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName))
                 {
-                    MainWindow.Settings.AudioLocation = fileDialog.FileName;
-                    MainWindow.Settings.Export();
+                    Settings.Get.AudioLocation = fileDialog.FileName;
+                    Settings.Export();
                     PostAudioLocationSet();
                 }
             }
+        }
+
+        private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e)
+        {
+            ObjectivesWindow.RefreshLists();
         }
 
         // Double click
@@ -195,8 +203,8 @@ namespace ToNSaveManager.Windows
 
         private void PostAudioLocationSet()
         {
-            bool hasLocation = string.IsNullOrEmpty(MainWindow.Settings.AudioLocation);
-            checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(MainWindow.Settings.AudioLocation)) + ")";
+            bool hasLocation = string.IsNullOrEmpty(Settings.Get.AudioLocation);
+            checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(Settings.Get.AudioLocation)) + ")";
         }
         #endregion
     }

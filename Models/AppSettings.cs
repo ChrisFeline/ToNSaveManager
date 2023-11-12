@@ -1,11 +1,21 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace ToNSaveManager.Models
 {
-    internal class AppSettings
+    internal class Settings
     {
+        internal static readonly Settings Get;
+        internal static void Export() => Get.TryExport();
+
         const string LegacyDestination = "settings.json";
-        static string Destination = "Settings.json";
+        static string Destination;
+
+        static Settings()
+        {
+            Destination = "Settings.json";
+            Get = Import();
+        }
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -39,6 +49,11 @@ namespace ToNSaveManager.Models
         public bool InvertMD { get; set; }
 
         /// <summary>
+        /// If true, objectives items will be colored like the items in game.
+        /// </summary>
+        public bool ColorfulObjectives { get; set; } = true;
+
+        /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
         /// </summary>
         public string? IgnoreRelease { get; set; }
@@ -47,10 +62,10 @@ namespace ToNSaveManager.Models
         /// Import a settings instance from the local json file
         /// </summary>
         /// <returns>Deserialized Settings object, or else Default Settings object.</returns>
-        public static AppSettings Import()
+        public static Settings Import()
         {
             string destination = Path.Combine(Program.DataLocation, Destination);
-            AppSettings? settings;
+            Settings? settings;
 
             try
             {
@@ -64,20 +79,20 @@ namespace ToNSaveManager.Models
                 }
 
                 Destination = destination;
-                if (!File.Exists(Destination)) return new AppSettings();
+                if (!File.Exists(Destination)) return new Settings();
 
                 string content = File.ReadAllText(Destination);
-                settings = JsonConvert.DeserializeObject<AppSettings>(content);
+                settings = JsonConvert.DeserializeObject<Settings>(content);
             }
             catch
             {
                 settings = null;
             }
 
-            return settings ?? new AppSettings();
+            return settings ?? new Settings();
         }
 
-        public void Export()
+        private void TryExport()
         {
             try
             {

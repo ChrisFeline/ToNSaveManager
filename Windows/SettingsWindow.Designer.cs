@@ -42,9 +42,12 @@
             btnCheckForUpdates = new Button();
             btnOpenData = new Button();
             toolTip = new ToolTip(components);
+            groupBox2 = new GroupBox();
+            checkColorObjectives = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxGeneral
@@ -182,11 +185,11 @@
             // 
             // btnCheckForUpdates
             // 
-            btnCheckForUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnCheckForUpdates.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 204);
+            btnCheckForUpdates.Location = new Point(8, 243);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -196,11 +199,11 @@
             // 
             // btnOpenData
             // 
-            btnOpenData.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 204);
+            btnOpenData.Location = new Point(223, 243);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -209,6 +212,32 @@
             btnOpenData.UseVisualStyleBackColor = true;
             btnOpenData.Click += btnOpenData_Click;
             // 
+            // groupBox2
+            // 
+            groupBox2.AutoSize = true;
+            groupBox2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox2.Controls.Add(checkColorObjectives);
+            groupBox2.Dock = DockStyle.Top;
+            groupBox2.ForeColor = Color.White;
+            groupBox2.Location = new Point(8, 197);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(268, 39);
+            groupBox2.TabIndex = 6;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Style";
+            // 
+            // checkColorObjectives
+            // 
+            checkColorObjectives.Dock = DockStyle.Top;
+            checkColorObjectives.Location = new Point(3, 18);
+            checkColorObjectives.Name = "checkColorObjectives";
+            checkColorObjectives.Padding = new Padding(3, 0, 3, 0);
+            checkColorObjectives.Size = new Size(262, 18);
+            checkColorObjectives.TabIndex = 0;
+            checkColorObjectives.Tag = "ColorfulObjectives|Items in the 'Objectives' window will show colors that correspond to those of the items in the game.";
+            checkColorObjectives.Text = "Colorful Objectives";
+            checkColorObjectives.UseVisualStyleBackColor = true;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -216,7 +245,8 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 236);
+            ClientSize = new Size(284, 275);
+            Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
             Controls.Add(groupBox1);
@@ -238,6 +268,7 @@
             groupBoxGeneral.ResumeLayout(false);
             groupBoxNotifications.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -256,5 +287,7 @@
         private CheckBox check24Hour;
         private Button btnOpenData;
         private ToolTip toolTip;
+        private GroupBox groupBox2;
+        private CheckBox checkColorObjectives;
     }
 }

@@ -110,7 +110,7 @@ namespace ToNSaveManager
             if (currentVersion == null) return false; // No current version?
 
             GitHubRelease? release = GitHubRelease.GetLatest();
-            if (release == null || release.assets.Length == 0 || (!showUpToDate && release.tag_name == MainWindow.Settings.IgnoreRelease)) return false;
+            if (release == null || release.assets.Length == 0 || (!showUpToDate && release.tag_name == Settings.Get.IgnoreRelease)) return false;
             GitHubRelease.Asset? asset = release.assets.FirstOrDefault(v => v.name == "ToNSaveManager.zip" && v.content_type == "application/zip" && v.state == "uploaded");
             if (asset == null) return false;
 
@@ -137,8 +137,8 @@ namespace ToNSaveManager
                     return true;
                 } else if (!showUpToDate)
                 {
-                    MainWindow.Settings.IgnoreRelease = release.tag_name;
-                    MainWindow.Settings.Export();
+                    Settings.Get.IgnoreRelease = release.tag_name;
+                    Settings.Export();
                 }
             } else if (showUpToDate)
             {
