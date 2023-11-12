@@ -34,7 +34,7 @@ namespace ToNSaveManager.Windows
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
                 parent.Location.Y + (parent.Height - Instance.Height) / 2
             );
-            Instance.Show();
+            Instance.Show(parent);
         }
         #endregion
 

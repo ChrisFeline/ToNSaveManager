@@ -28,7 +28,7 @@ namespace ToNSaveManager
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
                 parent.Location.Y + (parent.Height - Instance.Height) / 2
             );
-            Instance.Show();
+            Instance.Show(parent);
         }
 
         internal static void RefreshLists()
@@ -61,7 +61,7 @@ namespace ToNSaveManager
 
             if (objective.IsSeparator) itemColor = e.ForeColor;
             else if (e.Index == MouseDownIndex) itemColor = MouseRightClick ? Color.Cyan : Color.Red;
-            else itemColor = objective.IsCompleted ? Color.FromArgb(122,122,122) : (Settings.Get.ColorfulObjectives ? objective.DisplayColor : e.ForeColor);
+            else itemColor = objective.IsCompleted ? Color.FromArgb(122, 122, 122) : (Settings.Get.ColorfulObjectives ? objective.DisplayColor : e.ForeColor);
 
             int maxWidth = e.Bounds.Width;
             TextRenderer.DrawText(e.Graphics, MainWindow.GetTruncatedText(itemText, itemFont, maxWidth), itemFont, e.Bounds, itemColor,

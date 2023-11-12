@@ -389,7 +389,7 @@ namespace ToNSaveManager
             else XSOverlay.Send(message);
         }
         #endregion
-        
+
         internal static void RefreshLists()
         {
             Instance?.listBoxKeys.Refresh();
