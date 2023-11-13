@@ -28,7 +28,7 @@ namespace ToNSaveManager
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
                 parent.Location.Y + (parent.Height - Instance.Height) / 2
             );
-            Instance.Show(parent);
+            Instance.Show(); // Don't parent
         }
 
         internal static void RefreshLists()
