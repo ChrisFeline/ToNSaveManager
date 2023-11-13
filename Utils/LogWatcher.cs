@@ -2,13 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
     using ToNSaveManager.Models;
-    using static ToNSaveManager.Utils.LogWatcher;
     using Timer = System.Windows.Forms.Timer;
 
     // Based on: https://github.com/vrcx-team/VRCX/blob/634f465927bfaef51bc04e67cf1659170953fac9/LogWatcher.cs
