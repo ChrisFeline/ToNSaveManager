@@ -1,149 +1,76 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace ToNSaveManager.Models
 {
-    internal class AppSettings
+    internal class Settings
     {
+        internal static readonly Settings Get;
+        internal static void Export() => Get.TryExport();
+
         const string LegacyDestination = "settings.json";
-        static string Destination = "Settings.json";
+        static string Destination;
 
-        private bool IsDirty;
-
-        [JsonIgnore] private bool m_AutoCopy = false;
-        [JsonIgnore] private bool m_SaveNames = false;
-        [JsonIgnore] private bool m_PlayAudio = false;
-        [JsonIgnore] private string? m_AudioLocation = null;
-        [JsonIgnore] private string? m_IgnoreRelease = null;
-        [JsonIgnore] private bool m_XSOverlay = false;
-
-        [JsonIgnore] private bool m_24Hour = true;
-        [JsonIgnore] private bool m_InvertMD = false;
-        [JsonIgnore] private bool m_ShowSeconds = true;
+        static Settings()
+        {
+            Destination = "Settings.json";
+            Get = Import();
+        }
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
-        public bool AutoCopy
-        {
-            get { return m_AutoCopy; }
-            set
-            {
-                if (value == m_AutoCopy) return;
-                m_AutoCopy = value;
-                IsDirty = true;
-            }
-        }
+        public bool AutoCopy { get; set; }
 
         /// <summary>
         /// Play notification audio when a new save is detected.
         /// </summary>
-        public bool PlayAudio
-        {
-            get { return m_PlayAudio; }
-            set
-            {
-                if (value == m_PlayAudio) return;
-                m_PlayAudio = value;
-                IsDirty = true;
-            }
-        }
+        public bool PlayAudio { get; set; }
 
         /// <summary>
         /// Custom audio location, must be .wav
         /// </summary>
-        public string? AudioLocation
-        {
-            get { return m_AudioLocation; }
-            set
-            {
-                if (value == m_AudioLocation) return;
-                m_AudioLocation = value;
-                IsDirty = true;
-            }
-        }
+        public string? AudioLocation { get; set; }
 
         /// <summary>
         /// Saves a list of players that were in the same room as you at the time of the save.
         /// </summary>
-        public bool SaveNames
-        {
-            get { return m_SaveNames; }
-            set
-            {
-                if (value == m_SaveNames) return;
-                m_SaveNames = value;
-                IsDirty = true;
-            }
-        }
+        public bool SaveNames { get; set; }
 
         /// <summary>
         /// Send popup notifications to XSOverlay.
         /// </summary>
-        public bool XSOverlay
-        {
-            get { return m_XSOverlay; }
-            set
-            {
-                if (value == m_XSOverlay) return;
-                m_XSOverlay = value;
-                IsDirty = true;
-            }
-        }
+        public bool XSOverlay { get; set; }
         public int XSOverlayPort = Utils.XSOverlay.DefaultPort;
 
-        public bool Use24Hour
-        {
-            get { return m_24Hour; }
-            set
-            {
-                if (value == m_24Hour) return;
-                m_24Hour = value;
-                IsDirty = true;
-            }
-        }
-        public bool InvertMD
-        {
-            get { return m_InvertMD; }
-            set
-            {
-                if (value == m_InvertMD) return;
-                m_InvertMD = value;
-                IsDirty = true;
-            }
-        }
-        public bool ShowSeconds
-        {
-            get { return m_ShowSeconds; }
-            set
-            {
-                if (value == m_ShowSeconds) return;
-                m_ShowSeconds = value;
-                IsDirty = true;
-            }
-        }
+        /// Time format settings.
+        public bool Use24Hour { get; set; } = true;
+        public bool ShowSeconds { get; set; } = true;
+        public bool InvertMD { get; set; }
+
+        /// <summary>
+        /// If true, objectives items will be colored like the items in game.
+        /// </summary>
+        public bool ColorfulObjectives { get; set; } = true;
 
         /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
         /// </summary>
-        public string? IgnoreRelease
-        {
-            get { return m_IgnoreRelease; }
-            set
-            {
-                if (value == m_IgnoreRelease) return;
-                m_IgnoreRelease = value;
-                IsDirty = true;
-            }
-        }
+        public string? IgnoreRelease { get; set; }
+
+        /// <summary>
+        /// Catch the logs generated by pressing . in the world.
+        /// </summary>
+        public bool RecordInstanceLogs { get; set; } = false;
 
         /// <summary>
         /// Import a settings instance from the local json file
         /// </summary>
         /// <returns>Deserialized Settings object, or else Default Settings object.</returns>
-        public static AppSettings Import()
+        public static Settings Import()
         {
             string destination = Path.Combine(Program.DataLocation, Destination);
-            AppSettings? settings;
+            Settings? settings;
 
             try
             {
@@ -157,23 +84,21 @@ namespace ToNSaveManager.Models
                 }
 
                 Destination = destination;
-                if (!File.Exists(Destination)) return new AppSettings();
+                if (!File.Exists(Destination)) return new Settings();
 
                 string content = File.ReadAllText(Destination);
-                settings = JsonConvert.DeserializeObject<AppSettings>(content);
+                settings = JsonConvert.DeserializeObject<Settings>(content);
             }
             catch
             {
                 settings = null;
             }
 
-            return settings ?? new AppSettings();
+            return settings ?? new Settings();
         }
 
-        public void Export()
+        private void TryExport()
         {
-            if (!IsDirty) return;
-
             try
             {
                 string json = JsonConvert.SerializeObject(this);
@@ -183,8 +108,6 @@ namespace ToNSaveManager.Models
             {
                 MessageBox.Show("An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            IsDirty = false;
         }
     }
 }

@@ -15,9 +15,9 @@ namespace ToNSaveManager.Models
 
         internal static string GetDateFormat()
         {
-            bool use24Hour = MainWindow.Settings.Use24Hour;
-            bool invertMD = MainWindow.Settings.InvertMD;
-            bool showSeconds = MainWindow.Settings.ShowSeconds;
+            bool use24Hour = Settings.Get.Use24Hour;
+            bool invertMD = Settings.Get.InvertMD;
+            bool showSeconds = Settings.Get.ShowSeconds;
             return (invertMD ? DateFormat_DD_MM : Date_MM_DD) + " | " +
                 // Append Time
                 (use24Hour ?

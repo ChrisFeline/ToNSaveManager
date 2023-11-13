@@ -1,16 +1,10 @@
-using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Media;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Windows.Forms;
+using System.Text;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ToNSaveManager.Windows;
 
 namespace ToNSaveManager
 {
@@ -18,15 +12,17 @@ namespace ToNSaveManager
     {
         #region Initialization
         internal static readonly LogWatcher LogWatcher = new LogWatcher();
-        internal static readonly AppSettings Settings = AppSettings.Import();
+        // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
-        private bool Started;
+        internal static MainWindow? Instance;
+        private static bool Started;
 
         public MainWindow()
         {
             InitializeComponent();
             listBoxKeys.FixItemHeight();
             listBoxEntries.FixItemHeight();
+            Instance = this;
         }
         #endregion
 
@@ -44,8 +40,7 @@ namespace ToNSaveManager
             OriginalTitle = this.Text;
             this.Text = "Loading, please wait...";
 
-            InitializeOptions();
-            // TooltipUtil.Set(linkLabel1, "Source Code and Documentation for this tool can be found in my GitHub.\n" + SourceLink + "\n\nYou can also find me in discord as Kittenji.");
+            XSOverlay.SetPort(Settings.Get.XSOverlayPort);
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -221,7 +216,7 @@ namespace ToNSaveManager
                 }
 
                 Entry entry = (Entry)listBoxEntries.Items[index];
-                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.SaveNames));
+                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames));
             }
         }
 
@@ -319,147 +314,12 @@ namespace ToNSaveManager
         #endregion
         #endregion
 
-        #region Options & Settings
-        private void InitializeOptions()
+        #region Settings & Info
+        private void btnSettings_Click(object? sender, EventArgs e)
         {
-            ctxMenuSettingsInvertMD.Checked = Settings.InvertMD;
-            ctxMenuSettings24Hour.Checked = Settings.Use24Hour;
-            ctxMenuSettingsShowSeconds.Checked = Settings.ShowSeconds;
-
-            ctxMenuSettingsAutoCopy.Checked = Settings.AutoCopy;
-            ctxMenuSettingsNotifSounds.Checked = Settings.PlayAudio;
-            ctxMenuSettingsCollectNames.Checked = Settings.SaveNames;
-            ctxMenuSettingsXSOverlay.Checked = Settings.XSOverlay;
-            XSOverlay.SetPort(Settings.XSOverlayPort);
-            ctxMenuSettingsSoundControl_Set();
+            SettingsWindow.Open(this);
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            ctxMenuSettings.Show(Cursor.Position);
-        }
-
-        private void ctxMenuSettingsClose_Click(object sender, EventArgs e)
-        {
-            ctxMenuSettings.Close();
-        }
-
-        private void ctxMenuSettingsOpenData_Click(object sender, EventArgs e)
-        {
-            ctxMenuSettings.Close();
-            OpenExternalLink(Program.DataLocation);
-        }
-
-        private void ctxMenuSettingsUpdate_Click(object sender, EventArgs e)
-        {
-            ctxMenuSettings.Close();
-            Program.StartCheckForUpdate(true);
-        }
-
-        private void ctxMenuSettings_Closing(object sender, ToolStripDropDownClosingEventArgs e)
-        {
-            if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked) e.Cancel = true;
-        }
-
-        private void ctxMenuSettingsAutoCopy_Click(object sender, EventArgs e)
-        {
-            Settings.AutoCopy = ToggleCheckState(Settings.AutoCopy, sender);
-            Settings.Export();
-
-            if (RecentData != null)
-            {
-                RecentData.Fresh = true;
-                CopyRecent();
-            }
-        }
-
-        private void ctxMenuSettingsSoundControl_Set()
-        {
-            ctxMenuSettingsClearSound.Enabled = !string.IsNullOrEmpty(Settings.AudioLocation);
-            ctxMenuSettingsClearSound.ToolTipText = ctxMenuSettingsClearSound.Enabled ? "Custom Audio Path: " + Settings.AudioLocation : null;
-        }
-
-        private void ctxMenuSettingsNotifSounds_Click(object sender, EventArgs e)
-        {
-            Settings.PlayAudio = ToggleCheckState(Settings.PlayAudio, sender);
-            Settings.Export();
-            PlayNotification();
-            if (!Settings.PlayAudio) ResetNotification();
-        }
-
-        private void ctxMenuSettingsSelectSound_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog fileDialog = new OpenFileDialog())
-            {
-                fileDialog.InitialDirectory = "./";
-                fileDialog.Title = "Select Custom Sound";
-                fileDialog.Filter = "Waveform Audio (*.wav)|*.wav";
-
-                if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName))
-                {
-                    Settings.AudioLocation = fileDialog.FileName;
-                    Settings.Export();
-                    ctxMenuSettingsSoundControl_Set();
-                }
-            }
-        }
-
-        private void ctxMenuSettingsClearSound_Click(object sender, EventArgs e)
-        {
-            Settings.AudioLocation = null;
-            Settings.Export();
-            ctxMenuSettingsSoundControl_Set();
-        }
-
-        private void ctxMenuSettingsCollectNames_Click(object sender, EventArgs e)
-        {
-            Settings.SaveNames = ToggleCheckState(Settings.SaveNames, sender);
-            Settings.Export();
-        }
-
-        private void ctxMenuSettingsXSOverlay_Click(object sender, EventArgs e)
-        {
-            Settings.XSOverlay = ToggleCheckState(Settings.XSOverlay, sender);
-            Settings.Export();
-            SendXSNotification(true);
-        }
-
-        private void ctxMenuSettings24Hour_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Use24Hour = ctxMenuSettings24Hour.Checked;
-            Settings.Export();
-            RefreshLists();
-        }
-
-        private void ctxMenuSettingsInvertMD_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.InvertMD = ctxMenuSettingsInvertMD.Checked;
-            Settings.Export();
-            RefreshLists();
-        }
-
-        private void ctxMenuSettingsShowSeconds_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.ShowSeconds = ctxMenuSettingsShowSeconds.Checked;
-            Settings.Export();
-            RefreshLists();
-        }
-
-        private void RefreshLists()
-        {
-            listBoxKeys.Refresh();
-            listBoxEntries.Refresh();
-        }
-
-        private bool ToggleCheckState(bool value, object item)
-        {
-            value = !value;
-            ((ToolStripMenuItem)item).Checked = value;
-            return value;
-        }
-        #endregion
-
-        #region Extras & Info
         private void linkSource_Clicked(object sender, EventArgs ev)
         {
             const string link = "https://github.com/ChrisFeline/ToNSaveManager/";
@@ -497,20 +357,20 @@ namespace ToNSaveManager
         static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
             Program.GetEmbededResource("notification.wav");
 
-        private void ResetNotification()
+        internal static void ResetNotification()
         {
             CustomNotificationPlayer.Stop();
             DefaultNotificationPlayer.Stop();
         }
-        private void PlayNotification()
+        internal static void PlayNotification(bool forceDefault = false)
         {
-            if (!Started || !Settings.PlayAudio) return;
+            if ((!Started || !Settings.Get.PlayAudio) && !forceDefault) return;
 
             try
             {
-                if (!string.IsNullOrEmpty(Settings.AudioLocation) && File.Exists(Settings.AudioLocation))
+                if (!forceDefault && !string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation))
                 {
-                    CustomNotificationPlayer.SoundLocation = Settings.AudioLocation;
+                    CustomNotificationPlayer.SoundLocation = Settings.Get.AudioLocation;
                     CustomNotificationPlayer.Play();
                     return;
                 }
@@ -520,9 +380,9 @@ namespace ToNSaveManager
             }
             catch { }
         }
-        private void SendXSNotification(bool test = false)
+        internal static void SendXSNotification(bool test = false)
         {
-            if (!Started || !Settings.XSOverlay) return;
+            if (!Started || !Settings.Get.XSOverlay) return;
             const string message = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>";
             const string msgtest = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>";
 
@@ -530,6 +390,12 @@ namespace ToNSaveManager
             else XSOverlay.Send(message);
         }
         #endregion
+
+        internal static void RefreshLists()
+        {
+            Instance?.listBoxKeys.Refresh();
+            Instance?.listBoxEntries.Refresh();
+        }
 
         private void UpdateEntries()
         {
@@ -565,7 +431,6 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
-        const string WorldNameKeyword = "Terrors of Nowhere";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
@@ -577,18 +442,10 @@ namespace ToNSaveManager
             string line = e.Content;
             DateTime timestamp = e.Timestamp;
 
+            int index;
             LogWatcher.LogContext context = e.Context;
 
-            /*
-            if (string.IsNullOrEmpty(context.DisplayName) ||
-                string.IsNullOrEmpty(context.RoomName) ||
-                !context.RoomName.Contains(WorldNameKeyword))
-            {
-                return;
-            }
-            */
-
-            int index = line.IndexOf(SaveInitKeyword);
+            index = line.IndexOf(SaveInitKeyword);
             if (index > -1)
             {
                 SaveInit = true;
@@ -675,7 +532,7 @@ namespace ToNSaveManager
             if (ind < 0) return; // Not added, duplicate
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
-            if (Settings.SaveNames) entry.Players = context.GetRoomString();
+            if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);
@@ -706,7 +563,7 @@ namespace ToNSaveManager
 
         private void CopyRecent()
         {
-            if (!Settings.AutoCopy || RecentData == null || !RecentData.Fresh) return;
+            if (!Settings.Get.AutoCopy || RecentData == null || !RecentData.Fresh) return;
 
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;

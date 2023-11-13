@@ -43,27 +43,11 @@
             renameToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             deleteToolStripMenuItem = new ToolStripMenuItem();
-            ctxMenuSettings = new ContextMenuStrip(components);
-            ctxMenuSettingsAutoCopy = new ToolStripMenuItem();
-            ctxMenuSettingsNotifSounds = new ToolStripMenuItem();
-            ctxMenuSettingsSelectSound = new ToolStripMenuItem();
-            ctxMenuSettingsClearSound = new ToolStripMenuItem();
-            ctxMenuSettingsCollectNames = new ToolStripMenuItem();
-            ctxMenuSettingsXSOverlay = new ToolStripMenuItem();
-            toolStripMenuItem3 = new ToolStripSeparator();
-            ctxMenuSettings24Hour = new ToolStripMenuItem();
-            ctxMenuSettingsShowSeconds = new ToolStripMenuItem();
-            ctxMenuSettingsInvertMD = new ToolStripMenuItem();
-            toolStripMenuItem4 = new ToolStripSeparator();
-            ctxMenuSettingsUpdate = new ToolStripMenuItem();
-            ctxMenuSettingsOpenData = new ToolStripMenuItem();
-            ctxMenuSettingsClose = new ToolStripMenuItem();
             btnSettings = new Button();
             button1 = new Button();
             button2 = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
-            ctxMenuSettings.SuspendLayout();
             SuspendLayout();
             // 
             // listBoxKeys
@@ -181,124 +165,6 @@
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
             // 
-            // ctxMenuSettings
-            // 
-            ctxMenuSettings.Items.AddRange(new ToolStripItem[] { ctxMenuSettingsAutoCopy, ctxMenuSettingsNotifSounds, ctxMenuSettingsCollectNames, ctxMenuSettingsXSOverlay, toolStripMenuItem3, ctxMenuSettings24Hour, ctxMenuSettingsShowSeconds, ctxMenuSettingsInvertMD, toolStripMenuItem4, ctxMenuSettingsUpdate, ctxMenuSettingsOpenData, ctxMenuSettingsClose });
-            ctxMenuSettings.Name = "ctxMenuSettings";
-            ctxMenuSettings.Size = new Size(215, 236);
-            ctxMenuSettings.Closing += ctxMenuSettings_Closing;
-            // 
-            // ctxMenuSettingsAutoCopy
-            // 
-            ctxMenuSettingsAutoCopy.Checked = true;
-            ctxMenuSettingsAutoCopy.CheckState = CheckState.Checked;
-            ctxMenuSettingsAutoCopy.Name = "ctxMenuSettingsAutoCopy";
-            ctxMenuSettingsAutoCopy.Size = new Size(214, 22);
-            ctxMenuSettingsAutoCopy.Text = "Auto Clipboard Copy";
-            ctxMenuSettingsAutoCopy.ToolTipText = "Automatically copy to clipboard new saves found while you play Terrors.";
-            ctxMenuSettingsAutoCopy.Click += ctxMenuSettingsAutoCopy_Click;
-            // 
-            // ctxMenuSettingsNotifSounds
-            // 
-            ctxMenuSettingsNotifSounds.Checked = true;
-            ctxMenuSettingsNotifSounds.CheckState = CheckState.Checked;
-            ctxMenuSettingsNotifSounds.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuSettingsSelectSound, ctxMenuSettingsClearSound });
-            ctxMenuSettingsNotifSounds.Name = "ctxMenuSettingsNotifSounds";
-            ctxMenuSettingsNotifSounds.Size = new Size(214, 22);
-            ctxMenuSettingsNotifSounds.Text = "Notification Sounds";
-            ctxMenuSettingsNotifSounds.ToolTipText = "Plays an audio when a new save is found. You can select a custom sound too.";
-            ctxMenuSettingsNotifSounds.Click += ctxMenuSettingsNotifSounds_Click;
-            // 
-            // ctxMenuSettingsSelectSound
-            // 
-            ctxMenuSettingsSelectSound.Name = "ctxMenuSettingsSelectSound";
-            ctxMenuSettingsSelectSound.Size = new Size(207, 22);
-            ctxMenuSettingsSelectSound.Text = "Select Custom Sound";
-            ctxMenuSettingsSelectSound.Click += ctxMenuSettingsSelectSound_Click;
-            // 
-            // ctxMenuSettingsClearSound
-            // 
-            ctxMenuSettingsClearSound.Name = "ctxMenuSettingsClearSound";
-            ctxMenuSettingsClearSound.Size = new Size(207, 22);
-            ctxMenuSettingsClearSound.Text = "Clear Custom Sound";
-            ctxMenuSettingsClearSound.Click += ctxMenuSettingsClearSound_Click;
-            // 
-            // ctxMenuSettingsCollectNames
-            // 
-            ctxMenuSettingsCollectNames.Checked = true;
-            ctxMenuSettingsCollectNames.CheckState = CheckState.Checked;
-            ctxMenuSettingsCollectNames.Name = "ctxMenuSettingsCollectNames";
-            ctxMenuSettingsCollectNames.Size = new Size(214, 22);
-            ctxMenuSettingsCollectNames.Text = "Collect Player Names";
-            ctxMenuSettingsCollectNames.ToolTipText = "Stores the names of players that were with you at the time of saving.";
-            ctxMenuSettingsCollectNames.Click += ctxMenuSettingsCollectNames_Click;
-            // 
-            // ctxMenuSettingsXSOverlay
-            // 
-            ctxMenuSettingsXSOverlay.Checked = true;
-            ctxMenuSettingsXSOverlay.CheckState = CheckState.Checked;
-            ctxMenuSettingsXSOverlay.Name = "ctxMenuSettingsXSOverlay";
-            ctxMenuSettingsXSOverlay.Size = new Size(214, 22);
-            ctxMenuSettingsXSOverlay.Text = "XSOverlay Popup";
-            ctxMenuSettingsXSOverlay.Click += ctxMenuSettingsXSOverlay_Click;
-            // 
-            // toolStripMenuItem3
-            // 
-            toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new Size(211, 6);
-            // 
-            // ctxMenuSettings24Hour
-            // 
-            ctxMenuSettings24Hour.Checked = true;
-            ctxMenuSettings24Hour.CheckOnClick = true;
-            ctxMenuSettings24Hour.CheckState = CheckState.Checked;
-            ctxMenuSettings24Hour.Name = "ctxMenuSettings24Hour";
-            ctxMenuSettings24Hour.Size = new Size(214, 22);
-            ctxMenuSettings24Hour.Text = "24 Hour Time";
-            ctxMenuSettings24Hour.CheckedChanged += ctxMenuSettings24Hour_CheckedChanged;
-            // 
-            // ctxMenuSettingsShowSeconds
-            // 
-            ctxMenuSettingsShowSeconds.CheckOnClick = true;
-            ctxMenuSettingsShowSeconds.Name = "ctxMenuSettingsShowSeconds";
-            ctxMenuSettingsShowSeconds.Size = new Size(214, 22);
-            ctxMenuSettingsShowSeconds.Text = "Show Seconds";
-            ctxMenuSettingsShowSeconds.CheckedChanged += ctxMenuSettingsShowSeconds_CheckedChanged;
-            // 
-            // ctxMenuSettingsInvertMD
-            // 
-            ctxMenuSettingsInvertMD.CheckOnClick = true;
-            ctxMenuSettingsInvertMD.Name = "ctxMenuSettingsInvertMD";
-            ctxMenuSettingsInvertMD.Size = new Size(214, 22);
-            ctxMenuSettingsInvertMD.Text = "Invert Month/Day";
-            ctxMenuSettingsInvertMD.CheckedChanged += ctxMenuSettingsInvertMD_CheckedChanged;
-            // 
-            // toolStripMenuItem4
-            // 
-            toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new Size(211, 6);
-            // 
-            // ctxMenuSettingsUpdate
-            // 
-            ctxMenuSettingsUpdate.Name = "ctxMenuSettingsUpdate";
-            ctxMenuSettingsUpdate.Size = new Size(214, 22);
-            ctxMenuSettingsUpdate.Text = "Check For Updates";
-            ctxMenuSettingsUpdate.Click += ctxMenuSettingsUpdate_Click;
-            // 
-            // ctxMenuSettingsOpenData
-            // 
-            ctxMenuSettingsOpenData.Name = "ctxMenuSettingsOpenData";
-            ctxMenuSettingsOpenData.Size = new Size(214, 22);
-            ctxMenuSettingsOpenData.Text = "Open Data Location";
-            ctxMenuSettingsOpenData.Click += ctxMenuSettingsOpenData_Click;
-            // 
-            // ctxMenuSettingsClose
-            // 
-            ctxMenuSettingsClose.Name = "ctxMenuSettingsClose";
-            ctxMenuSettingsClose.Size = new Size(214, 22);
-            ctxMenuSettingsClose.Text = "Close";
-            ctxMenuSettingsClose.Click += ctxMenuSettingsClose_Click;
-            // 
             // btnSettings
             // 
             btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -367,7 +233,6 @@
             Shown += mainWindow_Shown;
             ctxMenuEntries.ResumeLayout(false);
             ctxMenuKeys.ResumeLayout(false);
-            ctxMenuSettings.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -386,24 +251,8 @@
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem ctxMenuEntriesDelete;
         private ToolStripMenuItem importToolStripMenuItem;
-        private ContextMenuStrip ctxMenuSettings;
-        private ToolStripMenuItem ctxMenuSettingsAutoCopy;
-        private ToolStripMenuItem ctxMenuSettingsNotifSounds;
-        private ToolStripMenuItem ctxMenuSettingsCollectNames;
-        private ToolStripSeparator toolStripMenuItem3;
-        private ToolStripMenuItem ctxMenuSettingsClose;
-        private ToolStripMenuItem ctxMenuSettingsSelectSound;
-        private ToolStripMenuItem ctxMenuSettingsClearSound;
-        private ToolStripMenuItem ctxMenuSettingsUpdate;
-        private ToolStripMenuItem ctxMenuSettingsXSOverlay;
-        private ToolStripMenuItem dateFormatToolStripMenuItem;
-        private ToolStripMenuItem ctxMenuSettings24Hour;
-        private ToolStripMenuItem ctxMenuSettingsInvertMD;
-        private ToolStripSeparator toolStripMenuItem4;
-        private ToolStripMenuItem ctxMenuSettingsShowSeconds;
         private Button btnSettings;
         private Button button1;
-        private ToolStripMenuItem ctxMenuSettingsOpenData;
         private Button button2;
     }
 }

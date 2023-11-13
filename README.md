@@ -22,14 +22,16 @@
 - While the tool is running, it will detect new codes as you play.
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
 
-### Settings
-- `Auto Clipboard Copy` If checked, it will automatically copy new save codes to clipboard.
-- `Notification Sounds` If checked, it will play a notification audio when a new save is detected.
-  * `Select Custom Sound` When clicked, it will open a file select dialog, and you can choose what audio is played when notified. (Must be **.wav**)
-  * `Clear Custom Sound` If a sound was selected, it will clear the path and use the default **notification.wav** file.
-- `Collect Player Names` If checked, hovering over a save code will show what players were in the room at the time of saving.
-- `XSOverlay Popup` If checked, a notification will be sent to XSOverlay when a new save is detected.
+### Settings Window
+- `Auto Clipboard Copy` Automatically copy new save codes to clipboard.
+- `Collect Player Names` Save codes will show players that were in the instance.
+- `XSOverlay Popup` XSOverlay notifications when new save codes are detected.
+- `Play Audio` Play a notification audio when a new save is detected.
+  - Double Click to select a custom audio file. (Only '.wav' files)
+  - Right Click to reset audio file back to 'default.wav'
+- `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
 - `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
+<details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
 ### Right Click Menus
 - ### Log Dates (Left Panel)
