@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Text;
+    using System.Text.RegularExpressions;
+    using static ToNSaveManager.Utils.LogWatcher;
     using Timer = System.Windows.Forms.Timer;
 
     // Based on: https://github.com/vrcx-team/VRCX/blob/634f465927bfaef51bc04e67cf1659170953fac9/LogWatcher.cs
@@ -85,7 +88,7 @@
                     }
 
                     logContext.Length = fileInfo.Length;
-                    ParseLog(fileInfo, logContext);
+                    ParseLog(fileInfo, logContext, sender == null);
                 }
             }
 
@@ -98,12 +101,15 @@
                 OnTick.Invoke(this, EventArgs.Empty);
         }
 
+        static readonly Regex LogPattern = new Regex(@"^\d{4}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\s", RegexOptions.Compiled);
+        static readonly StringBuilder LogBuilder = new StringBuilder();
+
         /// <summary>
         /// Parses the log file starting from the current position and updates the log context.
         /// </summary>
         /// <param name="fileInfo">The file information of the log file to parse.</param>
         /// <param name="logContext">The log context to update.</param>
-        private void ParseLog(FileInfo fileInfo, LogContext logContext)
+        private void ParseLog(FileInfo fileInfo, LogContext logContext, bool skip = false)
         {
             try
             {
@@ -114,33 +120,31 @@
 
                     using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                     {
+                        bool isNull;
                         while (true)
                         {
                             var line = streamReader.ReadLine();
-                            if (line == null)
+                            isNull = line == null;
+
+#pragma warning disable CS8604
+                            if (isNull || LogPattern.IsMatch(line))
                             {
-                                logContext.Position = stream.Position;
-                                break;
+                                if (LogBuilder.Length > 0)
+                                {
+                                    HandleLine(LogBuilder.ToString(), logContext);
+                                    LogBuilder.Clear();
+                                }
+
+                                if (isNull)
+                                {
+                                    logContext.Position = stream.Position;
+                                    break;
+                                }
                             }
+#pragma warning restore CS8604
 
-                            if (line.Length == 0 || line.Length <= 36 || line[31] != '-')
-                            {
-                                continue;
-                            }
-
-                            DateTime lineDate;
-                            if (!DateTime.TryParseExact(line.Substring(0, 19), "yyyy.MM.dd HH:mm:ss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None, out lineDate))
-                            {
-                                lineDate = DateTime.Now;
-                            }
-
-                            if (ParseLocation(line, lineDate, logContext) ||
-                                ParseDisplayName(line, lineDate, logContext) ||
-                                ParsePlayerJoin(line, lineDate, logContext)) { }
-
-                            if (OnLine != null)
-                                OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
+                            if (LogBuilder.Length > 0) LogBuilder.AppendLine();
+                            LogBuilder.Append(line);
                         }
                     }
                 }
@@ -149,6 +153,25 @@
             {
                 throw;
             }
+        }
+
+        private void HandleLine(string line, LogContext logContext)
+        {
+            if (line.Length == 0 || line.Length <= 36 || line[31] != '-') return;
+
+            DateTime lineDate;
+            if (!DateTime.TryParseExact(line.Substring(0, 19), "yyyy.MM.dd HH:mm:ss",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out lineDate))
+            {
+                lineDate = DateTime.Now;
+            }
+            if (ParseLocation(line, lineDate, logContext) ||
+                ParseDisplayName(line, lineDate, logContext) ||
+                ParsePlayerJoin(line, lineDate, logContext) ||
+                (ParseUdonException(line, lineDate, logContext))) { }
+
+            if (OnLine != null)
+                OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
         }
 
         const string UserAuthKeyword = "User Authenticated: ";
@@ -173,7 +196,7 @@
             var index = line.IndexOf(LocationKeyword) + LocationKeyword.Length;
             if (index >= line.Length) return false;
 
-            var worldName = line.Substring(index);
+            var worldName = line.Substring(index).Trim('\n', '\r');
             logContext.Enter(worldName, lineDate);
 
             return true;
@@ -207,6 +230,16 @@
             return false;
         }
 
+        private bool ParseUdonException(string line, DateTime lineTime, LogContext logContext)
+        {
+            const string errorMatchStr = "[UdonBehaviour] An exception occurred during Udon execution";
+
+            if (!line.Contains(errorMatchStr)) return false;
+
+            logContext.AddException(line);
+            return true;
+        }
+
         public class LogContext
         {
             public long Length;
@@ -219,11 +252,13 @@
             public string? RoomName { get; private set; }
             public DateTime RoomDate { get; private set; }
             public readonly HashSet<string> Players;
+            public readonly StringBuilder RoomExceptions; // For debugging
 
             public LogContext(string fileName)
             {
                 FileName = fileName;
                 Players = new HashSet<string>();
+                RoomExceptions = new StringBuilder();
             }
 
             /// <summary>
@@ -244,6 +279,12 @@
                     Players.Remove(displayName);
             }
 
+            public void AddException(string exceptionLog)
+            {
+                RoomExceptions.AppendLine(exceptionLog);
+                RoomExceptions.AppendLine();
+            }
+
             /// <summary>
             /// Called when user joins a new room.
             /// </summary>
@@ -252,6 +293,7 @@
                 RoomName = name;
                 RoomDate = date;
                 Players.Clear();
+                RoomExceptions.Clear();
             }
 
             /// <summary>

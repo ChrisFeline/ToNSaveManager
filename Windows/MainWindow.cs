@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Media;
+using System.Text;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
@@ -361,13 +362,13 @@ namespace ToNSaveManager
             CustomNotificationPlayer.Stop();
             DefaultNotificationPlayer.Stop();
         }
-        internal static void PlayNotification()
+        internal static void PlayNotification(bool forceDefault = false)
         {
-            if (!Started || !Settings.Get.PlayAudio) return;
+            if ((!Started || !Settings.Get.PlayAudio) && !forceDefault) return;
 
             try
             {
-                if (!string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation))
+                if (!forceDefault && !string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation))
                 {
                     CustomNotificationPlayer.SoundLocation = Settings.Get.AudioLocation;
                     CustomNotificationPlayer.Play();
@@ -434,6 +435,14 @@ namespace ToNSaveManager
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
 
+        #region Player Debug
+        // Player Logging | Trying to help Beyond
+        const string PlayerLoggingStart = "  PLAYER DATA - LOGGING START";
+        const string PlayerLoggingEnd = "  PLAYER DATA - LOGGING END";
+        private bool SaveLogging;
+        private readonly StringBuilder LoggingContainer = new StringBuilder();
+        #endregion
+
         private bool SaveInit;
 
         private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
@@ -441,9 +450,48 @@ namespace ToNSaveManager
             string line = e.Content;
             DateTime timestamp = e.Timestamp;
 
+            int index;
             LogWatcher.LogContext context = e.Context;
 
-            int index = line.IndexOf(SaveInitKeyword);
+            #region Player Debug
+            if (line.Contains(PlayerLoggingStart) && Started)
+            {
+                // Debug.WriteLine(line);
+                LoggingContainer.Clear();
+                SaveLogging = true;
+            }
+
+            if (SaveLogging)
+                LoggingContainer.AppendLine(line);
+
+            if (line.Contains(PlayerLoggingEnd) && LoggingContainer.Length > 0)
+            {
+                Debug.WriteLine("Saving logging to Clipboard.");
+
+                LoggingContainer.Insert(0, $"--- Collected with ToNSaveManager ---\nPlayer Display Name: {context.DisplayName}\n\n");
+                if (context.RoomExceptions.Length > 0)
+                {
+                    // Header for visibility
+                    LoggingContainer.AppendLine("\n\n[==================================================================]\n[=== UDON EXCEPTIONS IN INSTANCE ==================================]\n[==================================================================]\n");
+                    LoggingContainer.Append(context.RoomExceptions);
+                }
+
+                string content = LoggingContainer.ToString();
+
+                try
+                {
+                    Clipboard.SetText(content);
+                    File.WriteAllText("player_logging.log", content); // Only send this file if beyond asks for it.
+                } catch { }
+
+                SaveLogging = false;
+                LoggingContainer.Clear();
+
+                PlayNotification(true);
+            }
+            #endregion
+
+            index = line.IndexOf(SaveInitKeyword);
             if (index > -1)
             {
                 SaveInit = true;
