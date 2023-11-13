@@ -435,14 +435,6 @@ namespace ToNSaveManager
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
 
-        #region Debug Logging
-        // Debug Logging | Trying to help Beyond
-        const string LoggingStart = "  PLAYER DATA - LOGGING START";
-        const string LoggingEnd = "  ITEM DATA - LOGGING END";
-        private bool SaveLogging;
-        private readonly StringBuilder LoggingContainer = new StringBuilder();
-        #endregion
-
         private bool SaveInit;
 
         private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
@@ -452,47 +444,6 @@ namespace ToNSaveManager
 
             int index;
             LogWatcher.LogContext context = e.Context;
-
-            #region Debug Logging
-            if (Settings.Get.CatchDebugLogging)
-            {
-                if (line.Contains(LoggingStart) && Started)
-                {
-                    LoggingContainer.Clear();
-                    SaveLogging = true;
-                }
-
-                if (SaveLogging)
-                    LoggingContainer.AppendLine(line);
-
-                if (line.Contains(LoggingEnd) && LoggingContainer.Length > 0)
-                {
-                    Debug.WriteLine("Saving debug logging to Clipboard.");
-
-                    LoggingContainer.Insert(0, $"--- Collected with ToNSaveManager ---\nPlayer Display Name: {context.DisplayName}\n\n");
-                    if (context.RoomExceptions.Length > 0)
-                    {
-                        // Header for visibility
-                        LoggingContainer.AppendLine("\n\n[==================================================================]\n[=== UDON EXCEPTIONS IN INSTANCE ==================================]\n[==================================================================]\n");
-                        LoggingContainer.Append(context.RoomExceptions);
-                    }
-
-                    string content = LoggingContainer.ToString();
-
-                    try
-                    {
-                        Clipboard.SetText(content);
-                        File.WriteAllText("debug_logging_output.log", content); // Only send this file if beyond asks for it.
-                    }
-                    catch { }
-
-                    SaveLogging = false;
-                    LoggingContainer.Clear();
-
-                    PlayNotification(true);
-                }
-            }
-            #endregion
 
             index = line.IndexOf(SaveInitKeyword);
             if (index > -1)

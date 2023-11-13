@@ -211,6 +211,13 @@
             btnOpenData.Text = "Data";
             btnOpenData.UseVisualStyleBackColor = true;
             btnOpenData.Click += btnOpenData_Click;
+            btnOpenData.MouseUp += btnOpenData_MouseUp;
+            // 
+            // toolTip
+            // 
+            toolTip.AutoPopDelay = 15000;
+            toolTip.InitialDelay = 500;
+            toolTip.ReshowDelay = 100;
             // 
             // groupBox2
             // 

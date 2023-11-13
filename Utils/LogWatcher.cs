@@ -7,6 +7,7 @@
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
+    using ToNSaveManager.Models;
     using static ToNSaveManager.Utils.LogWatcher;
     using Timer = System.Windows.Forms.Timer;
 
@@ -35,6 +36,8 @@
 
         internal static string GetVRChatDataLocation() =>
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
+
+        bool RecordInstanceLogs => Settings.Get.RecordInstanceLogs;
 
         public LogWatcher()
         {
@@ -99,6 +102,18 @@
 
             if (OnTick != null)
                 OnTick.Invoke(this, EventArgs.Empty);
+        }
+
+        public LogContext? GetEarliestContext()
+        {
+            LogContext? context = null;
+            foreach (var pair in m_LogContextMap)
+            {
+                if (context == null || pair.Value.RoomDate > context.RoomDate)
+                    context = pair.Value;
+            }
+
+            return context;
         }
 
         static readonly Regex LogPattern = new Regex(@"^\d{4}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\s", RegexOptions.Compiled);
@@ -168,10 +183,12 @@
             if (ParseLocation(line, lineDate, logContext) ||
                 ParseDisplayName(line, lineDate, logContext) ||
                 ParsePlayerJoin(line, lineDate, logContext) ||
-                (ParseUdonException(line, lineDate, logContext))) { }
+                (RecordInstanceLogs && ParseUdonException(line, lineDate, logContext))) { }
 
             if (OnLine != null)
                 OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
+
+            if (RecordInstanceLogs) logContext.AddLog(line);
         }
 
         const string UserAuthKeyword = "User Authenticated: ";
@@ -252,13 +269,16 @@
             public string? RoomName { get; private set; }
             public DateTime RoomDate { get; private set; }
             public readonly HashSet<string> Players;
-            public readonly StringBuilder RoomExceptions; // For debugging
+
+            public readonly StringBuilder InstanceExceptions; // For debugging
+            public readonly StringBuilder InstanceLogs;
 
             public LogContext(string fileName)
             {
                 FileName = fileName;
                 Players = new HashSet<string>();
-                RoomExceptions = new StringBuilder();
+                InstanceExceptions = new StringBuilder();
+                InstanceLogs = new StringBuilder();
             }
 
             /// <summary>
@@ -279,12 +299,6 @@
                     Players.Remove(displayName);
             }
 
-            public void AddException(string exceptionLog)
-            {
-                RoomExceptions.AppendLine(exceptionLog);
-                RoomExceptions.AppendLine();
-            }
-
             /// <summary>
             /// Called when user joins a new room.
             /// </summary>
@@ -293,7 +307,18 @@
                 RoomName = name;
                 RoomDate = date;
                 Players.Clear();
-                RoomExceptions.Clear();
+                InstanceExceptions.Clear();
+                InstanceLogs.Clear();
+            }
+
+            public void AddException(string exceptionLog)
+            {
+                InstanceExceptions.AppendLine(exceptionLog);
+                InstanceExceptions.AppendLine();
+            }
+            public void AddLog(string line)
+            {
+                InstanceLogs.AppendLine(line);
             }
 
             /// <summary>
@@ -306,6 +331,15 @@
                 sb.Append(start);
                 sb.AppendJoin(lineBreak ? Environment.NewLine + start : ", ", Players);
                 return sb.ToString();
+            }
+
+            public string GetRoomLogs()
+            {
+                return InstanceLogs.ToString();
+            }
+            public string GetRoomExceptions()
+            {
+                return InstanceExceptions.ToString();
             }
         }
     }

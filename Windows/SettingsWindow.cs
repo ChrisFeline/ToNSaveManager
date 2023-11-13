@@ -145,6 +145,32 @@ namespace ToNSaveManager.Windows
             }
         }
 
+        private void btnOpenData_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right || !Settings.Get.RecordInstanceLogs) return;
+
+            var logContext = MainWindow.LogWatcher.GetEarliestContext();
+            if (logContext == null) return;
+
+            string logs = logContext.GetRoomLogs();
+            string destination = "debug";
+            if (!Directory.Exists(destination))
+                Directory.CreateDirectory(destination);
+
+            string filePath = Path.Combine(destination, "output_logs_instance.log");
+            File.WriteAllText(filePath, logs);
+
+            logs = logContext.GetRoomExceptions();
+            if (logs.Length > 0)
+            {
+                filePath = Path.Combine(destination, "output_log_exceptions.log");
+                File.WriteAllText(filePath, logs);
+            }
+
+            filePath = Path.GetFullPath(destination);
+            MainWindow.OpenExternalLink(filePath);
+        }
+
         private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e)
         {
             ObjectivesWindow.RefreshLists();
