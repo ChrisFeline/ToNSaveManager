@@ -435,10 +435,10 @@ namespace ToNSaveManager
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
 
-        #region Player Debug
-        // Player Logging | Trying to help Beyond
-        const string PlayerLoggingStart = "  PLAYER DATA - LOGGING START";
-        const string PlayerLoggingEnd = "  PLAYER DATA - LOGGING END";
+        #region Debug Logging
+        // Debug Logging | Trying to help Beyond
+        const string LoggingStart = "  PLAYER DATA - LOGGING START";
+        const string LoggingEnd = "  ITEM DATA - LOGGING END";
         private bool SaveLogging;
         private readonly StringBuilder LoggingContainer = new StringBuilder();
         #endregion
@@ -453,41 +453,44 @@ namespace ToNSaveManager
             int index;
             LogWatcher.LogContext context = e.Context;
 
-            #region Player Debug
-            if (line.Contains(PlayerLoggingStart) && Started)
+            #region Debug Logging
+            if (Settings.Get.CatchDebugLogging)
             {
-                // Debug.WriteLine(line);
-                LoggingContainer.Clear();
-                SaveLogging = true;
-            }
-
-            if (SaveLogging)
-                LoggingContainer.AppendLine(line);
-
-            if (line.Contains(PlayerLoggingEnd) && LoggingContainer.Length > 0)
-            {
-                Debug.WriteLine("Saving logging to Clipboard.");
-
-                LoggingContainer.Insert(0, $"--- Collected with ToNSaveManager ---\nPlayer Display Name: {context.DisplayName}\n\n");
-                if (context.RoomExceptions.Length > 0)
+                if (line.Contains(LoggingStart) && Started)
                 {
-                    // Header for visibility
-                    LoggingContainer.AppendLine("\n\n[==================================================================]\n[=== UDON EXCEPTIONS IN INSTANCE ==================================]\n[==================================================================]\n");
-                    LoggingContainer.Append(context.RoomExceptions);
+                    LoggingContainer.Clear();
+                    SaveLogging = true;
                 }
 
-                string content = LoggingContainer.ToString();
+                if (SaveLogging)
+                    LoggingContainer.AppendLine(line);
 
-                try
+                if (line.Contains(LoggingEnd) && LoggingContainer.Length > 0)
                 {
-                    Clipboard.SetText(content);
-                    File.WriteAllText("player_logging.log", content); // Only send this file if beyond asks for it.
-                } catch { }
+                    Debug.WriteLine("Saving debug logging to Clipboard.");
 
-                SaveLogging = false;
-                LoggingContainer.Clear();
+                    LoggingContainer.Insert(0, $"--- Collected with ToNSaveManager ---\nPlayer Display Name: {context.DisplayName}\n\n");
+                    if (context.RoomExceptions.Length > 0)
+                    {
+                        // Header for visibility
+                        LoggingContainer.AppendLine("\n\n[==================================================================]\n[=== UDON EXCEPTIONS IN INSTANCE ==================================]\n[==================================================================]\n");
+                        LoggingContainer.Append(context.RoomExceptions);
+                    }
 
-                PlayNotification(true);
+                    string content = LoggingContainer.ToString();
+
+                    try
+                    {
+                        Clipboard.SetText(content);
+                        File.WriteAllText("debug_logging_output.log", content); // Only send this file if beyond asks for it.
+                    }
+                    catch { }
+
+                    SaveLogging = false;
+                    LoggingContainer.Clear();
+
+                    PlayNotification(true);
+                }
             }
             #endregion
 
