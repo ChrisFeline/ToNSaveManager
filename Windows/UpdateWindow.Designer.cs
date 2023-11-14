@@ -55,6 +55,7 @@
             ClientSize = new Size(433, 194);
             ControlBox = false;
             Controls.Add(textBox1);
+            MinimumSize = new Size(400, 200);
             Name = "UpdateWindow";
             Text = "ToNSaveManager | Updating";
             Load += UpdateWindow_Load;

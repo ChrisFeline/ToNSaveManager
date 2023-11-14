@@ -14,9 +14,10 @@ namespace ToNSaveManager
             textBox1.ScrollToCaret();
         }
 
-        const string OldTempDir = ".temp";
-
+        string OldTempDir;
         string TempFileName;
+        string TempFileLocation;
+
         GitHubRelease Release;
         GitHubRelease.Asset Asset;
 
@@ -24,7 +25,11 @@ namespace ToNSaveManager
         {
             Release = release;
             Asset = asset;
+
             TempFileName = release.tag_name + ".temp.zip";
+            TempFileLocation = Path.Combine(Program.ProgramDirectory, TempFileName);
+            OldTempDir = Path.Combine(Program.ProgramDirectory, ".temp_files");
+
             InitializeComponent();
         }
 
@@ -52,8 +57,8 @@ namespace ToNSaveManager
 
             try
             {
-                if (File.Exists(TempFileName))
-                    File.Delete(TempFileName);
+                if (File.Exists(TempFileLocation))
+                    File.Delete(TempFileLocation);
 
                 worker.ReportProgress(0, $"Downloading asset '{Asset.name}'");
                 string downloadUrl = Asset.browser_download_url;
@@ -61,7 +66,7 @@ namespace ToNSaveManager
                 {
                     using (var s = client.GetStreamAsync(downloadUrl).Result)
                     {
-                        using (var fs = new FileStream(TempFileName, FileMode.CreateNew))
+                        using (var fs = new FileStream(TempFileLocation, FileMode.CreateNew))
                         {
                             s.CopyTo(fs);
                         }
@@ -69,9 +74,9 @@ namespace ToNSaveManager
                 }
 
                 worker.ReportProgress(50, $"Asset downloaded, decompressing...");
-                string outputDir = Path.GetFileNameWithoutExtension(TempFileName);
-                ZipFile.ExtractToDirectory(TempFileName, outputDir, true);
-                File.Delete(TempFileName); // .zip cleanup
+                string outputDir = Path.Combine(Program.ProgramDirectory, Path.GetFileNameWithoutExtension(TempFileLocation));
+                ZipFile.ExtractToDirectory(TempFileLocation, outputDir, true);
+                File.Delete(TempFileLocation); // .zip cleanup
 
                 if (!Directory.Exists(OldTempDir)) Directory.CreateDirectory(OldTempDir);
 
@@ -81,9 +86,11 @@ namespace ToNSaveManager
                 foreach (string file in files)
                 {
                     worker.ReportProgress(95, ($"  > {file}"));
-                    string f = Path.GetFileName(file);
+                    string fileName = Path.GetFileName(file);
+                    string f = Path.Combine(Program.ProgramDirectory, fileName);
+                    string n = Path.Combine(OldTempDir, fileName);
                     if (File.Exists(f))
-                        File.Move(f, Path.Combine(OldTempDir, f), true);
+                        File.Move(f, n, true);
 
                     File.Move(file, f);
                 }

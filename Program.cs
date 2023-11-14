@@ -10,6 +10,8 @@ namespace ToNSaveManager
     internal static class Program
     {
         internal const string ProgramName = "ToNSaveManager";
+        internal static readonly string ProgramPath = Assembly.GetExecutingAssembly().Location;
+        internal static readonly string ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? string.Empty;
         internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
