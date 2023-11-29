@@ -64,6 +64,9 @@ jobs:
         Set-Content -Path $csprojPath -Value $csproj
       shell: pwsh
 
+    - name: Update Terrors index data
+      run: echo -n "${{ secrets.TERROR_INDEX_DATA }}" > "./Resources/index.json"
+
     # Build the application
     - name: Build the application
       run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish

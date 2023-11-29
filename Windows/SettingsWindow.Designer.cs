@@ -30,6 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             groupBoxGeneral = new GroupBox();
+            checkSaveTerrorsNote = new CheckBox();
+            checkSaveTerrors = new CheckBox();
             checkPlayerNames = new CheckBox();
             checkAutoCopy = new CheckBox();
             groupBoxNotifications = new GroupBox();
@@ -54,16 +56,44 @@
             // 
             groupBoxGeneral.AutoSize = true;
             groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
+            groupBoxGeneral.Controls.Add(checkSaveTerrors);
             groupBoxGeneral.Controls.Add(checkPlayerNames);
             groupBoxGeneral.Controls.Add(checkAutoCopy);
             groupBoxGeneral.Dock = DockStyle.Top;
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 8);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 57);
+            groupBoxGeneral.Size = new Size(268, 93);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
+            // 
+            // checkSaveTerrorsNote
+            // 
+            checkSaveTerrorsNote.Dock = DockStyle.Top;
+            checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
+            checkSaveTerrorsNote.Location = new Point(3, 72);
+            checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
+            checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
+            checkSaveTerrorsNote.Size = new Size(262, 18);
+            checkSaveTerrorsNote.TabIndex = 3;
+            checkSaveTerrorsNote.Tag = "SaveTerrorsNote|Automatically set survived terror names as note.";
+            checkSaveTerrorsNote.Text = "Save as Note...";
+            checkSaveTerrorsNote.UseVisualStyleBackColor = true;
+            // 
+            // checkSaveTerrors
+            // 
+            checkSaveTerrors.Dock = DockStyle.Top;
+            checkSaveTerrors.Location = new Point(3, 54);
+            checkSaveTerrors.Name = "checkSaveTerrors";
+            checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
+            checkSaveTerrors.Size = new Size(262, 18);
+            checkSaveTerrors.TabIndex = 2;
+            checkSaveTerrors.Tag = "SaveTerrors|Save codes will display the terrors that you survived on that round.";
+            checkSaveTerrors.Text = "Save Terror Names";
+            checkSaveTerrors.UseVisualStyleBackColor = true;
+            checkSaveTerrors.CheckedChanged += checkSaveTerrors_CheckedChanged;
             // 
             // checkPlayerNames
             // 
@@ -97,7 +127,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 65);
+            groupBoxNotifications.Location = new Point(8, 101);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(268, 57);
             groupBoxNotifications.TabIndex = 2;
@@ -140,7 +170,7 @@
             groupBox1.Controls.Add(check24Hour);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 122);
+            groupBox1.Location = new Point(8, 158);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(268, 75);
             groupBox1.TabIndex = 3;
@@ -189,7 +219,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 243);
+            btnCheckForUpdates.Location = new Point(8, 279);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -203,7 +233,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 243);
+            btnOpenData.Location = new Point(223, 279);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -226,7 +256,7 @@
             groupBox2.Controls.Add(checkColorObjectives);
             groupBox2.Dock = DockStyle.Top;
             groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 197);
+            groupBox2.Location = new Point(8, 233);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(268, 39);
             groupBox2.TabIndex = 6;
@@ -252,7 +282,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 275);
+            ClientSize = new Size(284, 311);
             Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
@@ -296,5 +326,7 @@
         private ToolTip toolTip;
         private GroupBox groupBox2;
         private CheckBox checkColorObjectives;
+        private CheckBox checkSaveTerrorsNote;
+        private CheckBox checkSaveTerrors;
     }
 }

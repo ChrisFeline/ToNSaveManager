@@ -32,7 +32,10 @@ namespace ToNSaveManager.Models
 
         public DateTime Timestamp;
         public string Content;
+
         public string? Players;
+        public string? Terrors;
+
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
 
@@ -55,7 +58,7 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool full)
+        public string GetTooltip(bool showPlayers, bool showTerrors)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Timestamp.ToString("F"));
@@ -66,7 +69,14 @@ namespace ToNSaveManager.Models
                 sb.Append("Note: \n- ");
                 sb.Append(Note);
             }
-            if (full && !string.IsNullOrEmpty(Players))
+            if (showTerrors && !string.IsNullOrEmpty(Terrors))
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine("Terrors Survived:");
+                sb.Append(Terrors);
+            }
+            if (showPlayers && !string.IsNullOrEmpty(Players))
             {
                 sb.AppendLine();
                 sb.AppendLine();

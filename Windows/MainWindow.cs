@@ -6,6 +6,10 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Windows;
 
+using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
+using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using System.Collections.Generic;
+
 namespace ToNSaveManager
 {
     public partial class MainWindow : Form
@@ -216,7 +220,7 @@ namespace ToNSaveManager
                 }
 
                 Entry entry = (Entry)listBoxEntries.Items[index];
-                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames));
+                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames, Settings.Get.SaveTerrors));
             }
         }
 
@@ -431,49 +435,162 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
+        const string SaveInitKey = "saveInit";
         const string SaveStartKeyword = "  [START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
 
-        private bool SaveInit;
+        const string ROUND_PARTICIPATION_KEY = "optedIn";
+        const string ROUND_OPTIN_KEYWORD = "  opted in";
+        const string ROUND_OPTOUT_KEYWORD = " opted out";
 
-        private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
+        const string ROUND_KILLERS_KEY = "rKillers";
+        const string ROUND_OVER_KEYWORD = "  Player Won";
+
+        const string KILLER_MATRIX_KEY = "killerMatrix";
+        const string KILLER_MATRIX_KEYWORD = " Killers have been set - ";
+
+        const string KILLER_UNLOCK_KEYWORD_1 = " Unlocking Entry ";
+        const string KILLER_UNLOCK_KEYWORD_2 = " Unlocking Alt Entry ";
+
+        private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
             string line = e.Content;
             DateTime timestamp = e.Timestamp;
+            LogContext context = e.Context;
 
-            int index;
-            LogWatcher.LogContext context = e.Context;
-
-            index = line.IndexOf(SaveInitKeyword);
-            if (index > -1)
-            {
-                SaveInit = true;
-                return;
-            }
-
-            if (!SaveInit) return;
-
-            index = line.IndexOf(SaveStartKeyword, 32);
-            if (index < 0) return;
-
-            index += SaveStartKeyword.Length;
-
-            int end = line.IndexOf(SaveEndKeyword, index);
-            if (end < 0) return;
-            end -= index;
-
-            string save = line.Substring(index, end);
-            string logName = context.FileName.Substring(11, 19);
-
-            AddLogEntry(logName, save, timestamp, context);
-            SaveInit = false;
+            if (HandleSaveCode(line, timestamp, context) ||
+                (Settings.Get.SaveTerrors && HandleTerrorIndex(line, timestamp, context))) { }
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e)
         {
             CopyRecent();
             Export();
+        }
+
+        private bool HandleSaveCode(string line, DateTime timestamp, LogContext context)
+        {
+            int index = line.IndexOf(SaveInitKeyword);
+            if (index > -1)
+            {
+                context.Set(SaveInitKey, true);
+                return true;
+            }
+
+            if (!context.Get<bool>(SaveInitKey)) return false;
+
+            index = line.IndexOf(SaveStartKeyword, 32);
+            if (index < 0) return false;
+
+            index += SaveStartKeyword.Length;
+
+            int end = line.IndexOf(SaveEndKeyword, index);
+            if (end < 0) return false;
+            end -= index;
+
+            string save = line.Substring(index, end);
+            string logName = context.FileName.Substring(11, 19);
+
+            AddLogEntry(logName, save, timestamp, context);
+            context.Set(SaveInitKey, false);
+            return true;
+        }
+
+        static readonly ToNIndex TerrorIndex = ToNIndex.Import();
+        private bool HandleTerrorIndex(string line, DateTime timestamp, LogContext context)
+        {
+            // Handle participation
+            bool isOptedIn = line.Contains(ROUND_OPTIN_KEYWORD);
+            if (isOptedIn || line.Contains(ROUND_OPTOUT_KEYWORD))
+            {
+                context.Set(ROUND_PARTICIPATION_KEY, isOptedIn);
+                if (!isOptedIn) context.Rem(ROUND_KILLERS_KEY);
+                return true;
+            } else
+            {
+                isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
+            }
+
+            if (!isOptedIn) return false;
+
+            int[,]? killerMatrix;
+            int type;
+            if (line.Contains(ROUND_OVER_KEYWORD))
+            {
+                killerMatrix = context.Get<int[,]?>(KILLER_MATRIX_KEY);
+                if (killerMatrix == null) return true;
+
+                // Hardcoding this to 2 entries because Beyond is not logging/registering the third entry in BloodBath/Midnight rounds.
+                int l = Math.Min(killerMatrix.GetLength(0), 2);
+                if (!(l > 1 && killerMatrix[0, 1] > 0 && killerMatrix[1, 1] > 0)) l = 1; // Round is single terror
+
+                HashSet<string> killers = new HashSet<string>(l);
+                for (int i = 0; i < l; i++)
+                {
+                    int val = killerMatrix[i, 0];
+                    type = killerMatrix[i, 1];
+
+                    string terrorName = TerrorIndex[val, type > 1] ?? "???";
+                    if (!killers.Contains(terrorName)) killers.Add(terrorName);
+                }
+
+                context.Set(ROUND_KILLERS_KEY, killers.ToArray());
+                context.Rem(KILLER_MATRIX_KEY);
+                return true;
+            }
+
+            int index = line.IndexOf(KILLER_MATRIX_KEYWORD);
+            if (index > 0)
+            {
+                string[] kMatrixRaw = line.Substring(index + KILLER_MATRIX_KEYWORD.Length).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                killerMatrix = new int[kMatrixRaw.Length,2];
+                // 0 is undefined
+                // 1 is normal
+                // 2 is alternate
+
+                for (int i = 0; i < kMatrixRaw.Length; i++)
+                {
+                    string raw = kMatrixRaw[i];
+                    killerMatrix[i,0] = int.TryParse(raw, out index) ? index : -1;
+                }
+
+                context.Set(KILLER_MATRIX_KEY, killerMatrix);
+                return true;
+            }
+
+            index = line.IndexOf(KILLER_UNLOCK_KEYWORD_1);
+            if (index > 0)
+            {
+                index += KILLER_UNLOCK_KEYWORD_1.Length;
+                type = 1;
+
+            }
+            else if ((index = line.IndexOf(KILLER_UNLOCK_KEYWORD_2)) > 0)
+            {
+                index += KILLER_UNLOCK_KEYWORD_2.Length;
+                type = 2;
+            }
+            else return false;
+
+            line = line.Substring(index).Trim();
+            if (int.TryParse(line, out index))
+            {
+                killerMatrix = context.Get<int[,]?>(KILLER_MATRIX_KEY);
+                if (killerMatrix != null)
+                {
+                    for (int i = 0; i < killerMatrix.GetLength(0); i++)
+                    {
+                        if (index == killerMatrix[i,0] && killerMatrix[i, 1] == 0)
+                        {
+                            killerMatrix[i, 1] = type;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
         #endregion
 
@@ -519,7 +636,7 @@ namespace ToNSaveManager
 
             Export(true);
         }
-        private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogWatcher.LogContext context)
+        private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogContext context)
         {
             History? collection = SaveData[dateKey];
             if (collection == null)
@@ -533,6 +650,28 @@ namespace ToNSaveManager
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
+            if (Settings.Get.SaveTerrors && context.HasKey(ROUND_KILLERS_KEY))
+            {
+                string[]? killers = context.Get<string[]>(ROUND_KILLERS_KEY);
+                if (killers != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("- ");
+                    sb.AppendJoin(Environment.NewLine + "- ", killers);
+
+                    entry.Terrors = sb.ToString();
+
+                    if (Settings.Get.SaveTerrorsNote)
+                    {
+                        sb.Clear();
+                        sb.AppendJoin(", ", killers);
+
+                        entry.Note = sb.ToString();
+                    }
+                }
+
+                context.Rem(ROUND_KILLERS_KEY);
+            }
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);

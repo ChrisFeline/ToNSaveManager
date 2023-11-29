@@ -56,6 +56,7 @@ namespace ToNSaveManager.Windows
 
             // Tooltips
             toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
+            checkSaveTerrors_CheckedChanged(checkSaveTerrors, e);
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -72,6 +73,11 @@ namespace ToNSaveManager.Windows
         {
             MainWindow.PlayNotification();
             if (!checkPlayAudio.Checked) MainWindow.ResetNotification();
+        }
+
+        private void checkSaveTerrors_CheckedChanged(object sender, EventArgs e)
+        {
+            checkSaveTerrorsNote.ForeColor = checkSaveTerrors.Checked ? Color.White : Color.Gray;
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e)

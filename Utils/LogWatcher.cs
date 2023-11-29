@@ -271,6 +271,39 @@
             public readonly StringBuilder InstanceExceptions; // For debugging
             public readonly StringBuilder InstanceLogs;
 
+            // Hold temporal data in this log instance
+            private Dictionary<string, object> Data = new Dictionary<string, object>();
+            public bool TryGet<T>(string key, out T? result)
+            {
+                if (HasKey(key))
+                {
+                    result = (T?)Data[key];
+                    return true;
+                }
+
+                result = default(T);
+                return false;
+            }
+            public bool HasKey(string key) => Data.ContainsKey(key);
+            public T? Get<T>(string key)
+            {
+                return HasKey(key) ? (T)Data[key] : default(T);
+            }
+            public void Set<T>(string key, T? value)
+            {
+                if (value == null)
+                {
+                    Rem(key);
+                    return;
+                }
+
+                Data[key] = value;
+            }
+            public void Rem(string key)
+            {
+                if (HasKey(key)) Data.Remove(key);
+            }
+
             public LogContext(string fileName)
             {
                 FileName = fileName;

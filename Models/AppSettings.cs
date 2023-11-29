@@ -38,6 +38,16 @@ namespace ToNSaveManager.Models
         public bool SaveNames { get; set; }
 
         /// <summary>
+        /// Save a list of terrors that you survived when saving.
+        /// </summary>
+        public bool SaveTerrors { get; set; } = true;
+
+        /// <summary>
+        /// Automatically set a note to the save with the survived terrors.
+        /// </summary>
+        public bool SaveTerrorsNote { get; set; } = true;
+
+        /// <summary>
         /// Send popup notifications to XSOverlay.
         /// </summary>
         public bool XSOverlay { get; set; }
