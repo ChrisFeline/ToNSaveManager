@@ -94,7 +94,7 @@ namespace ToNSaveManager.Windows
 
         private void btnOpenData_Click(object sender, EventArgs e)
         {
-            MainWindow.OpenExternalLink(Program.DataLocation);
+            SaveData.OpenDataLocation();
         }
 
         private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e)
@@ -158,30 +158,14 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void btnOpenData_MouseUp(object sender, MouseEventArgs e)
+        private void ctxItemPickFolder_Click(object sender, EventArgs e)
         {
-            if (e.Button != MouseButtons.Right || !Settings.Get.RecordInstanceLogs) return;
+            SaveData.SetDataLocation(false);
+        }
 
-            var logContext = MainWindow.LogWatcher.GetEarliestContext();
-            if (logContext == null) return;
-
-            string logs = logContext.GetRoomLogs();
-            string destination = "debug";
-            if (!Directory.Exists(destination))
-                Directory.CreateDirectory(destination);
-
-            string filePath = Path.Combine(destination, "output_logs_instance.log");
-            File.WriteAllText(filePath, logs);
-
-            logs = logContext.GetRoomExceptions();
-            if (logs.Length > 0)
-            {
-                filePath = Path.Combine(destination, "output_log_exceptions.log");
-                File.WriteAllText(filePath, logs);
-            }
-
-            filePath = Path.GetFullPath(destination);
-            MainWindow.OpenExternalLink(filePath);
+        private void ctxItemResetToDefault_Click(object sender, EventArgs e)
+        {
+            SaveData.SetDataLocation(true);
         }
 
         private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e)
@@ -245,6 +229,35 @@ namespace ToNSaveManager.Windows
             bool hasLocation = string.IsNullOrEmpty(Settings.Get.AudioLocation);
             checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(Settings.Get.AudioLocation)) + ")";
         }
+
+        /*
+        private void WriteInstanceLogs()
+        {
+            if (!Settings.Get.RecordInstanceLogs) return;
+
+            var logContext = MainWindow.LogWatcher.GetEarliestContext();
+            if (logContext == null) return;
+
+            string logs = logContext.GetRoomLogs();
+            string destination = "debug";
+            if (!Directory.Exists(destination))
+                Directory.CreateDirectory(destination);
+
+            string filePath = Path.Combine(destination, "output_logs_instance.log");
+            File.WriteAllText(filePath, logs);
+
+            logs = logContext.GetRoomExceptions();
+            if (logs.Length > 0)
+            {
+                filePath = Path.Combine(destination, "output_log_exceptions.log");
+                File.WriteAllText(filePath, logs);
+            }
+
+            filePath = Path.GetFullPath(destination);
+            MainWindow.OpenExternalLink(filePath);
+        }
+        */
         #endregion
+
     }
 }

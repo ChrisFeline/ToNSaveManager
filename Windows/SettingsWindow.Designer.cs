@@ -46,12 +46,17 @@
             check24Hour = new CheckBox();
             btnCheckForUpdates = new Button();
             btnOpenData = new Button();
+            ctxData = new ContextMenuStrip(components);
+            setDataLocationToolStripMenuItem = new ToolStripMenuItem();
+            ctxItemPickFolder = new ToolStripMenuItem();
+            ctxItemResetToDefault = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
             groupBox2 = new GroupBox();
             checkColorObjectives = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBox1.SuspendLayout();
+            ctxData.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
             // 
@@ -272,6 +277,7 @@
             // btnOpenData
             // 
             btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.ContextMenuStrip = ctxData;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
@@ -283,7 +289,33 @@
             btnOpenData.Text = "Data";
             btnOpenData.UseVisualStyleBackColor = true;
             btnOpenData.Click += btnOpenData_Click;
-            btnOpenData.MouseUp += btnOpenData_MouseUp;
+            // 
+            // ctxData
+            // 
+            ctxData.Items.AddRange(new ToolStripItem[] { setDataLocationToolStripMenuItem });
+            ctxData.Name = "ctxData";
+            ctxData.Size = new Size(215, 48);
+            // 
+            // setDataLocationToolStripMenuItem
+            // 
+            setDataLocationToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ctxItemPickFolder, ctxItemResetToDefault });
+            setDataLocationToolStripMenuItem.Name = "setDataLocationToolStripMenuItem";
+            setDataLocationToolStripMenuItem.Size = new Size(214, 22);
+            setDataLocationToolStripMenuItem.Text = "Custom Data Location";
+            // 
+            // ctxItemPickFolder
+            // 
+            ctxItemPickFolder.Name = "ctxItemPickFolder";
+            ctxItemPickFolder.Size = new Size(186, 22);
+            ctxItemPickFolder.Text = "Pick Folder";
+            ctxItemPickFolder.Click += ctxItemPickFolder_Click;
+            // 
+            // ctxItemResetToDefault
+            // 
+            ctxItemResetToDefault.Name = "ctxItemResetToDefault";
+            ctxItemResetToDefault.Size = new Size(186, 22);
+            ctxItemResetToDefault.Text = "Reset to Default";
+            ctxItemResetToDefault.Click += ctxItemResetToDefault_Click;
             // 
             // toolTip
             // 
@@ -347,6 +379,7 @@
             groupBoxGeneral.ResumeLayout(false);
             groupBoxNotifications.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
+            ctxData.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -373,5 +406,9 @@
         private CheckBox checkSkipParsedLogs;
         private CheckBox checkShowDate;
         private CheckBox checkShowWinLose;
+        private ContextMenuStrip ctxData;
+        private ToolStripMenuItem setDataLocationToolStripMenuItem;
+        private ToolStripMenuItem ctxItemPickFolder;
+        private ToolStripMenuItem ctxItemResetToDefault;
     }
 }

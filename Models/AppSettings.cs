@@ -8,13 +8,19 @@ namespace ToNSaveManager.Models
         internal static void Export() => Get.TryExport();
 
         const string LegacyDestination = "settings.json";
-        static string Destination;
+        public static string Destination { get; private set; }
 
         static Settings()
         {
             Destination = "Settings.json";
             Get = Import();
         }
+
+
+        /// <summary>
+        /// Custom location where save data will be stored.
+        /// </summary>
+        public string? DataLocation { get; set; }
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.

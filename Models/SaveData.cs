@@ -6,7 +6,9 @@ namespace ToNSaveManager.Models
     internal class SaveData
     {
         const string LegacyDestination = "data.json";
-        static string Destination = "SaveData.json";
+        const string FileName = "SaveData.json";
+        static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
+        static string Destination = FileName;
         
         public HashSet<string> ParsedLogs { get; private set; } = new HashSet<string>();
         public List<Objective> Objectives { get; private set; } = new List<Objective>();
@@ -87,9 +89,57 @@ namespace ToNSaveManager.Models
             }
         }
 
+        public static void OpenDataLocation()
+        {
+            MainWindow.OpenExternalLink(Path.GetDirectoryName(Destination) ?? string.Empty);
+        }
+        public static void SetDataLocation(bool reset)
+        {
+            string selectedFolder;
+            if (reset)
+            {
+                if (string.IsNullOrEmpty(Settings.Get.DataLocation)) return;
+                selectedFolder = DefaultLocation;
+            }
+            else
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                folderBrowserDialog.SelectedPath = Path.GetDirectoryName(Destination) ?? string.Empty;
+                DialogResult result = folderBrowserDialog.ShowDialog();
+
+                if (result != DialogResult.OK) return;
+
+                selectedFolder = folderBrowserDialog.SelectedPath;
+                selectedFolder = Path.Combine(selectedFolder, FileName);
+            }
+
+            try
+            {
+                // Make a backup of this save file, just in case
+                if (File.Exists(Destination))
+                {
+                    File.Copy(Destination, Path.Combine(Path.GetDirectoryName(Settings.Destination) ?? string.Empty, FileName + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+                    File.Move(Destination, selectedFolder);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {selectedFolder}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Destination = selectedFolder;
+            Settings.Get.DataLocation = Destination;
+            Settings.Export();
+        }
+
         public static SaveData Import()
         {
-            string destination = Path.Combine(Program.DataLocation, Destination);
+            string? destination = Settings.Get.DataLocation;
+
+            if (string.IsNullOrEmpty(destination))
+                destination = DefaultLocation;
+
             SaveData? data = null;
 
             try
@@ -198,7 +248,7 @@ namespace ToNSaveManager.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {Destination}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             IsDirty = false;

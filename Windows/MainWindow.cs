@@ -343,6 +343,8 @@ namespace ToNSaveManager
 
         internal static void OpenExternalLink(string url)
         {
+            if (string.IsNullOrEmpty(url)) return;
+
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
             using (Process.Start(psInfo))
             {
