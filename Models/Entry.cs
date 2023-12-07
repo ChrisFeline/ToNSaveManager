@@ -13,12 +13,13 @@ namespace ToNSaveManager.Models
         const string Time_24H = "HH:mm";
         const string Time_12H = "hh:mm tt";
 
-        internal static string GetDateFormat()
+        internal static string GetDateFormat(bool isEntry = false)
         {
             bool use24Hour = Settings.Get.Use24Hour;
             bool invertMD = Settings.Get.InvertMD;
             bool showSeconds = Settings.Get.ShowSeconds;
-            return (invertMD ? DateFormat_DD_MM : Date_MM_DD) + " | " +
+            // Sometimes I get nightmares too
+            return (!isEntry || Settings.Get.ShowDate ? (invertMD ? DateFormat_DD_MM : Date_MM_DD) + " | " : string.Empty) +
                 // Append Time
                 (use24Hour ?
                 (showSeconds ? Time_24H_S : Time_24H) :
@@ -34,7 +35,10 @@ namespace ToNSaveManager.Models
         public string Content;
 
         public string? Players;
-        public string? Terrors;
+
+        public string[]? RTerrors;
+        public string? RType;
+        public ToNRoundResult RResult;
 
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
@@ -48,13 +52,24 @@ namespace ToNSaveManager.Models
 
         public override string ToString()
         {
+            const string separator = " | ";
             StringBuilder sb = new StringBuilder();
-            sb.Append(Timestamp.ToString(EntryDate.GetDateFormat()));
+
+            if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose)
+            {
+                sb.Append('[');
+                sb.Append(RResult == ToNRoundResult.R ? ' ' : RResult.ToString());
+                sb.Append("] ");
+            }
+
+            sb.Append(Timestamp.ToString(EntryDate.GetDateFormat(true)));
+
             if (!string.IsNullOrEmpty(Note))
             {
-                sb.Append(" | ");
+                sb.Append(separator);
                 sb.Append(Note);
             }
+
             return sb.ToString();
         }
 
@@ -69,12 +84,21 @@ namespace ToNSaveManager.Models
                 sb.Append("Note: \n- ");
                 sb.Append(Note);
             }
-            if (showTerrors && !string.IsNullOrEmpty(Terrors))
+            if (showTerrors && RResult != ToNRoundResult.R)
             {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.AppendLine("Terrors in round:");
-                sb.Append(Terrors);
+
+                sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
+
+                if (!string.IsNullOrEmpty(RType))
+                    sb.AppendLine("Round type: " + RType);
+
+                if (RTerrors != null && RTerrors.Length > 0)
+                {
+                    sb.AppendLine("Terrors in round:");
+                    sb.AppendJoin("- ", RTerrors);
+                }
             }
             if (showPlayers && !string.IsNullOrEmpty(Players))
             {

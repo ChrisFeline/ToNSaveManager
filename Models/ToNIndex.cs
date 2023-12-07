@@ -115,6 +115,13 @@
         }
     }
 
+    public enum ToNRoundResult
+    {
+        R, // Respawn
+        W, // Win
+        L, // Lose
+    }
+
     public enum ToNRoundType
     {
         Unknown, // Default

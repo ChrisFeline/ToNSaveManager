@@ -220,7 +220,7 @@ namespace ToNSaveManager
                 }
 
                 Entry entry = (Entry)listBoxEntries.Items[index];
-                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames, Settings.Get.SaveTerrors));
+                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames, Settings.Get.SaveRoundInfo));
             }
         }
 
@@ -444,6 +444,7 @@ namespace ToNSaveManager
         const string ROUND_OPTIN_KEYWORD = "  opted in";
         const string ROUND_OPTOUT_KEYWORD = " opted out";
 
+        const string ROUND_RESULT_KEY = "rResult";
         const string ROUND_KILLERS_KEY = "rKillers";
         const string ROUND_WON_KEYWORD = "  Player Won";
         const string ROUND_LOST_KEYWORD = "  Player lost,";
@@ -458,7 +459,7 @@ namespace ToNSaveManager
             LogContext context = e.Context;
 
             if (HandleSaveCode(line, timestamp, context) ||
-                (Settings.Get.SaveTerrors && HandleTerrorIndex(line, timestamp, context))) { }
+                (Settings.Get.SaveRoundInfo && HandleTerrorIndex(line, timestamp, context))) { }
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e)
@@ -500,7 +501,11 @@ namespace ToNSaveManager
             if (isOptedIn || line.Contains(ROUND_OPTOUT_KEYWORD))
             {
                 context.Set(ROUND_PARTICIPATION_KEY, isOptedIn);
-                if (!isOptedIn) context.Rem(ROUND_KILLERS_KEY);
+                if (!isOptedIn)
+                {
+                    context.Rem(ROUND_KILLERS_KEY);
+                    context.Rem(ROUND_RESULT_KEY);
+                }
                 return true;
             } else
             {
@@ -510,29 +515,10 @@ namespace ToNSaveManager
             if (!isOptedIn) return false;
 
             // Track round participation results
-            if (line.Contains(ROUND_WON_KEYWORD))
+            isOptedIn = line.Contains(ROUND_WON_KEYWORD);
+            if (isOptedIn || line.Contains(ROUND_LOST_KEYWORD))
             {
-                /*
-                killerMatrix = context.Get<int[,]?>(KILLER_MATRIX_KEY);
-                if (killerMatrix == null) return true;
-
-                // Hardcoding this to 2 entries because Beyond is not logging/registering the third entry in BloodBath/Midnight rounds.
-                int l = Math.Min(killerMatrix.GetLength(0), 2);
-                if (!(l > 1 && killerMatrix[0, 1] > 0 && killerMatrix[1, 1] > 0)) l = 1; // Round is single terror
-
-                HashSet<string> killers = new HashSet<string>(l);
-                for (int i = 0; i < l; i++)
-                {
-                    int val = killerMatrix[i, 0];
-                    type = killerMatrix[i, 1];
-
-                    string terrorName = TerrorIndex[val, type > 1] ?? "???";
-                    if (!killers.Contains(terrorName)) killers.Add(terrorName);
-                }
-
-                context.Set(ROUND_KILLERS_KEY, killers.ToArray());
-                context.Rem(KILLER_MATRIX_KEY);
-                */
+                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.L);
                 return true;
             }
 
@@ -615,27 +601,29 @@ namespace ToNSaveManager
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
-            if (Settings.Get.SaveTerrors && context.HasKey(ROUND_KILLERS_KEY))
+            if (Settings.Get.SaveRoundInfo)
             {
-                TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
-                if (killers.TerrorNames.Length > 0)
+                if (context.HasKey(ROUND_RESULT_KEY))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("- ");
-                    sb.AppendJoin(Environment.NewLine + "- ", killers.TerrorNames);
-
-                    entry.Terrors = sb.ToString();
-
-                    if (Settings.Get.SaveTerrorsNote)
-                    {
-                        sb.Clear();
-                        sb.AppendJoin(", ", killers.TerrorNames);
-
-                        entry.Note = sb.ToString();
-                    }
+                    ToNRoundResult result = context.Get<ToNRoundResult>(ROUND_RESULT_KEY);
+                    entry.RResult = result;
+                    context.Rem(ROUND_RESULT_KEY);
                 }
 
-                context.Rem(ROUND_KILLERS_KEY);
+                if (context.HasKey(ROUND_KILLERS_KEY))
+                {
+                    TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                    if (killers.TerrorNames.Length > 0)
+                    {
+                        entry.RTerrors = killers.TerrorNames;
+                        entry.RType = killers.RoundTypeRaw;
+
+                        if (Settings.Get.SaveRoundNote)
+                            entry.Note = string.Join(", ", killers.TerrorNames);
+                    }
+
+                    context.Rem(ROUND_KILLERS_KEY);
+                }
             }
 
             if (listBoxKeys.SelectedItem == collection)
@@ -645,8 +633,11 @@ namespace ToNSaveManager
 #pragma warning restore CS8604, CS8602
             SaveData.SetDirty();
 
-            PlayNotification();
-            SendXSNotification();
+            if (context.Initialized)
+            {
+                PlayNotification();
+                SendXSNotification();
+            }
         }
 
         private void AddKey(History collection, int i = -1)

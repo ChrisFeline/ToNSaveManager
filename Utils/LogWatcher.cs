@@ -72,7 +72,6 @@
         private void LogTick(object? sender, EventArgs? e)
         {
             bool firstRun = sender == null;
-            var deletedNameSet = new HashSet<string>(m_LogContextMap.Keys);
             m_LogDirectoryInfo.Refresh();
 
             if (m_LogDirectoryInfo.Exists)
@@ -94,11 +93,7 @@
                     }
 
                     LogContext? logContext;
-                    if (m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
-                    {
-                        deletedNameSet.Remove(fileInfo.Name);
-                    }
-                    else
+                    if (!m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
                     {
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
@@ -120,12 +115,9 @@
 
                     logContext.Length = fileInfo.Length;
                     ParseLog(fileInfo, logContext, sender == null);
-                }
-            }
 
-            foreach (var name in deletedNameSet)
-            {
-                m_LogContextMap.Remove(name);
+                    if (!logContext.Initialized) logContext.SetInit();
+                }
             }
 
             if (OnTick != null)
@@ -288,6 +280,8 @@
         {
             public long Length;
             public long Position;
+            public bool Initialized { get; private set; }
+            public void SetInit() => Initialized = true;
 
             public readonly string FileName;
             public readonly string DateKey;

@@ -48,8 +48,12 @@ namespace ToNSaveManager.Models
         {
             for (int i = 0; i < Count; i++)
             {
-                if (Collection[i].Guid == id)
+                History c = Collection[i];
+                if (c.Guid == id)
+                {
                     Collection.RemoveAt(i);
+                    if (!c.IsCustom && ParsedLogs.Contains(id)) ParsedLogs.Remove(id);
+                }
             }
         }
         public void Remove(History h)

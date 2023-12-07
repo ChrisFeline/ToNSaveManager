@@ -39,12 +39,13 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// Save a list of terrors that you survived when saving.
         /// </summary>
-        [JsonIgnore] public bool SaveTerrors { get; set; } = true;
+        public bool SaveRoundInfo { get; set; } = true;
+        public bool ShowWinLose { get; set; } = true;
 
         /// <summary>
         /// Automatically set a note to the save with the survived terrors.
         /// </summary>
-        [JsonIgnore] public bool SaveTerrorsNote { get; set; } = true;
+        public bool SaveRoundNote { get; set; } = true;
 
         /// <summary>
         /// Skips already parsed logs to save startup performance.
@@ -61,6 +62,7 @@ namespace ToNSaveManager.Models
         public bool Use24Hour { get; set; } = true;
         public bool ShowSeconds { get; set; } = true;
         public bool InvertMD { get; set; }
+        public bool ShowDate { get; set; } // Show full date in entries
 
         /// <summary>
         /// If true, objectives items will be colored like the items in game.

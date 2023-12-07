@@ -51,11 +51,16 @@ namespace ToNSaveManager.Windows
             check24Hour.CheckedChanged += TimeFormat_CheckedChanged;
             checkInvertMD.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowSeconds.CheckedChanged += TimeFormat_CheckedChanged;
+            checkShowDate.CheckedChanged += TimeFormat_CheckedChanged;
             // Refresh list when style is changed
             checkColorObjectives.CheckedChanged += CheckColorObjectives_CheckedChanged;
 
             // Tooltips
             toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
+
+            // Round info
+            checkShowWinLose.CheckedChanged += TimeFormat_CheckedChanged;
+            checkSaveTerrors.CheckedChanged += checkSaveTerrors_CheckedChanged;
             checkSaveTerrors_CheckedChanged(checkSaveTerrors, e);
         }
 
@@ -75,9 +80,11 @@ namespace ToNSaveManager.Windows
             if (!checkPlayAudio.Checked) MainWindow.ResetNotification();
         }
 
-        private void checkSaveTerrors_CheckedChanged(object sender, EventArgs e)
+        private void checkSaveTerrors_CheckedChanged(object? sender, EventArgs e)
         {
             checkSaveTerrorsNote.ForeColor = checkSaveTerrors.Checked ? Color.White : Color.Gray;
+            checkShowWinLose.ForeColor = checkSaveTerrorsNote.ForeColor;
+            TimeFormat_CheckedChanged(sender, e);
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e)
