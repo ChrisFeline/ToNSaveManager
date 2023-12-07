@@ -129,8 +129,10 @@ namespace ToNSaveManager.Models
             }
 
             Destination = selectedFolder;
-            Settings.Get.DataLocation = Destination;
+            Settings.Get.DataLocation = reset ? null : Destination;
             Settings.Export();
+
+            if (reset) MessageBox.Show("Save data location has been reset to default.", "Reset Custom Data Location");
         }
 
         public static SaveData Import()
