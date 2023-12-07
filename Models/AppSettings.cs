@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace ToNSaveManager.Models
 {
@@ -40,12 +39,17 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// Save a list of terrors that you survived when saving.
         /// </summary>
-        public bool SaveTerrors { get; set; } = true;
+        [JsonIgnore] public bool SaveTerrors { get; set; } = true;
 
         /// <summary>
         /// Automatically set a note to the save with the survived terrors.
         /// </summary>
-        public bool SaveTerrorsNote { get; set; } = true;
+        [JsonIgnore] public bool SaveTerrorsNote { get; set; } = true;
+
+        /// <summary>
+        /// Skips already parsed logs to save startup performance.
+        /// </summary>
+        public bool SkipParsedLogs { get; set; } = true;
 
         /// <summary>
         /// Send popup notifications to XSOverlay.

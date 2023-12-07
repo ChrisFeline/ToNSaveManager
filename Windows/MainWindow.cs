@@ -445,13 +445,11 @@ namespace ToNSaveManager
         const string ROUND_OPTOUT_KEYWORD = " opted out";
 
         const string ROUND_KILLERS_KEY = "rKillers";
-        const string ROUND_OVER_KEYWORD = "  Player Won";
+        const string ROUND_WON_KEYWORD = "  Player Won";
+        const string ROUND_LOST_KEYWORD = "  Player lost,";
 
-        const string KILLER_MATRIX_KEY = "killerMatrix";
         const string KILLER_MATRIX_KEYWORD = " Killers have been set - ";
-
-        const string KILLER_UNLOCK_KEYWORD_1 = " Unlocking Entry ";
-        const string KILLER_UNLOCK_KEYWORD_2 = " Unlocking Alt Entry ";
+        const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
@@ -490,14 +488,11 @@ namespace ToNSaveManager
             end -= index;
 
             string save = line.Substring(index, end);
-            string logName = context.FileName.Substring(11, 19);
-
-            AddLogEntry(logName, save, timestamp, context);
+            AddLogEntry(context.DateKey, save, timestamp, context);
             context.Set(SaveInitKey, false);
             return true;
         }
 
-        static readonly ToNIndex TerrorIndex = ToNIndex.Import();
         private bool HandleTerrorIndex(string line, DateTime timestamp, LogContext context)
         {
             // Handle participation
@@ -514,10 +509,10 @@ namespace ToNSaveManager
 
             if (!isOptedIn) return false;
 
-            int[,]? killerMatrix;
-            int type;
-            if (line.Contains(ROUND_OVER_KEYWORD))
+            // Track round participation results
+            if (line.Contains(ROUND_WON_KEYWORD))
             {
+                /*
                 killerMatrix = context.Get<int[,]?>(KILLER_MATRIX_KEY);
                 if (killerMatrix == null) return true;
 
@@ -537,57 +532,27 @@ namespace ToNSaveManager
 
                 context.Set(ROUND_KILLERS_KEY, killers.ToArray());
                 context.Rem(KILLER_MATRIX_KEY);
+                */
                 return true;
             }
 
             int index = line.IndexOf(KILLER_MATRIX_KEYWORD);
             if (index > 0)
             {
-                string[] kMatrixRaw = line.Substring(index + KILLER_MATRIX_KEYWORD.Length).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                killerMatrix = new int[kMatrixRaw.Length,2];
-                // 0 is undefined
-                // 1 is normal
-                // 2 is alternate
+                index += KILLER_MATRIX_KEYWORD.Length;
+                int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
+                if (rndInd < 0) return true;
+
+                string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
+                string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                int[] killerMatrix = new int[kMatrixRaw.Length];
 
                 for (int i = 0; i < kMatrixRaw.Length; i++)
-                {
-                    string raw = kMatrixRaw[i];
-                    killerMatrix[i,0] = int.TryParse(raw, out index) ? index : -1;
-                }
+                    killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
 
-                context.Set(KILLER_MATRIX_KEY, killerMatrix);
+                TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
+                context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                 return true;
-            }
-
-            index = line.IndexOf(KILLER_UNLOCK_KEYWORD_1);
-            if (index > 0)
-            {
-                index += KILLER_UNLOCK_KEYWORD_1.Length;
-                type = 1;
-
-            }
-            else if ((index = line.IndexOf(KILLER_UNLOCK_KEYWORD_2)) > 0)
-            {
-                index += KILLER_UNLOCK_KEYWORD_2.Length;
-                type = 2;
-            }
-            else return false;
-
-            line = line.Substring(index).Trim();
-            if (int.TryParse(line, out index))
-            {
-                killerMatrix = context.Get<int[,]?>(KILLER_MATRIX_KEY);
-                if (killerMatrix != null)
-                {
-                    for (int i = 0; i < killerMatrix.GetLength(0); i++)
-                    {
-                        if (index == killerMatrix[i,0] && killerMatrix[i, 1] == 0)
-                        {
-                            killerMatrix[i, 1] = type;
-                            break;
-                        }
-                    }
-                }
             }
 
             return true;
@@ -652,19 +617,19 @@ namespace ToNSaveManager
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
             if (Settings.Get.SaveTerrors && context.HasKey(ROUND_KILLERS_KEY))
             {
-                string[]? killers = context.Get<string[]>(ROUND_KILLERS_KEY);
-                if (killers != null)
+                TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                if (killers.TerrorNames.Length > 0)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("- ");
-                    sb.AppendJoin(Environment.NewLine + "- ", killers);
+                    sb.AppendJoin(Environment.NewLine + "- ", killers.TerrorNames);
 
                     entry.Terrors = sb.ToString();
 
                     if (Settings.Get.SaveTerrorsNote)
                     {
                         sb.Clear();
-                        sb.AppendJoin(", ", killers);
+                        sb.AppendJoin(", ", killers.TerrorNames);
 
                         entry.Note = sb.ToString();
                     }

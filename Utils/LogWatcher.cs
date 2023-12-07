@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -35,8 +36,16 @@
         internal static string GetVRChatDataLocation() =>
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
 
+        #region From Settings
         bool RecordInstanceLogs => Settings.Get.RecordInstanceLogs;
+        bool SkipParsedLogs => Settings.Get.SkipParsedLogs;
 
+        bool WasParsed(string name) => MainWindow.SaveData.WasParsed(name);
+        void SetParsed(string name) => MainWindow.SaveData.SetParsed(name);
+        #endregion
+        private HashSet<string> SkippedLogs = new HashSet<string>();
+
+        private bool Started;
         public LogWatcher()
         {
             var logPath = GetVRChatDataLocation() + @"\VRChat";
@@ -50,12 +59,19 @@
             timer.Enabled = true;
 
             LogTick(null, null);
+            Started = true;
             timer.Tick += LogTick;
             timer.Start();
         }
 
+        private void ParseAllLogs()
+        {
+
+        }
+
         private void LogTick(object? sender, EventArgs? e)
         {
+            bool firstRun = sender == null;
             var deletedNameSet = new HashSet<string>(m_LogContextMap.Keys);
             m_LogDirectoryInfo.Refresh();
 
@@ -64,8 +80,13 @@
                 var fileInfos = m_LogDirectoryInfo.GetFiles("output_log_*.txt", SearchOption.TopDirectoryOnly);
                 Array.Sort(fileInfos, (a, b) => a.CreationTimeUtc.CompareTo(b.CreationTimeUtc));
 
-                foreach (var fileInfo in fileInfos)
+                int length = fileInfos.Length;
+                int lastIndex = length - 1;
+                for (int i = 0; i < length; i++)
                 {
+                    bool isOlder = i < lastIndex;
+                    FileInfo fileInfo = fileInfos[i];
+
                     fileInfo.Refresh();
                     if (!fileInfo.Exists)
                     {
@@ -81,6 +102,15 @@
                     {
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
+                    }
+
+                    if (SkipParsedLogs)
+                    {
+                        if (WasParsed(logContext.DateKey) && isOlder)
+                            continue;
+
+                        if (firstRun && isOlder)
+                            SetParsed(logContext.DateKey);
                     }
 
                     if (logContext.Length == fileInfo.Length)
@@ -129,7 +159,6 @@
                 using (var stream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 65536, false))
                 {
                     stream.Position = logContext.Position;
-                    // stream.Seek(logContext.Position, SeekOrigin.Begin);
 
                     using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                     {
@@ -261,6 +290,7 @@
             public long Position;
 
             public readonly string FileName;
+            public readonly string DateKey;
             public string? DisplayName;
 
             // Recent Instance info
@@ -307,6 +337,7 @@
             public LogContext(string fileName)
             {
                 FileName = fileName;
+                DateKey = FileName.Substring(11, 19);
                 Players = new HashSet<string>();
                 InstanceExceptions = new StringBuilder();
                 InstanceLogs = new StringBuilder();

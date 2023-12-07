@@ -7,7 +7,8 @@ namespace ToNSaveManager.Models
     {
         const string LegacyDestination = "data.json";
         static string Destination = "SaveData.json";
-
+        
+        public HashSet<string> ParsedLogs { get; private set; } = new HashSet<string>();
         public List<Objective> Objectives { get; private set; } = new List<Objective>();
         public List<History> Collection { get; private set; } = new List<History>();
 
@@ -70,6 +71,16 @@ namespace ToNSaveManager.Models
             }
 
             return Count;
+        }
+
+        public bool WasParsed(string name) => ParsedLogs.Contains(name);
+        public void SetParsed(string name)
+        {
+            if (!WasParsed(name))
+            {
+                ParsedLogs.Add(name);
+                SetDirty();
+            }
         }
 
         public static SaveData Import()

@@ -73,7 +73,7 @@ namespace ToNSaveManager.Models
             {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.AppendLine("Terrors Survived:");
+                sb.AppendLine("Terrors in round:");
                 sb.Append(Terrors);
             }
             if (showPlayers && !string.IsNullOrEmpty(Players))

@@ -65,7 +65,10 @@ jobs:
       shell: pwsh
 
     - name: Update Terrors index data
-      run: echo -n "${{ secrets.TERROR_INDEX_DATA }}" > "./Resources/index.json"
+      run: |
+          $data = "${{ secrets.TERROR_INDEX_DATA }}"
+          [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($data)) | Out-File -Encoding "UTF8" "./Resources/index.json"
+      shell: pwsh
 
     # Build the application
     - name: Build the application

@@ -46,6 +46,7 @@
             toolTip = new ToolTip(components);
             groupBox2 = new GroupBox();
             checkColorObjectives = new CheckBox();
+            checkSkipParsedLogs = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -60,11 +61,12 @@
             groupBoxGeneral.Controls.Add(checkSaveTerrors);
             groupBoxGeneral.Controls.Add(checkPlayerNames);
             groupBoxGeneral.Controls.Add(checkAutoCopy);
+            groupBoxGeneral.Controls.Add(checkSkipParsedLogs);
             groupBoxGeneral.Dock = DockStyle.Top;
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 8);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 93);
+            groupBoxGeneral.Size = new Size(268, 111);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
@@ -73,7 +75,7 @@
             // 
             checkSaveTerrorsNote.Dock = DockStyle.Top;
             checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
-            checkSaveTerrorsNote.Location = new Point(3, 72);
+            checkSaveTerrorsNote.Location = new Point(3, 90);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
             checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
             checkSaveTerrorsNote.Size = new Size(262, 18);
@@ -85,7 +87,7 @@
             // checkSaveTerrors
             // 
             checkSaveTerrors.Dock = DockStyle.Top;
-            checkSaveTerrors.Location = new Point(3, 54);
+            checkSaveTerrors.Location = new Point(3, 72);
             checkSaveTerrors.Name = "checkSaveTerrors";
             checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
             checkSaveTerrors.Size = new Size(262, 18);
@@ -98,7 +100,7 @@
             // checkPlayerNames
             // 
             checkPlayerNames.Dock = DockStyle.Top;
-            checkPlayerNames.Location = new Point(3, 36);
+            checkPlayerNames.Location = new Point(3, 54);
             checkPlayerNames.Name = "checkPlayerNames";
             checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
             checkPlayerNames.Size = new Size(262, 18);
@@ -110,7 +112,7 @@
             // checkAutoCopy
             // 
             checkAutoCopy.Dock = DockStyle.Top;
-            checkAutoCopy.Location = new Point(3, 18);
+            checkAutoCopy.Location = new Point(3, 36);
             checkAutoCopy.Name = "checkAutoCopy";
             checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
             checkAutoCopy.Size = new Size(262, 18);
@@ -127,7 +129,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 101);
+            groupBoxNotifications.Location = new Point(8, 119);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(268, 57);
             groupBoxNotifications.TabIndex = 2;
@@ -170,7 +172,7 @@
             groupBox1.Controls.Add(check24Hour);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 158);
+            groupBox1.Location = new Point(8, 176);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(268, 75);
             groupBox1.TabIndex = 3;
@@ -219,7 +221,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 279);
+            btnCheckForUpdates.Location = new Point(8, 296);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -233,7 +235,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 279);
+            btnOpenData.Location = new Point(223, 296);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -256,7 +258,7 @@
             groupBox2.Controls.Add(checkColorObjectives);
             groupBox2.Dock = DockStyle.Top;
             groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 233);
+            groupBox2.Location = new Point(8, 251);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(268, 39);
             groupBox2.TabIndex = 6;
@@ -275,6 +277,18 @@
             checkColorObjectives.Text = "Colorful Objectives";
             checkColorObjectives.UseVisualStyleBackColor = true;
             // 
+            // checkSkipParsedLogs
+            // 
+            checkSkipParsedLogs.Dock = DockStyle.Top;
+            checkSkipParsedLogs.Location = new Point(3, 18);
+            checkSkipParsedLogs.Name = "checkSkipParsedLogs";
+            checkSkipParsedLogs.Padding = new Padding(3, 0, 3, 0);
+            checkSkipParsedLogs.Size = new Size(262, 18);
+            checkSkipParsedLogs.TabIndex = 4;
+            checkSkipParsedLogs.Tag = "SkipParsedLogs|Skip old parsed log files that were already processed and saved.\\nOnly disable this if you accidentally deleted a save code.";
+            checkSkipParsedLogs.Text = "Skip Parsed Logs (!)";
+            checkSkipParsedLogs.UseVisualStyleBackColor = true;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -282,7 +296,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 311);
+            ClientSize = new Size(284, 328);
             Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
@@ -328,5 +342,6 @@
         private CheckBox checkColorObjectives;
         private CheckBox checkSaveTerrorsNote;
         private CheckBox checkSaveTerrors;
+        private CheckBox checkSkipParsedLogs;
     }
 }
