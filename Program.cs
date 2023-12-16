@@ -12,7 +12,9 @@ namespace ToNSaveManager
         internal const string ProgramName = "ToNSaveManager";
         internal static readonly string ProgramPath = Assembly.GetExecutingAssembly().Location;
         internal static readonly string ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? string.Empty;
-        internal static readonly string DataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
+
+        internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
+        internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
         internal static void ReleaseMutex()
@@ -55,10 +57,42 @@ namespace ToNSaveManager
                 ReleaseMutex();
             };
 
+            if (Directory.Exists(LegacyDataLocation))
+            {
+                // Copy old content to the new folder and keep old save data, moving folders might be a bit dangerous
+                CopyDirectory(LegacyDataLocation, DataLocation, true);
+                Directory.Move(LegacyDataLocation, LegacyDataLocation + "_Old");
+            }
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
+        }
+
+        // https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
+        static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+        {
+            var dir = new DirectoryInfo(sourceDir);
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            Directory.CreateDirectory(destinationDir);
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(destinationDir, file.Name);
+                file.CopyTo(targetFilePath);
+            }
+
+            if (recursive)
+            {
+                foreach (DirectoryInfo subDir in dirs)
+                {
+                    string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                    CopyDirectory(subDir.FullName, newDestinationDir, true);
+                }
+            }
         }
 
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
