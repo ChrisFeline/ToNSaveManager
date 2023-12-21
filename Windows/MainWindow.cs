@@ -9,6 +9,7 @@ using ToNSaveManager.Windows;
 using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ToNSaveManager
 {
@@ -438,27 +439,27 @@ namespace ToNSaveManager
 
         #region Log Handling
         const string SaveInitKey = "saveInit";
-        const string SaveStartKeyword = "  [START]";
+        const string SaveStartKeyword = "[START]";
         const string SaveEndKeyword = "[END]";
-        const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
+        const string SaveInitKeyword = "[TERRORS SAVE CODE CREATED";
 
         const string ROUND_PARTICIPATION_KEY = "optedIn";
-        const string ROUND_OPTIN_KEYWORD = "  opted in";
-        const string ROUND_OPTOUT_KEYWORD = " opted out";
+        const string ROUND_OPTIN_KEYWORD = "opted in";
+        const string ROUND_OPTOUT_KEYWORD = "Player respawned";
 
         const string ROUND_RESULT_KEY = "rResult";
         const string ROUND_KILLERS_KEY = "rKillers";
-        const string ROUND_WON_KEYWORD = "  Player Won";
-        const string ROUND_LOST_KEYWORD = "  Player lost,";
+        const string ROUND_WON_KEYWORD = "Player Won";
+        const string ROUND_LOST_KEYWORD = "Player lost,";
 
-        const string KILLER_MATRIX_KEYWORD = " Killers have been set - ";
+        const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
-            string line = e.Content;
             DateTime timestamp = e.Timestamp;
             LogContext context = e.Context;
+            string line = e.Content.Substring(34);
 
             if (HandleSaveCode(line, timestamp, context) ||
                 (Settings.Get.SaveRoundInfo && HandleTerrorIndex(line, timestamp, context))) { }
@@ -481,7 +482,7 @@ namespace ToNSaveManager
 
             if (!context.Get<bool>(SaveInitKey)) return false;
 
-            index = line.IndexOf(SaveStartKeyword, 32);
+            index = line.IndexOf(SaveStartKeyword);
             if (index < 0) return false;
 
             index += SaveStartKeyword.Length;
@@ -499,8 +500,8 @@ namespace ToNSaveManager
         private bool HandleTerrorIndex(string line, DateTime timestamp, LogContext context)
         {
             // Handle participation
-            bool isOptedIn = line.Contains(ROUND_OPTIN_KEYWORD);
-            if (isOptedIn || line.Contains(ROUND_OPTOUT_KEYWORD))
+            bool isOptedIn = line.StartsWith(ROUND_OPTIN_KEYWORD);
+            if (isOptedIn || line.StartsWith(ROUND_OPTOUT_KEYWORD))
             {
                 context.Set(ROUND_PARTICIPATION_KEY, isOptedIn);
                 if (!isOptedIn)
@@ -517,17 +518,16 @@ namespace ToNSaveManager
             if (!isOptedIn) return false;
 
             // Track round participation results
-            isOptedIn = line.Contains(ROUND_WON_KEYWORD);
-            if (isOptedIn || line.Contains(ROUND_LOST_KEYWORD))
+            isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
+            if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
             {
                 context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.L);
                 return true;
             }
 
-            int index = line.IndexOf(KILLER_MATRIX_KEYWORD);
-            if (index > 0)
+            if (line.StartsWith(KILLER_MATRIX_KEYWORD))
             {
-                index += KILLER_MATRIX_KEYWORD.Length;
+                int index = KILLER_MATRIX_KEYWORD.Length;
                 int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
                 if (rndInd < 0) return true;
 
@@ -536,7 +536,9 @@ namespace ToNSaveManager
                 int[] killerMatrix = new int[kMatrixRaw.Length];
 
                 for (int i = 0; i < kMatrixRaw.Length; i++)
+                {
                     killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                }
 
                 TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
                 context.Set(ROUND_KILLERS_KEY, terrorMatrix);
@@ -615,6 +617,7 @@ namespace ToNSaveManager
                 if (context.HasKey(ROUND_KILLERS_KEY))
                 {
                     TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+
                     if (killers.TerrorNames.Length > 0)
                     {
                         entry.RTerrors = killers.TerrorNames;

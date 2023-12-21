@@ -1,4 +1,6 @@
-﻿namespace ToNSaveManager.Models
+﻿using System.Diagnostics;
+
+namespace ToNSaveManager.Models
 {
     internal struct TerrorMatrix
     {
@@ -38,7 +40,7 @@
                 case ToNRoundType.Midnight:
                     TerrorNames = new string[indexes.Length];
                     for (int i = 0; i < TerrorNames.Length; i++)
-                        TerrorNames[i] = ToNIndex.Instance[i, i > 1 && RoundType == ToNRoundType.Midnight];
+                        TerrorNames[i] = ToNIndex.Instance[indexes[i], i > 1 && RoundType == ToNRoundType.Midnight];
                     break;
 
                 case ToNRoundType.Mystic_Moon:
