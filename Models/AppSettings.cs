@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace ToNSaveManager.Models
 {
@@ -9,13 +8,19 @@ namespace ToNSaveManager.Models
         internal static void Export() => Get.TryExport();
 
         const string LegacyDestination = "settings.json";
-        static string Destination;
+        public static string Destination { get; private set; }
 
         static Settings()
         {
             Destination = "Settings.json";
             Get = Import();
         }
+
+
+        /// <summary>
+        /// Custom location where save data will be stored.
+        /// </summary>
+        public string? DataLocation { get; set; }
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.
@@ -38,6 +43,22 @@ namespace ToNSaveManager.Models
         public bool SaveNames { get; set; }
 
         /// <summary>
+        /// Save a list of terrors that you survived when saving.
+        /// </summary>
+        public bool SaveRoundInfo { get; set; } = true;
+        public bool ShowWinLose { get; set; } = true;
+
+        /// <summary>
+        /// Automatically set a note to the save with the survived terrors.
+        /// </summary>
+        public bool SaveRoundNote { get; set; } = true;
+
+        /// <summary>
+        /// Skips already parsed logs to save startup performance.
+        /// </summary>
+        public bool SkipParsedLogs { get; set; } = true;
+
+        /// <summary>
         /// Send popup notifications to XSOverlay.
         /// </summary>
         public bool XSOverlay { get; set; }
@@ -47,6 +68,7 @@ namespace ToNSaveManager.Models
         public bool Use24Hour { get; set; } = true;
         public bool ShowSeconds { get; set; } = true;
         public bool InvertMD { get; set; }
+        public bool ShowDate { get; set; } // Show full date in entries
 
         /// <summary>
         /// If true, objectives items will be colored like the items in game.

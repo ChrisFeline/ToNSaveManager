@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -35,8 +36,16 @@
         internal static string GetVRChatDataLocation() =>
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
 
+        #region From Settings
         bool RecordInstanceLogs => Settings.Get.RecordInstanceLogs;
+        bool SkipParsedLogs => Settings.Get.SkipParsedLogs;
 
+        bool WasParsed(string name) => MainWindow.SaveData.WasParsed(name);
+        void SetParsed(string name) => MainWindow.SaveData.SetParsed(name);
+        #endregion
+        private HashSet<string> SkippedLogs = new HashSet<string>();
+
+        private bool Started;
         public LogWatcher()
         {
             var logPath = GetVRChatDataLocation() + @"\VRChat";
@@ -50,13 +59,19 @@
             timer.Enabled = true;
 
             LogTick(null, null);
+            Started = true;
             timer.Tick += LogTick;
             timer.Start();
         }
 
+        private void ParseAllLogs()
+        {
+
+        }
+
         private void LogTick(object? sender, EventArgs? e)
         {
-            var deletedNameSet = new HashSet<string>(m_LogContextMap.Keys);
+            bool firstRun = sender == null;
             m_LogDirectoryInfo.Refresh();
 
             if (m_LogDirectoryInfo.Exists)
@@ -64,8 +79,13 @@
                 var fileInfos = m_LogDirectoryInfo.GetFiles("output_log_*.txt", SearchOption.TopDirectoryOnly);
                 Array.Sort(fileInfos, (a, b) => a.CreationTimeUtc.CompareTo(b.CreationTimeUtc));
 
-                foreach (var fileInfo in fileInfos)
+                int length = fileInfos.Length;
+                int lastIndex = length - 1;
+                for (int i = 0; i < length; i++)
                 {
+                    bool isOlder = i < lastIndex;
+                    FileInfo fileInfo = fileInfos[i];
+
                     fileInfo.Refresh();
                     if (!fileInfo.Exists)
                     {
@@ -73,14 +93,19 @@
                     }
 
                     LogContext? logContext;
-                    if (m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
-                    {
-                        deletedNameSet.Remove(fileInfo.Name);
-                    }
-                    else
+                    if (!m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
                     {
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
+                    }
+
+                    if (SkipParsedLogs)
+                    {
+                        if (WasParsed(logContext.DateKey) && isOlder)
+                            continue;
+
+                        if (firstRun && isOlder)
+                            SetParsed(logContext.DateKey);
                     }
 
                     if (logContext.Length == fileInfo.Length)
@@ -90,12 +115,9 @@
 
                     logContext.Length = fileInfo.Length;
                     ParseLog(fileInfo, logContext, sender == null);
-                }
-            }
 
-            foreach (var name in deletedNameSet)
-            {
-                m_LogContextMap.Remove(name);
+                    if (!logContext.Initialized) logContext.SetInit();
+                }
             }
 
             if (OnTick != null)
@@ -129,7 +151,6 @@
                 using (var stream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 65536, false))
                 {
                     stream.Position = logContext.Position;
-                    // stream.Seek(logContext.Position, SeekOrigin.Begin);
 
                     using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                     {
@@ -259,8 +280,11 @@
         {
             public long Length;
             public long Position;
+            public bool Initialized { get; private set; }
+            public void SetInit() => Initialized = true;
 
             public readonly string FileName;
+            public readonly string DateKey;
             public string? DisplayName;
 
             // Recent Instance info
@@ -271,9 +295,43 @@
             public readonly StringBuilder InstanceExceptions; // For debugging
             public readonly StringBuilder InstanceLogs;
 
+            // Hold temporal data in this log instance
+            private Dictionary<string, object> Data = new Dictionary<string, object>();
+            public bool TryGet<T>(string key, out T? result)
+            {
+                if (HasKey(key))
+                {
+                    result = (T?)Data[key];
+                    return true;
+                }
+
+                result = default(T);
+                return false;
+            }
+            public bool HasKey(string key) => Data.ContainsKey(key);
+            public T? Get<T>(string key)
+            {
+                return HasKey(key) ? (T)Data[key] : default(T);
+            }
+            public void Set<T>(string key, T? value)
+            {
+                if (value == null)
+                {
+                    Rem(key);
+                    return;
+                }
+
+                Data[key] = value;
+            }
+            public void Rem(string key)
+            {
+                if (HasKey(key)) Data.Remove(key);
+            }
+
             public LogContext(string fileName)
             {
                 FileName = fileName;
+                DateKey = FileName.Substring(11, 19);
                 Players = new HashSet<string>();
                 InstanceExceptions = new StringBuilder();
                 InstanceLogs = new StringBuilder();

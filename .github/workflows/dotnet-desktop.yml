@@ -64,6 +64,12 @@ jobs:
         Set-Content -Path $csprojPath -Value $csproj
       shell: pwsh
 
+    - name: Update Terrors index data
+      run: |
+          $data = "${{ secrets.TERROR_INDEX_DATA }}"
+          [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($data)) | Out-File -Encoding "UTF8" "./Resources/index.json"
+      shell: pwsh
+
     # Build the application
     - name: Build the application
       run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish

@@ -30,23 +30,33 @@
         {
             components = new System.ComponentModel.Container();
             groupBoxGeneral = new GroupBox();
+            checkShowWinLose = new CheckBox();
+            checkSaveTerrorsNote = new CheckBox();
+            checkSaveTerrors = new CheckBox();
             checkPlayerNames = new CheckBox();
             checkAutoCopy = new CheckBox();
+            checkSkipParsedLogs = new CheckBox();
             groupBoxNotifications = new GroupBox();
             checkPlayAudio = new CheckBox();
             checkXSOverlay = new CheckBox();
             groupBox1 = new GroupBox();
+            checkShowDate = new CheckBox();
             checkInvertMD = new CheckBox();
             checkShowSeconds = new CheckBox();
             check24Hour = new CheckBox();
             btnCheckForUpdates = new Button();
             btnOpenData = new Button();
+            ctxData = new ContextMenuStrip(components);
+            setDataLocationToolStripMenuItem = new ToolStripMenuItem();
+            ctxItemPickFolder = new ToolStripMenuItem();
+            ctxItemResetToDefault = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
             groupBox2 = new GroupBox();
             checkColorObjectives = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBox1.SuspendLayout();
+            ctxData.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
             // 
@@ -54,21 +64,63 @@
             // 
             groupBoxGeneral.AutoSize = true;
             groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxGeneral.Controls.Add(checkShowWinLose);
+            groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
+            groupBoxGeneral.Controls.Add(checkSaveTerrors);
             groupBoxGeneral.Controls.Add(checkPlayerNames);
             groupBoxGeneral.Controls.Add(checkAutoCopy);
+            groupBoxGeneral.Controls.Add(checkSkipParsedLogs);
             groupBoxGeneral.Dock = DockStyle.Top;
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 8);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 57);
+            groupBoxGeneral.Size = new Size(268, 129);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
             // 
+            // checkShowWinLose
+            // 
+            checkShowWinLose.Dock = DockStyle.Top;
+            checkShowWinLose.ForeColor = Color.PowderBlue;
+            checkShowWinLose.Location = new Point(3, 108);
+            checkShowWinLose.Name = "checkShowWinLose";
+            checkShowWinLose.Padding = new Padding(21, 0, 3, 0);
+            checkShowWinLose.Size = new Size(262, 18);
+            checkShowWinLose.TabIndex = 5;
+            checkShowWinLose.Tag = "ShowWinLose|Entries will show a [W] or [L] tag.";
+            checkShowWinLose.Text = "Show Win/Lose Tags";
+            checkShowWinLose.UseVisualStyleBackColor = true;
+            // 
+            // checkSaveTerrorsNote
+            // 
+            checkSaveTerrorsNote.Dock = DockStyle.Top;
+            checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
+            checkSaveTerrorsNote.Location = new Point(3, 90);
+            checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
+            checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
+            checkSaveTerrorsNote.Size = new Size(262, 18);
+            checkSaveTerrorsNote.TabIndex = 3;
+            checkSaveTerrorsNote.Tag = "SaveRoundNote|Automatically set survived terror names as note.";
+            checkSaveTerrorsNote.Text = "Terror Name Notes";
+            checkSaveTerrorsNote.UseVisualStyleBackColor = true;
+            // 
+            // checkSaveTerrors
+            // 
+            checkSaveTerrors.Dock = DockStyle.Top;
+            checkSaveTerrors.Location = new Point(3, 72);
+            checkSaveTerrors.Name = "checkSaveTerrors";
+            checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
+            checkSaveTerrors.Size = new Size(262, 18);
+            checkSaveTerrors.TabIndex = 2;
+            checkSaveTerrors.Tag = "SaveRoundInfo|Save codes will display the last round type and terror names.";
+            checkSaveTerrors.Text = "Save Round Info";
+            checkSaveTerrors.UseVisualStyleBackColor = true;
+            // 
             // checkPlayerNames
             // 
             checkPlayerNames.Dock = DockStyle.Top;
-            checkPlayerNames.Location = new Point(3, 36);
+            checkPlayerNames.Location = new Point(3, 54);
             checkPlayerNames.Name = "checkPlayerNames";
             checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
             checkPlayerNames.Size = new Size(262, 18);
@@ -80,7 +132,7 @@
             // checkAutoCopy
             // 
             checkAutoCopy.Dock = DockStyle.Top;
-            checkAutoCopy.Location = new Point(3, 18);
+            checkAutoCopy.Location = new Point(3, 36);
             checkAutoCopy.Name = "checkAutoCopy";
             checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
             checkAutoCopy.Size = new Size(262, 18);
@@ -88,6 +140,18 @@
             checkAutoCopy.Tag = "AutoCopy|Automatically copy new save codes to clipboard.";
             checkAutoCopy.Text = "Auto Clipboard Copy";
             checkAutoCopy.UseVisualStyleBackColor = true;
+            // 
+            // checkSkipParsedLogs
+            // 
+            checkSkipParsedLogs.Dock = DockStyle.Top;
+            checkSkipParsedLogs.Location = new Point(3, 18);
+            checkSkipParsedLogs.Name = "checkSkipParsedLogs";
+            checkSkipParsedLogs.Padding = new Padding(3, 0, 3, 0);
+            checkSkipParsedLogs.Size = new Size(262, 18);
+            checkSkipParsedLogs.TabIndex = 4;
+            checkSkipParsedLogs.Tag = "SkipParsedLogs|Skip old parsed log files that were already processed and saved.\\nOnly disable this if you accidentally deleted a save code.";
+            checkSkipParsedLogs.Text = "Skip Parsed Logs (!)";
+            checkSkipParsedLogs.UseVisualStyleBackColor = true;
             // 
             // groupBoxNotifications
             // 
@@ -97,7 +161,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 65);
+            groupBoxNotifications.Location = new Point(8, 137);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(268, 57);
             groupBoxNotifications.TabIndex = 2;
@@ -135,17 +199,30 @@
             // 
             groupBox1.AutoSize = true;
             groupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox1.Controls.Add(checkShowDate);
             groupBox1.Controls.Add(checkInvertMD);
             groupBox1.Controls.Add(checkShowSeconds);
             groupBox1.Controls.Add(check24Hour);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 122);
+            groupBox1.Location = new Point(8, 194);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(268, 75);
+            groupBox1.Size = new Size(268, 93);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Time Formatting";
+            // 
+            // checkShowDate
+            // 
+            checkShowDate.Dock = DockStyle.Top;
+            checkShowDate.Location = new Point(3, 72);
+            checkShowDate.Name = "checkShowDate";
+            checkShowDate.Padding = new Padding(3, 0, 3, 0);
+            checkShowDate.Size = new Size(262, 18);
+            checkShowDate.TabIndex = 3;
+            checkShowDate.Tag = "ShowDate|Entries on the right panel will display a full date.";
+            checkShowDate.Text = "Right Panel Date";
+            checkShowDate.UseVisualStyleBackColor = true;
             // 
             // checkInvertMD
             // 
@@ -189,7 +266,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 243);
+            btnCheckForUpdates.Location = new Point(8, 332);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -200,10 +277,11 @@
             // btnOpenData
             // 
             btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.ContextMenuStrip = ctxData;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 243);
+            btnOpenData.Location = new Point(223, 332);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -211,7 +289,33 @@
             btnOpenData.Text = "Data";
             btnOpenData.UseVisualStyleBackColor = true;
             btnOpenData.Click += btnOpenData_Click;
-            btnOpenData.MouseUp += btnOpenData_MouseUp;
+            // 
+            // ctxData
+            // 
+            ctxData.Items.AddRange(new ToolStripItem[] { setDataLocationToolStripMenuItem });
+            ctxData.Name = "ctxData";
+            ctxData.Size = new Size(215, 48);
+            // 
+            // setDataLocationToolStripMenuItem
+            // 
+            setDataLocationToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ctxItemPickFolder, ctxItemResetToDefault });
+            setDataLocationToolStripMenuItem.Name = "setDataLocationToolStripMenuItem";
+            setDataLocationToolStripMenuItem.Size = new Size(214, 22);
+            setDataLocationToolStripMenuItem.Text = "Custom Data Location";
+            // 
+            // ctxItemPickFolder
+            // 
+            ctxItemPickFolder.Name = "ctxItemPickFolder";
+            ctxItemPickFolder.Size = new Size(186, 22);
+            ctxItemPickFolder.Text = "Pick Folder";
+            ctxItemPickFolder.Click += ctxItemPickFolder_Click;
+            // 
+            // ctxItemResetToDefault
+            // 
+            ctxItemResetToDefault.Name = "ctxItemResetToDefault";
+            ctxItemResetToDefault.Size = new Size(186, 22);
+            ctxItemResetToDefault.Text = "Reset to Default";
+            ctxItemResetToDefault.Click += ctxItemResetToDefault_Click;
             // 
             // toolTip
             // 
@@ -226,7 +330,7 @@
             groupBox2.Controls.Add(checkColorObjectives);
             groupBox2.Dock = DockStyle.Top;
             groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 197);
+            groupBox2.Location = new Point(8, 287);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(268, 39);
             groupBox2.TabIndex = 6;
@@ -252,7 +356,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 275);
+            ClientSize = new Size(284, 364);
             Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
@@ -275,6 +379,7 @@
             groupBoxGeneral.ResumeLayout(false);
             groupBoxNotifications.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
+            ctxData.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -296,5 +401,14 @@
         private ToolTip toolTip;
         private GroupBox groupBox2;
         private CheckBox checkColorObjectives;
+        private CheckBox checkSaveTerrorsNote;
+        private CheckBox checkSaveTerrors;
+        private CheckBox checkSkipParsedLogs;
+        private CheckBox checkShowDate;
+        private CheckBox checkShowWinLose;
+        private ContextMenuStrip ctxData;
+        private ToolStripMenuItem setDataLocationToolStripMenuItem;
+        private ToolStripMenuItem ctxItemPickFolder;
+        private ToolStripMenuItem ctxItemResetToDefault;
     }
 }

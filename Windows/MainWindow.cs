@@ -6,6 +6,11 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Windows;
 
+using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
+using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace ToNSaveManager
 {
     public partial class MainWindow : Form
@@ -216,7 +221,7 @@ namespace ToNSaveManager
                 }
 
                 Entry entry = (Entry)listBoxEntries.Items[index];
-                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames));
+                TooltipUtil.Set(listBoxEntries, entry.GetTooltip(Settings.Get.SaveNames, Settings.Get.SaveRoundInfo));
             }
         }
 
@@ -339,6 +344,8 @@ namespace ToNSaveManager
 
         internal static void OpenExternalLink(string url)
         {
+            if (string.IsNullOrEmpty(url)) return;
+
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
             using (Process.Start(psInfo))
             {
@@ -431,49 +438,114 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
-        const string SaveStartKeyword = "  [START]";
+        const string SaveInitKey = "saveInit";
+        const string SaveStartKeyword = "[START]";
         const string SaveEndKeyword = "[END]";
-        const string SaveInitKeyword = "  [TERRORS SAVE CODE CREATED";
+        const string SaveInitKeyword = "[TERRORS SAVE CODE CREATED";
 
-        private bool SaveInit;
+        const string ROUND_PARTICIPATION_KEY = "optedIn";
+        const string ROUND_OPTIN_KEYWORD = "opted in";
+        const string ROUND_OPTOUT_KEYWORD = "Player respawned";
 
-        private void LogWatcher_OnLine(object? sender, LogWatcher.OnLineArgs e)
+        const string ROUND_RESULT_KEY = "rResult";
+        const string ROUND_KILLERS_KEY = "rKillers";
+        const string ROUND_WON_KEYWORD = "Player Won";
+        const string ROUND_LOST_KEYWORD = "Player lost,";
+
+        const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
+        const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
+
+        private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
-            string line = e.Content;
             DateTime timestamp = e.Timestamp;
+            LogContext context = e.Context;
+            string line = e.Content.Substring(34);
 
-            int index;
-            LogWatcher.LogContext context = e.Context;
-
-            index = line.IndexOf(SaveInitKeyword);
-            if (index > -1)
-            {
-                SaveInit = true;
-                return;
-            }
-
-            if (!SaveInit) return;
-
-            index = line.IndexOf(SaveStartKeyword, 32);
-            if (index < 0) return;
-
-            index += SaveStartKeyword.Length;
-
-            int end = line.IndexOf(SaveEndKeyword, index);
-            if (end < 0) return;
-            end -= index;
-
-            string save = line.Substring(index, end);
-            string logName = context.FileName.Substring(11, 19);
-
-            AddLogEntry(logName, save, timestamp, context);
-            SaveInit = false;
+            if (HandleSaveCode(line, timestamp, context) ||
+                (Settings.Get.SaveRoundInfo && HandleTerrorIndex(line, timestamp, context))) { }
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e)
         {
             CopyRecent();
             Export();
+        }
+
+        private bool HandleSaveCode(string line, DateTime timestamp, LogContext context)
+        {
+            int index = line.IndexOf(SaveInitKeyword);
+            if (index > -1)
+            {
+                context.Set(SaveInitKey, true);
+                return true;
+            }
+
+            if (!context.Get<bool>(SaveInitKey)) return false;
+
+            index = line.IndexOf(SaveStartKeyword);
+            if (index < 0) return false;
+
+            index += SaveStartKeyword.Length;
+
+            int end = line.IndexOf(SaveEndKeyword, index);
+            if (end < 0) return false;
+            end -= index;
+
+            string save = line.Substring(index, end);
+            AddLogEntry(context.DateKey, save, timestamp, context);
+            context.Set(SaveInitKey, false);
+            return true;
+        }
+
+        private bool HandleTerrorIndex(string line, DateTime timestamp, LogContext context)
+        {
+            // Handle participation
+            bool isOptedIn = line.StartsWith(ROUND_OPTIN_KEYWORD);
+            if (isOptedIn || line.StartsWith(ROUND_OPTOUT_KEYWORD))
+            {
+                context.Set(ROUND_PARTICIPATION_KEY, isOptedIn);
+                if (!isOptedIn)
+                {
+                    context.Rem(ROUND_KILLERS_KEY);
+                    context.Rem(ROUND_RESULT_KEY);
+                }
+                return true;
+            } else
+            {
+                isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
+            }
+
+            if (!isOptedIn) return false;
+
+            // Track round participation results
+            isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
+            if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
+            {
+                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.L);
+                return true;
+            }
+
+            if (line.StartsWith(KILLER_MATRIX_KEYWORD))
+            {
+                int index = KILLER_MATRIX_KEYWORD.Length;
+                int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
+                if (rndInd < 0) return true;
+
+                string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
+                string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                int[] killerMatrix = new int[kMatrixRaw.Length];
+
+                for (int i = 0; i < kMatrixRaw.Length; i++)
+                {
+                    killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                }
+
+                TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
+                context.Set(ROUND_KILLERS_KEY, terrorMatrix);
+                return true;
+            }
+
+            return true;
         }
         #endregion
 
@@ -519,7 +591,7 @@ namespace ToNSaveManager
 
             Export(true);
         }
-        private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogWatcher.LogContext context)
+        private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogContext context)
         {
             History? collection = SaveData[dateKey];
             if (collection == null)
@@ -533,6 +605,31 @@ namespace ToNSaveManager
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
+            if (Settings.Get.SaveRoundInfo)
+            {
+                if (context.HasKey(ROUND_RESULT_KEY))
+                {
+                    ToNRoundResult result = context.Get<ToNRoundResult>(ROUND_RESULT_KEY);
+                    entry.RResult = result;
+                    context.Rem(ROUND_RESULT_KEY);
+                }
+
+                if (context.HasKey(ROUND_KILLERS_KEY))
+                {
+                    TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+
+                    if (killers.TerrorNames.Length > 0)
+                    {
+                        entry.RTerrors = killers.TerrorNames;
+                        entry.RType = killers.RoundTypeRaw;
+
+                        if (Settings.Get.SaveRoundNote)
+                            entry.Note = string.Join(", ", killers.TerrorNames);
+                    }
+
+                    context.Rem(ROUND_KILLERS_KEY);
+                }
+            }
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);
@@ -541,8 +638,11 @@ namespace ToNSaveManager
 #pragma warning restore CS8604, CS8602
             SaveData.SetDirty();
 
-            PlayNotification();
-            SendXSNotification();
+            if (context.Initialized)
+            {
+                PlayNotification();
+                SendXSNotification();
+            }
         }
 
         private void AddKey(History collection, int i = -1)
