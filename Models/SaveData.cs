@@ -9,6 +9,7 @@ namespace ToNSaveManager.Models
         const string FileName = "SaveData.json";
         static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
         static string LegacyLocation = Path.Combine(Program.LegacyDataLocation, FileName);
+        static string LegacyLocationOld = Path.Combine(Program.LegacyDataLocation + "_Old", FileName);
         static string Destination = FileName;
         
         public HashSet<string> ParsedLogs { get; private set; } = new HashSet<string>();
@@ -143,7 +144,7 @@ namespace ToNSaveManager.Models
             bool readFromLegacy = false;
             if (string.IsNullOrEmpty(destination))
             {
-                if (!File.Exists(DefaultLocation) && (File.Exists(LegacyLocation) || File.Exists(LegacyLocation = LegacyLocation + "_Old")))
+                if (!File.Exists(DefaultLocation) && (File.Exists(LegacyLocation) || File.Exists(LegacyLocation = LegacyLocationOld)))
                 {
                     readFromLegacy = true;
                     Debug.WriteLine("Read from legacy...");
