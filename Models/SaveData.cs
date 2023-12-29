@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ToNSaveManager.Models
 {
@@ -12,7 +13,7 @@ namespace ToNSaveManager.Models
         static string LegacyLocationOld = Path.Combine(Program.LegacyDataLocation + "_Old", FileName);
         static string Destination = FileName;
         
-        public HashSet<string> ParsedLogs { get; private set; } = new HashSet<string>();
+        public Dictionary<string, long> ParsedLog { get; private set; } = new Dictionary<string, long>();
         public List<Objective> Objectives { get; private set; } = new List<Objective>();
         public List<History> Collection { get; private set; } = new List<History>();
 
@@ -56,13 +57,14 @@ namespace ToNSaveManager.Models
                 if (c.Guid == id)
                 {
                     Collection.RemoveAt(i);
-                    if (!c.IsCustom && ParsedLogs.Contains(id)) ParsedLogs.Remove(id);
+                    if (!c.IsCustom && ParsedLog.ContainsKey(id)) ParsedLog.Remove(id);
                 }
             }
         }
         public void Remove(History h)
         {
             Collection.Remove(h);
+            if (!h.IsCustom && ParsedLog.ContainsKey(h.Guid)) ParsedLog.Remove(h.Guid);
         }
         public bool ContainsID(string id) => Collection.Any(v => v.Guid == id);
 
@@ -81,14 +83,18 @@ namespace ToNSaveManager.Models
             return Count;
         }
 
-        public bool WasParsed(string name) => ParsedLogs.Contains(name);
-        public void SetParsed(string name)
+        public long GetParsedPos(string name) => ParsedLog.ContainsKey(name) ? Math.Max(0, ParsedLog[name]) : 0;
+        public void SetParsedPos(string name, long pos, bool save)
         {
-            if (!WasParsed(name))
+            if (pos < 0)
             {
-                ParsedLogs.Add(name);
-                SetDirty();
+                ParsedLog.Remove(name);
+            } else
+            {
+                ParsedLog[name] = pos;
             }
+
+            if (save) SetDirty();
         }
 
         public static void OpenDataLocation()
