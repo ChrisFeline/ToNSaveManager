@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Drawing.Text;
 using System.Reflection;
@@ -10,9 +11,7 @@ namespace ToNSaveManager
     internal static class Program
     {
         internal const string ProgramName = "ToNSaveManager";
-        internal static readonly string ProgramPath = Assembly.GetExecutingAssembly().Location;
-        internal static readonly string ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? string.Empty;
-
+        internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
         internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
 
@@ -60,6 +59,8 @@ namespace ToNSaveManager
             };
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
+            Debug.WriteLine(ProgramDirectory);
 
             if (!StartCheckForUpdate())
                 Application.Run(new MainWindow());
