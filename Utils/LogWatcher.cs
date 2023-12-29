@@ -40,12 +40,10 @@
         bool RecordInstanceLogs => Settings.Get.RecordInstanceLogs;
         bool SkipParsedLogs => Settings.Get.SkipParsedLogs;
 
-        bool WasParsed(string name) => MainWindow.SaveData.WasParsed(name);
-        void SetParsed(string name) => MainWindow.SaveData.SetParsed(name);
+        long GetParsedPos(string name) => MainWindow.SaveData.GetParsedPos(name);
+        void SetParsedPos(string name, long pos, bool save) => MainWindow.SaveData.SetParsedPos(name, pos, save);
         #endregion
-        private HashSet<string> SkippedLogs = new HashSet<string>();
 
-        private bool Started;
         public LogWatcher()
         {
             var logPath = GetVRChatDataLocation() + @"\VRChat";
@@ -59,19 +57,13 @@
             timer.Enabled = true;
 
             LogTick(null, null);
-            Started = true;
             timer.Tick += LogTick;
             timer.Start();
         }
 
-        private void ParseAllLogs()
-        {
-
-        }
-
         private void LogTick(object? sender, EventArgs? e)
         {
-            bool firstRun = sender == null;
+            bool firstRun = sender == null && SkipParsedLogs;
             m_LogDirectoryInfo.Refresh();
 
             if (m_LogDirectoryInfo.Exists)
@@ -97,15 +89,8 @@
                     {
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
-                    }
 
-                    if (SkipParsedLogs)
-                    {
-                        if (WasParsed(logContext.DateKey) && isOlder)
-                            continue;
-
-                        if (firstRun && isOlder)
-                            SetParsed(logContext.DateKey);
+                        if (firstRun) logContext.Position = GetParsedPos(logContext.DateKey);
                     }
 
                     if (logContext.Length == fileInfo.Length)
@@ -116,7 +101,27 @@
                     logContext.Length = fileInfo.Length;
                     ParseLog(fileInfo, logContext, sender == null);
 
-                    if (!logContext.Initialized) logContext.SetInit();
+                    if (!logContext.Initialized)
+                    {
+                        logContext.SetInit();
+                    }
+
+                    if (SkipParsedLogs)
+                        SetParsedPos(logContext.DateKey, logContext.Position, firstRun);
+                }
+            }
+
+            // Remove logs keys that doesn't exist anymore
+            if (firstRun)
+            {
+                string[] parsedLogKeyArray = MainWindow.SaveData.ParsedLog.Keys.ToArray();
+                foreach (string key in parsedLogKeyArray)
+                {
+                    if (!m_LogContextMap.Values.Any(v => v.DateKey == key))
+                    {
+                        // Debug.WriteLine("Removing unnecessary key: " + key);
+                        SetParsedPos(key, -1, true);
+                    }
                 }
             }
 
