@@ -40,8 +40,26 @@ namespace ToNSaveManager
             this.Text = string.IsNullOrEmpty(title) ? OriginalTitle : OriginalTitle + " | " + title;
         }
 
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.LastWindowWidth = this.Width;
+            Properties.Settings.Default.LastWindowHeight = this.Height;
+            Properties.Settings.Default.LastWindowSplit = splitContainer1.SplitterDistance;
+            Properties.Settings.Default.Save();
+        }
+
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.LastWindowWidth > this.Width && Properties.Settings.Default.LastWindowHeight > this.Height)
+            {
+                this.Width = Properties.Settings.Default.LastWindowWidth;
+                this.Height = Properties.Settings.Default.LastWindowHeight;
+            }
+            if (Properties.Settings.Default.LastWindowSplit > 0)
+            {
+                splitContainer1.SplitterDistance = Properties.Settings.Default.LastWindowSplit;
+            }
+
             OriginalTitle = this.Text;
             this.Text = "Loading, please wait...";
 
@@ -354,6 +372,16 @@ namespace ToNSaveManager
         }
         #endregion
 
+        #region Split Container
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            if (splitContainer1.CanFocus)
+                splitContainer1.ActiveControl = listBoxEntries;
+
+            listBoxKeys.Refresh();
+            listBoxEntries.Refresh();
+        }
+        #endregion
         #endregion
 
         #region Form Methods
@@ -510,7 +538,8 @@ namespace ToNSaveManager
                     context.Rem(ROUND_RESULT_KEY);
                 }
                 return true;
-            } else
+            }
+            else
             {
                 isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
             }
@@ -670,6 +699,5 @@ namespace ToNSaveManager
         }
 
         #endregion
-
     }
 }

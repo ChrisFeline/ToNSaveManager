@@ -46,13 +46,18 @@
             btnSettings = new Button();
             button1 = new Button();
             button2 = new Button();
+            splitContainer1 = new SplitContainer();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // listBoxKeys
             // 
-            listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listBoxKeys.BackColor = Color.FromArgb(59, 66, 82);
             listBoxKeys.BorderStyle = BorderStyle.FixedSingle;
             listBoxKeys.DrawMode = DrawMode.OwnerDrawFixed;
@@ -60,9 +65,9 @@
             listBoxKeys.FormattingEnabled = true;
             listBoxKeys.IntegralHeight = false;
             listBoxKeys.ItemHeight = 15;
-            listBoxKeys.Location = new Point(12, 12);
+            listBoxKeys.Location = new Point(0, 0);
             listBoxKeys.Name = "listBoxKeys";
-            listBoxKeys.Size = new Size(192, 217);
+            listBoxKeys.Size = new Size(178, 217);
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
@@ -79,9 +84,9 @@
             listBoxEntries.FormattingEnabled = true;
             listBoxEntries.IntegralHeight = false;
             listBoxEntries.ItemHeight = 15;
-            listBoxEntries.Location = new Point(210, 12);
+            listBoxEntries.Location = new Point(0, 0);
             listBoxEntries.Name = "listBoxEntries";
-            listBoxEntries.Size = new Size(307, 217);
+            listBoxEntries.Size = new Size(323, 217);
             listBoxEntries.TabIndex = 1;
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
@@ -167,14 +172,14 @@
             // 
             // btnSettings
             // 
-            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnSettings.BackColor = Color.FromArgb(46, 52, 64);
             btnSettings.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnSettings.FlatStyle = FlatStyle.Flat;
             btnSettings.ForeColor = Color.White;
-            btnSettings.Location = new Point(12, 235);
+            btnSettings.Location = new Point(0, 223);
             btnSettings.Name = "btnSettings";
-            btnSettings.Size = new Size(192, 24);
+            btnSettings.Size = new Size(178, 24);
             btnSettings.TabIndex = 0;
             btnSettings.TabStop = false;
             btnSettings.Text = "Settings";
@@ -188,9 +193,9 @@
             button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
-            button1.Location = new Point(210, 235);
+            button1.Location = new Point(0, 223);
             button1.Name = "button1";
-            button1.Size = new Size(243, 24);
+            button1.Size = new Size(259, 24);
             button1.TabIndex = 0;
             button1.TabStop = false;
             button1.Text = "Objectives";
@@ -204,7 +209,7 @@
             button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(459, 235);
+            button2.Location = new Point(265, 223);
             button2.Name = "button2";
             button2.Size = new Size(58, 24);
             button2.TabIndex = 3;
@@ -213,26 +218,49 @@
             button2.UseVisualStyleBackColor = false;
             button2.Click += linkWiki_Clicked;
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer1.Location = new Point(12, 12);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(listBoxKeys);
+            splitContainer1.Panel1.Controls.Add(btnSettings);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(listBoxEntries);
+            splitContainer1.Panel2.Controls.Add(button1);
+            splitContainer1.Panel2.Controls.Add(button2);
+            splitContainer1.Size = new Size(505, 247);
+            splitContainer1.SplitterDistance = 178;
+            splitContainer1.TabIndex = 0;
+            splitContainer1.TabStop = false;
+            splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(529, 271);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(btnSettings);
-            Controls.Add(listBoxEntries);
-            Controls.Add(listBoxKeys);
+            Controls.Add(splitContainer1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimumSize = new Size(412, 256);
             Name = "MainWindow";
             Text = "ToN Save Manager";
+            FormClosing += MainWindow_FormClosing;
             Load += mainWindow_Loaded;
             Shown += mainWindow_Shown;
             ctxMenuEntries.ResumeLayout(false);
             ctxMenuKeys.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -254,5 +282,6 @@
         private Button btnSettings;
         private Button button1;
         private Button button2;
+        private SplitContainer splitContainer1;
     }
 }
