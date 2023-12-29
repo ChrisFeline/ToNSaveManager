@@ -6,6 +6,7 @@ namespace ToNSaveManager
     public partial class ObjectivesWindow : Form
     {
         static ObjectivesWindow? Instance;
+        static List<Objective> Objectives = Objective.ImportFromMemory();
 
         public ObjectivesWindow()
         {
@@ -39,7 +40,8 @@ namespace ToNSaveManager
         private void ObjectivesWindow_Load(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-            foreach (Objective ob in MainWindow.SaveData.Objectives)
+
+            foreach (Objective ob in Objectives)
                 listBox1.Items.Add(ob);
         }
 
@@ -101,8 +103,8 @@ namespace ToNSaveManager
                     MainWindow.OpenExternalLink(objective.Reference);
                     break;
                 case MouseButtons.Left:
-                    objective.IsCompleted = !objective.IsCompleted;
-                    MainWindow.SaveData.Export(true);
+                    objective.Toggle();
+                    // MainWindow.SaveData.Export();
                     break;
 
                 default: break;
