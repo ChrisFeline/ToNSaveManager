@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace ToNSaveManager.Models
 {
@@ -14,8 +15,27 @@ namespace ToNSaveManager.Models
         static string Destination = FileName;
         
         public Dictionary<string, long> ParsedLog { get; private set; } = new Dictionary<string, long>();
-        public List<Objective> Objectives { get; private set; } = new List<Objective>();
         public List<History> Collection { get; private set; } = new List<History>();
+
+        #region Objectives
+        public HashSet<string> Completed = new HashSet<string>();
+
+        public bool GetCompleted(string name) => Completed.Contains(name);
+        public void SetCompleted(string name, bool value)
+        {
+            if (!string.IsNullOrEmpty(name) && value == !Completed.Contains(name))
+            {
+                if (value) Completed.Add(name);
+                else Completed.Remove(name);
+
+                SetDirty();
+            }
+        }
+
+        [Obsolete] // Legacy Objectives
+        public List<LegacyObjective> Objectives { get; private set; } = new ();
+        public bool ShouldSerializeObjectives() => false;
+        #endregion
 
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
@@ -172,6 +192,7 @@ namespace ToNSaveManager.Models
 
                 Destination = destination;
                 string filePath = readFromLegacy ? LegacyLocation : Destination;
+                Debug.WriteLine("Reading from: " + filePath);
 
                 if (File.Exists(filePath))
                 {
@@ -245,14 +266,25 @@ namespace ToNSaveManager.Models
             }
             uniqueEntries.Clear();
 
-            // Validate Objectives
-            List<Objective> defaultObjectives = GetDefaultObjectives();
-            for (i = 0; i < defaultObjectives.Count; i++)
+#pragma warning disable CS0612
+            if (data.Objectives.Count > 0)
             {
-                if (i < data.Objectives.Count)
-                    defaultObjectives[i].IsCompleted = data.Objectives[i].IsCompleted;
+                Debug.WriteLine("Importing old objectives...");
+
+                LegacyObjective[] defaultObjectives = GetLegacyObjectives();
+                for (i = 0; i < defaultObjectives.Length; i++)
+                {
+                    if (i < data.Objectives.Count)
+                    {
+                        LegacyObjective o = data.Objectives[i];
+                        data.SetCompleted(defaultObjectives[i].Name, o.IsCompleted);
+                    }
+                }
+
+                data.Objectives.Clear();
+                data.SetDirty();
             }
-            data.Objectives = defaultObjectives;
+#pragma warning restore CS0612
 
             return data;
         }
@@ -275,7 +307,39 @@ namespace ToNSaveManager.Models
             IsDirty = false;
         }
 
-        internal static List<Objective> GetDefaultObjectives()
+        private static LegacyObjective[] GetLegacyObjectives()
+        {
+            return new LegacyObjective[] // Initialize default objectives
+            {
+                // Event items
+                new LegacyObjective() { Name = string.Empty }, // Separator
+                new LegacyObjective() { Name = "Sealed Sword" },
+                new LegacyObjective() { Name = "Gran Faust" },
+                new LegacyObjective() { Name = "Divine Avenger" },
+                new LegacyObjective() { Name = "Maxwell" },
+                new LegacyObjective() { Name = "Rock" },
+                new LegacyObjective() { Name = "Illumina" },
+                new LegacyObjective() { Name = "Redbull" },
+                new LegacyObjective() { Name = "Omori Plush" },
+                new LegacyObjective() { Name = "Paradise Lost" },
+                // Skin Unlocks
+                new LegacyObjective() { Name = string.Empty }, // Separator
+                new LegacyObjective() { Name = "Red Medkit" },
+                new LegacyObjective() { Name = "Psycho Coil" },
+                new LegacyObjective() { Name = "Bloody Teleporter" },
+                new LegacyObjective() { Name = "Pale Suitcase" },
+                new LegacyObjective() { Name = "Bloody Coil" },
+                new LegacyObjective() { Name = "Bloody Bat" },
+                new LegacyObjective() { Name = "Metal Pipe" },
+                new LegacyObjective() { Name = "Colorable Bat" },
+                new LegacyObjective() { Name = "Justitia" },
+                new LegacyObjective() { Name = "Twilight Coil" },
+                new LegacyObjective() { Name = "Pale Pistol" },
+            };
+        }
+
+        /*
+        private static void GetDefaultObjectives()
         {
             return new List<Objective>() // Initialize default objectives
             {
@@ -302,8 +366,9 @@ namespace ToNSaveManager.Models
                 new Objective("Colorable Bat", "Survive a Cracked round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(187, 76, 255)),
                 new Objective("Justitia", "Survive a Midnight round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(127, 242, 243)),
                 new Objective("Twilight Coil", "Survive Apocalypse Bird with Chaos Coil.", "https://terror.moe/items/chaos_coil", Color.FromArgb(255, 232, 158)),
-                new Objective("Pale Pistol", "Survive an Alternate round with Antique Revolver.", "https://terror.moe/items/antique_revolver", Color.FromArgb(158, 254, 255)),
+                new Objective("Pale Pistol", "Survive an Alternate round with Antique Revolver.", "https://terror.moe/items/antique_revolver", Color.FromArgb(158, 254, 255))
             };
         }
+        */
     }
 }

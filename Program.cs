@@ -55,6 +55,8 @@ namespace ToNSaveManager
                 FontCollection.Dispose();
                 DefaultFont?.Dispose();
                 ReleaseMutex();
+                Debug.WriteLine("Saving on exit");
+                MainWindow.SaveData.Export();
             };
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);

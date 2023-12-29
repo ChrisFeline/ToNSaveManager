@@ -1,18 +1,32 @@
 ﻿using Newtonsoft.Json;
+using System.Globalization;
 
 namespace ToNSaveManager.Models
 {
+    internal struct LegacyObjective
+    {
+        public bool IsCompleted;
+        public string Name;
+    }
+
     internal class Objective
     {
-        public bool IsCompleted { get; set; } = false;
-        [JsonIgnore] public string Name { get; set; } = string.Empty;
-        [JsonIgnore] public string Description { get; set; } = string.Empty;
-        [JsonIgnore] public string Reference { get; set; } = string.Empty;
-        [JsonIgnore] public bool IsSeparator { get; set; } = false;
-        [JsonIgnore] public Color DisplayColor { get; set; }
+        [JsonIgnore] public bool IsCompleted {
+            get => !IsSeparator && MainWindow.SaveData.GetCompleted(Name);
+            set
+            {
+                if (!IsSeparator) MainWindow.SaveData.SetCompleted(Name, value);
+            }
+        }
+
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Reference { get; set; } = string.Empty;
+        public bool IsSeparator { get; set; } = false;
+        public Color DisplayColor { get; set; }
 
         [JsonConstructor]
-        public Objective() { }
+        public Objective() {}
 
         /// <param name="name">Objective name</param>
         /// <param name="reference">Objective link to wiki</param>
@@ -24,6 +38,11 @@ namespace ToNSaveManager.Models
             DisplayColor = color.A > 0 ? color : Color.White;
         }
 
+        public void Toggle()
+        {
+            IsCompleted = !IsCompleted;
+        }
+
         public static Objective Separator(string name)
         {
             return new Objective()
@@ -33,11 +52,24 @@ namespace ToNSaveManager.Models
             };
         }
 
+
         public override string ToString()
         {
             return Name;
         }
 
-        public bool ShouldSerializeIsCompleted() => !IsSeparator;
+        public static List<Objective> ImportFromMemory()
+        {
+            using (Stream? stream = Program.GetEmbededResource("objectives.json"))
+            {
+                if (stream == null) return new List<Objective>();
+
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string json = reader.ReadToEnd();
+                    return JsonConvert.DeserializeObject<List<Objective>>(json) ?? new List<Objective>();
+                }
+            }
+        }
     }
 }

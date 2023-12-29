@@ -1,0 +1,152 @@
+﻿[
+  {
+    "Name": "Event Items Unlocks",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Sealed Sword",
+    "Description": "Found in Museum. Break case with a stun tool.",
+    "Reference": "https://terror.moe/items/sealed_sword",
+    "DisplayColor": "224, 208, 183"
+  },
+  {
+    "Name": "Gran Faust",
+    "Description": "Survive Arkus with the Sealed Sword.",
+    "Reference": "https://terror.moe/items/gran_faust",
+    "DisplayColor": "255, 95, 198"
+  },
+  {
+    "Name": "Divine Avenger",
+    "Description": "Survive Arkus with the Sealed Sword after hitting them at least two times.",
+    "Reference": "https://terror.moe/items/divine_avenger",
+    "DisplayColor": "255, 213, 90"
+  },
+  {
+    "Name": "Maxwell",
+    "Description": "Found in Its Maze. (spawns once per round)",
+    "Reference": "https://terror.moe/items/maxwell",
+    "DisplayColor": "212, 212, 212"
+  },
+  {
+    "Name": "Rock",
+    "Description": "Survive Fusion Pilot.",
+    "Reference": "https://terror.moe/items/rock",
+    "DisplayColor": "180, 180, 180"
+  },
+  {
+    "Name": "Illumina",
+    "Description": "Survive Bliss.",
+    "Reference": "https://terror.moe/items/illumina",
+    "DisplayColor": "215, 134, 255"
+  },
+  {
+    "Name": "Redbull",
+    "Description": "Survive Roblander.",
+    "Reference": "https://terror.moe/items/redbull",
+    "DisplayColor": "255, 61, 61"
+  },
+  {
+    "Name": "Omori Plush",
+    "Description": "Survive Something.",
+    "Reference": "https://terror.moe/items/omori_plush",
+    "DisplayColor": "125, 133, 159"
+  },
+  {
+    "Name": "Paradise Lost",
+    "Description": "Beat the shit out of Apostles.",
+    "Reference": "https://terror.moe/items/paradise_lost",
+    "DisplayColor": "255, 94, 93"
+  },
+  {
+    "Name": "Item Skin Unlocks",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Red Medkit",
+    "Description": "Survive Virus with Medkit.",
+    "Reference": "https://terror.moe/items/medkit",
+    "DisplayColor": "255, 48, 42"
+  },
+  {
+    "Name": "Psycho Coil",
+    "Description": "Survive Psychosis with Glow Coil.",
+    "Reference": "https://terror.moe/items/glow_coil",
+    "DisplayColor": "158, 184, 255"
+  },
+  {
+    "Name": "Bloody Teleporter",
+    "Description": "Survive a Bloodbath round with Teleporter.",
+    "Reference": "https://terror.moe/items/teleporter",
+    "DisplayColor": "255, 77, 71"
+  },
+  {
+    "Name": "Pale Suitcase",
+    "Description": "Survive an Alternate round with Teleporter.",
+    "Reference": "https://terror.moe/items/teleporter",
+    "DisplayColor": "158, 254, 255"
+  },
+  {
+    "Name": "Thorn Hacker",
+    "Description": "Survive Pandora with Teleporter.",
+    "Reference": "https://terror.moe/items/teleporter",
+    "DisplayColor": "186, 255, 219"
+  },
+  {
+    "Name": "Bloody Coil",
+    "Description": "Survive a Bloodbath round with Speed Coil.",
+    "Reference": "https://terror.moe/items/speed_coil",
+    "DisplayColor": "255, 77, 71"
+  },
+  {
+    "Name": "Bloody Bat",
+    "Description": "Survive a Bloodbath round with Metal Bat.",
+    "Reference": "https://terror.moe/items/metal_bat",
+    "DisplayColor": "255, 77, 71"
+  },
+  {
+    "Name": "Metal Pipe",
+    "Description": "Survive an Alternate round with Metal Bat.",
+    "Reference": "https://terror.moe/items/metal_bat",
+    "DisplayColor": "197, 197, 197"
+  },
+  {
+    "Name": "Colorable Bat",
+    "Description": "Survive a Cracked round with Metal Bat.",
+    "Reference": "https://terror.moe/items/metal_bat",
+    "DisplayColor": "187, 76, 255"
+  },
+  {
+    "Name": "Justitia",
+    "Description": "Survive a Midnight round with Metal Bat.",
+    "Reference": "https://terror.moe/items/metal_bat",
+    "DisplayColor": "127, 242, 243"
+  },
+  {
+    "Name": "Twilight Coil",
+    "Description": "Survive Apocalypse Bird with Chaos Coil.",
+    "Reference": "https://terror.moe/items/chaos_coil",
+    "DisplayColor": "255, 232, 158"
+  },
+  {
+    "Name": "Pale Pistol",
+    "Description": "Survive an Alternate round with Antique Revolver.",
+    "Reference": "https://terror.moe/items/antique_revolver",
+    "DisplayColor": "158, 254, 255"
+  },
+  {
+    "Name": "Winterfest Unlocks",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Snowy Speed Coil",
+    "Description": "There's something in the snow for you.",
+    "Reference": "",
+    "DisplayColor": "138, 235, 255"
+  },
+  {
+    "Name": "Torch Of Obsession",
+    "Description": "Survive the Cold Night.",
+    "Reference": "",
+    "DisplayColor": "138, 235, 255"
+  }
+]
