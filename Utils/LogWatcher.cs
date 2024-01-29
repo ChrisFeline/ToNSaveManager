@@ -221,10 +221,16 @@
             if (!line.Contains(UserAuthKeyword)) return false;
 
             int index = line.IndexOf(UserAuthKeyword) + UserAuthKeyword.Length;
-            int length = line.IndexOf(" (usr_", index) - index;
+            int length = line.IndexOf(" (", index) - index;
 
-            string displayName = line.Substring(index, length);
-            logContext.DisplayName = displayName;
+            if (index > -1 && length > 0)
+            {
+                string displayName = line.Substring(index, length);
+                logContext.DisplayName = displayName;
+            } else
+            {
+                logContext.DisplayName = "Unknown";
+            }
 
             return true;
         }
