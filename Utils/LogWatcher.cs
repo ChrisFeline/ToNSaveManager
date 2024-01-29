@@ -223,10 +223,10 @@
             int index = line.IndexOf(UserAuthKeyword) + UserAuthKeyword.Length;
             int length = line.IndexOf(" (", index) - index;
 
-            if (index > -1 && length > 0)
+            if (index < line.Length && index + length < line.Length)
             {
                 string displayName = line.Substring(index, length);
-                logContext.DisplayName = displayName;
+                logContext.DisplayName = displayName.Trim();
             } else
             {
                 logContext.DisplayName = "Unknown";
