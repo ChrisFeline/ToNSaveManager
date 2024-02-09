@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Media;
-using System.Text;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
@@ -8,8 +7,6 @@ using ToNSaveManager.Windows;
 
 using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ToNSaveManager
 {
@@ -42,23 +39,22 @@ namespace ToNSaveManager
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.LastWindowWidth = this.Width;
-            Properties.Settings.Default.LastWindowHeight = this.Height;
-            Properties.Settings.Default.LastWindowSplit = splitContainer1.SplitterDistance;
-            Properties.Settings.Default.Save();
+            WinSettings.Get.LastWindowWidth = this.Width;
+            WinSettings.Get.LastWindowHeight = this.Height;
+            WinSettings.Get.LastWindowSplit = splitContainer1.SplitterDistance;
+            WinSettings.Export();
         }
 
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.LastWindowWidth > this.Width && Properties.Settings.Default.LastWindowHeight > this.Height)
-            {
-                this.Width = Properties.Settings.Default.LastWindowWidth;
-                this.Height = Properties.Settings.Default.LastWindowHeight;
-            }
-            if (Properties.Settings.Default.LastWindowSplit > 0)
-            {
-                splitContainer1.SplitterDistance = Properties.Settings.Default.LastWindowSplit;
-            }
+            if (WinSettings.Get.LastWindowWidth > this.Width)
+                this.Width = WinSettings.Get.LastWindowWidth;
+
+            if (WinSettings.Get.LastWindowHeight > this.Height)
+                this.Height = WinSettings.Get.LastWindowHeight;
+
+            if (WinSettings.Get.LastWindowSplit > 0)
+                splitContainer1.SplitterDistance = WinSettings.Get.LastWindowSplit;
 
             OriginalTitle = this.Text;
             this.Text = "Loading, please wait...";
