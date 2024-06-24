@@ -516,6 +516,11 @@ namespace ToNSaveManager
             end -= index;
 
             string save = line.Substring(index, end);
+            if (string.IsNullOrEmpty(save)) {
+                context.Set(SaveInitKey, false);
+                return false;
+            }
+
             AddLogEntry(context.DateKey, save, timestamp, context);
             context.Set(SaveInitKey, false);
             return true;
