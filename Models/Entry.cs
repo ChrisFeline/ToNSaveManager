@@ -112,7 +112,10 @@ namespace ToNSaveManager.Models
 
         public void CopyToClipboard()
         {
-            Clipboard.SetText(Content);
+            // Windows 11 please... :[
+            // Clipboard.Clear();
+            Clipboard.SetDataObject(Content, false, 4, 200);
+            // Clipboard.SetText(Content);
         }
     }
 }
