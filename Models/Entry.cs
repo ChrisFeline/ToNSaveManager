@@ -112,11 +112,8 @@ namespace ToNSaveManager.Models
 
         public void CopyToClipboard()
         {
-            Clipboard.SetDataObject(
-                Content, // Text to store in clipboard
-            false,       // Do not keep after our application exits
-            4,           // Retry 4 times
-            200);
+            Clipboard.Clear();
+            Clipboard.SetDataObject(Content, true, 4, 200);
             // Clipboard.SetText(Content);
         }
     }
