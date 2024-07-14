@@ -62,6 +62,9 @@ namespace ToNSaveManager.Windows
             checkShowWinLose.CheckedChanged += TimeFormat_CheckedChanged;
             checkSaveTerrors.CheckedChanged += checkSaveTerrors_CheckedChanged;
             checkSaveTerrors_CheckedChanged(checkSaveTerrors, e);
+
+            // Discord Backups
+            checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -85,6 +88,22 @@ namespace ToNSaveManager.Windows
             checkSaveTerrorsNote.ForeColor = checkSaveTerrors.Checked ? Color.White : Color.Gray;
             checkShowWinLose.ForeColor = checkSaveTerrorsNote.ForeColor;
             TimeFormat_CheckedChanged(sender, e);
+        }
+
+        private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (checkDiscordBackup.Checked)
+            {
+                string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
+                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, "Discord Webhook URL", this);
+                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal))
+                {
+                    Settings.Get.DiscordWebhookURL = edit.Text.Trim();
+                    Settings.Export();
+                }
+
+                if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
+            }
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e)

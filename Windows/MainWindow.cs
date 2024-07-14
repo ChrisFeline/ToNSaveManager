@@ -7,6 +7,7 @@ using ToNSaveManager.Windows;
 
 using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using ToNSaveManager.Utils.Discord;
 
 namespace ToNSaveManager
 {
@@ -303,6 +304,14 @@ namespace ToNSaveManager
                     Export(true);
                 }
             }
+
+            listBoxEntries.SelectedIndex = -1;
+        }
+
+        private void ctxMenuEntriesBackup_Click(object sender, EventArgs e)
+        {
+            if (ContextEntry != null)
+                DSWebHook.Send(ContextEntry, true);
 
             listBoxEntries.SelectedIndex = -1;
         }
@@ -634,6 +643,7 @@ namespace ToNSaveManager
             if (ind < 0) return; // Not added, duplicate
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
+            entry.PlayerCount = context.Players.Count;
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
             if (Settings.Get.SaveRoundInfo)
             {
@@ -672,6 +682,7 @@ namespace ToNSaveManager
             {
                 PlayNotification();
                 SendXSNotification();
+                DSWebHook.Send(entry);
             }
         }
 

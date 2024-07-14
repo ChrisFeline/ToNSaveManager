@@ -36,6 +36,7 @@
             ctxMenuEntriesCopyTo = new ToolStripMenuItem();
             ctxMenuEntriesNew = new ToolStripMenuItem();
             ctxMenuEntriesNote = new ToolStripMenuItem();
+            ctxMenuEntriesBackup = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripSeparator();
             ctxMenuEntriesDelete = new ToolStripMenuItem();
             ctxMenuKeys = new ContextMenuStrip(components);
@@ -98,9 +99,9 @@
             // 
             // ctxMenuEntries
             // 
-            ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, toolStripMenuItem2, ctxMenuEntriesDelete });
+            ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, ctxMenuEntriesBackup, toolStripMenuItem2, ctxMenuEntriesDelete });
             ctxMenuEntries.Name = "ctxMenuEntries";
-            ctxMenuEntries.Size = new Size(138, 76);
+            ctxMenuEntries.Size = new Size(124, 98);
             ctxMenuEntries.Closed += ctxMenuEntries_Closed;
             ctxMenuEntries.Opened += ctxMenuEntries_Opened;
             // 
@@ -108,13 +109,13 @@
             // 
             ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
             ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
-            ctxMenuEntriesCopyTo.Size = new Size(137, 22);
+            ctxMenuEntriesCopyTo.Size = new Size(123, 22);
             ctxMenuEntriesCopyTo.Text = "Add to";
             // 
             // ctxMenuEntriesNew
             // 
             ctxMenuEntriesNew.Name = "ctxMenuEntriesNew";
-            ctxMenuEntriesNew.Size = new Size(172, 22);
+            ctxMenuEntriesNew.Size = new Size(155, 22);
             ctxMenuEntriesNew.Text = "New Collection";
             ctxMenuEntriesNew.ToolTipText = "Add this entry to a new collection.";
             ctxMenuEntriesNew.Click += ctxMenuEntriesNew_Click;
@@ -122,19 +123,26 @@
             // ctxMenuEntriesNote
             // 
             ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
-            ctxMenuEntriesNote.Size = new Size(137, 22);
+            ctxMenuEntriesNote.Size = new Size(123, 22);
             ctxMenuEntriesNote.Text = "Edit Note";
             ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
+            // 
+            // ctxMenuEntriesBackup
+            // 
+            ctxMenuEntriesBackup.Name = "ctxMenuEntriesBackup";
+            ctxMenuEntriesBackup.Size = new Size(123, 22);
+            ctxMenuEntriesBackup.Text = "Backup";
+            ctxMenuEntriesBackup.Click += ctxMenuEntriesBackup_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(134, 6);
+            toolStripMenuItem2.Size = new Size(120, 6);
             // 
             // ctxMenuEntriesDelete
             // 
             ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
-            ctxMenuEntriesDelete.Size = new Size(137, 22);
+            ctxMenuEntriesDelete.Size = new Size(123, 22);
             ctxMenuEntriesDelete.Text = "Delete";
             ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
             // 
@@ -142,31 +150,31 @@
             // 
             ctxMenuKeys.Items.AddRange(new ToolStripItem[] { importToolStripMenuItem, renameToolStripMenuItem, toolStripMenuItem1, deleteToolStripMenuItem });
             ctxMenuKeys.Name = "ctxMenuKeys";
-            ctxMenuKeys.Size = new Size(117, 76);
+            ctxMenuKeys.Size = new Size(118, 76);
             // 
             // importToolStripMenuItem
             // 
             importToolStripMenuItem.Name = "importToolStripMenuItem";
-            importToolStripMenuItem.Size = new Size(116, 22);
+            importToolStripMenuItem.Size = new Size(117, 22);
             importToolStripMenuItem.Text = "Import";
             importToolStripMenuItem.Click += ctxMenuKeysImport_Click;
             // 
             // renameToolStripMenuItem
             // 
             renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            renameToolStripMenuItem.Size = new Size(116, 22);
+            renameToolStripMenuItem.Size = new Size(117, 22);
             renameToolStripMenuItem.Text = "Rename";
             renameToolStripMenuItem.Click += ctxMenuKeysRename_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(113, 6);
+            toolStripMenuItem1.Size = new Size(114, 6);
             // 
             // deleteToolStripMenuItem
             // 
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new Size(116, 22);
+            deleteToolStripMenuItem.Size = new Size(117, 22);
             deleteToolStripMenuItem.Text = "Delete";
             deleteToolStripMenuItem.Click += ctxMenuKeysDelete_Click;
             // 
@@ -283,5 +291,6 @@
         private Button button1;
         private Button button2;
         private SplitContainer splitContainer1;
+        private ToolStripMenuItem ctxMenuEntriesBackup;
     }
 }
