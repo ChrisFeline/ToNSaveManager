@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Media;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
@@ -63,6 +63,7 @@ namespace ToNSaveManager
             XSOverlay.SetPort(Settings.Get.XSOverlayPort);
 
             SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
+            TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
