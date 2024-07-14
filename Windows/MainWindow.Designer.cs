@@ -130,9 +130,11 @@
             // 
             // ctxMenuEntriesBackup
             // 
+            ctxMenuEntriesBackup.Enabled = false;
             ctxMenuEntriesBackup.Name = "ctxMenuEntriesBackup";
             ctxMenuEntriesBackup.Size = new Size(123, 22);
             ctxMenuEntriesBackup.Text = "Backup";
+            ctxMenuEntriesBackup.ToolTipText = "Force a backup upload to the Discord webhook. Requires Auto Discord Backup to be configured in settings.";
             ctxMenuEntriesBackup.Click += ctxMenuEntriesBackup_Click;
             // 
             // toolStripMenuItem2

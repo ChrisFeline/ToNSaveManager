@@ -84,10 +84,6 @@
 > - Click save and everything should be setup.
 > 
 > NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
-> <details>
-> <summary><b>Show Screenshots</b></summary>
-> <p> <img src="Resources/logging.png" height="420px" > </p>
-> </details>
 
 > ## Why is the .exe so big? >100MB
 > The exe is bundled with the .NET runtime that it's required to run the program. Using a command line argument for dotnet publishing: `--self-contained true -p:PublishSingleFile=true` <br>

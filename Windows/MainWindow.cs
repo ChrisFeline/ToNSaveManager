@@ -61,6 +61,8 @@ namespace ToNSaveManager
             this.Text = "Loading, please wait...";
 
             XSOverlay.SetPort(Settings.Get.XSOverlayPort);
+
+            SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -473,6 +475,11 @@ namespace ToNSaveManager
             }
 
             return text + "...";
+        }
+
+        internal void SetBackupButton(bool enabled)
+        {
+            ctxMenuEntriesBackup.Enabled = enabled;
         }
         #endregion
 
