@@ -58,7 +58,7 @@ namespace ToNSaveManager.Utils.Discord
                     while (EntryQueue.Count > 0)
                     {
                         Entry entry = EntryQueue.Dequeue();
-                        DateTime now = DateTime.Now;
+                        DateTime time = entry.Timestamp;
 
                         if (EmbedData.Footer == null)
                         {
@@ -71,7 +71,7 @@ namespace ToNSaveManager.Utils.Discord
                         }
 
                         EmbedData.Description = string.Empty;
-                        EmbedData.Timestamp = now;
+                        EmbedData.Timestamp = time;
 
                         if (!string.IsNullOrEmpty(entry.RType))
                             EmbedData.Description += "**Round Type**: `" + entry.RType + "`";
@@ -93,7 +93,7 @@ namespace ToNSaveManager.Utils.Discord
                         MultipartFormDataContent form = new MultipartFormDataContent();
                         // Append file data
                         byte[] data = Encoding.Default.GetBytes(entry.Content);
-                        form.Add(new ByteArrayContent(data, 0, data.Length), "Document", $"TON_BACKUP_{now.Year}_{now.Month}_{now.Day}.txt");
+                        form.Add(new ByteArrayContent(data, 0, data.Length), "Document", $"TON_BACKUP_{time.Year}_{time.Month}_{time.Day}_{time.Second.ToString("00")}{time.Millisecond.ToString("000")}.txt");
                         // Append json
                         form.Add(new StringContent(payloadData, Encoding.UTF8, "application/json"), "payload_json");
                         _ = await httpClient.PostAsync(webhookUrl, form);
