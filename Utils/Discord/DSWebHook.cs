@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using ToNSaveManager.Models;
 using Newtonsoft.Json;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace ToNSaveManager.Utils.Discord
 {
@@ -105,5 +107,31 @@ namespace ToNSaveManager.Utils.Discord
 
             IsSending = false;
         }
+
+        #region Validation
+        private static Regex WebhookUrlRegex = new Regex(@"^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-z0-9_-]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        internal static bool ValidateURL(string webhookUrl)
+        {
+            if (string.IsNullOrWhiteSpace(webhookUrl))
+                return false;
+
+            Match match = WebhookUrlRegex.Match(webhookUrl);
+            if (match != null)
+            {
+                // ensure that the first group is a ulong, set the _webhookId
+                // 0th group is always the entire match, and 1 is the domain; so start at index 2
+                if (!(match.Groups[2].Success && ulong.TryParse(match.Groups[2].Value, NumberStyles.None, CultureInfo.InvariantCulture, out ulong webhookId)) || webhookId == 0)
+                    return false;
+
+                if (!match.Groups[3].Success)
+                    return false;
+
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
     }
 }

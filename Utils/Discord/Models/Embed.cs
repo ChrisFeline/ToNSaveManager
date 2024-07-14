@@ -14,7 +14,7 @@ namespace ToNSaveManager.Utils.Discord.Models
         public string? Url { get; set; }
 
         [JsonProperty("color")]
-        public uint Color { get; set; } = 16711680;
+        public uint Color { get; set; } = 16721714;
 
         [JsonProperty("timestamp")]
         public DateTimeOffset? Timestamp { get; set; }
