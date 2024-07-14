@@ -26,10 +26,11 @@
 - `Auto Clipboard Copy` Automatically copy new save codes to clipboard.
 - `Collect Player Names` Save codes will show players that were in the instance.
 - `XSOverlay Popup` XSOverlay notifications when new save codes are detected.
-- `Play Audio` Play a notification audio when a new save is detected.
+- `Play Sound` Play a notification audio when a new save is detected.
   - Double Click to select a custom audio file. (Only '.wav' files)
   - Right Click to reset audio file back to 'default.wav'
 - `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
+- `Auto Discord Backup` Uses a discord webhook to automatically upload a backup of your new codes to a discord channel as you play.
 - `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
@@ -41,6 +42,7 @@
 - ### Save Codes (Right Panel)
   * `Add to` Lets you save or favorite this code to a separated custom collection with a name of your choice.
   * `Edit Note` You can attach a note to this save code, so you can recognize it better.
+  * `Backup` Forces a backup upload to Discord if **Auto Discord Backup** is configured on settings.
   * `Delete` Deletes just this save code from the database.
   
 ### Objectives Window
@@ -71,6 +73,22 @@
 > <p> <img src="Resources/logging.png" height="420px" > </p>
 > </details>
 
+> ## How to properly configure Automatic Discord Backup using Webhooks?
+> You can set a Discord webhook url to automatically upload your codes to a discord channel.
+>
+> - Just go to your preferred discord channel.
+> - Add a webhook integration to this channel.
+> - Copy the webhook url.
+> - Open the Save Manager settings.
+> - Toggle `Auto Discord Backup` and paste the webhook url here.
+> - Click save and everything should be setup.
+> 
+> NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
+> <details>
+> <summary><b>Show Screenshots</b></summary>
+> <p> <img src="Resources/logging.png" height="420px" > </p>
+> </details>
+
 > ## Why is the .exe so big? >100MB
 > The exe is bundled with the .NET runtime that it's required to run the program. Using a command line argument for dotnet publishing: `--self-contained true -p:PublishSingleFile=true` <br>
 > This adds size to the file, but ensures that the program runs independently without relying on a previous .NET installation.
@@ -86,6 +104,9 @@
 > This is an external tool that uses local plain text files that VRChat writes to the Local APPDATA folder.
 > We are allowed to read these files since it does not modify or alter the game in any way.
 > **This is not a mod or a cheat.**
+
+> ### Please do <u>NOT</u> message Beyond about suggestions or problems with this tool.
+> You can report problems or suggestions under the [Issues](https://github.com/ChrisFeline/ToNSaveManager/issues) tab on this repo. Alternatively see contact information below.
 
 # 📫 Contact:
 > **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
