@@ -77,18 +77,20 @@
 > You can set a Discord webhook url to automatically upload your codes to a discord channel.
 >
 > - Just go to your preferred channel on your discord server.
-> - Click Edit Channel and then go to **Integrations**.
+> - Click **Edit Channel** and then go to **Integrations**.
 > - Add a webhook integration to this channel. *You can give it a name and a profile picture*.
 > - Copy the webhook url.
-> - Open the Save Manager settings.
+> - Open settings on the Save Manager app.
 > - Enable `Auto Discord Backup`, you will see a text input popup.
 > - Paste your webhook url in the text field.
 > - Click **save**.
 > 
 > NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
 > <details>
-> <summary><b>Show Screenshots</b></summary>
-> <p> <img src="Resources/logging.png" height="420px" > </p>
+> <summary><b>Show Discord Screenshots</b></summary>
+> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto" > </p>
+> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px" > </p>
+> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px" > </p>
 > </details>
 
 > ## Why is the .exe so big? >100MB
