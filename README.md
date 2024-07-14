@@ -30,7 +30,7 @@
   - Double Click to select a custom audio file. (Only '.wav' files)
   - Right Click to reset audio file back to 'default.wav'
 - `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
-- `Auto Discord Backup` Uses a discord webhook to automatically upload a backup of your new codes to a discord channel as you play.
+- `Auto Discord Backup` Uses a [discord webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
 - `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
@@ -77,7 +77,7 @@
 > You can set a Discord webhook url to automatically upload your codes to a discord channel.
 >
 > - Just go to your preferred discord channel.
-> - Add a webhook integration to this channel.
+> - Add a [webhook integration](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) to this channel.
 > - Copy the webhook url.
 > - Open the Save Manager settings.
 > - Toggle `Auto Discord Backup` and paste the webhook url here.
