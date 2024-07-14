@@ -48,6 +48,7 @@
             button1 = new Button();
             button2 = new Button();
             splitContainer1 = new SplitContainer();
+            linkSupport = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -203,7 +204,7 @@
             button1.ForeColor = Color.White;
             button1.Location = new Point(0, 223);
             button1.Name = "button1";
-            button1.Size = new Size(259, 24);
+            button1.Size = new Size(229, 24);
             button1.TabIndex = 0;
             button1.TabStop = false;
             button1.Text = "Objectives";
@@ -217,7 +218,7 @@
             button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(265, 223);
+            button2.Location = new Point(235, 223);
             button2.Name = "button2";
             button2.Size = new Size(58, 24);
             button2.TabIndex = 3;
@@ -239,6 +240,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(linkSupport);
             splitContainer1.Panel2.Controls.Add(listBoxEntries);
             splitContainer1.Panel2.Controls.Add(button1);
             splitContainer1.Panel2.Controls.Add(button2);
@@ -247,6 +249,22 @@
             splitContainer1.TabIndex = 0;
             splitContainer1.TabStop = false;
             splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
+            // 
+            // linkSupport
+            // 
+            linkSupport.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            linkSupport.BackColor = Color.FromArgb(46, 52, 64);
+            linkSupport.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            linkSupport.FlatStyle = FlatStyle.Flat;
+            linkSupport.ForeColor = Color.White;
+            linkSupport.Image = (Image)resources.GetObject("linkSupport.Image");
+            linkSupport.Location = new Point(299, 223);
+            linkSupport.Name = "linkSupport";
+            linkSupport.Size = new Size(24, 24);
+            linkSupport.TabIndex = 4;
+            linkSupport.TabStop = false;
+            linkSupport.UseVisualStyleBackColor = false;
+            linkSupport.Click += linkSupport_Click;
             // 
             // MainWindow
             // 
@@ -292,5 +310,6 @@
         private Button button2;
         private SplitContainer splitContainer1;
         private ToolStripMenuItem ctxMenuEntriesBackup;
+        private Button linkSupport;
     }
 }

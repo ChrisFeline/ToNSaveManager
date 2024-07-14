@@ -360,6 +360,12 @@ namespace ToNSaveManager
             OpenExternalLink(wiki);
         }
 
+        private void linkSupport_Click(object sender, EventArgs e)
+        {
+            const string support = "https://ko-fi.com/kittenji";
+            OpenExternalLink(support);
+        }
+
         private void btnObjectives_Click(object sender, EventArgs e)
         {
             ObjectivesWindow.Open(this);
