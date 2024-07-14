@@ -93,7 +93,7 @@ namespace ToNSaveManager.Utils.Discord
                         MultipartFormDataContent form = new MultipartFormDataContent();
                         // Append file data
                         byte[] data = Encoding.Default.GetBytes(entry.Content);
-                        form.Add(new ByteArrayContent(data, 0, data.Length), "Document", $"TON_BACKUP_{time.Year}_{time.Month}_{time.Day}_{time.Second.ToString("00")}{time.Millisecond.ToString("000")}.txt");
+                        form.Add(new ByteArrayContent(data, 0, data.Length), "Document", $"TON_BACKUP_{time.Year}_{time.Month}_{time.Day}_{time.Hour.ToString("00")}{time.Minute.ToString("00")}{time.Second.ToString("00")}.txt");
                         // Append json
                         form.Add(new StringContent(payloadData, Encoding.UTF8, "application/json"), "payload_json");
                         _ = await httpClient.PostAsync(webhookUrl, form);
