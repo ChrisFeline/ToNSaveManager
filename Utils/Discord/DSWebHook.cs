@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using ToNSaveManager.Models;
 using Newtonsoft.Json;
 
 namespace ToNSaveManager.Utils.Discord
 {
     using Models;
-    using System.Diagnostics;
 
     internal class Payload
     {
@@ -92,7 +87,6 @@ namespace ToNSaveManager.Utils.Discord
                         }
 
                         string payloadData = JsonConvert.SerializeObject(PayloadData, JsonSettings);
-
 
                         MultipartFormDataContent form = new MultipartFormDataContent();
                         // Append file data
