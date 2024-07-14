@@ -90,7 +90,7 @@
             checkDiscordBackup.Size = new Size(262, 18);
             checkDiscordBackup.TabIndex = 6;
             checkDiscordBackup.Tag = "DiscordWebhookEnabled|Automatically saves your new codes to a Discord channel using a webhook integration.";
-            checkDiscordBackup.Text = "Enable Discord Backup (Webhook)";
+            checkDiscordBackup.Text = "Auto Discord Backup (Webhook)";
             checkDiscordBackup.UseVisualStyleBackColor = true;
             // 
             // checkShowWinLose
