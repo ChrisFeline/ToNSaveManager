@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             groupBoxGeneral = new GroupBox();
+            checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
             checkSaveTerrors = new CheckBox();
@@ -64,6 +65,7 @@
             // 
             groupBoxGeneral.AutoSize = true;
             groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxGeneral.Controls.Add(checkDiscordBackup);
             groupBoxGeneral.Controls.Add(checkShowWinLose);
             groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
             groupBoxGeneral.Controls.Add(checkSaveTerrors);
@@ -74,16 +76,28 @@
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 8);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 129);
+            groupBoxGeneral.Size = new Size(268, 148);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
+            // 
+            // checkDiscordBackup
+            // 
+            checkDiscordBackup.Dock = DockStyle.Top;
+            checkDiscordBackup.Location = new Point(3, 127);
+            checkDiscordBackup.Name = "checkDiscordBackup";
+            checkDiscordBackup.Padding = new Padding(3, 0, 3, 0);
+            checkDiscordBackup.Size = new Size(262, 18);
+            checkDiscordBackup.TabIndex = 6;
+            checkDiscordBackup.Tag = "DiscordWebhookEnabled|Automatically saves your new codes to a Discord channel using a webhook integration.";
+            checkDiscordBackup.Text = "Enable Discord Backup (Webhook)";
+            checkDiscordBackup.UseVisualStyleBackColor = true;
             // 
             // checkShowWinLose
             // 
             checkShowWinLose.Dock = DockStyle.Top;
             checkShowWinLose.ForeColor = Color.PowderBlue;
-            checkShowWinLose.Location = new Point(3, 108);
+            checkShowWinLose.Location = new Point(3, 109);
             checkShowWinLose.Name = "checkShowWinLose";
             checkShowWinLose.Padding = new Padding(21, 0, 3, 0);
             checkShowWinLose.Size = new Size(262, 18);
@@ -96,7 +110,7 @@
             // 
             checkSaveTerrorsNote.Dock = DockStyle.Top;
             checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
-            checkSaveTerrorsNote.Location = new Point(3, 90);
+            checkSaveTerrorsNote.Location = new Point(3, 91);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
             checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
             checkSaveTerrorsNote.Size = new Size(262, 18);
@@ -108,7 +122,7 @@
             // checkSaveTerrors
             // 
             checkSaveTerrors.Dock = DockStyle.Top;
-            checkSaveTerrors.Location = new Point(3, 72);
+            checkSaveTerrors.Location = new Point(3, 73);
             checkSaveTerrors.Name = "checkSaveTerrors";
             checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
             checkSaveTerrors.Size = new Size(262, 18);
@@ -120,7 +134,7 @@
             // checkPlayerNames
             // 
             checkPlayerNames.Dock = DockStyle.Top;
-            checkPlayerNames.Location = new Point(3, 54);
+            checkPlayerNames.Location = new Point(3, 55);
             checkPlayerNames.Name = "checkPlayerNames";
             checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
             checkPlayerNames.Size = new Size(262, 18);
@@ -132,7 +146,7 @@
             // checkAutoCopy
             // 
             checkAutoCopy.Dock = DockStyle.Top;
-            checkAutoCopy.Location = new Point(3, 36);
+            checkAutoCopy.Location = new Point(3, 37);
             checkAutoCopy.Name = "checkAutoCopy";
             checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
             checkAutoCopy.Size = new Size(262, 18);
@@ -144,7 +158,7 @@
             // checkSkipParsedLogs
             // 
             checkSkipParsedLogs.Dock = DockStyle.Top;
-            checkSkipParsedLogs.Location = new Point(3, 18);
+            checkSkipParsedLogs.Location = new Point(3, 19);
             checkSkipParsedLogs.Name = "checkSkipParsedLogs";
             checkSkipParsedLogs.Padding = new Padding(3, 0, 3, 0);
             checkSkipParsedLogs.Size = new Size(262, 18);
@@ -161,9 +175,9 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 137);
+            groupBoxNotifications.Location = new Point(8, 156);
             groupBoxNotifications.Name = "groupBoxNotifications";
-            groupBoxNotifications.Size = new Size(268, 57);
+            groupBoxNotifications.Size = new Size(268, 58);
             groupBoxNotifications.TabIndex = 2;
             groupBoxNotifications.TabStop = false;
             groupBoxNotifications.Text = "Notifications";
@@ -172,7 +186,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.Dock = DockStyle.Top;
-            checkPlayAudio.Location = new Point(3, 36);
+            checkPlayAudio.Location = new Point(3, 37);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(3, 0, 3, 0);
             checkPlayAudio.Size = new Size(262, 18);
@@ -186,7 +200,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.Dock = DockStyle.Top;
-            checkXSOverlay.Location = new Point(3, 18);
+            checkXSOverlay.Location = new Point(3, 19);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(3, 0, 3, 0);
             checkXSOverlay.Size = new Size(262, 18);
@@ -205,9 +219,9 @@
             groupBox1.Controls.Add(check24Hour);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 194);
+            groupBox1.Location = new Point(8, 214);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(268, 93);
+            groupBox1.Size = new Size(268, 94);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Time Formatting";
@@ -215,7 +229,7 @@
             // checkShowDate
             // 
             checkShowDate.Dock = DockStyle.Top;
-            checkShowDate.Location = new Point(3, 72);
+            checkShowDate.Location = new Point(3, 73);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(3, 0, 3, 0);
             checkShowDate.Size = new Size(262, 18);
@@ -227,7 +241,7 @@
             // checkInvertMD
             // 
             checkInvertMD.Dock = DockStyle.Top;
-            checkInvertMD.Location = new Point(3, 54);
+            checkInvertMD.Location = new Point(3, 55);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(3, 0, 3, 0);
             checkInvertMD.Size = new Size(262, 18);
@@ -239,7 +253,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.Dock = DockStyle.Top;
-            checkShowSeconds.Location = new Point(3, 36);
+            checkShowSeconds.Location = new Point(3, 37);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(3, 0, 3, 0);
             checkShowSeconds.Size = new Size(262, 18);
@@ -251,7 +265,7 @@
             // check24Hour
             // 
             check24Hour.Dock = DockStyle.Top;
-            check24Hour.Location = new Point(3, 18);
+            check24Hour.Location = new Point(3, 19);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(3, 0, 3, 0);
             check24Hour.Size = new Size(262, 18);
@@ -266,7 +280,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 332);
+            btnCheckForUpdates.Location = new Point(8, 356);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -281,7 +295,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 332);
+            btnOpenData.Location = new Point(223, 356);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -294,26 +308,26 @@
             // 
             ctxData.Items.AddRange(new ToolStripItem[] { setDataLocationToolStripMenuItem });
             ctxData.Name = "ctxData";
-            ctxData.Size = new Size(215, 48);
+            ctxData.Size = new Size(193, 26);
             // 
             // setDataLocationToolStripMenuItem
             // 
             setDataLocationToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ctxItemPickFolder, ctxItemResetToDefault });
             setDataLocationToolStripMenuItem.Name = "setDataLocationToolStripMenuItem";
-            setDataLocationToolStripMenuItem.Size = new Size(214, 22);
+            setDataLocationToolStripMenuItem.Size = new Size(192, 22);
             setDataLocationToolStripMenuItem.Text = "Custom Data Location";
             // 
             // ctxItemPickFolder
             // 
             ctxItemPickFolder.Name = "ctxItemPickFolder";
-            ctxItemPickFolder.Size = new Size(186, 22);
+            ctxItemPickFolder.Size = new Size(157, 22);
             ctxItemPickFolder.Text = "Pick Folder";
             ctxItemPickFolder.Click += ctxItemPickFolder_Click;
             // 
             // ctxItemResetToDefault
             // 
             ctxItemResetToDefault.Name = "ctxItemResetToDefault";
-            ctxItemResetToDefault.Size = new Size(186, 22);
+            ctxItemResetToDefault.Size = new Size(157, 22);
             ctxItemResetToDefault.Text = "Reset to Default";
             ctxItemResetToDefault.Click += ctxItemResetToDefault_Click;
             // 
@@ -330,9 +344,9 @@
             groupBox2.Controls.Add(checkColorObjectives);
             groupBox2.Dock = DockStyle.Top;
             groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 287);
+            groupBox2.Location = new Point(8, 308);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(268, 39);
+            groupBox2.Size = new Size(268, 40);
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
             groupBox2.Text = "Style";
@@ -340,7 +354,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.Dock = DockStyle.Top;
-            checkColorObjectives.Location = new Point(3, 18);
+            checkColorObjectives.Location = new Point(3, 19);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(3, 0, 3, 0);
             checkColorObjectives.Size = new Size(262, 18);
@@ -356,7 +370,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 364);
+            ClientSize = new Size(284, 388);
             Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
@@ -410,5 +424,6 @@
         private ToolStripMenuItem setDataLocationToolStripMenuItem;
         private ToolStripMenuItem ctxItemPickFolder;
         private ToolStripMenuItem ctxItemResetToDefault;
+        private CheckBox checkDiscordBackup;
     }
 }

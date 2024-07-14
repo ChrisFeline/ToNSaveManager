@@ -34,6 +34,7 @@ namespace ToNSaveManager.Models
         public DateTime Timestamp;
         public string Content;
 
+        public int PlayerCount;
         public string? Players;
 
         public string[]? RTerrors;
@@ -73,11 +74,11 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool showPlayers, bool showTerrors)
+        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Timestamp.ToString("F"));
-            if (!string.IsNullOrEmpty(Note))
+            if (!string.IsNullOrEmpty(Note) && showNote)
             {
                 sb.AppendLine();
                 sb.AppendLine();
