@@ -284,7 +284,12 @@ namespace ToNSaveManager
             ctxMenuEntriesCopyTo.DropDownItems.Add(ctxMenuEntriesNew);
 
             if (listBoxEntries.SelectedItem == null) ctxMenuEntries.Close();
-            else ContextEntry = (Entry)listBoxEntries.SelectedItem;
+            else
+            {
+                ContextEntry = (Entry)listBoxEntries.SelectedItem;
+                if (ContextEntry.Parent == null)
+                    ContextEntry.Parent = (History?)listBoxKeys.SelectedItem;
+            }
         }
 
         private void ctxMenuEntriesNew_Click(object sender, EventArgs e)
@@ -650,7 +655,13 @@ namespace ToNSaveManager
             if (collection == null)
             {
                 collection = new History(dateKey);
+                collection.SetLogContext(context);
                 AddKey(collection);
+            }
+
+            if (string.IsNullOrEmpty(context.DisplayName) && !string.IsNullOrEmpty(collection.DisplayName))
+            {
+                context.DisplayName = collection.DisplayName;
             }
 
             int ind = collection.Add(content, timestamp, out Entry? entry);
@@ -658,6 +669,8 @@ namespace ToNSaveManager
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
             entry.PlayerCount = context.Players.Count;
+            entry.Parent = collection;
+
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
             if (Settings.Get.SaveRoundInfo)
             {

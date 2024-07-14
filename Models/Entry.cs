@@ -34,6 +34,7 @@ namespace ToNSaveManager.Models
         public DateTime Timestamp;
         public string Content;
 
+        [JsonProperty("pc")]
         public int PlayerCount;
         public string? Players;
 
@@ -41,6 +42,7 @@ namespace ToNSaveManager.Models
         public string? RType;
         public ToNRoundResult RResult;
 
+        [JsonIgnore] public History? Parent;
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
 

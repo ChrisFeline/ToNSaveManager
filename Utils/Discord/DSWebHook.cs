@@ -73,8 +73,17 @@ namespace ToNSaveManager.Utils.Discord
                         EmbedData.Description = string.Empty;
                         EmbedData.Timestamp = time;
 
+                        if (entry.Parent != null && !string.IsNullOrEmpty(entry.Parent.DisplayName))
+                        {
+                            // if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
+                            EmbedData.Description += "**Username**: `" + entry.Parent.DisplayName + "`";
+                        }
+
                         if (!string.IsNullOrEmpty(entry.RType))
+                        {
+                            if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
                             EmbedData.Description += "**Round Type**: `" + entry.RType + "`";
+                        }
 
                         if (entry.RTerrors != null && entry.RTerrors.Length > 0)
                         {

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Globalization;
 
+using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+
 namespace ToNSaveManager.Models
 {
     internal class History : IComparable<History>
@@ -9,6 +11,8 @@ namespace ToNSaveManager.Models
         public string Name = string.Empty;
         public DateTime Timestamp = DateTime.MinValue;
         public bool IsCustom = false;
+
+        public string? DisplayName = string.Empty;
 
         [JsonConstructor]
         private History() { }
@@ -25,6 +29,11 @@ namespace ToNSaveManager.Models
             Name = name;
             Timestamp = timestamp;
             IsCustom = true;
+        }
+
+        public void SetLogContext(LogContext context)
+        {
+            DisplayName = context.DisplayName;
         }
 
         public void SetLogKey(string logKey)
