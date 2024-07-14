@@ -41,6 +41,22 @@ namespace ToNSaveManager
 
             try
             {
+                using (Process currentProcess = Process.GetCurrentProcess())
+                {
+                    Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
+                    foreach (Process process in processes)
+                    {
+                        using (process)
+                        {
+                            if (process.Id != currentProcess.Id)
+                            {
+                                process.Kill();
+                                process.WaitForExit();
+                            }
+                        }
+                    }
+                }
+
                 if (Directory.Exists(temp))
                     Directory.Delete(temp, true);
             }
@@ -57,6 +73,7 @@ namespace ToNSaveManager
 
             try
             {
+
                 if (File.Exists(TempFileLocation))
                     File.Delete(TempFileLocation);
 
