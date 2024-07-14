@@ -102,7 +102,7 @@
             // 
             ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, ctxMenuEntriesBackup, toolStripMenuItem2, ctxMenuEntriesDelete });
             ctxMenuEntries.Name = "ctxMenuEntries";
-            ctxMenuEntries.Size = new Size(124, 98);
+            ctxMenuEntries.Size = new Size(181, 120);
             ctxMenuEntries.Closed += ctxMenuEntries_Closed;
             ctxMenuEntries.Opened += ctxMenuEntries_Opened;
             // 
@@ -110,7 +110,7 @@
             // 
             ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
             ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
-            ctxMenuEntriesCopyTo.Size = new Size(123, 22);
+            ctxMenuEntriesCopyTo.Size = new Size(180, 22);
             ctxMenuEntriesCopyTo.Text = "Add to";
             // 
             // ctxMenuEntriesNew
@@ -124,26 +124,28 @@
             // ctxMenuEntriesNote
             // 
             ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
-            ctxMenuEntriesNote.Size = new Size(123, 22);
+            ctxMenuEntriesNote.Size = new Size(180, 22);
             ctxMenuEntriesNote.Text = "Edit Note";
             ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
             // 
             // ctxMenuEntriesBackup
             // 
+            ctxMenuEntriesBackup.Enabled = false;
             ctxMenuEntriesBackup.Name = "ctxMenuEntriesBackup";
-            ctxMenuEntriesBackup.Size = new Size(123, 22);
+            ctxMenuEntriesBackup.Size = new Size(180, 22);
             ctxMenuEntriesBackup.Text = "Backup";
+            ctxMenuEntriesBackup.ToolTipText = "Force upload a backup of this code to Discord as a file, requires Auto Discord Backup to be enabled in settings.";
             ctxMenuEntriesBackup.Click += ctxMenuEntriesBackup_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(120, 6);
+            toolStripMenuItem2.Size = new Size(177, 6);
             // 
             // ctxMenuEntriesDelete
             // 
             ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
-            ctxMenuEntriesDelete.Size = new Size(123, 22);
+            ctxMenuEntriesDelete.Size = new Size(180, 22);
             ctxMenuEntriesDelete.Text = "Delete";
             ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
             // 

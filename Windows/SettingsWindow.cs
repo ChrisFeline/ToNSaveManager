@@ -117,6 +117,8 @@ namespace ToNSaveManager.Windows
 
                 if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
             }
+
+            MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e)
