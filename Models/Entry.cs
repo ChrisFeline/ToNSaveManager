@@ -40,6 +40,7 @@ namespace ToNSaveManager.Models
 
         public string[]? RTerrors;
         public string? RType;
+        public ToNRoundType RT;
         public ToNRoundResult RResult;
 
         [JsonIgnore] public History? Parent;

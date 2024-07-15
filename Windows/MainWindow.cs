@@ -689,6 +689,7 @@ namespace ToNSaveManager
                     {
                         entry.RTerrors = killers.TerrorNames;
                         entry.RType = killers.RoundTypeRaw;
+                        entry.RT = killers.RoundType;
 
                         if (Settings.Get.SaveRoundNote)
                             entry.Note = string.Join(", ", killers.TerrorNames);

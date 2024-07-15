@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Newtonsoft.Json;
 
 namespace ToNSaveManager.Models
 {
@@ -93,6 +93,9 @@ namespace ToNSaveManager.Models
             "RUN"         , "走れ！", // The meatball man
             "8 Pages"     , "8ページ",
 
+            // Events
+            "Cold Night"  , "Cold Night",
+
             // Beyond's favorite
             "Custom"      , "カスタム", // IGNORE SAVES FOR THIS ONE
         };
@@ -115,6 +118,33 @@ namespace ToNSaveManager.Models
             raw = raw.Replace(' ', '_').Replace("8", "Eight");
             return Enum.TryParse(typeof(ToNRoundType), raw, out object? result) && result != null ? (ToNRoundType)result : ToNRoundType.Unknown;
         }
+
+        internal static uint GetRoundColorFromType(ToNRoundType RoundType) => RoundTypeColors.ContainsKey(RoundType) ? RoundTypeColors[RoundType] : 16721714;
+
+        internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
+        {
+            { ToNRoundType.Unknown,     16721714 },
+            { ToNRoundType.Classic,     0xE6E7E8 },
+            { ToNRoundType.Fog,         0xAFAFAF },
+            { ToNRoundType.Punished,    0xFFF870 },
+            { ToNRoundType.Sabotage,    0x79F28B },
+            { ToNRoundType.Cracked,     0xF124F2 },
+            { ToNRoundType.Bloodbath,   0xBF191C },
+
+            { ToNRoundType.Midnight,    0xC12227 },
+            { ToNRoundType.Alternate,   0xFFFFFF },
+
+            { ToNRoundType.Mystic_Moon, 0x48ACFF },
+            { ToNRoundType.Twilight,    0xFFE000 },
+            { ToNRoundType.Blood_Moon,  0xAD0000 },
+            { ToNRoundType.Solstice,    0x85FFCF },
+
+            { ToNRoundType.RUN,         0xFFD57A },
+            { ToNRoundType.Eight_Pages, 0xAFAFAF },
+            { ToNRoundType.Custom,      0x0 }, // Ignored
+
+            { ToNRoundType.Cold_Night,  0x9ADFFF },
+        };
     }
 
     public enum ToNRoundResult
@@ -140,7 +170,10 @@ namespace ToNSaveManager.Models
         Mystic_Moon, Blood_Moon, Twilight, Solstice,
 
         // Special // Replace 8 with Eight
-        RUN, Eight_Pages, Custom
+        RUN, Eight_Pages, Custom,
+
+        // Events
+        Cold_Night
     }
 
     internal class ToNIndex

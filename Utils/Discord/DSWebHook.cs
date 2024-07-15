@@ -72,6 +72,7 @@ namespace ToNSaveManager.Utils.Discord
 
                         EmbedData.Description = string.Empty;
                         EmbedData.Timestamp = time;
+                        EmbedData.Color = TerrorMatrix.GetRoundColorFromType(entry.RT);
 
                         if (entry.Parent != null && !string.IsNullOrEmpty(entry.Parent.DisplayName))
                         {
