@@ -94,7 +94,7 @@ namespace ToNSaveManager.Models
             "8 Pages"     , "8ページ",
 
             // Events
-            "Cold Night"  , "Cold Night",
+            "Cold Night"  , "冷たい夜", // Winterfest
 
             // Beyond's favorite
             "Custom"      , "カスタム", // IGNORE SAVES FOR THIS ONE
