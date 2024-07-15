@@ -107,7 +107,7 @@
                     }
 
                     if (SkipParsedLogs)
-                        SetParsedPos(logContext.DateKey, logContext.Position, firstRun);
+                        SetParsedPos(logContext.DateKey, isOlder ? logContext.Position : logContext.RoomReadPos, firstRun);
                 }
             }
 
@@ -246,6 +246,8 @@
             var worldName = line.Substring(index).Trim('\n', '\r');
             logContext.Enter(worldName, lineDate);
 
+            logContext.RoomReadPos = logContext.Position;
+
             return true;
         }
 
@@ -299,6 +301,7 @@
             public string? DisplayName;
 
             // Recent Instance info
+            public long RoomReadPos { get; set; }
             public string? RoomName { get; private set; }
             public DateTime RoomDate { get; private set; }
             public readonly HashSet<string> Players;
