@@ -151,7 +151,7 @@ namespace ToNSaveManager.Models
     {
         R, // Respawn
         W, // Win
-        L, // Lose
+        D, // Leaving
     }
 
     public enum ToNRoundType

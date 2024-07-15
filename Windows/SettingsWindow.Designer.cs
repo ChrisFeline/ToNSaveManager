@@ -102,8 +102,8 @@
             checkShowWinLose.Padding = new Padding(21, 0, 3, 0);
             checkShowWinLose.Size = new Size(262, 18);
             checkShowWinLose.TabIndex = 5;
-            checkShowWinLose.Tag = "ShowWinLose|Entries will show a [W] or [L] tag.";
-            checkShowWinLose.Text = "Show Win/Lose Tags";
+            checkShowWinLose.Tag = "ShowWinLose|Entries will show a [R], [W] or [D] tag based on the source that triggered the save.";
+            checkShowWinLose.Text = "Show [R][W][D] Tags";
             checkShowWinLose.UseVisualStyleBackColor = true;
             // 
             // checkSaveTerrorsNote

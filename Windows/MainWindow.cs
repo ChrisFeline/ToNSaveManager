@@ -579,7 +579,7 @@ namespace ToNSaveManager
             isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
             if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
             {
-                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.L);
+                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.D);
                 return true;
             }
 

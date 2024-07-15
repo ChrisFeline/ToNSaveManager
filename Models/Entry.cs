@@ -62,7 +62,7 @@ namespace ToNSaveManager.Models
             if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose)
             {
                 sb.Append('[');
-                sb.Append(RResult == ToNRoundResult.R ? ' ' : RResult.ToString());
+                sb.Append(RResult);
                 sb.Append("] ");
             }
 
@@ -93,7 +93,7 @@ namespace ToNSaveManager.Models
                 sb.AppendLine();
                 sb.AppendLine();
 
-                sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
+                // sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
 
                 if (!string.IsNullOrEmpty(RType))
                     sb.AppendLine("Round type: " + RType);
