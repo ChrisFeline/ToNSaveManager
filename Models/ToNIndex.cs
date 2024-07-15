@@ -124,26 +124,26 @@ namespace ToNSaveManager.Models
         internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
         {
             { ToNRoundType.Unknown,     16721714 },
-            { ToNRoundType.Classic,     0xE6E7E8 },
-            { ToNRoundType.Fog,         0xAFAFAF },
-            { ToNRoundType.Punished,    0xFFF870 },
-            { ToNRoundType.Sabotage,    0x79F28B },
-            { ToNRoundType.Cracked,     0xF124F2 },
-            { ToNRoundType.Bloodbath,   0xBF191C },
+            { ToNRoundType.Classic,     0xFFFFFF },
+            { ToNRoundType.Fog,         0x808486 },
+            { ToNRoundType.Punished,    0xFFF800 },
+            { ToNRoundType.Sabotage,    0x3BF37D },
+            { ToNRoundType.Cracked,     0xFF00D3 },
+            { ToNRoundType.Bloodbath,   0xF51313 },
 
-            { ToNRoundType.Midnight,    0xC12227 },
-            { ToNRoundType.Alternate,   0xFFFFFF },
+            { ToNRoundType.Midnight,    0xE23232 },
+            { ToNRoundType.Alternate,   0xF1F1F1 },
 
-            { ToNRoundType.Mystic_Moon, 0x48ACFF },
-            { ToNRoundType.Twilight,    0xFFE000 },
-            { ToNRoundType.Blood_Moon,  0xAD0000 },
-            { ToNRoundType.Solstice,    0x85FFCF },
+            { ToNRoundType.Mystic_Moon, 0xB0DEF9 },
+            { ToNRoundType.Twilight,    0xF8A900 },
+            { ToNRoundType.Blood_Moon,  0xF51313 },
+            { ToNRoundType.Solstice,    0x3BF3B3 },
 
-            { ToNRoundType.RUN,         0xFFD57A },
-            { ToNRoundType.Eight_Pages, 0xAFAFAF },
+            { ToNRoundType.RUN,         0xC15E3D },
+            { ToNRoundType.Eight_Pages, 0xFFFFFF },
             { ToNRoundType.Custom,      0x0 }, // Ignored
 
-            { ToNRoundType.Cold_Night,  0x9ADFFF },
+            { ToNRoundType.Cold_Night,  0xA37BE4 },
         };
     }
 
