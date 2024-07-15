@@ -141,7 +141,7 @@ namespace ToNSaveManager.Models
 
             { ToNRoundType.RUN,         0xC15E3D },
             { ToNRoundType.Eight_Pages, 0xFFFFFF },
-            { ToNRoundType.Custom,      0x0 }, // Ignored
+            { ToNRoundType.Custom,      0x000000 }, // Ignored
 
             { ToNRoundType.Cold_Night,  0xA37BE4 },
         };
