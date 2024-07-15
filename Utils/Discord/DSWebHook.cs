@@ -88,7 +88,7 @@ namespace ToNSaveManager.Utils.Discord
                         if (entry.RTerrors != null && entry.RTerrors.Length > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += "**Terrors in Round**: `" + string.Join("` `", entry.RTerrors) + "`";
+                            EmbedData.Description += "**Terrors in Round**: `" + string.Join("`, `", entry.RTerrors) + "`";
                         }
 
                         if (entry.PlayerCount > 0)
