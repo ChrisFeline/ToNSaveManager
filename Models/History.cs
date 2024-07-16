@@ -28,10 +28,12 @@ namespace ToNSaveManager.Models
         }
 
         #region Persistence
-        private string JsonKey => Guid + ".json";
-        private string JsonPath => Path.Combine(IsCustom ? DestinationCustom : Destination, JsonKey);
+        internal static List<Entry> UniqueEntries = new List<Entry>();
 
-        internal bool IsDirty { get; private set; }
+        [JsonIgnore] private string JsonKey => Guid + ".json";
+        [JsonIgnore] private string JsonPath => Path.Combine(IsCustom ? DestinationCustom : Destination, JsonKey);
+
+        [JsonIgnore] internal bool IsDirty { get; private set; }
         internal void SetDirty() => IsDirty = true;
 
         [JsonIgnore] public List<Entry>? m_Database;
@@ -47,6 +49,23 @@ namespace ToNSaveManager.Models
                     {
                         string content = File.ReadAllText(path);
                         m_Database = JsonConvert.DeserializeObject<List<Entry>>(content) ?? new List<Entry>();
+
+                        Entry entry;
+                        for (int j = 0; j < m_Database.Count; j++)
+                        {
+                            entry = m_Database[j];
+
+                            int index = UniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
+                            if (index != -1)
+                            {
+                                entry = UniqueEntries[index];
+                                m_Database[j] = entry;
+                            }
+                            else
+                            {
+                                UniqueEntries.Add(entry);
+                            }
+                        }
                     }
                     else
                     {

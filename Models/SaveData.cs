@@ -263,30 +263,43 @@ namespace ToNSaveManager.Models
 
 #pragma warning disable CS0612
             // Check items that might be the same between collections
-            List<Entry> uniqueEntries = new List<Entry>();
             int i, j;
             Entry entry;
             for (i = 0; i < data.Count; i++)
             {
                 History item = data[i];
+                if (item.Entries.Count == 0) continue;
 
                 for (j = 0; j < item.Entries.Count; j++)
                 {
                     entry = item.Entries[j];
 
-                    int index = uniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
+                    int index = History.UniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
                     if (index != -1)
                     {
-                        entry = uniqueEntries[index];
+                        entry = History.UniqueEntries[index];
                         item.Entries[j] = entry;
                     }
                     else
                     {
-                        uniqueEntries.Add(entry);
+                        History.UniqueEntries.Add(entry);
                     }
                 }
             }
-            uniqueEntries.Clear();
+
+            for (i = 0; i < data.Count; i++)
+            {
+                History item = data[i];
+                if (item.Entries.Count == 0) continue;
+
+                for (j = 0; j < item.Entries.Count; j++)
+                {
+                    entry = item.Entries[j];
+                    item.Add(entry);
+                }
+
+                item.Entries.Clear();
+            }
 
             if (data.Objectives.Count > 0)
             {
