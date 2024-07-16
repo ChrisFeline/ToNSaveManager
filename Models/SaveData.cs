@@ -207,7 +207,8 @@ namespace ToNSaveManager.Models
 
                 try
                 {
-                    File.Copy(filePath, filePath + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
+                    if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+                        File.Copy(filePath, filePath + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
                 } catch
                 {
                     Application.Exit();
