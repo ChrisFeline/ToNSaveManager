@@ -182,6 +182,7 @@ namespace ToNSaveManager.Models
 
             SaveData? data = null;
 
+            string filePath = string.Empty;
             try
             {
                 if (File.Exists(Destination) && !File.Exists(destination))
@@ -191,7 +192,7 @@ namespace ToNSaveManager.Models
                 }
 
                 Destination = destination;
-                string filePath = readFromLegacy ? LegacyLocation : Destination;
+                filePath = readFromLegacy ? LegacyLocation : Destination;
                 Debug.WriteLine("Reading from: " + filePath);
 
                 if (File.Exists(filePath))
@@ -203,6 +204,15 @@ namespace ToNSaveManager.Models
             catch (Exception ex)
             {
                 MessageBox.Show("Error trying to import your save:\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                try
+                {
+                    File.Copy(filePath, filePath + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
+                } catch
+                {
+                    Application.Exit();
+                    return new SaveData();
+                }
             }
 
             if (data == null)

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Globalization;
 
 namespace ToNSaveManager.Models
 {
@@ -7,6 +6,12 @@ namespace ToNSaveManager.Models
     {
         public bool IsCompleted;
         public string Name;
+
+        public LegacyObjective()
+        {
+            IsCompleted = false;
+            Name = string.Empty;
+        }
     }
 
     internal class Objective
