@@ -47,8 +47,17 @@ namespace ToNSaveManager.Models
 
                     if (File.Exists(path))
                     {
-                        string content = File.ReadAllText(path);
-                        m_Database = JsonConvert.DeserializeObject<List<Entry>>(content) ?? new List<Entry>();
+                        try
+                        {
+                            string content = File.ReadAllText(path);
+                            m_Database = JsonConvert.DeserializeObject<List<Entry>>(content) ?? new List<Entry>();
+                        } catch
+                        {
+                            if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                                File.Copy(path, path + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
+
+                            m_Database = new List<Entry>();
+                        }
 
                         Entry entry;
                         for (int j = 0; j < m_Database.Count; j++)
@@ -187,7 +196,6 @@ namespace ToNSaveManager.Models
             }
 
             entry = new Entry(content, timestamp);
-            Debug.WriteLine("Inserting Entry: " + entry);
 
             Database.Insert(index, entry);
             SetDirty();
