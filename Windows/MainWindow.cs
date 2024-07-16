@@ -120,7 +120,7 @@ namespace ToNSaveManager
             {
                 string content = edit.Text.Trim();
                 AddCustomEntry(new Entry(content, DateTime.Now) { Note = "Imported" }, h);
-                Export(true);
+                Export();
             }
         }
 
@@ -138,7 +138,8 @@ namespace ToNSaveManager
                 h.Name = title;
                 listBoxKeys.Refresh();
                 SetTitle(title);
-                Export(true);
+
+                Export(h);
             }
         }
 
@@ -157,7 +158,7 @@ namespace ToNSaveManager
                     SaveData.Remove(h);
                     UpdateEntries();
                     SetTitle(null);
-                    Export(true);
+                    Export(null, true);
                 }
             }
         }
@@ -309,7 +310,7 @@ namespace ToNSaveManager
                 {
                     ContextEntry.Note = edit.Text.Trim();
                     listBoxEntries.Refresh();
-                    Export(true);
+                    Export(ContextEntry.Parent);
                 }
             }
 
@@ -339,9 +340,9 @@ namespace ToNSaveManager
 
                 if (result == DialogResult.OK)
                 {
-                    h.Entries.Remove(ContextEntry);
+                    h.Database.Remove(ContextEntry);
                     listBoxEntries.Items.Remove(ContextEntry);
-                    Export(true);
+                    Export(ContextEntry.Parent);
                 }
             }
 
@@ -461,7 +462,7 @@ namespace ToNSaveManager
             History selected = (History)listBoxKeys.SelectedItem;
             SetTitle(selected.Name);
 
-            foreach (Entry entry in selected.Entries)
+            foreach (Entry entry in selected.Database)
                 listBoxEntries.Items.Add(entry);
         }
 
@@ -610,18 +611,28 @@ namespace ToNSaveManager
         #region Data
         private Entry? RecentData;
 
-        private void Export(bool force = false) =>
+        private void Export(History? h = null, bool force = false)
+        {
+            if (h != null) h.SetDirty();
             SaveData.Export(force);
+        }
 
         private void FirstImport()
         {
+            History? temp = null;
+
             for (int i = 0; i < SaveData.Count; i++)
             {
-                AddKey(SaveData[i], i);
-                if (SaveData[i].IsCustom) continue;
+                History h = SaveData[i];
+                AddKey(h, i);
+                if (h.IsCustom) continue;
 
-                // First should always be the most recent, hopefully
-                Entry? first = SaveData[i].Entries.FirstOrDefault();
+                if (temp == null || temp.Timestamp < h.Timestamp) temp = h;
+            }
+
+            if (Settings.Get.AutoCopy)
+            {
+                Entry? first = temp?.Database.FirstOrDefault();
                 if (first != null) SetRecent(first);
             }
 
@@ -647,7 +658,7 @@ namespace ToNSaveManager
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);
 
-            Export(true);
+            Export(collection, true);
         }
         private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogContext context)
         {

@@ -12,7 +12,17 @@ namespace ToNSaveManager.Models
         static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
         static string LegacyLocation = Path.Combine(Program.LegacyDataLocation, FileName);
         static string LegacyLocationOld = Path.Combine(Program.LegacyDataLocation + "_Old", FileName);
-        static string Destination = FileName;
+
+        static string m_Destination { get; set; } = FileName;
+        internal static string Destination
+        {
+            get => m_Destination;
+            set
+            {
+                m_Destination = value;
+                History.Destination = Path.Combine(Path.GetDirectoryName(m_Destination) ?? "./", "Database");
+            }
+        }
         
         public Dictionary<string, long> ParsedLog { get; private set; } = new Dictionary<string, long>();
         public List<History> Collection { get; private set; } = new List<History>();
@@ -251,6 +261,7 @@ namespace ToNSaveManager.Models
             // Sort them by dates, and keep collections on top
             data.Collection.Sort((a, b) => b.CompareTo(a));
 
+#pragma warning disable CS0612
             // Check items that might be the same between collections
             List<Entry> uniqueEntries = new List<Entry>();
             int i, j;
@@ -259,15 +270,15 @@ namespace ToNSaveManager.Models
             {
                 History item = data[i];
 
-                for (j = 0; j < item.Count; j++)
+                for (j = 0; j < item.Entries.Count; j++)
                 {
-                    entry = item[j];
+                    entry = item.Entries[j];
 
                     int index = uniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
                     if (index != -1)
                     {
                         entry = uniqueEntries[index];
-                        item[j] = entry;
+                        item.Entries[j] = entry;
                     }
                     else
                     {
@@ -277,7 +288,6 @@ namespace ToNSaveManager.Models
             }
             uniqueEntries.Clear();
 
-#pragma warning disable CS0612
             if (data.Objectives.Count > 0)
             {
                 Debug.WriteLine("Importing old objectives...");
@@ -302,20 +312,25 @@ namespace ToNSaveManager.Models
 
         public void Export(bool force = false)
         {
-            if (!IsDirty && !force) return;
-
             try
             {
-                // Removed indentation to save space and make Serializing faster.
-                string json = JsonConvert.SerializeObject(this);
-                File.WriteAllText(Destination, json);
+                if (IsDirty || force)
+                {
+                    IsDirty = false;
+                    // Removed indentation to save space and make Serializing faster.
+                    string json = JsonConvert.SerializeObject(this);
+                    File.WriteAllText(Destination, json);
+                }
+
+                foreach (History h in Collection)
+                {
+                    h.Export();
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show($"An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {Destination}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            IsDirty = false;
         }
 
         private static LegacyObjective[] GetLegacyObjectives()
