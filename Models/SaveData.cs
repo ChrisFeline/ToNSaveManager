@@ -7,6 +7,8 @@ namespace ToNSaveManager.Models
 {
     internal class SaveData
     {
+        const int CURRENT_VERSION = 2;
+
         const string LegacyDestination = "data.json";
         const string FileName = "SaveData.json";
         static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
@@ -46,6 +48,9 @@ namespace ToNSaveManager.Models
         public List<LegacyObjective> Objectives { get; private set; } = new ();
         public bool ShouldSerializeObjectives() => false;
         #endregion
+
+        public int Version = 0;
+        public static SaveData Empty => new SaveData() { Version = CURRENT_VERSION };
 
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
@@ -215,11 +220,7 @@ namespace ToNSaveManager.Models
             {
                 MessageBox.Show("Error trying to import your save:\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                try
-                {
-                    if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
-                        File.Copy(filePath, filePath + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
-                } catch
+                if (!Program.CreateFileBackup(filePath))
                 {
                     Application.Exit();
                     return new SaveData();
@@ -228,6 +229,13 @@ namespace ToNSaveManager.Models
 
             if (data == null)
                 data = new SaveData();
+
+            if (data.Version != CURRENT_VERSION)
+            {
+                Program.CreateFileBackup(filePath);
+                data.Version = CURRENT_VERSION;
+                data.SetDirty();
+            }
 
             // Handle old save files
             if (File.Exists(LegacyDestination))
@@ -247,7 +255,7 @@ namespace ToNSaveManager.Models
                     }
 
                     // Force exporting to new file format
-                    data.Export(true);
+                    data.SetDirty();
 
                     // Rename the old file
                     File.Move(LegacyDestination, LegacyDestination + ".old", true);
@@ -273,6 +281,7 @@ namespace ToNSaveManager.Models
                 for (j = 0; j < item.Entries.Count; j++)
                 {
                     entry = item.Entries[j];
+                    item.Add(entry);
 
                     int index = History.UniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
                     if (index != -1)
@@ -285,20 +294,9 @@ namespace ToNSaveManager.Models
                         History.UniqueEntries.Add(entry);
                     }
                 }
-            }
-
-            for (i = 0; i < data.Count; i++)
-            {
-                History item = data[i];
-                if (item.Entries.Count == 0) continue;
-
-                for (j = 0; j < item.Entries.Count; j++)
-                {
-                    entry = item.Entries[j];
-                    item.Add(entry);
-                }
 
                 item.Entries.Clear();
+                data.SetDirty();
             }
 
             if (data.Objectives.Count > 0)
@@ -320,6 +318,7 @@ namespace ToNSaveManager.Models
             }
 #pragma warning restore CS0612
 
+            data.Export();
             return data;
         }
 

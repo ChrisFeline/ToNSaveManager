@@ -53,9 +53,7 @@ namespace ToNSaveManager.Models
                             m_Database = JsonConvert.DeserializeObject<List<Entry>>(content) ?? new List<Entry>();
                         } catch
                         {
-                            if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                                File.Copy(path, path + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
-
+                            Program.CreateFileBackup(path);
                             m_Database = new List<Entry>();
                         }
 
