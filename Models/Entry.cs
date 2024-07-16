@@ -34,12 +34,16 @@ namespace ToNSaveManager.Models
         public DateTime Timestamp;
         public string Content;
 
+        [JsonProperty("pc")]
+        public int PlayerCount;
         public string? Players;
 
         public string[]? RTerrors;
         public string? RType;
+        public ToNRoundType RT;
         public ToNRoundResult RResult;
 
+        [JsonIgnore] public History? Parent;
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
 
@@ -58,7 +62,7 @@ namespace ToNSaveManager.Models
             if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose)
             {
                 sb.Append('[');
-                sb.Append(RResult == ToNRoundResult.R ? ' ' : RResult.ToString());
+                sb.Append(RResult);
                 sb.Append("] ");
             }
 
@@ -73,11 +77,11 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool showPlayers, bool showTerrors)
+        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Timestamp.ToString("F"));
-            if (!string.IsNullOrEmpty(Note))
+            if (!string.IsNullOrEmpty(Note) && showNote)
             {
                 sb.AppendLine();
                 sb.AppendLine();
@@ -89,7 +93,7 @@ namespace ToNSaveManager.Models
                 sb.AppendLine();
                 sb.AppendLine();
 
-                sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
+                // sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
 
                 if (!string.IsNullOrEmpty(RType))
                     sb.AppendLine("Round type: " + RType);

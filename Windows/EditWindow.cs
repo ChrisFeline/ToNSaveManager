@@ -8,7 +8,7 @@
 
     public partial class EditWindow : Form
     {
-        static readonly EditWindow Instance = new EditWindow();
+        static EditWindow Instance = new EditWindow();
         public static Size GetSize() => Instance.Size;
 
         string Content
@@ -24,6 +24,8 @@
 
         public static EditResult Show(string content, string title, Form parent)
         {
+            if (Instance.IsDisposed) Instance = new EditWindow();
+
             Instance.Text = title;
             Instance.Owner = parent;
             Instance.StartPosition = FormStartPosition.CenterParent;

@@ -23,6 +23,16 @@ namespace ToNSaveManager.Models
         public string? DataLocation { get; set; }
 
         /// <summary>
+        /// Discord WebHook URL for backups.
+        /// </summary>
+        public string? DiscordWebhookURL { get; set; }
+
+        /// <summary>
+        /// Discord WebHook backups toggle state.
+        /// </summary>
+        public bool DiscordWebhookEnabled { get; set; }
+
+        /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
         public bool AutoCopy { get; set; }

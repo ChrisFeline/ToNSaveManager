@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Media;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
@@ -7,6 +7,7 @@ using ToNSaveManager.Windows;
 
 using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using ToNSaveManager.Utils.Discord;
 
 namespace ToNSaveManager
 {
@@ -60,6 +61,9 @@ namespace ToNSaveManager
             this.Text = "Loading, please wait...";
 
             XSOverlay.SetPort(Settings.Get.XSOverlayPort);
+
+            SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
+            TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
         }
 
         private void mainWindow_Shown(object sender, EventArgs e)
@@ -280,7 +284,12 @@ namespace ToNSaveManager
             ctxMenuEntriesCopyTo.DropDownItems.Add(ctxMenuEntriesNew);
 
             if (listBoxEntries.SelectedItem == null) ctxMenuEntries.Close();
-            else ContextEntry = (Entry)listBoxEntries.SelectedItem;
+            else
+            {
+                ContextEntry = (Entry)listBoxEntries.SelectedItem;
+                if (ContextEntry.Parent == null)
+                    ContextEntry.Parent = (History?)listBoxKeys.SelectedItem;
+            }
         }
 
         private void ctxMenuEntriesNew_Click(object sender, EventArgs e)
@@ -303,6 +312,14 @@ namespace ToNSaveManager
                     Export(true);
                 }
             }
+
+            listBoxEntries.SelectedIndex = -1;
+        }
+
+        private void ctxMenuEntriesBackup_Click(object sender, EventArgs e)
+        {
+            if (ContextEntry != null)
+                DSWebHook.Send(ContextEntry, true);
 
             listBoxEntries.SelectedIndex = -1;
         }
@@ -349,6 +366,12 @@ namespace ToNSaveManager
         {
             const string wiki = "https://terror.moe/";
             OpenExternalLink(wiki);
+        }
+
+        private void linkSupport_Click(object sender, EventArgs e)
+        {
+            const string support = "https://ko-fi.com/kittenji";
+            OpenExternalLink(support);
         }
 
         private void btnObjectives_Click(object sender, EventArgs e)
@@ -459,6 +482,11 @@ namespace ToNSaveManager
 
             return text + "...";
         }
+
+        internal void SetBackupButton(bool enabled)
+        {
+            ctxMenuEntriesBackup.Enabled = enabled;
+        }
         #endregion
 
         #region Log Handling
@@ -551,7 +579,7 @@ namespace ToNSaveManager
             isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
             if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
             {
-                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.L);
+                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.D);
                 return true;
             }
 
@@ -627,13 +655,22 @@ namespace ToNSaveManager
             if (collection == null)
             {
                 collection = new History(dateKey);
+                collection.SetLogContext(context);
                 AddKey(collection);
+            }
+
+            if (string.IsNullOrEmpty(context.DisplayName) && !string.IsNullOrEmpty(collection.DisplayName))
+            {
+                context.DisplayName = collection.DisplayName;
             }
 
             int ind = collection.Add(content, timestamp, out Entry? entry);
             if (ind < 0) return; // Not added, duplicate
 
 #pragma warning disable CS8604, CS8602 // Nullability is handled along with the return value of <History>.Add
+            entry.PlayerCount = context.Players.Count;
+            entry.Parent = collection;
+
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
             if (Settings.Get.SaveRoundInfo)
             {
@@ -652,6 +689,7 @@ namespace ToNSaveManager
                     {
                         entry.RTerrors = killers.TerrorNames;
                         entry.RType = killers.RoundTypeRaw;
+                        entry.RT = killers.RoundType;
 
                         if (Settings.Get.SaveRoundNote)
                             entry.Note = string.Join(", ", killers.TerrorNames);
@@ -672,6 +710,7 @@ namespace ToNSaveManager
             {
                 PlayNotification();
                 SendXSNotification();
+                DSWebHook.Send(entry);
             }
         }
 

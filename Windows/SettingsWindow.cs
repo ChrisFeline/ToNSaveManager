@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
+using ToNSaveManager.Utils.Discord;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
@@ -62,6 +63,9 @@ namespace ToNSaveManager.Windows
             checkShowWinLose.CheckedChanged += TimeFormat_CheckedChanged;
             checkSaveTerrors.CheckedChanged += checkSaveTerrors_CheckedChanged;
             checkSaveTerrors_CheckedChanged(checkSaveTerrors, e);
+
+            // Discord Backups
+            checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -85,6 +89,36 @@ namespace ToNSaveManager.Windows
             checkSaveTerrorsNote.ForeColor = checkSaveTerrors.Checked ? Color.White : Color.Gray;
             checkShowWinLose.ForeColor = checkSaveTerrorsNote.ForeColor;
             TimeFormat_CheckedChanged(sender, e);
+        }
+
+        private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (checkDiscordBackup.Checked)
+            {
+                string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
+                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, "Discord Webhook URL", this);
+                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal))
+                {
+                    url = edit.Text.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(url)) {
+                        bool valid = DSWebHook.ValidateURL(url);
+
+                        if (valid) {
+                            Settings.Get.DiscordWebhookURL = url;
+                            Settings.Export();
+                        } else {
+                            MessageBox.Show($"The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    } else {
+                        Settings.Get.DiscordWebhookURL = null;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
+            }
+
+            MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e)

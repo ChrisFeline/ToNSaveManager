@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Newtonsoft.Json;
 
 namespace ToNSaveManager.Models
 {
@@ -93,6 +93,9 @@ namespace ToNSaveManager.Models
             "RUN"         , "走れ！", // The meatball man
             "8 Pages"     , "8ページ",
 
+            // Events
+            "Cold Night"  , "冷たい夜", // Winterfest
+
             // Beyond's favorite
             "Custom"      , "カスタム", // IGNORE SAVES FOR THIS ONE
         };
@@ -115,13 +118,40 @@ namespace ToNSaveManager.Models
             raw = raw.Replace(' ', '_').Replace("8", "Eight");
             return Enum.TryParse(typeof(ToNRoundType), raw, out object? result) && result != null ? (ToNRoundType)result : ToNRoundType.Unknown;
         }
+
+        internal static uint GetRoundColorFromType(ToNRoundType RoundType) => RoundTypeColors.ContainsKey(RoundType) ? RoundTypeColors[RoundType] : 16721714;
+
+        internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
+        {
+            { ToNRoundType.Unknown,     16721714 },
+            { ToNRoundType.Classic,     0xFFFFFF },
+            { ToNRoundType.Fog,         0x808486 },
+            { ToNRoundType.Punished,    0xFFF800 },
+            { ToNRoundType.Sabotage,    0x3BF37D },
+            { ToNRoundType.Cracked,     0xFF00D3 },
+            { ToNRoundType.Bloodbath,   0xF51313 },
+
+            { ToNRoundType.Midnight,    0xE23232 },
+            { ToNRoundType.Alternate,   0xF1F1F1 },
+
+            { ToNRoundType.Mystic_Moon, 0xB0DEF9 },
+            { ToNRoundType.Twilight,    0xF8A900 },
+            { ToNRoundType.Blood_Moon,  0xF51313 },
+            { ToNRoundType.Solstice,    0x3BF3B3 },
+
+            { ToNRoundType.RUN,         0xC15E3D },
+            { ToNRoundType.Eight_Pages, 0xFFFFFF },
+            { ToNRoundType.Custom,      0x000000 }, // Ignored
+
+            { ToNRoundType.Cold_Night,  0xA37BE4 },
+        };
     }
 
     public enum ToNRoundResult
     {
         R, // Respawn
         W, // Win
-        L, // Lose
+        D, // Leaving
     }
 
     public enum ToNRoundType
@@ -140,7 +170,10 @@ namespace ToNSaveManager.Models
         Mystic_Moon, Blood_Moon, Twilight, Solstice,
 
         // Special // Replace 8 with Eight
-        RUN, Eight_Pages, Custom
+        RUN, Eight_Pages, Custom,
+
+        // Events
+        Cold_Night
     }
 
     internal class ToNIndex
