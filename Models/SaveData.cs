@@ -10,7 +10,8 @@ namespace ToNSaveManager.Models
         const int CURRENT_VERSION = 2;
 
         const string LegacyDestination = "data.json";
-        const string FileName = "SaveData.json";
+        const string LegacyFileName = "SaveData.json";
+        const string FileName = "SaveIndex.json";
         static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
         static string LegacyLocation = Path.Combine(Program.LegacyDataLocation, FileName);
         static string LegacyLocationOld = Path.Combine(Program.LegacyDataLocation + "_Old", FileName);
@@ -200,7 +201,8 @@ namespace ToNSaveManager.Models
             string filePath = string.Empty;
             try
             {
-                if (File.Exists(Destination) && !File.Exists(destination))
+                bool noDest = !File.Exists(destination);
+                if (File.Exists(Destination) && noDest)
                 {
                     File.Copy(Destination, destination, true);
                     File.Move(Destination, Destination + ".old");
@@ -209,6 +211,10 @@ namespace ToNSaveManager.Models
                 Destination = destination;
                 filePath = readFromLegacy ? LegacyLocation : Destination;
                 Debug.WriteLine("Reading from: " + filePath);
+
+                string legacyData = Path.Combine(Path.GetDirectoryName(Destination) ?? string.Empty, LegacyFileName);
+                if (File.Exists(legacyData) && noDest)
+                    File.Copy(legacyData, Destination, false);
 
                 if (File.Exists(filePath))
                 {
