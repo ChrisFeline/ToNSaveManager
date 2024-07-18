@@ -140,10 +140,12 @@ namespace ToNSaveManager.Models
         public static void SetDataLocation(bool reset)
         {
             string selectedFolder;
+            string selDir;
             if (reset)
             {
                 if (string.IsNullOrEmpty(Settings.Get.DataLocation)) return;
                 selectedFolder = DefaultLocation;
+                selDir = Program.DataLocation;
             }
             else
             {
@@ -153,21 +155,39 @@ namespace ToNSaveManager.Models
 
                 if (result != DialogResult.OK) return;
 
-                selectedFolder = folderBrowserDialog.SelectedPath;
+                selDir = selectedFolder = folderBrowserDialog.SelectedPath;
                 selectedFolder = Path.Combine(selectedFolder, FileName);
             }
 
-            try
-            {
+            try {
                 // Make a backup of this save file, just in case
-                if (File.Exists(Destination))
-                {
+                if (File.Exists(Destination)) {
                     File.Copy(Destination, Path.Combine(Path.GetDirectoryName(Settings.Destination) ?? string.Empty, FileName + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
-                    File.Move(Destination, selectedFolder);
+                    File.Move(Destination, selectedFolder, true);
                 }
+
+                string currentDatabase = History.Destination;
+                string currentDatabaseCustom = History.DestinationCustom;
+                string databaseFolder = Path.Combine(selDir, "Database");
+                string databaseFolderCustom = Path.Combine(selDir, "Database", "Custom");
+
+                if (!Directory.Exists(databaseFolderCustom))
+                    Directory.CreateDirectory(databaseFolderCustom);
+
+                string[] files = Directory.GetFiles(currentDatabase);
+                foreach (string file in files) {
+                    string filename = Path.GetFileName(file);
+                    File.Copy(file, Path.Combine(databaseFolder, filename), true);
+                }
+                files = Directory.GetFiles(currentDatabaseCustom);
+                foreach (string file in files) {
+                    string filename = Path.GetFileName(file);
+                    File.Copy(file, Path.Combine(databaseFolderCustom, filename), true);
+                }
+
+                Directory.Move(currentDatabase, currentDatabase + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 MessageBox.Show($"An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {selectedFolder}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
