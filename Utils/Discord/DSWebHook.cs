@@ -49,6 +49,14 @@ namespace ToNSaveManager.Utils.Discord
 
         private static async Task Send(string webhookUrl)
         {
+            if (EmbedData.Footer == null) {
+                EmbedData.Footer = new EmbedFooter() {
+                    IconUrl = "https://github.com/ChrisFeline/ToNSaveManager/blob/main/Resources/xs_icon.png?raw=true",
+                    ProxyIconUrl = "https://github.com/ChrisFeline/ToNSaveManager/blob/main/Resources/xs_icon.png?raw=true",
+                    Text = "Terrors of Nowhere: Save Manager"
+                };
+            }
+
             IsSending = true;
 
             try
@@ -60,16 +68,6 @@ namespace ToNSaveManager.Utils.Discord
                         Entry entry = EntryQueue.Dequeue();
                         DateTime time = entry.Timestamp;
 
-                        if (EmbedData.Footer == null)
-                        {
-                            EmbedData.Footer = new EmbedFooter()
-                            {
-                                IconUrl = "https://github.com/ChrisFeline/ToNSaveManager/blob/main/Resources/xs_icon.png?raw=true",
-                                ProxyIconUrl = "https://github.com/ChrisFeline/ToNSaveManager/blob/main/Resources/xs_icon.png?raw=true",
-                                Text = "Terrors of Nowhere: Save Manager"
-                            };
-                        }
-
                         EmbedData.Description = string.Empty;
                         EmbedData.Timestamp = time;
                         EmbedData.Color = TerrorMatrix.GetRoundColorFromType(entry.RT);
@@ -77,7 +75,7 @@ namespace ToNSaveManager.Utils.Discord
                         if (entry.Parent != null && !string.IsNullOrEmpty(entry.Parent.DisplayName))
                         {
                             // if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += "**Username**: `" + entry.Parent.DisplayName + "`";
+                            EmbedData.Description += "**Player**: `" + entry.Parent.DisplayName + "`";
                         }
 
                         if (!string.IsNullOrEmpty(entry.RType))

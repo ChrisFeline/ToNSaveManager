@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Globalization;
 
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
@@ -7,6 +8,94 @@ namespace ToNSaveManager.Models
 {
     internal class History : IComparable<History>
     {
+        internal static string DestinationCustom = "Database/Custom";
+
+        static string m_Destination = "Database";
+        internal static string Destination
+        {
+            get => m_Destination;
+            set
+            {
+                m_Destination = value;
+                DestinationCustom = Path.Combine(m_Destination, "Custom");
+            }
+        }
+
+        internal static void EnsureDestination()
+        {
+            if (!Directory.Exists(DestinationCustom))
+                Directory.CreateDirectory(DestinationCustom);
+        }
+
+        #region Persistence
+        internal static List<Entry> UniqueEntries = new List<Entry>();
+
+        [JsonIgnore] private string JsonKey => Guid + ".json";
+        [JsonIgnore] private string JsonPath => Path.Combine(IsCustom ? DestinationCustom : Destination, JsonKey);
+
+        [JsonIgnore] internal bool IsDirty { get; private set; }
+        internal void SetDirty() => IsDirty = true;
+
+        [JsonIgnore] public List<Entry>? m_Database;
+        [JsonIgnore] public List<Entry> Database
+        {
+            get
+            {
+                if (m_Database == null)
+                {
+                    string path = JsonPath;
+
+                    if (File.Exists(path))
+                    {
+                        try
+                        {
+                            string content = File.ReadAllText(path);
+                            m_Database = JsonConvert.DeserializeObject<List<Entry>>(content) ?? new List<Entry>();
+                        } catch
+                        {
+                            Program.CreateFileBackup(path);
+                            m_Database = new List<Entry>();
+                        }
+
+                        Entry entry;
+                        for (int j = 0; j < m_Database.Count; j++)
+                        {
+                            entry = m_Database[j];
+
+                            int index = UniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
+                            if (index != -1)
+                            {
+                                entry = UniqueEntries[index];
+                                m_Database[j] = entry;
+                            }
+                            else
+                            {
+                                UniqueEntries.Add(entry);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_Database = new List<Entry>();
+                    }
+                }
+
+                return m_Database;
+            }
+        }
+
+        internal void Export()
+        {
+            if (IsDirty && m_Database != null)
+            {
+                IsDirty = false;
+                EnsureDestination();
+                string content = JsonConvert.SerializeObject(m_Database);
+                File.WriteAllText(JsonPath, content);
+            }
+        }
+        #endregion
+
         public string Guid = string.Empty;
         public string Name = string.Empty;
         public DateTime Timestamp = DateTime.MinValue;
@@ -21,6 +110,7 @@ namespace ToNSaveManager.Models
         {
             IsCustom = false;
             SetLogKey(logKey);
+            SetDirty();
         }
 
         public History(string name, DateTime timestamp)
@@ -29,11 +119,13 @@ namespace ToNSaveManager.Models
             Name = name;
             Timestamp = timestamp;
             IsCustom = true;
+            SetDirty();
         }
 
         public void SetLogContext(LogContext context)
         {
             DisplayName = context.DisplayName;
+            SetDirty();
         }
 
         public void SetLogKey(string logKey)
@@ -44,31 +136,33 @@ namespace ToNSaveManager.Models
             // "2023-10-22_09-51-29"
             if (DateTime.TryParseExact(logKey, "yyyy-MM-dd_HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
                 Timestamp = date;
+
+            SetDirty();
         }
 
-        public List<Entry> Entries = new List<Entry>();
-        [JsonIgnore] public int Count => Entries.Count;
+
+        [Obsolete] public List<Entry> Entries = new List<Entry>();
 
         public Entry this[int i]
         {
             get
             {
-                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
-                return Entries[i];
+                if (i < 0 || i >= Database.Count) throw new IndexOutOfRangeException();
+                return Database[i];
             }
             set
             {
-                if (i < 0 || i >= Count) throw new IndexOutOfRangeException();
-                Entries[i] = value;
+                if (i < 0 || i >= Database.Count) throw new IndexOutOfRangeException();
+                Database[i] = value;
             }
         }
 
         private int FindIndex(string content, DateTime timestamp)
         {
             timestamp = timestamp.ToUniversalTime();
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Database.Count; i++)
             {
-                Entry e = Entries[i]; // Prevent doubles
+                Entry e = Database[i]; // Prevent doubles
                 if (e.Content.Equals(content, StringComparison.OrdinalIgnoreCase))
                     return -1;
 
@@ -76,13 +170,17 @@ namespace ToNSaveManager.Models
                     return i;
             }
 
-            return Count;
+            return Database.Count;
         }
 
         public int Add(Entry entry)
         {
             int index = FindIndex(entry.Content, entry.Timestamp);
-            if (index > -1) Entries.Insert(index, entry);
+            if (index > -1)
+            {
+                Database.Insert(index, entry);
+                SetDirty();
+            }
             return index;
         }
 
@@ -96,7 +194,9 @@ namespace ToNSaveManager.Models
             }
 
             entry = new Entry(content, timestamp);
-            Entries.Insert(index, entry);
+
+            Database.Insert(index, entry);
+            SetDirty();
 
             return index;
         }

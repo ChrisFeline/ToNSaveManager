@@ -7,12 +7,25 @@ namespace ToNSaveManager.Models
 {
     internal class SaveData
     {
+        const int CURRENT_VERSION = 2;
+
         const string LegacyDestination = "data.json";
-        const string FileName = "SaveData.json";
+        const string LegacyFileName = "SaveData.json";
+        const string FileName = "SaveIndex.json";
         static string DefaultLocation = Path.Combine(Program.DataLocation, FileName);
         static string LegacyLocation = Path.Combine(Program.LegacyDataLocation, FileName);
         static string LegacyLocationOld = Path.Combine(Program.LegacyDataLocation + "_Old", FileName);
-        static string Destination = FileName;
+
+        static string m_Destination { get; set; } = FileName;
+        internal static string Destination
+        {
+            get => m_Destination;
+            set
+            {
+                m_Destination = value;
+                History.Destination = Path.Combine(Path.GetDirectoryName(m_Destination) ?? "./", "Database");
+            }
+        }
         
         public Dictionary<string, long> ParsedLog { get; private set; } = new Dictionary<string, long>();
         public List<History> Collection { get; private set; } = new List<History>();
@@ -36,6 +49,9 @@ namespace ToNSaveManager.Models
         public List<LegacyObjective> Objectives { get; private set; } = new ();
         public bool ShouldSerializeObjectives() => false;
         #endregion
+
+        public int Version = 0;
+        public static SaveData Empty => new SaveData() { Version = CURRENT_VERSION };
 
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
@@ -124,10 +140,12 @@ namespace ToNSaveManager.Models
         public static void SetDataLocation(bool reset)
         {
             string selectedFolder;
+            string selDir;
             if (reset)
             {
                 if (string.IsNullOrEmpty(Settings.Get.DataLocation)) return;
                 selectedFolder = DefaultLocation;
+                selDir = Program.DataLocation;
             }
             else
             {
@@ -137,21 +155,39 @@ namespace ToNSaveManager.Models
 
                 if (result != DialogResult.OK) return;
 
-                selectedFolder = folderBrowserDialog.SelectedPath;
+                selDir = selectedFolder = folderBrowserDialog.SelectedPath;
                 selectedFolder = Path.Combine(selectedFolder, FileName);
             }
 
-            try
-            {
+            try {
                 // Make a backup of this save file, just in case
-                if (File.Exists(Destination))
-                {
+                if (File.Exists(Destination)) {
                     File.Copy(Destination, Path.Combine(Path.GetDirectoryName(Settings.Destination) ?? string.Empty, FileName + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
-                    File.Move(Destination, selectedFolder);
+                    File.Move(Destination, selectedFolder, true);
                 }
+
+                string currentDatabase = History.Destination;
+                string currentDatabaseCustom = History.DestinationCustom;
+                string databaseFolder = Path.Combine(selDir, "Database");
+                string databaseFolderCustom = Path.Combine(selDir, "Database", "Custom");
+
+                if (!Directory.Exists(databaseFolderCustom))
+                    Directory.CreateDirectory(databaseFolderCustom);
+
+                string[] files = Directory.GetFiles(currentDatabase);
+                foreach (string file in files) {
+                    string filename = Path.GetFileName(file);
+                    File.Copy(file, Path.Combine(databaseFolder, filename), true);
+                }
+                files = Directory.GetFiles(currentDatabaseCustom);
+                foreach (string file in files) {
+                    string filename = Path.GetFileName(file);
+                    File.Copy(file, Path.Combine(databaseFolderCustom, filename), true);
+                }
+
+                Directory.Move(currentDatabase, currentDatabase + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 MessageBox.Show($"An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {selectedFolder}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -185,7 +221,8 @@ namespace ToNSaveManager.Models
             string filePath = string.Empty;
             try
             {
-                if (File.Exists(Destination) && !File.Exists(destination))
+                bool noDest = !File.Exists(destination);
+                if (File.Exists(Destination) && noDest)
                 {
                     File.Copy(Destination, destination, true);
                     File.Move(Destination, Destination + ".old");
@@ -194,6 +231,10 @@ namespace ToNSaveManager.Models
                 Destination = destination;
                 filePath = readFromLegacy ? LegacyLocation : Destination;
                 Debug.WriteLine("Reading from: " + filePath);
+
+                string legacyData = Path.Combine(Path.GetDirectoryName(Destination) ?? string.Empty, LegacyFileName);
+                if (File.Exists(legacyData) && noDest)
+                    File.Copy(legacyData, Destination, false);
 
                 if (File.Exists(filePath))
                 {
@@ -205,10 +246,7 @@ namespace ToNSaveManager.Models
             {
                 MessageBox.Show("Error trying to import your save:\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                try
-                {
-                    File.Copy(filePath, filePath + $".backup-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}");
-                } catch
+                if (!Program.CreateFileBackup(filePath))
                 {
                     Application.Exit();
                     return new SaveData();
@@ -217,6 +255,13 @@ namespace ToNSaveManager.Models
 
             if (data == null)
                 data = new SaveData();
+
+            if (data.Version != CURRENT_VERSION)
+            {
+                Program.CreateFileBackup(filePath);
+                data.Version = CURRENT_VERSION;
+                data.SetDirty();
+            }
 
             // Handle old save files
             if (File.Exists(LegacyDestination))
@@ -236,7 +281,7 @@ namespace ToNSaveManager.Models
                     }
 
                     // Force exporting to new file format
-                    data.Export(true);
+                    data.SetDirty();
 
                     // Rename the old file
                     File.Move(LegacyDestination, LegacyDestination + ".old", true);
@@ -250,33 +295,36 @@ namespace ToNSaveManager.Models
             // Sort them by dates, and keep collections on top
             data.Collection.Sort((a, b) => b.CompareTo(a));
 
+#pragma warning disable CS0612
             // Check items that might be the same between collections
-            List<Entry> uniqueEntries = new List<Entry>();
             int i, j;
             Entry entry;
             for (i = 0; i < data.Count; i++)
             {
                 History item = data[i];
+                if (item.Entries.Count == 0) continue;
 
-                for (j = 0; j < item.Count; j++)
+                for (j = 0; j < item.Entries.Count; j++)
                 {
-                    entry = item[j];
+                    entry = item.Entries[j];
+                    item.Add(entry);
 
-                    int index = uniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
+                    int index = History.UniqueEntries.FindIndex(v => v.Timestamp == entry.Timestamp);
                     if (index != -1)
                     {
-                        entry = uniqueEntries[index];
-                        item[j] = entry;
+                        entry = History.UniqueEntries[index];
+                        item.Entries[j] = entry;
                     }
                     else
                     {
-                        uniqueEntries.Add(entry);
+                        History.UniqueEntries.Add(entry);
                     }
                 }
-            }
-            uniqueEntries.Clear();
 
-#pragma warning disable CS0612
+                item.Entries.Clear();
+                data.SetDirty();
+            }
+
             if (data.Objectives.Count > 0)
             {
                 Debug.WriteLine("Importing old objectives...");
@@ -296,25 +344,31 @@ namespace ToNSaveManager.Models
             }
 #pragma warning restore CS0612
 
+            data.Export();
             return data;
         }
 
         public void Export(bool force = false)
         {
-            if (!IsDirty && !force) return;
-
             try
             {
-                // Removed indentation to save space and make Serializing faster.
-                string json = JsonConvert.SerializeObject(this);
-                File.WriteAllText(Destination, json);
+                if (IsDirty || force)
+                {
+                    IsDirty = false;
+                    // Removed indentation to save space and make Serializing faster.
+                    string json = JsonConvert.SerializeObject(this);
+                    File.WriteAllText(Destination, json);
+                }
+
+                foreach (History h in Collection)
+                {
+                    h.Export();
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show($"An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {Destination}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            IsDirty = false;
         }
 
         private static LegacyObjective[] GetLegacyObjectives()
