@@ -37,6 +37,8 @@ namespace ToNSaveManager.Utils {
         }
 
         internal static void SendData(bool force = false) {
+            if (!Settings.Get.OSCEnabled) return;
+
             if ((MainWindow.Started && IsDirty) || force) {
                 IsDirty = false;
 

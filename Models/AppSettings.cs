@@ -86,6 +86,11 @@ namespace ToNSaveManager.Models
         public bool ColorfulObjectives { get; set; } = true;
 
         /// <summary>
+        /// Enables OSC and sends avatar parameters based on in-game events.
+        /// </summary>
+        public bool OSCEnabled { get; set; } = true;
+
+        /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
         /// </summary>
         public string? IgnoreRelease { get; set; }
