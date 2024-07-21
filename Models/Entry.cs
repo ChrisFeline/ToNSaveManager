@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Text;
 
 namespace ToNSaveManager.Models
@@ -116,6 +117,9 @@ namespace ToNSaveManager.Models
 
         public void CopyToClipboard()
         {
+#if DEBUG
+            Debug.WriteLine("COPYING TO CLIPBOARD");
+#endif
             // Windows 11 please... :[
             // Clipboard.Clear();
             Clipboard.SetDataObject(Content, false, 4, 200);

@@ -662,7 +662,7 @@ namespace ToNSaveManager
                 if (first != null) SetRecent(first);
             }
 
-            CopyRecent();
+            // CopyRecent();
         }
 
         private void AddCustomEntry(Entry entry, History? collection)
