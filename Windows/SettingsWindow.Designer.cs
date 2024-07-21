@@ -93,6 +93,8 @@
             checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
             checkOSCEnabled.Text = "Send OSC Parameters";
             checkOSCEnabled.UseVisualStyleBackColor = true;
+            checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
+            checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
             // checkDiscordBackup
             // 

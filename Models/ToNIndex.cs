@@ -103,9 +103,6 @@ namespace ToNSaveManager.Models
 
             // Events
             "Cold Night"  , "冷たい夜", // Winterfest
-
-            // Beyond's favorite
-            "Custom"      , "カスタム", // IGNORE SAVES FOR THIS ONE
         };
 
         static string GetEngRoundType(string roundType)
@@ -149,7 +146,6 @@ namespace ToNSaveManager.Models
 
             { ToNRoundType.RUN,         0xC15E3D },
             { ToNRoundType.Eight_Pages, 0xFFFFFF },
-            { ToNRoundType.Custom,      0x000000 }, // Ignored
 
             { ToNRoundType.Cold_Night,  0xA37BE4 },
         };

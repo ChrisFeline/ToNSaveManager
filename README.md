@@ -32,7 +32,7 @@
   - Right Click to reset audio file back to 'default.wav'
 - `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
 - `Auto Discord Backup` Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
-- `Send OSC Parameters` Sends avatar parameters to VRChat using OSC.
+- `Send OSC Parameters` Sends avatar parameters to VRChat using OSC. Check the [documentation](#osc-documentation) below for more info.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
 ## Right Click Menus

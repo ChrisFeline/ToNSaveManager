@@ -24,7 +24,7 @@ namespace ToNSaveManager.Utils {
         static bool LastOptedIn = false;
 
         static bool IsOptedIn = false;
-        public static TerrorMatrix TMatrix;
+        public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             TMatrix = terrorMatrix;
