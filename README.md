@@ -50,21 +50,23 @@
 - This window gives you a list of unlockables that you can check to track your progress. Just click on the things you already unlocked.
 
 ## OSC Documentation
-### Parameter Names & Types
-```
+<details><summary>Parameter Names & Types</summary><p>
+<pre>
 ToN_RoundType  |  INT
 ToN_Terror1    |  INT
 ToN_Terror2    |  INT
 ToN_Terror3    |  INT
 ToN_OptedIn    |  BOOL
-```
+</pre>
+</p></details>
+
 <details><summary>Round Type Values</summary><p>
 <pre>
  0  =  Unknown
  1  =  Classic
  2  =  Fog
  3  =  Punished
- 4  =  Sabotage
+ 4  =  Sabotage (44 If you are the Saboteour)
  5  =  Cracked
  6  =  Bloodbath
  7  =  Midnight
