@@ -28,7 +28,7 @@ namespace ToNSaveManager.Utils.Discord
 
         static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-        static readonly Queue<Entry> EntryQueue = new Queue<Entry>();
+        static readonly Queue<KeyValuePair<bool, Entry>> EntryQueue = new Queue<KeyValuePair<bool, Entry>>();
         static bool IsSending = false;
         
         internal static void Send(Entry entry, bool ignoreDuplicate = false)
@@ -41,7 +41,7 @@ namespace ToNSaveManager.Utils.Discord
             if (!ignoreDuplicate && LastEntry != null && LastEntry.Content == entry.Content) return;
             LastEntry = entry;
 
-            EntryQueue.Enqueue(entry);
+            EntryQueue.Enqueue(new KeyValuePair<bool, Entry>(ignoreDuplicate, entry));
             if (IsSending) return;
 
             _ = Send(webhookUrl);
@@ -65,7 +65,11 @@ namespace ToNSaveManager.Utils.Discord
                 {
                     while (EntryQueue.Count > 0)
                     {
-                        Entry entry = EntryQueue.Dequeue();
+                        KeyValuePair<bool, Entry> entryData = EntryQueue.Dequeue();
+
+                        Entry entry = entryData.Value;
+                        bool ignoreDuplicate = entryData.Key;
+
                         DateTime time = entry.Timestamp;
 
                         EmbedData.Description = string.Empty;
@@ -94,6 +98,11 @@ namespace ToNSaveManager.Utils.Discord
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
                             EmbedData.Description += $"**Player Count**: `{entry.PlayerCount}`";
+                        }
+
+                        if (ignoreDuplicate && !string.IsNullOrEmpty(entry.Note)) {
+                            if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
+                            EmbedData.Description += $"**Note**: `{entry.Note.Replace('`', '\'')}`";
                         }
 
                         string payloadData = JsonConvert.SerializeObject(PayloadData, JsonSettings);

@@ -1,31 +1,28 @@
 ﻿using System.Diagnostics;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
+using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.Discord;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
 {
-    public partial class SettingsWindow : Form
-    {
+    public partial class SettingsWindow : Form {
         #region Initialization
         static SettingsWindow? Instance;
 
         readonly Timer ClickTimer = new Timer() { Interval = 200 };
         readonly Stopwatch Stopwatch = new Stopwatch();
 
-        public SettingsWindow()
-        {
+        public SettingsWindow() {
             InitializeComponent();
             ClickTimer.Tick += ClickTimer_Tick;
         }
 
-        public static void Open(Form parent)
-        {
+        public static void Open(Form parent) {
             if (Instance == null || Instance.IsDisposed) Instance = new();
 
-            if (Instance.Visible)
-            {
+            if (Instance.Visible) {
                 Instance.BringToFront();
                 return;
             }
@@ -41,8 +38,7 @@ namespace ToNSaveManager.Windows
 
         #region Form Events
         // Subscribe to events on load
-        private void SettingsWindow_Load(object sender, EventArgs e)
-        {
+        private void SettingsWindow_Load(object sender, EventArgs e) {
             BindControlsRecursive(Controls);
             // Custom audio handling
             PostAudioLocationSet();
@@ -66,10 +62,12 @@ namespace ToNSaveManager.Windows
 
             // Discord Backups
             checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+
+            // OSC
+            checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
         }
 
-        private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
-        {
+        private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
             ClickTimer.Dispose();
 
             MainWindow.RefreshLists();
@@ -78,27 +76,22 @@ namespace ToNSaveManager.Windows
 
         private void TimeFormat_CheckedChanged(object? sender, EventArgs e) => MainWindow.RefreshLists();
         private void CheckXSOverlay_CheckedChanged(object? sender, EventArgs e) => MainWindow.SendXSNotification(true);
-        private void CheckPlayAudio_CheckedChanged(object? sender, EventArgs e)
-        {
+        private void CheckPlayAudio_CheckedChanged(object? sender, EventArgs e) {
             MainWindow.PlayNotification();
             if (!checkPlayAudio.Checked) MainWindow.ResetNotification();
         }
 
-        private void checkSaveTerrors_CheckedChanged(object? sender, EventArgs e)
-        {
+        private void checkSaveTerrors_CheckedChanged(object? sender, EventArgs e) {
             checkSaveTerrorsNote.ForeColor = checkSaveTerrors.Checked ? Color.White : Color.Gray;
             checkShowWinLose.ForeColor = checkSaveTerrorsNote.ForeColor;
             TimeFormat_CheckedChanged(sender, e);
         }
 
-        private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e)
-        {
-            if (checkDiscordBackup.Checked)
-            {
+        private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e) {
+            if (checkDiscordBackup.Checked) {
                 string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
                 EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, "Discord Webhook URL", this);
-                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal))
-                {
+                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
                     url = edit.Text.Trim();
 
                     if (!string.IsNullOrWhiteSpace(url)) {
@@ -121,27 +114,22 @@ namespace ToNSaveManager.Windows
             MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
         }
 
-        private void btnCheckForUpdates_Click(object sender, EventArgs e)
-        {
+        private void btnCheckForUpdates_Click(object sender, EventArgs e) {
             if (Program.StartCheckForUpdate(true)) this.Close();
         }
 
-        private void btnOpenData_Click(object sender, EventArgs e)
-        {
+        private void btnOpenData_Click(object sender, EventArgs e) {
             SaveData.OpenDataLocation();
         }
 
-        private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e)
-        {
+        private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e) {
             if (e.Button != MouseButtons.Left) return;
             Stopwatch.Start();
             CancelNext = false;
         }
 
-        private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation))
-            {
+        private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation)) {
                 Settings.Get.AudioLocation = null;
                 Settings.Export();
                 PostAudioLocationSet();
@@ -154,20 +142,17 @@ namespace ToNSaveManager.Windows
             long elapsed = Stopwatch.ElapsedMilliseconds;
             Stopwatch.Reset();
 
-            if (CancelNext)
-            {
+            if (CancelNext) {
                 CancelNext = false;
                 return;
             }
 
-            if (elapsed > 210)
-            {
+            if (elapsed > 210) {
                 TogglePlayAudio();
                 return;
             }
 
-            if (!DoubleClickCheck)
-            {
+            if (!DoubleClickCheck) {
                 DoubleClickCheck = true;
                 ClickTimer.Stop();
                 ClickTimer.Start();
@@ -177,14 +162,12 @@ namespace ToNSaveManager.Windows
             DoubleClickCheck = false;
             ClickTimer.Stop();
 
-            using (OpenFileDialog fileDialog = new OpenFileDialog())
-            {
+            using (OpenFileDialog fileDialog = new OpenFileDialog()) {
                 fileDialog.InitialDirectory = "./";
                 fileDialog.Title = "Select Custom Sound";
                 fileDialog.Filter = "Waveform Audio (*.wav)|*.wav";
 
-                if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName))
-                {
+                if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName)) {
                     Settings.Get.AudioLocation = fileDialog.FileName;
                     Settings.Export();
                     PostAudioLocationSet();
@@ -192,29 +175,33 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void ctxItemPickFolder_Click(object sender, EventArgs e)
-        {
+        private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
+            if (checkOSCEnabled.Checked) LilOSC.SendData(true);
+        }
+
+        private void checkOSCEnabled_MouseUp(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Right)
+            MainWindow.OpenExternalLink("https://github.com/ChrisFeline/ToNSaveManager/?tab=readme-ov-file#osc-documentation");
+        }
+
+        private void ctxItemPickFolder_Click(object sender, EventArgs e) {
             SaveData.SetDataLocation(false);
         }
 
-        private void ctxItemResetToDefault_Click(object sender, EventArgs e)
-        {
+        private void ctxItemResetToDefault_Click(object sender, EventArgs e) {
             SaveData.SetDataLocation(true);
         }
 
-        private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e)
-        {
+        private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e) {
             ObjectivesWindow.RefreshLists();
         }
 
         // Double click
         private bool DoubleClickCheck = false;
         private bool CancelNext = false;
-        private void ClickTimer_Tick(object? sender, EventArgs e)
-        {
+        private void ClickTimer_Tick(object? sender, EventArgs e) {
             ClickTimer.Stop();
-            if (DoubleClickCheck)
-            {
+            if (DoubleClickCheck) {
                 DoubleClickCheck = false;
                 CancelNext = true;
                 TogglePlayAudio();
@@ -223,29 +210,23 @@ namespace ToNSaveManager.Windows
         #endregion
 
         #region Utils
-        private void TogglePlayAudio()
-        {
+        private void TogglePlayAudio() {
             checkPlayAudio.Checked = !checkPlayAudio.Checked;
         }
 
-        private void BindControlsRecursive(Control.ControlCollection controls)
-        {
-            foreach (Control c in controls)
-            {
+        private void BindControlsRecursive(Control.ControlCollection controls) {
+            foreach (Control c in controls) {
                 string? tag = c.Tag?.ToString();
-                if (!string.IsNullOrEmpty(tag))
-                {
+                if (!string.IsNullOrEmpty(tag)) {
                     int index = tag.IndexOf('|', StringComparison.InvariantCulture);
-                    if (index > -1)
-                    {
+                    if (index > -1) {
                         string tooltip = tag.Substring(index + 1).Replace("\\n", Environment.NewLine, StringComparison.Ordinal);
                         tag = tag.Substring(0, index);
                         toolTip.SetToolTip(c, tooltip);
                     }
                 }
 
-                switch (c)
-                {
+                switch (c) {
                     case GroupBox g:
                         BindControlsRecursive(g.Controls);
                         break;
@@ -258,8 +239,7 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void PostAudioLocationSet()
-        {
+        private void PostAudioLocationSet() {
             bool hasLocation = string.IsNullOrEmpty(Settings.Get.AudioLocation);
             checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(Settings.Get.AudioLocation)) + ")";
         }
@@ -292,6 +272,5 @@ namespace ToNSaveManager.Windows
         }
         */
         #endregion
-
     }
 }

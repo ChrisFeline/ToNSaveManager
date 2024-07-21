@@ -4,21 +4,29 @@ namespace ToNSaveManager.Models
 {
     internal struct TerrorMatrix
     {
-        internal static TerrorMatrix Empty => new TerrorMatrix();
+        internal static TerrorMatrix Empty = new TerrorMatrix();
 
+        public int[] TerrorIndex;
         public string[] TerrorNames;
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
+        public bool IsSaboteour;
+
+        public int Terror1 => TerrorIndex != null && TerrorIndex.Length > 0 ? TerrorIndex[0] : 0;
+        public int Terror2 => TerrorIndex != null && TerrorIndex.Length > 1 ? TerrorIndex[1] : 0;
+        public int Terror3 => TerrorIndex != null && TerrorIndex.Length > 2 ? TerrorIndex[2] : 0;
 
         public TerrorMatrix()
         {
-            TerrorNames = new string[0];
+            TerrorIndex = new int[3];
+            TerrorNames = new string[3];
             RoundTypeRaw = string.Empty;
             RoundType = ToNRoundType.Unknown;
         }
 
         public TerrorMatrix(string roundType, params int[] indexes)
         {
+            TerrorIndex = indexes;
             RoundTypeRaw = GetEngRoundType(roundType);
             RoundType = GetRoundType(RoundTypeRaw);
 
@@ -95,9 +103,6 @@ namespace ToNSaveManager.Models
 
             // Events
             "Cold Night"  , "冷たい夜", // Winterfest
-
-            // Beyond's favorite
-            "Custom"      , "カスタム", // IGNORE SAVES FOR THIS ONE
         };
 
         static string GetEngRoundType(string roundType)
@@ -141,7 +146,6 @@ namespace ToNSaveManager.Models
 
             { ToNRoundType.RUN,         0xC15E3D },
             { ToNRoundType.Eight_Pages, 0xFFFFFF },
-            { ToNRoundType.Custom,      0x000000 }, // Ignored
 
             { ToNRoundType.Cold_Night,  0xA37BE4 },
         };
@@ -170,9 +174,9 @@ namespace ToNSaveManager.Models
         Mystic_Moon, Blood_Moon, Twilight, Solstice,
 
         // Special // Replace 8 with Eight
-        RUN, Eight_Pages, Custom,
+        RUN, Eight_Pages,
 
-        // Events
+        // New
         Cold_Night
     }
 

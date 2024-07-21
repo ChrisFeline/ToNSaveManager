@@ -98,6 +98,7 @@
                         continue;
                     }
 
+                    logContext.IsRecent = !isOlder;
                     logContext.Length = fileInfo.Length;
                     ParseLog(fileInfo, logContext, sender == null);
 
@@ -291,6 +292,8 @@
 
         public class LogContext
         {
+            public bool IsRecent;
+
             public long Length;
             public long Position;
             public bool Initialized { get; private set; }

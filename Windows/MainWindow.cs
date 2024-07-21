@@ -18,7 +18,7 @@ namespace ToNSaveManager
         // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
         internal static MainWindow? Instance;
-        private static bool Started;
+        internal static bool Started;
 
         public MainWindow()
         {
@@ -78,6 +78,8 @@ namespace ToNSaveManager
 
             Started = true;
             SetTitle(null);
+
+            LilOSC.SendData(true);
         }
         #endregion
 
@@ -505,8 +507,12 @@ namespace ToNSaveManager
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
 
+        const string ROUND_IS_SABO_KEY = "rSabo";
+        const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
+
         const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
+
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
@@ -522,6 +528,7 @@ namespace ToNSaveManager
         {
             CopyRecent();
             Export();
+            LilOSC.SendData();
         }
 
         private bool HandleSaveCode(string line, DateTime timestamp, LogContext context)
@@ -566,6 +573,12 @@ namespace ToNSaveManager
                 {
                     context.Rem(ROUND_KILLERS_KEY);
                     context.Rem(ROUND_RESULT_KEY);
+                    context.Rem(ROUND_IS_SABO_KEY);
+                }
+
+                if (context.IsRecent) {
+                    LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+                    LilOSC.SetOptInStatus(isOptedIn);
                 }
                 return true;
             }
@@ -576,11 +589,19 @@ namespace ToNSaveManager
 
             if (!isOptedIn) return false;
 
+            if (line.StartsWith(ROUND_IS_SABO)) {
+                context.Set(ROUND_IS_SABO_KEY, true);
+                return true;
+            }
+
             // Track round participation results
             isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
             if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
             {
                 context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.D);
+                context.Rem(ROUND_IS_SABO_KEY);
+
+                if (context.IsRecent) LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                 return true;
             }
 
@@ -592,7 +613,7 @@ namespace ToNSaveManager
 
                 string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
                 string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                int[] killerMatrix = new int[kMatrixRaw.Length];
+                int[] killerMatrix = new int[3];
 
                 for (int i = 0; i < kMatrixRaw.Length; i++)
                 {
@@ -600,7 +621,12 @@ namespace ToNSaveManager
                 }
 
                 TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
+                terrorMatrix.IsSaboteour = context.Get<bool>(ROUND_IS_SABO_KEY);
+
                 context.Set(ROUND_KILLERS_KEY, terrorMatrix);
+                context.Rem(ROUND_IS_SABO_KEY);
+
+                if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
                 return true;
             }
 
@@ -636,7 +662,7 @@ namespace ToNSaveManager
                 if (first != null) SetRecent(first);
             }
 
-            CopyRecent();
+            // CopyRecent();
         }
 
         private void AddCustomEntry(Entry entry, History? collection)
