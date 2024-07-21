@@ -52,11 +52,14 @@
 ## OSC Documentation
 <details><summary>Parameter Names & Types</summary><p>
 <pre>
-ToN_RoundType  |  INT
-ToN_Terror1    |  INT
-ToN_Terror2    |  INT
-ToN_Terror3    |  INT
-ToN_OptedIn    |  BOOL
+Parameter Name | Type |
+---------------|------|--------------------------
+ToN_RoundType  | INT  | The current round type.
+ToN_Terror1    | INT  | The current terror index.
+ToN_Terror2    | INT  | The second terror index.
+ToN_Terror3    | INT  | The third terror index.
+ToN_OptedIn    | BOOL | Is the player opted-in at the lobby
+ToN_Saboteur   | BOOL | Is the player currently the Saboteur
 </pre>
 </p></details>
 
@@ -66,7 +69,7 @@ ToN_OptedIn    |  BOOL
  1  =  Classic
  2  =  Fog
  3  =  Punished
- 4  =  Sabotage (44 If you are the Saboteour)
+ 4  =  Sabotage
  5  =  Cracked
  6  =  Bloodbath
  7  =  Midnight

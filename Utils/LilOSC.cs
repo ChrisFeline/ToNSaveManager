@@ -14,6 +14,7 @@ namespace ToNSaveManager.Utils {
         const string ParamTerror2 = "ToN_Terror2";
         const string ParamTerror3 = "ToN_Terror3";
         const string ParamOptedIn = "ToN_OptedIn";
+        const string ParamSaboteur = "ToN_Saboteur";
 
         static bool IsDirty = false;
 
@@ -22,6 +23,7 @@ namespace ToNSaveManager.Utils {
         static int LastTerror2 = -1;
         static int LastTerror3 = -1;
         static bool LastOptedIn = false;
+        static bool LastSaboteur = false;
 
         static bool IsOptedIn = false;
         public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
@@ -42,7 +44,7 @@ namespace ToNSaveManager.Utils {
             if ((MainWindow.Started && IsDirty) || force) {
                 IsDirty = false;
 
-                int value = TMatrix.IsSaboteour && TMatrix.RoundType == ToNRoundType.Sabotage ? 44 : (int)TMatrix.RoundType;
+                int value = (int)TMatrix.RoundType;
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 value = TMatrix.Terror1;
@@ -53,6 +55,8 @@ namespace ToNSaveManager.Utils {
 
                 value = TMatrix.Terror3;
                 if (LastTerror3 != value || force) SendParam(ParamTerror3, LastTerror3 = value);
+
+                if (LastSaboteur != TMatrix.IsSaboteour || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteour);
 
                 if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
             }

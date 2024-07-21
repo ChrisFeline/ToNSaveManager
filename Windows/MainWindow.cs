@@ -599,6 +599,8 @@ namespace ToNSaveManager
             if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD))
             {
                 context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.D);
+                context.Rem(ROUND_IS_SABO_KEY);
+
                 if (context.IsRecent) LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                 return true;
             }
