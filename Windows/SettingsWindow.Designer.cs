@@ -26,10 +26,10 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             groupBoxGeneral = new GroupBox();
+            checkOSCEnabled = new CheckBox();
             checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
@@ -65,6 +65,7 @@
             // 
             groupBoxGeneral.AutoSize = true;
             groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxGeneral.Controls.Add(checkOSCEnabled);
             groupBoxGeneral.Controls.Add(checkDiscordBackup);
             groupBoxGeneral.Controls.Add(checkShowWinLose);
             groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
@@ -76,10 +77,22 @@
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 8);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 148);
+            groupBoxGeneral.Size = new Size(268, 166);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
+            // 
+            // checkOSCEnabled
+            // 
+            checkOSCEnabled.Dock = DockStyle.Top;
+            checkOSCEnabled.Location = new Point(3, 145);
+            checkOSCEnabled.Name = "checkOSCEnabled";
+            checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
+            checkOSCEnabled.Size = new Size(262, 18);
+            checkOSCEnabled.TabIndex = 7;
+            checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
+            checkOSCEnabled.Text = "Send OSC Parameters";
+            checkOSCEnabled.UseVisualStyleBackColor = true;
             // 
             // checkDiscordBackup
             // 
@@ -175,7 +188,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 156);
+            groupBoxNotifications.Location = new Point(8, 174);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(268, 58);
             groupBoxNotifications.TabIndex = 2;
@@ -219,7 +232,7 @@
             groupBox1.Controls.Add(check24Hour);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 214);
+            groupBox1.Location = new Point(8, 232);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(268, 94);
             groupBox1.TabIndex = 3;
@@ -280,7 +293,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 356);
+            btnCheckForUpdates.Location = new Point(8, 373);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -295,7 +308,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 356);
+            btnOpenData.Location = new Point(223, 373);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -344,7 +357,7 @@
             groupBox2.Controls.Add(checkColorObjectives);
             groupBox2.Dock = DockStyle.Top;
             groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 308);
+            groupBox2.Location = new Point(8, 326);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(268, 40);
             groupBox2.TabIndex = 6;
@@ -370,7 +383,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 388);
+            ClientSize = new Size(284, 405);
             Controls.Add(groupBox2);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
@@ -425,5 +438,6 @@
         private ToolStripMenuItem ctxItemPickFolder;
         private ToolStripMenuItem ctxItemResetToDefault;
         private CheckBox checkDiscordBackup;
+        private CheckBox checkOSCEnabled;
     }
 }

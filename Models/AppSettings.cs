@@ -88,7 +88,7 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// Enables OSC and sends avatar parameters based on in-game events.
         /// </summary>
-        public bool OSCEnabled { get; set; } = true;
+        public bool OSCEnabled { get; set; }
 
         /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.

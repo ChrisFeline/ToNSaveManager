@@ -22,7 +22,8 @@
 - While the tool is running, it will detect new codes as you play.
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
 
-### Settings Window
+## Settings Window
+- `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
 - `Auto Clipboard Copy` Automatically copy new save codes to clipboard.
 - `Collect Player Names` Save codes will show players that were in the instance.
 - `XSOverlay Popup` XSOverlay notifications when new save codes are detected.
@@ -30,11 +31,11 @@
   - Double Click to select a custom audio file. (Only '.wav' files)
   - Right Click to reset audio file back to 'default.wav'
 - `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
-- `Auto Discord Backup` Uses a [discord webhook](##how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
-- `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
+- `Auto Discord Backup` Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
+- `Send OSC Parameters` Sends avatar parameters to VRChat using OSC.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
-### Right Click Menus
+## Right Click Menus
 - ### Log Dates (Left Panel)
   * `Import` You can enter your own code and save it in that collection.
   * `Rename` Lets you rename a collection.
@@ -45,8 +46,38 @@
   * `Backup` Forces a backup upload to Discord if **Auto Discord Backup** is configured on settings.
   * `Delete` Deletes just this save code from the database.
   
-### Objectives Window
+## Objectives Window
 - This window gives you a list of unlockables that you can check to track your progress. Just click on the things you already unlocked.
+
+## OSC Documentation
+### Parameter Names & Types
+```
+ToN_RoundType  |  INT
+ToN_Terror1    |  INT
+ToN_Terror2    |  INT
+ToN_Terror3    |  INT
+ToN_OptedIn    |  BOOL
+```
+<details><summary>Round Type Values</summary><p>
+<pre>
+ 0  =  Unknown
+ 1  =  Classic
+ 2  =  Fog
+ 3  =  Punished
+ 4  =  Sabotage
+ 5  =  Cracked
+ 6  =  Bloodbath
+ 7  =  Midnight
+ 8  =  Alternate
+ 9  =  Mystic_Moon
+10  =  Blood_Moon
+11  =  Twilight
+12  =  Solstice
+13  =  RUN
+14  =  Eight_Pages
+15  =  Cold_Night
+</pre>
+</p></details>
 
 # 📋 FAQ:
 
@@ -58,7 +89,7 @@
 > 5. Your code is now in the clipboard, go to VRChat and paste the code in the input field.
 
 > ## Where can I request a feature?
-> If you want to suggest new features or changes, you can open an Issue here or you can ping me on the official [Toren Discord](https://discord.gg/bus-to-nowhere) as @**Kittenji**
+> If you want to suggest new features or changes, you can open an [Issue](https://github.com/ChrisFeline/ToNSaveManager/issues) here or you can ping me on the official [Toren Discord](https://discord.gg/bus-to-nowhere) as @**Kittenji**
 
 > ## How does it work?
 > The world periodically saves a snapshot of your progress in the VRChat log files.

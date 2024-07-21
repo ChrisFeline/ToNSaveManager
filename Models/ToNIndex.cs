@@ -178,9 +178,9 @@ namespace ToNSaveManager.Models
         Mystic_Moon, Blood_Moon, Twilight, Solstice,
 
         // Special // Replace 8 with Eight
-        RUN, Eight_Pages, Custom,
+        RUN, Eight_Pages,
 
-        // Events
+        // New
         Cold_Night
     }
 
