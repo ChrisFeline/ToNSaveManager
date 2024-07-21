@@ -62,6 +62,9 @@ namespace ToNSaveManager.Windows
 
             // Discord Backups
             checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+
+            // OSC
+            checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
