@@ -4,21 +4,29 @@ namespace ToNSaveManager.Models
 {
     internal struct TerrorMatrix
     {
-        internal static TerrorMatrix Empty => new TerrorMatrix();
+        internal static TerrorMatrix Empty = new TerrorMatrix();
 
+        public int[] TerrorIndex;
         public string[] TerrorNames;
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
+        public bool IsSaboteour;
+
+        public int Terror1 => TerrorIndex != null && TerrorIndex.Length > 0 ? TerrorIndex[0] : 0;
+        public int Terror2 => TerrorIndex != null && TerrorIndex.Length > 1 ? TerrorIndex[1] : 0;
+        public int Terror3 => TerrorIndex != null && TerrorIndex.Length > 2 ? TerrorIndex[2] : 0;
 
         public TerrorMatrix()
         {
-            TerrorNames = new string[0];
+            TerrorIndex = new int[3];
+            TerrorNames = new string[3];
             RoundTypeRaw = string.Empty;
             RoundType = ToNRoundType.Unknown;
         }
 
         public TerrorMatrix(string roundType, params int[] indexes)
         {
+            TerrorIndex = indexes;
             RoundTypeRaw = GetEngRoundType(roundType);
             RoundType = GetRoundType(RoundTypeRaw);
 
