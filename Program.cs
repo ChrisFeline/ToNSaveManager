@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 
@@ -62,8 +63,10 @@ namespace ToNSaveManager
 
             Debug.WriteLine(ProgramDirectory);
 
-            if (!StartCheckForUpdate())
+            if (!StartCheckForUpdate()) {
+                LANG.Initialize();
                 Application.Run(new MainWindow());
+            }
         }
 
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();

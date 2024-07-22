@@ -513,7 +513,6 @@ namespace ToNSaveManager
         const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
-
         private void LogWatcher_OnLine(object? sender, OnLineArgs e)
         {
             DateTime timestamp = e.Timestamp;
