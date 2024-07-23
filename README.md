@@ -163,7 +163,7 @@ If your parameters are not being received properly... try resetting the OSC conf
 > 	* Do **NOT** create a pull request into the `main` branch.
 > 	* Make sure the only edited file is the new added language `.json` file, any other contribution in the source code unrelated to this translation will be rejected.
 > ### OR
-> - Download the file [`en-US.json`]() from this repo.
+> - Download the file [`en-US.json`](#) from this repo.
 > - Rename it to your local ISO language name. For example `ja-JP.json`
 > - You can [contact me](#-contact) on discord and I'll review the changes.
 
