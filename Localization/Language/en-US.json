@@ -59,11 +59,19 @@
 	"SETTINGS.SAVEROUNDNOTE.TT": "Automatically set survived terror names as note.",
 	"SETTINGS.SHOWWINLOSE": "Show [R][W][D] Tags",
 	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a [R], [W] or [D] tag based on the source that triggered the save.",
+	"SETTINGS.OSCENABLED": "Send OSC Parameters",
+	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.",
+
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "Discord Webhook URL",
-	"SETTINGS.OSCENABLED": "Send OSC Parameters",
-	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.",
+
+	"SETTINGS.DISCORDWEBHOOK.LABEL_PLAYER": "**Player**: `{0}`",
+	"SETTINGS.DISCORDWEBHOOK.LABEL_ROUND": "**Round Type**: `{0}`",
+	"SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS": "**Terrors in Round**: `{0}`",
+	"SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT": "`, `",
+	"SETTINGS.DISCORDWEBHOOK.LABEL_COUNT": "**Player Count**: `{0}`",
+	"SETTINGS.DISCORDWEBHOOK.LABEL_NOTE": "**Note**: `{0}`",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 	"SETTINGS.XSOVERLAY": "XSOverlay Popup",

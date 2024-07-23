@@ -102,6 +102,7 @@ namespace ToNSaveManager
             LANG.C(ctxMenuEntriesDelete, "MAIN.CTX_DELETE");
 
             Entry.LocalizeContent();
+            DSWebHook.LocalizeContent();
         }
         #endregion
 
