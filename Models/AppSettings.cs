@@ -141,7 +141,6 @@ namespace ToNSaveManager.Models
             {
                 string json = JsonConvert.SerializeObject(this);
                 File.WriteAllText(Destination, json);
-                throw new Exception();
             }
             catch (Exception e)
             {
