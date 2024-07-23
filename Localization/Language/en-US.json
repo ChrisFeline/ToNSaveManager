@@ -29,7 +29,7 @@
 	"MAIN.SUPPORT.TT": "Buy Me A Coffee ❤️",
 
 	"MAIN.CTX_IMPORT": "Import",
-	"MAIN.CTX_IMPORT.TITLE": "Import Title",
+	"MAIN.CTX_IMPORT.TITLE": "Import Save Code",
 
 	"MAIN.CTX_RENAME": "Rename",
 	"MAIN.CTX_RENAME.TITLE": "Set Collection Name",
@@ -48,7 +48,7 @@
 	"MAIN.CTX_EDIT_NOTE": "Edit note",
 	"MAIN.CTX_EDIT_NOTE.TITLE": "Note Editor",
 	"MAIN.CTX_BACKUP": "Backup",
-	"MAIN.CTX_BACKUP.TT": "Force upload a backup of this code to Discord as a file... Requires \"Auto Discord Backup\" to be enabled under \"Settings\"",
+	"MAIN.CTX_BACKUP.TT": "Force upload a backup of this code to Discord as a file... Requires \"{{SETTINGS.DISCORDWEBHOOKENABLED}}\" to be enabled under \"{{MAIN.SETTINGS}}\"",
 
 	"MAIN.ENTRY_NOTE": "Note:",
 	"MAIN.ENTRY_ROUND": "Round Type:",
@@ -74,7 +74,7 @@
 	"SETTINGS.SHOWWINLOSE": "Show [R][W][D] Tags",
 	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a [R], [W] or [D] tag based on the source that triggered the save.",
 	"SETTINGS.OSCENABLED": "Send OSC Parameters",
-	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.",
+	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC.\nRight click this entry to open documentation about parameter names and types.",
 
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
@@ -94,7 +94,7 @@
 	"SETTINGS.XSOVERLAY": "XSOverlay Popup",
 	"SETTINGS.XSOVERLAY.TT": "XSOverlay popup notifications when saving.",
 	"SETTINGS.XSOVERLAY.MESSAGE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>",
-	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>",
+	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>",
 
 	"SETTINGS.PLAYAUDIO": "Play Audio ({0})",
 	"SETTINGS.PLAYAUDIO.TT": "Double click to select custom audio file.\nRight click to reset back to 'default.wav'",
@@ -116,9 +116,9 @@
 	"OBJECTIVES.SEALED_SWORD": "Sealed Sword",
 	"OBJECTIVES.SEALED_SWORD.TT": "Found in Museum. Break case with a stun tool.",
 	"OBJECTIVES.GRAN_FAUST": "Gran Faust",
-	"OBJECTIVES.GRAN_FAUST.TT": "Survive Arkus with the Sealed Sword.",
+	"OBJECTIVES.GRAN_FAUST.TT": "Survive Arkus with '{{OBJECTIVES.SEALED_SWORD}}'.",
 	"OBJECTIVES.DIVINE_AVENGER": "Divine Avenger",
-	"OBJECTIVES.DIVINE_AVENGER.TT": "Survive Arkus with the Sealed Sword after hitting them at least two times.",
+	"OBJECTIVES.DIVINE_AVENGER.TT": "Survive Arkus with '{{OBJECTIVES.SEALED_SWORD}}' after hitting them at least two times.",
 	"OBJECTIVES.MAXWELL": "Maxwell",
 	"OBJECTIVES.MAXWELL.TT": "Found in Its Maze. (spawns once per round)",
 	"OBJECTIVES.ROCK": "Rock",

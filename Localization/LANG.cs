@@ -20,12 +20,12 @@ namespace ToNSaveManager.Localization {
         static Dictionary<string, Dictionary<string, string>> LanguageData = new Dictionary<string, Dictionary<string, string>>();
 
         static Dictionary<string, string> SelectedLang = new Dictionary<string, string>();
-        static string SelectedKey = PREF_DEFAULT_KEY;
+        internal static string SelectedKey { get; private set; } = PREF_DEFAULT_KEY;
 
         static Dictionary<string, string> SelectedDefault = new Dictionary<string, string>();
         static string SelectedDefaultKey = string.Empty;
 
-        static List<LangKey> AvailableLang = new List<LangKey>();
+        internal static List<LangKey> AvailableLang { get; private set; } = new List<LangKey>();
 
         private static string? D(string key, params string[] args) {
 #if DEBUG
@@ -72,6 +72,7 @@ namespace ToNSaveManager.Localization {
         }
 
         internal static void Select(string key) {
+            Debug.WriteLine("Selecting language key: " + key);
             SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
         }

@@ -88,6 +88,8 @@ namespace ToNSaveManager.Windows
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
+
+            FillLanguageBox();
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
@@ -204,7 +206,7 @@ namespace ToNSaveManager.Windows
 
         private void checkOSCEnabled_MouseUp(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right)
-            MainWindow.OpenExternalLink("https://github.com/ChrisFeline/ToNSaveManager/?tab=readme-ov-file#osc-documentation");
+                MainWindow.OpenExternalLink("https://github.com/ChrisFeline/ToNSaveManager/?tab=readme-ov-file#osc-documentation");
         }
 
         private void ctxItemPickFolder_Click(object sender, EventArgs e) {
@@ -229,6 +231,28 @@ namespace ToNSaveManager.Windows
                 CancelNext = true;
                 TogglePlayAudio();
             }
+        }
+
+        private void languageSelectBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (!FilledLanguages || languageSelectBox.SelectedIndex < 0) return;
+            LANG.LangKey langKey = (LANG.LangKey)languageSelectBox.SelectedItem;
+
+            if (LANG.SelectedKey != langKey.Key) {
+                Debug.WriteLine("Changing language to: " + langKey);
+                LANG.Select(langKey.Key);
+                LANG.ReloadAll();
+            }
+        }
+
+        private bool FilledLanguages;
+        private void FillLanguageBox() {
+            FilledLanguages = false;
+            foreach (var lang in LANG.AvailableLang) {
+                int index = languageSelectBox.Items.Count;
+                languageSelectBox.Items.Add(lang);
+                if (lang.Key == LANG.SelectedKey) languageSelectBox.SelectedIndex = index;
+            }
+            FilledLanguages = true;
         }
         #endregion
 
@@ -269,34 +293,6 @@ namespace ToNSaveManager.Windows
             string? name = (hasLocation ? "default.wav" : (Path.GetFileName(Settings.Get.AudioLocation) ?? "custom.wav"));
             checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
-
-        /*
-        private void WriteInstanceLogs()
-        {
-            if (!Settings.Get.RecordInstanceLogs) return;
-
-            var logContext = MainWindow.LogWatcher.GetEarliestContext();
-            if (logContext == null) return;
-
-            string logs = logContext.GetRoomLogs();
-            string destination = "debug";
-            if (!Directory.Exists(destination))
-                Directory.CreateDirectory(destination);
-
-            string filePath = Path.Combine(destination, "output_logs_instance.log");
-            File.WriteAllText(filePath, logs);
-
-            logs = logContext.GetRoomExceptions();
-            if (logs.Length > 0)
-            {
-                filePath = Path.Combine(destination, "output_log_exceptions.log");
-                File.WriteAllText(filePath, logs);
-            }
-
-            filePath = Path.GetFullPath(destination);
-            MainWindow.OpenExternalLink(filePath);
-        }
-        */
         #endregion
     }
 }

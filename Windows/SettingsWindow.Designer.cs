@@ -54,6 +54,7 @@
             toolTip = new ToolTip(components);
             groupBoxStyle = new GroupBox();
             checkColorObjectives = new CheckBox();
+            languageSelectBox = new ComboBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBoxTime.SuspendLayout();
@@ -75,7 +76,7 @@
             groupBoxGeneral.Controls.Add(checkSkipParsedLogs);
             groupBoxGeneral.Dock = DockStyle.Top;
             groupBoxGeneral.ForeColor = Color.White;
-            groupBoxGeneral.Location = new Point(8, 8);
+            groupBoxGeneral.Location = new Point(8, 31);
             groupBoxGeneral.Name = "groupBoxGeneral";
             groupBoxGeneral.Size = new Size(268, 166);
             groupBoxGeneral.TabIndex = 0;
@@ -189,7 +190,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 174);
+            groupBoxNotifications.Location = new Point(8, 197);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(268, 58);
             groupBoxNotifications.TabIndex = 2;
@@ -233,7 +234,7 @@
             groupBoxTime.Controls.Add(check24Hour);
             groupBoxTime.Dock = DockStyle.Top;
             groupBoxTime.ForeColor = Color.White;
-            groupBoxTime.Location = new Point(8, 232);
+            groupBoxTime.Location = new Point(8, 255);
             groupBoxTime.Name = "groupBoxTime";
             groupBoxTime.Size = new Size(268, 94);
             groupBoxTime.TabIndex = 3;
@@ -294,7 +295,7 @@
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 373);
+            btnCheckForUpdates.Location = new Point(8, 393);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(209, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -309,7 +310,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 373);
+            btnOpenData.Location = new Point(223, 393);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -358,7 +359,7 @@
             groupBoxStyle.Controls.Add(checkColorObjectives);
             groupBoxStyle.Dock = DockStyle.Top;
             groupBoxStyle.ForeColor = Color.White;
-            groupBoxStyle.Location = new Point(8, 326);
+            groupBoxStyle.Location = new Point(8, 349);
             groupBoxStyle.Name = "groupBoxStyle";
             groupBoxStyle.Size = new Size(268, 40);
             groupBoxStyle.TabIndex = 6;
@@ -377,6 +378,20 @@
             checkColorObjectives.Text = "Colorful Objectives";
             checkColorObjectives.UseVisualStyleBackColor = true;
             // 
+            // languageSelectBox
+            // 
+            languageSelectBox.BackColor = SystemColors.Window;
+            languageSelectBox.Dock = DockStyle.Top;
+            languageSelectBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            languageSelectBox.FlatStyle = FlatStyle.Flat;
+            languageSelectBox.FormattingEnabled = true;
+            languageSelectBox.Location = new Point(8, 8);
+            languageSelectBox.Name = "languageSelectBox";
+            languageSelectBox.Size = new Size(268, 23);
+            languageSelectBox.TabIndex = 7;
+            languageSelectBox.TabStop = false;
+            languageSelectBox.SelectedIndexChanged += languageSelectBox_SelectedIndexChanged;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -384,13 +399,14 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 405);
+            ClientSize = new Size(284, 425);
             Controls.Add(groupBoxStyle);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
             Controls.Add(groupBoxTime);
             Controls.Add(groupBoxNotifications);
             Controls.Add(groupBoxGeneral);
+            Controls.Add(languageSelectBox);
             ForeColor = Color.White;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -440,5 +456,6 @@
         private ToolStripMenuItem ctxItemResetToDefault;
         private CheckBox checkDiscordBackup;
         private CheckBox checkOSCEnabled;
+        private ComboBox languageSelectBox;
     }
 }
