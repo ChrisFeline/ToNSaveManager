@@ -26,9 +26,10 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
+            components = new System.ComponentModel.Container();
             listBox1 = new ListBox();
+            toolTip = new ToolTip(components);
             SuspendLayout();
             // 
             // listBox1
@@ -74,5 +75,6 @@
         #endregion
 
         private ListBox listBox1;
+        private ToolTip toolTip;
     }
 }
