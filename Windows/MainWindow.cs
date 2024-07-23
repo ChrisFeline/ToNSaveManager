@@ -172,8 +172,8 @@ namespace ToNSaveManager
             {
                 History h = (History)listBoxKeys.SelectedItem;
                 DialogResult result = MessageBox.Show(
-                    LANG.S("MAIN.CTX_DELETE.SUBTITLE", h.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nEvery code from '{h}' will be permanently deleted.\nThis operation is not reversible!",
-                    LANG.S("MAIN.CTX_DELETE.TITLE", h.ToString()) ?? "Deleting Entry: " + h.ToString(),
+                    LANG.S("MAIN.CTX_DELETE_ALL.SUBTITLE", h.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nEvery code from '{h}' will be permanently deleted.\nThis operation is not reversible!",
+                    LANG.S("MAIN.CTX_DELETE_ALL.TITLE", h.ToString()) ?? "Deleting Entry: " + h.ToString(),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.OK)
@@ -361,7 +361,10 @@ namespace ToNSaveManager
             History h = (History)listBoxKeys.SelectedItem;
             if (ContextEntry != null)
             {
-                DialogResult result = MessageBox.Show($"Are you SURE that you want to delete this entry?\n\nDate: {ContextEntry.Timestamp}\nNote: {ContextEntry.Note}\n\nThis operation is not reversible!", "Deleting Entry: " + h.ToString(), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult result = MessageBox.Show(
+                    LANG.S("MAIN.CTX_DELETE_ENTRY.SUBTITLE", h.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nDate: {ContextEntry.Timestamp}\nNote: {ContextEntry.Note}\n\nThis operation is not reversible!",
+                    LANG.S("MAIN.CTX_DELETE_ENTRY.TITLE", h.ToString()) ?? "Deleting Entry: " + h.ToString(),
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.OK)
                 {
