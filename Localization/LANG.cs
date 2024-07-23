@@ -1,10 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Forms;
+using ToNSaveManager.Windows;
 
 namespace ToNSaveManager.Localization {
     internal static class LANG {
+        public struct LangKey {
+            public string Key;
+            public string Name;
+            public string Chars;
+
+            public override string ToString() {
+                return Name;
+            }
+        }
+
         const string PREF_DEFAULT_KEY = "en-US";
 
         static Dictionary<string, Dictionary<string, string>> LanguageData = new Dictionary<string, Dictionary<string, string>>();
@@ -14,6 +24,8 @@ namespace ToNSaveManager.Localization {
 
         static Dictionary<string, string> SelectedDefault = new Dictionary<string, string>();
         static string SelectedDefaultKey = string.Empty;
+
+        static List<LangKey> AvailableLang = new List<LangKey>();
 
         private static string? D(string key, params string[] args) {
 #if DEBUG
@@ -64,6 +76,38 @@ namespace ToNSaveManager.Localization {
             SelectedKey = key;
         }
 
+        internal static string FindLanguageKey() {
+            var currentCulture = System.Globalization.CultureInfo.CurrentUICulture;
+            string langName = currentCulture.TwoLetterISOLanguageName;
+            string fullLangName = currentCulture.Name;
+
+            string[] languageKeys = LanguageData.Keys.ToArray();
+
+            string foundKey = SelectedDefaultKey;
+            for (int i = 0; i < 2; i++) {
+                foreach (string key in languageKeys) {
+                    bool check = i == 0 ?
+                        key.Equals(fullLangName, StringComparison.OrdinalIgnoreCase) :
+                        key.StartsWith(langName);
+
+                    if (check) {
+                        foundKey = key;
+                        i = 3;
+                        break;
+                    }
+                }
+            }
+
+            return foundKey;
+        }
+
+        internal static void ReloadAll() {
+            MainWindow.Instance?.LocalizeContent();
+            EditWindow.Instance?.LocalizeContent();
+            ObjectivesWindow.Instance?.LocalizeContent();
+            SettingsWindow.Instance?.LocalizeContent();
+        }
+
         internal static void Initialize() {
             Assembly assembly = Assembly.GetExecutingAssembly();
             string[] streamNames = assembly.GetManifestResourceNames();
@@ -92,6 +136,7 @@ namespace ToNSaveManager.Localization {
                                     if (string.IsNullOrEmpty(firstKey)) firstKey = key;
 
                                     Debug.WriteLine("Added language with key: " + key);
+                                    AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
                                 }
                             }
                         }

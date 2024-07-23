@@ -37,6 +37,8 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
+            LANG.Initialize();
+
             UpdateWindow.RunPostUpdateCheck(args);
 
             if (CheckMutex())
@@ -64,7 +66,6 @@ namespace ToNSaveManager
             Debug.WriteLine(ProgramDirectory);
 
             if (!StartCheckForUpdate()) {
-                LANG.Initialize();
                 Application.Run(new MainWindow());
             }
         }
