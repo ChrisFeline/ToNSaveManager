@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager.Models
 {
@@ -30,6 +31,18 @@ namespace ToNSaveManager.Models
 
     internal class Entry
     {
+        static string TextNote = "Note:";
+        static string TextRound = "Round Type:";
+        static string TextTerrors = "Terrors in round:";
+        static string TextPlayers = "Players in room:";
+
+        internal static void LocalizeContent() {
+            TextNote = LANG.S("MAIN.ENTRY_NOTE") ?? "Note:";
+            TextRound = LANG.S("MAIN.ENTRY_ROUND") ?? "Round Type:";
+            TextTerrors = LANG.S("MAIN.ENTRY_TERRORS") ?? "Terrors in round:";
+            TextPlayers = LANG.S("MAIN.ENTRY_PLAYERS") ?? "Players in room:";
+        }
+
         public string Note = string.Empty;
 
         public DateTime Timestamp;
@@ -86,7 +99,7 @@ namespace ToNSaveManager.Models
             {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.Append("Note: \n- ");
+                sb.Append(TextNote + " \n- ");
                 sb.Append(Note);
             }
             if (showTerrors && RResult != ToNRoundResult.R)
@@ -97,11 +110,11 @@ namespace ToNSaveManager.Models
                 // sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
 
                 if (!string.IsNullOrEmpty(RType))
-                    sb.AppendLine("Round type: " + RType);
+                    sb.AppendLine(TextRound + " " + RType);
 
                 if (RTerrors != null && RTerrors.Length > 0)
                 {
-                    sb.AppendLine("Terrors in round:");
+                    sb.AppendLine(TextTerrors);
                     sb.AppendJoin("- ", RTerrors);
                 }
             }
@@ -109,7 +122,7 @@ namespace ToNSaveManager.Models
             {
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.AppendLine("Players in room:");
+                sb.AppendLine(TextPlayers);
                 sb.Append(Players);
             }
             return sb.ToString();

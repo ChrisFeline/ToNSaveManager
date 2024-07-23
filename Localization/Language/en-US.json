@@ -36,6 +36,10 @@
 	"MAIN.CTX_BACKUP": "Backup",
 	"MAIN.CTX_BACKUP.TT": "Force upload a backup of this code to Discord as a file... Requires \"Auto Discord Backup\" to be enabled under \"Settings\"",
 
+	"MAIN.ENTRY_NOTE": "Note:",
+	"MAIN.ENTRY_ROUND": "Round Type:",
+	"MAIN.ENTRY_TERRORS": "Terrors in round:",
+	"MAIN.ENTRY_PLAYERS": "Players in room:",
 
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
 	"SETTINGS.OPEN_DATA_BTN": "Data",

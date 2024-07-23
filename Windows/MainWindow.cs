@@ -100,6 +100,8 @@ namespace ToNSaveManager
             LANG.C(ctxMenuEntriesNote, "MAIN.CTX_EDIT_NOTE");
             LANG.C(ctxMenuEntriesBackup, "MAIN.CTX_BACKUP");
             LANG.C(ctxMenuEntriesDelete, "MAIN.CTX_DELETE");
+
+            Entry.LocalizeContent();
         }
         #endregion
 
