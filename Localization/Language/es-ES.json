@@ -48,7 +48,7 @@
 	"MAIN.CTX_EDIT_NOTE": "Editar nota",
 	"MAIN.CTX_EDIT_NOTE.TITLE": "Editar Nota",
 	"MAIN.CTX_BACKUP": "Respaldar",
-	"MAIN.CTX_BACKUP.TT": "Crea una copia de seguridad de este código en Discord subiendo un archivo... Requiere tener habilitado \"{{SETTINGS.DISCORDWEBHOOKENABLED}}\" en \"{{MAIN.SETTINGS}}\"",
+	"MAIN.CTX_BACKUP.TT": "Crea una copia de seguridad de este código en Discord subiendo un archivo... Requiere tener habilitado \"$$SETTINGS.DISCORDWEBHOOKENABLED$$\" en \"$$MAIN.SETTINGS$$\"",
 
 	"MAIN.ENTRY_NOTE": "Nota:",
 	"MAIN.ENTRY_ROUND": "Tipo de ronda:",
@@ -109,16 +109,16 @@
 
 	"SETTINGS.GROUP.STYLE": "Estilo",
 	"SETTINGS.COLORFULOBJECTIVES": "Objetivos Coloridos",
-	"SETTINGS.COLORFULOBJECTIVES.TT": "Los elementos en la ventana '{{MAIN.OBJECTIVES}}' mostrarán colores que corresponden a los de los elementos del juego.",
+	"SETTINGS.COLORFULOBJECTIVES.TT": "Los elementos en la ventana '$$MAIN.OBJECTIVES$$' mostrarán colores que corresponden a los de los elementos del juego.",
 
 	"OBJECTIVES.TITLE": "Objetivos",
 	"OBJECTIVES.EVENT_ITEMS_UNLOCKS": "Desbloqueos de Eventos",
 	"OBJECTIVES.SEALED_SWORD": "Sealed Sword",
 	"OBJECTIVES.SEALED_SWORD.TT": "Encontrado en el Museo. Rompe la caja de cristal con una herramienta que pueda golpear.",
 	"OBJECTIVES.GRAN_FAUST": "Gran Faust",
-	"OBJECTIVES.GRAN_FAUST.TT": "Sobrevive Arkus con '{{OBJECTIVES.SEALED_SWORD}}'.",
+	"OBJECTIVES.GRAN_FAUST.TT": "Sobrevive Arkus con '$$OBJECTIVES.SEALED_SWORD$$'.",
 	"OBJECTIVES.DIVINE_AVENGER": "Divine Avenger",
-	"OBJECTIVES.DIVINE_AVENGER.TT": "Sobrevive a Arkus con '{{OBJECTIVES.SEALED_SWORD}}' después de golpearlo al menos dos veces.",
+	"OBJECTIVES.DIVINE_AVENGER.TT": "Sobrevive a Arkus con '$$OBJECTIVES.SEALED_SWORD$$' después de golpearlo al menos dos veces.",
 	"OBJECTIVES.MAXWELL": "Maxwell",
 	"OBJECTIVES.MAXWELL.TT": "Se puede encontrar en el mapa 'Its Maze' (aparece una vez por ronda)",
 	"OBJECTIVES.ROCK": "Rock",

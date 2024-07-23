@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using ToNSaveManager.Windows;
 
 namespace ToNSaveManager.Localization {
@@ -26,6 +27,8 @@ namespace ToNSaveManager.Localization {
         static string SelectedDefaultKey = string.Empty;
 
         internal static List<LangKey> AvailableLang { get; private set; } = new List<LangKey>();
+        static readonly Regex ReplacePattern = new Regex(@"\$\$(?<key>.*?)\$\$", RegexOptions.Compiled);
+        const string PatternSearch = "$$";
 
         private static string? D(string key, params string[] args) {
 #if DEBUG
@@ -48,6 +51,13 @@ namespace ToNSaveManager.Localization {
                 result = args.Length > 0 ? string.Format(SelectedLang[key], args) : SelectedLang[key];
             } else {
                 result = D(key, args);
+            }
+
+            if (!string.IsNullOrEmpty(result) && result.Contains(PatternSearch)) {
+                result = ReplacePattern.Replace(result, (v) => {
+                    string k = v.Groups["key"].Value;
+                    return S(k) ?? v.Value;
+                });
             }
 
             return result;
