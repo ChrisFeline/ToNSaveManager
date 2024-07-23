@@ -241,6 +241,8 @@ namespace ToNSaveManager.Windows
                 Debug.WriteLine("Changing language to: " + langKey);
                 LANG.Select(langKey.Key);
                 LANG.ReloadAll();
+                Settings.Get.SelectedLanguage = langKey.Key;
+                Settings.Export();
             }
         }
 
