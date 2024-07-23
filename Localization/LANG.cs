@@ -38,10 +38,6 @@ namespace ToNSaveManager.Localization {
                 result = D(key, args);
             }
 
-#if DEBUG
-            // For debugging language strings, because I get lost easily
-            if (!string.IsNullOrEmpty(result)) result = "!!" + result;
-#endif
             return result;
         }
 
