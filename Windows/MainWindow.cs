@@ -8,6 +8,7 @@ using ToNSaveManager.Windows;
 using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager
 {
@@ -68,6 +69,8 @@ namespace ToNSaveManager
 
         private void mainWindow_Shown(object sender, EventArgs e)
         {
+            LocalizeContent();
+
             if (Started) return;
 
             FirstImport();
@@ -80,6 +83,23 @@ namespace ToNSaveManager
             SetTitle(null);
 
             LilOSC.SendData(true);
+        }
+
+        internal void LocalizeContent() {
+            LANG.C(btnSettings, "MAIN.SETTINGS");
+            LANG.C(btnObjectives, "MAIN.OBJECTIVES");
+            LANG.C(linkWiki, "MAIN.WIKI");
+            LANG.C(linkSupport, "MAIN.SUPPORT");
+
+            LANG.C(importToolStripMenuItem, "MAIN.CTX_IMPORT"); // .TITLE
+            LANG.C(renameToolStripMenuItem, "MAIN.CTX_RENAME"); // .TITLE
+            LANG.C(deleteToolStripMenuItem, "MAIN.CTX_DELETE"); // .TITLE
+
+            LANG.C(ctxMenuEntriesCopyTo, "MAIN.CTX_ADD_TO");
+            LANG.C(ctxMenuEntriesNew, "MAIN.CTX_ADD_TO.NEW");
+            LANG.C(ctxMenuEntriesNote, "MAIN.CTX_EDIT_NOTE");
+            LANG.C(ctxMenuEntriesBackup, "MAIN.CTX_BACKUP");
+            LANG.C(ctxMenuEntriesDelete, "MAIN.CTX_DELETE");
         }
         #endregion
 
@@ -117,7 +137,7 @@ namespace ToNSaveManager
             History h = (History)listBoxKeys.SelectedItem;
             if (!h.IsCustom) return;
 
-            EditResult edit = EditWindow.Show(string.Empty, "Import Code", this);
+            EditResult edit = EditWindow.Show(string.Empty, LANG.S("MAIN.CTX_IMPORT.TITLE") ?? "Import Title", this);
             if (edit.Accept && !string.IsNullOrWhiteSpace(edit.Text))
             {
                 string content = edit.Text.Trim();
@@ -131,7 +151,7 @@ namespace ToNSaveManager
             if (listBoxKeys.SelectedItem == null) return;
             History h = (History)listBoxKeys.SelectedItem;
 
-            EditResult edit = EditWindow.Show(h.Name, "Set Collection Name", this);
+            EditResult edit = EditWindow.Show(h.Name, LANG.S("MAIN.CTX_RENAME.TITLE") ?? "Set Collection Name", this);
             if (edit.Accept && !string.IsNullOrWhiteSpace(edit.Text))
             {
                 string title = edit.Text.Trim();
@@ -151,7 +171,10 @@ namespace ToNSaveManager
             if (selectedIndex != -1 && listBoxKeys.SelectedItem != null)
             {
                 History h = (History)listBoxKeys.SelectedItem;
-                DialogResult result = MessageBox.Show($"Are you SURE that you want to delete this entry?\n\nEvery code from '{h}' will be permanently deleted.\nThis operation is not reversible!", "Deleting Entry: " + h.ToString(), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult result = MessageBox.Show(
+                    LANG.S("MAIN.CTX_DELETE.SUBTITLE", h.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nEvery code from '{h}' will be permanently deleted.\nThis operation is not reversible!",
+                    LANG.S("MAIN.CTX_DELETE.TITLE", h.ToString()) ?? "Deleting Entry: " + h.ToString(),
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.OK)
                 {
@@ -307,7 +330,7 @@ namespace ToNSaveManager
         {
             if (ContextEntry != null)
             {
-                EditResult edit = EditWindow.Show(ContextEntry.Note, "Note Editor", this);
+                EditResult edit = EditWindow.Show(ContextEntry.Note, LANG.S("MAIN.CTX_EDIT_NOTE.TITLE") ?? "Note Editor", this);
                 if (edit.Accept && !edit.Text.Equals(ContextEntry.Note, StringComparison.Ordinal))
                 {
                     ContextEntry.Note = edit.Text.Trim();

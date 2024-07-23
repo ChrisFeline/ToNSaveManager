@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Reflection;
-using ToNSaveManager.Models;
+using System.Windows.Forms;
 
 namespace ToNSaveManager.Localization {
     internal static class LANG {
@@ -12,14 +12,52 @@ namespace ToNSaveManager.Localization {
         static Dictionary<string, string> SelectedLang = new Dictionary<string, string>();
         static string SelectedKey = PREF_DEFAULT_KEY;
 
-        static string SelectedDefault = string.Empty;
+        static Dictionary<string, string> SelectedDefault = new Dictionary<string, string>();
+        static string SelectedDefaultKey = string.Empty;
 
-        public static string? S(string key) {
-            return SelectedLang.ContainsKey(key) ? SelectedLang[key] : null;
+        private static string? D(string key, params string[] args) {
+            Debug.WriteLine($"Missing key '{key}' in language pack '{SelectedKey}'");
+
+            if (SelectedDefault.ContainsKey(key)) {
+                return args.Length > 0 ? string.Format(SelectedDefault[key], args) : SelectedDefault[key];
+            }
+
+            Debug.WriteLine($"Invalid language key '{key}'");
+            return null;
         }
 
-        public static void Select(string key) {
-            SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefault];
+        public static string? S(string key, params string[] args) {
+            string? result;
+            if (SelectedDefault.ContainsKey(key)) {
+                result = args.Length > 0 ? string.Format(SelectedLang[key], args) : SelectedLang[key];
+            } else {
+                result = D(key, args);
+            }
+
+#if DEBUG
+            // For debugging language strings, because I get lost easily
+            if (!string.IsNullOrEmpty(result)) result = "!!" + result;
+#endif
+            return result;
+        }
+
+        public static (string?, string?) T(string key, params string[] args) {
+            return (S(key, args), S(key + ".TT", args));
+        }
+
+        public static void C(Control control, string key) {
+            (string? text, string? tooltip) = T(key);
+            if (!string.IsNullOrEmpty(text)) control.Text = text;
+            if (!string.IsNullOrEmpty(tooltip)) TooltipUtil.Set(control, tooltip);
+        }
+        public static void C(ToolStripItem item, string key) {
+            (string? text, string? tooltip) = T(key);
+            if (!string.IsNullOrEmpty(text)) item.Text = text;
+            if (!string.IsNullOrEmpty(tooltip)) item.ToolTipText = tooltip;
+        }
+
+        internal static void Select(string key) {
+            SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
         }
 
@@ -41,7 +79,8 @@ namespace ToNSaveManager.Localization {
                                     LanguageData.Add(key, obj);
 
                                     if (key == PREF_DEFAULT_KEY) {
-                                        SelectedDefault = key;
+                                        SelectedDefault = obj;
+                                        SelectedDefaultKey = key;
                                         Select(key);
 
                                         Debug.WriteLine("Found default language.");
@@ -57,11 +96,12 @@ namespace ToNSaveManager.Localization {
                 }
             }
 
-            if (string.IsNullOrEmpty(SelectedDefault) && !string.IsNullOrEmpty(firstKey)) {
+            if (string.IsNullOrEmpty(SelectedDefaultKey) && !string.IsNullOrEmpty(firstKey)) {
                 Debug.WriteLine("Default prefered language not found, using " + firstKey);
 
-                SelectedDefault = firstKey;
-                Select(SelectedDefault);
+                SelectedDefault = LanguageData[firstKey];
+                SelectedDefaultKey = firstKey;
+                Select(SelectedDefaultKey);
             } else if (string.IsNullOrEmpty(firstKey)) {
                 throw new Exception("Could not load any language pack.");
             }
