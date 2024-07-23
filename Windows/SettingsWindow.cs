@@ -124,7 +124,7 @@ namespace ToNSaveManager.Windows
                             Settings.Get.DiscordWebhookURL = url;
                             Settings.Export();
                         } else {
-                            MessageBox.Show($"The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(LANG.S("SETTINGS.DISCORDWEBHOOKINVALID") ?? "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", LANG.S("SETTINGS.DISCORDWEBHOOKINVALID.TITLE") ?? "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     } else {
                         Settings.Get.DiscordWebhookURL = null;

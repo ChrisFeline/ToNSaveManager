@@ -222,7 +222,7 @@ namespace ToNSaveManager
                 {
                     Entry entry = (Entry)listBoxEntries.SelectedItem;
                     entry.CopyToClipboard();
-                    MessageBox.Show("Copied to clipboard!\n\nYou can now paste the code in game.", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 listBoxEntries.SelectedIndex = -1;
@@ -472,8 +472,8 @@ namespace ToNSaveManager
             const string message = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>";
             const string msgtest = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>";
 
-            if (test) XSOverlay.Send(msgtest, 1);
-            else XSOverlay.Send(message);
+            if (test) XSOverlay.Send(LANG.S("SETTINGS.XSOVERLAY.TOGGLE") ?? msgtest, 1);
+            else XSOverlay.Send(LANG.S("SETTINGS.XSOVERLAY.MESSAGE") ?? message);
         }
         #endregion
 
@@ -697,7 +697,7 @@ namespace ToNSaveManager
         {
             if (collection == null)
             {
-                EditResult edit = EditWindow.Show(string.Empty, "Set Collection Name", this);
+                EditResult edit = EditWindow.Show(string.Empty, LANG.S("MAIN.CTX_RENAME.TITLE") ?? "Set Collection Name", this);
                 if (edit.Accept && !string.IsNullOrWhiteSpace(edit.Text))
                 {
                     string title = edit.Text.Trim();

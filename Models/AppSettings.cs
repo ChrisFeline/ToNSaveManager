@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager.Models
 {
@@ -140,10 +141,11 @@ namespace ToNSaveManager.Models
             {
                 string json = JsonConvert.SerializeObject(this);
                 File.WriteAllText(Destination, json);
+                throw new Exception();
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.WRITE_SETTINGS_ERROR") ?? "An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.") + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

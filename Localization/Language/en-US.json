@@ -6,6 +6,20 @@
 	"EDIT.OK": "OK",
 	"EDIT.CANCEL": "Cancel",
 
+	"MESSAGE.WRITE_SETTINGS_ERROR": "An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.",
+	"MESSAGE.COPY_FILES_ERROR": "An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {0}",
+	"MESSAGE.IMPORT_SAVE_ERROR": "Error trying to import your save.",
+	"MESSAGE.WRITE_SAVE_ERROR": "An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {0}",
+	"MESSAGE.SAVE_LOCATION_RESET": "Save data location has been reset to default.",
+	"MESSAGE.SAVE_LOCATION_RESET.TITLE": "Reset Custom Data Location",
+	"MESSAGE.UPDATE_AVAILABLE": "A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?",
+	"MESSAGE.UPDATE_AVAILABLE.TITLE": "New update available",
+	"MESSAGE.UPDATE_UNAVAILABLE": "No updates are currently available.",
+	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "No updates available",
+
+	"MESSAGE.COPY_TO_CLIPBOARD": "Copied to clipboard!\n\nYou can now paste the code in game.",
+	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "Copied",
+
 	"MAIN.SETTINGS": "Settings",
 	"MAIN.SETTINGS.TT": "Configure other options under the settings menu.",
 	"MAIN.OBJECTIVES": "Objectives",
@@ -65,6 +79,8 @@
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "Discord Webhook URL",
+	"SETTINGS.DISCORDWEBHOOKINVALID": "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.",
+	"SETTINGS.DISCORDWEBHOOKINVALID.TITLE": "Invalid Webhook URL",
 
 	"SETTINGS.DISCORDWEBHOOK.LABEL_PLAYER": "**Player**: `{0}`",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_ROUND": "**Round Type**: `{0}`",
@@ -74,8 +90,12 @@
 	"SETTINGS.DISCORDWEBHOOK.LABEL_NOTE": "**Note**: `{0}`",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
+
 	"SETTINGS.XSOVERLAY": "XSOverlay Popup",
 	"SETTINGS.XSOVERLAY.TT": "XSOverlay popup notifications when saving.",
+	"SETTINGS.XSOVERLAY.MESSAGE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>",
+	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>",
+
 	"SETTINGS.PLAYAUDIO": "Play Audio ({0})",
 	"SETTINGS.PLAYAUDIO.TT": "Double click to select custom audio file.\nRight click to reset back to 'default.wav'",
 	"SETTINGS.PLAYAUDIO.TITLE": "Select Custom Audio",

@@ -139,7 +139,7 @@ namespace ToNSaveManager
                     body = "\n\n" + release.body.Substring(start, end - start).Trim();
                 }
 
-                DialogResult result = MessageBox.Show($"A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?" + body, "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult result = MessageBox.Show((LANG.S("MESSAGE.UPDATE_AVAILABLE") ?? "A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?") + body, LANG.S("MESSAGE.UPDATE_AVAILABLE.TITLE") ?? "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
                     UpdateWindow updateWindow = new UpdateWindow(release, asset);
@@ -152,7 +152,7 @@ namespace ToNSaveManager
                 }
             } else if (showUpToDate)
             {
-                MessageBox.Show($"No updates are currently available.", "No updates available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(LANG.S("MESSAGE.UPDATE_UNAVAILABLE") ?? "No updates are currently available.", LANG.S("MESSAGE.UPDATE_UNAVAILABLE.TITLE") ?? "No updates available", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             return false;
