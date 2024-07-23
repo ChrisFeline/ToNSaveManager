@@ -1,6 +1,6 @@
 # How to contribute translations?
 - Fork clone the [localization](https://github.com/ChrisFeline/ToNSaveManager/tree/localization) branch.
-- Create a copy of the `en-US.json` language file.
+- Create a copy of the `en-US.json` language file into `/Localization/Language`
 - Rename it to your local ISO language name. For example `ja-JP.json`
 - Translate the strings contained within this file into your target language.
 	* Keep important string replacement tokens like: `{0}`, `{1}` or `$$MAIN.SETTINGS$$` etc...
