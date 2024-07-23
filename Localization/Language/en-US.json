@@ -59,6 +59,9 @@
 	"SETTINGS.OPEN_DATA_BTN": "Data",
 	"SETTINGS.OPEN_DATA_BTN.TT": "Open save data folder.",
 	"SETTINGS.VERSION": "Current Version: {0}",
+	"SETTINGS.CUSTOM_DATA_FOLDER": "Custom Data Folder",
+	"SETTINGS.CUSTOM_DATA_PICK_FOLDER": "Pick Folder",
+	"SETTINGS.CUSTOM_DATA_RESET_DEFAULT": "Reset to Default",
 
 	"SETTINGS.GROUP.GENERAL": "General",
 	"SETTINGS.SKIPPARSEDLOGS": "Skip Parsed Logs (!)",

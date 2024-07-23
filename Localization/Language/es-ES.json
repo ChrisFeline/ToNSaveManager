@@ -59,6 +59,9 @@
 	"SETTINGS.OPEN_DATA_BTN": "Datos",
 	"SETTINGS.OPEN_DATA_BTN.TT": "Abra la carpeta de datos guardados.",
 	"SETTINGS.VERSION": "Versión actual: {0}",
+	"SETTINGS.CUSTOM_DATA_FOLDER": "Carpeta de Datos Personalizada",
+	"SETTINGS.CUSTOM_DATA_PICK_FOLDER": "Seleccionar Carpeta",
+	"SETTINGS.CUSTOM_DATA_RESET_DEFAULT": "Restablecer Predeterminado",
 
 	"SETTINGS.GROUP.GENERAL": "General",
 	"SETTINGS.SKIPPARSEDLOGS": "Omitir Logs Analizados (!)",

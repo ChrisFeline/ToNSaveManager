@@ -56,6 +56,10 @@ namespace ToNSaveManager.Windows
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
 
+            LANG.C(setDataLocationToolStripMenuItem, "SETTINGS.CUSTOM_DATA_FOLDER");
+            LANG.C(ctxItemPickFolder, "SETTINGS.CUSTOM_DATA_PICK_FOLDER");
+            LANG.C(ctxItemResetToDefault, "SETTINGS.CUSTOM_DATA_RESET_DEFAULT");
+
             string? versionString = Program.GetVersion()?.ToString();
             if (!string.IsNullOrEmpty(versionString))
                 toolTip.SetToolTip(btnCheckForUpdates, LANG.S("SETTINGS.VERSION", versionString) ?? $"Current Version {versionString}");

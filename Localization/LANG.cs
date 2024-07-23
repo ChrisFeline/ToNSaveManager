@@ -47,7 +47,7 @@ namespace ToNSaveManager.Localization {
 
         public static string? S(string key, params string[] args) {
             string? result;
-            if (SelectedDefault.ContainsKey(key)) {
+            if (SelectedLang.ContainsKey(key)) {
                 result = args.Length > 0 ? string.Format(SelectedLang[key], args) : SelectedLang[key];
             } else {
                 result = D(key, args);
