@@ -31,7 +31,7 @@ namespace ToNSaveManager.Windows
             Instance.StartPosition = FormStartPosition.Manual;
             Instance.Location = new Point(
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
-                parent.Location.Y + (parent.Height - Instance.Height) / 2
+                Math.Max(parent.Location.Y + (parent.Height - Instance.Height) / 2, 0)
             );
             Instance.Show(parent);
         }
