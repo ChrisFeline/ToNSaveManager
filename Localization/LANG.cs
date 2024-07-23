@@ -16,13 +16,17 @@ namespace ToNSaveManager.Localization {
         static string SelectedDefaultKey = string.Empty;
 
         private static string? D(string key, params string[] args) {
-            Debug.WriteLine($"Missing key '{key}' in language pack '{SelectedKey}'");
+#if DEBUG
+            // if (!key.EndsWith(".TT")) Debug.WriteLine($"Missing key '{key}' in language pack '{SelectedKey}'");
+#endif
 
             if (SelectedDefault.ContainsKey(key)) {
                 return args.Length > 0 ? string.Format(SelectedDefault[key], args) : SelectedDefault[key];
             }
 
-            Debug.WriteLine($"Invalid language key '{key}'");
+#if DEBUG
+            if (!key.EndsWith(".TT")) Debug.WriteLine($"Invalid language key '{key}'");
+#endif
             return null;
         }
 
@@ -45,10 +49,13 @@ namespace ToNSaveManager.Localization {
             return (S(key, args), S(key + ".TT", args));
         }
 
-        public static void C(Control control, string key) {
-            (string? text, string? tooltip) = T(key);
-            if (!string.IsNullOrEmpty(text)) control.Text = text;
-            if (!string.IsNullOrEmpty(tooltip)) TooltipUtil.Set(control, tooltip);
+        public static void C(Control control, string key, ToolTip? toolTip = null) {
+            (string? tx, string? tt) = T(key);
+            if (!string.IsNullOrEmpty(tx)) control.Text = tx;
+            if (!string.IsNullOrEmpty(tt)) {
+                if (toolTip == null) TooltipUtil.Set(control, tt);
+                else toolTip.SetToolTip(control, tt);
+            }
         }
         public static void C(ToolStripItem item, string key) {
             (string? text, string? tooltip) = T(key);

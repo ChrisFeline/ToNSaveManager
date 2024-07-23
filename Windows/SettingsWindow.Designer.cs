@@ -40,7 +40,7 @@
             groupBoxNotifications = new GroupBox();
             checkPlayAudio = new CheckBox();
             checkXSOverlay = new CheckBox();
-            groupBox1 = new GroupBox();
+            groupBoxTime = new GroupBox();
             checkShowDate = new CheckBox();
             checkInvertMD = new CheckBox();
             checkShowSeconds = new CheckBox();
@@ -52,13 +52,13 @@
             ctxItemPickFolder = new ToolStripMenuItem();
             ctxItemResetToDefault = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
-            groupBox2 = new GroupBox();
+            groupBoxStyle = new GroupBox();
             checkColorObjectives = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
-            groupBox1.SuspendLayout();
+            groupBoxTime.SuspendLayout();
             ctxData.SuspendLayout();
-            groupBox2.SuspendLayout();
+            groupBoxStyle.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxGeneral
@@ -223,22 +223,22 @@
             checkXSOverlay.Text = "XSOverlay Popup";
             checkXSOverlay.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // groupBoxTime
             // 
-            groupBox1.AutoSize = true;
-            groupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBox1.Controls.Add(checkShowDate);
-            groupBox1.Controls.Add(checkInvertMD);
-            groupBox1.Controls.Add(checkShowSeconds);
-            groupBox1.Controls.Add(check24Hour);
-            groupBox1.Dock = DockStyle.Top;
-            groupBox1.ForeColor = Color.White;
-            groupBox1.Location = new Point(8, 232);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(268, 94);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Time Formatting";
+            groupBoxTime.AutoSize = true;
+            groupBoxTime.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxTime.Controls.Add(checkShowDate);
+            groupBoxTime.Controls.Add(checkInvertMD);
+            groupBoxTime.Controls.Add(checkShowSeconds);
+            groupBoxTime.Controls.Add(check24Hour);
+            groupBoxTime.Dock = DockStyle.Top;
+            groupBoxTime.ForeColor = Color.White;
+            groupBoxTime.Location = new Point(8, 232);
+            groupBoxTime.Name = "groupBoxTime";
+            groupBoxTime.Size = new Size(268, 94);
+            groupBoxTime.TabIndex = 3;
+            groupBoxTime.TabStop = false;
+            groupBoxTime.Text = "Time Formatting";
             // 
             // checkShowDate
             // 
@@ -351,19 +351,19 @@
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 100;
             // 
-            // groupBox2
+            // groupBoxStyle
             // 
-            groupBox2.AutoSize = true;
-            groupBox2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBox2.Controls.Add(checkColorObjectives);
-            groupBox2.Dock = DockStyle.Top;
-            groupBox2.ForeColor = Color.White;
-            groupBox2.Location = new Point(8, 326);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(268, 40);
-            groupBox2.TabIndex = 6;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Style";
+            groupBoxStyle.AutoSize = true;
+            groupBoxStyle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxStyle.Controls.Add(checkColorObjectives);
+            groupBoxStyle.Dock = DockStyle.Top;
+            groupBoxStyle.ForeColor = Color.White;
+            groupBoxStyle.Location = new Point(8, 326);
+            groupBoxStyle.Name = "groupBoxStyle";
+            groupBoxStyle.Size = new Size(268, 40);
+            groupBoxStyle.TabIndex = 6;
+            groupBoxStyle.TabStop = false;
+            groupBoxStyle.Text = "Style";
             // 
             // checkColorObjectives
             // 
@@ -385,10 +385,10 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(284, 405);
-            Controls.Add(groupBox2);
+            Controls.Add(groupBoxStyle);
             Controls.Add(btnOpenData);
             Controls.Add(btnCheckForUpdates);
-            Controls.Add(groupBox1);
+            Controls.Add(groupBoxTime);
             Controls.Add(groupBoxNotifications);
             Controls.Add(groupBoxGeneral);
             ForeColor = Color.White;
@@ -406,9 +406,9 @@
             Load += SettingsWindow_Load;
             groupBoxGeneral.ResumeLayout(false);
             groupBoxNotifications.ResumeLayout(false);
-            groupBox1.ResumeLayout(false);
+            groupBoxTime.ResumeLayout(false);
             ctxData.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
+            groupBoxStyle.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -421,13 +421,13 @@
         private GroupBox groupBoxNotifications;
         private CheckBox checkPlayAudio;
         private CheckBox checkXSOverlay;
-        private GroupBox groupBox1;
+        private GroupBox groupBoxTime;
         private CheckBox checkInvertMD;
         private CheckBox checkShowSeconds;
         private CheckBox check24Hour;
         private Button btnOpenData;
         private ToolTip toolTip;
-        private GroupBox groupBox2;
+        private GroupBox groupBoxStyle;
         private CheckBox checkColorObjectives;
         private CheckBox checkSaveTerrorsNote;
         private CheckBox checkSaveTerrors;

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ToNSaveManager.Extensions;
+using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.Discord;
@@ -9,7 +10,7 @@ namespace ToNSaveManager.Windows
 {
     public partial class SettingsWindow : Form {
         #region Initialization
-        static SettingsWindow? Instance;
+        internal static SettingsWindow? Instance;
 
         readonly Timer ClickTimer = new Timer() { Interval = 200 };
         readonly Stopwatch Stopwatch = new Stopwatch();
@@ -37,9 +38,34 @@ namespace ToNSaveManager.Windows
         #endregion
 
         #region Form Events
+        private Dictionary<string, Control> LocalizedControlCache = new Dictionary<string, Control>();
+
+        internal void LocalizeContent() {
+            LANG.C(this, "MAIN.SETTINGS");
+
+            foreach (KeyValuePair<string, Control> pair in LocalizedControlCache) {
+                LANG.C(pair.Value, pair.Key, toolTip);
+                if (pair.Key == "SETTINGS.PLAYAUDIO") PostAudioLocationSet();
+            }
+
+            LANG.C(groupBoxGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
+            LANG.C(groupBoxNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
+            LANG.C(groupBoxTime, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
+            LANG.C(groupBoxStyle, "SETTINGS.GROUP.STYLE", toolTip);
+
+            LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
+            LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
+
+            string? versionString = Program.GetVersion()?.ToString();
+            if (!string.IsNullOrEmpty(versionString))
+                toolTip.SetToolTip(btnCheckForUpdates, LANG.S("SETTINGS.VERSION", versionString) ?? $"Current Version {versionString}");
+        }
+
         // Subscribe to events on load
         private void SettingsWindow_Load(object sender, EventArgs e) {
             BindControlsRecursive(Controls);
+            LocalizeContent();
+
             // Custom audio handling
             PostAudioLocationSet();
             checkPlayAudio.CheckedChanged += CheckPlayAudio_CheckedChanged;
@@ -51,9 +77,6 @@ namespace ToNSaveManager.Windows
             checkShowDate.CheckedChanged += TimeFormat_CheckedChanged;
             // Refresh list when style is changed
             checkColorObjectives.CheckedChanged += CheckColorObjectives_CheckedChanged;
-
-            // Tooltips
-            toolTip.SetToolTip(btnCheckForUpdates, "Current Version: " + Program.GetVersion());
 
             // Round info
             checkShowWinLose.CheckedChanged += TimeFormat_CheckedChanged;
@@ -90,7 +113,7 @@ namespace ToNSaveManager.Windows
         private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e) {
             if (checkDiscordBackup.Checked) {
                 string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
-                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, "Discord Webhook URL", this);
+                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, LANG.S("SETTINGS.DISCORDWEBHOOK.TITLE") ?? "Discord Webhook URL", this);
                 if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
                     url = edit.Text.Trim();
 
@@ -164,8 +187,8 @@ namespace ToNSaveManager.Windows
 
             using (OpenFileDialog fileDialog = new OpenFileDialog()) {
                 fileDialog.InitialDirectory = "./";
-                fileDialog.Title = "Select Custom Sound";
-                fileDialog.Filter = "Waveform Audio (*.wav)|*.wav";
+                fileDialog.Title = LANG.S("SETTINGS.PLAYAUDIO.TITLE") ?? "Select Custom Sound";
+                fileDialog.Filter = "Waveform (*.wav)|*.wav";
 
                 if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName)) {
                     Settings.Get.AudioLocation = fileDialog.FileName;
@@ -222,7 +245,7 @@ namespace ToNSaveManager.Windows
                     if (index > -1) {
                         string tooltip = tag.Substring(index + 1).Replace("\\n", Environment.NewLine, StringComparison.Ordinal);
                         tag = tag.Substring(0, index);
-                        toolTip.SetToolTip(c, tooltip);
+                        // toolTip.SetToolTip(c, tooltip);
                     }
                 }
 
@@ -231,8 +254,10 @@ namespace ToNSaveManager.Windows
                         BindControlsRecursive(g.Controls);
                         break;
                     case CheckBox b:
-                        if (!string.IsNullOrEmpty(tag))
+                        if (!string.IsNullOrEmpty(tag)) {
+                            LocalizedControlCache.Add("SETTINGS." + tag.ToUpperInvariant(), c);
                             b.BindSettings(tag);
+                        }
                         break;
                     default: break;
                 }
@@ -241,7 +266,8 @@ namespace ToNSaveManager.Windows
 
         private void PostAudioLocationSet() {
             bool hasLocation = string.IsNullOrEmpty(Settings.Get.AudioLocation);
-            checkPlayAudio.Text = "Play Audio (" + (hasLocation ? "default.wav" : Path.GetFileName(Settings.Get.AudioLocation)) + ")";
+            string? name = (hasLocation ? "default.wav" : (Path.GetFileName(Settings.Get.AudioLocation) ?? "custom.wav"));
+            checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
 
         /*
