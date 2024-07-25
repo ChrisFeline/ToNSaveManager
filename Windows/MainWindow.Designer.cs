@@ -26,8 +26,7 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             listBoxKeys = new ListBox();
@@ -45,8 +44,8 @@
             toolStripMenuItem1 = new ToolStripSeparator();
             deleteToolStripMenuItem = new ToolStripMenuItem();
             btnSettings = new Button();
-            button1 = new Button();
-            button2 = new Button();
+            btnObjectives = new Button();
+            linkWiki = new Button();
             splitContainer1 = new SplitContainer();
             linkSupport = new Button();
             ctxMenuEntries.SuspendLayout();
@@ -102,7 +101,7 @@
             // 
             ctxMenuEntries.Items.AddRange(new ToolStripItem[] { ctxMenuEntriesCopyTo, ctxMenuEntriesNote, ctxMenuEntriesBackup, toolStripMenuItem2, ctxMenuEntriesDelete });
             ctxMenuEntries.Name = "ctxMenuEntries";
-            ctxMenuEntries.Size = new Size(181, 120);
+            ctxMenuEntries.Size = new Size(124, 98);
             ctxMenuEntries.Closed += ctxMenuEntries_Closed;
             ctxMenuEntries.Opened += ctxMenuEntries_Opened;
             // 
@@ -110,7 +109,7 @@
             // 
             ctxMenuEntriesCopyTo.DropDownItems.AddRange(new ToolStripItem[] { ctxMenuEntriesNew });
             ctxMenuEntriesCopyTo.Name = "ctxMenuEntriesCopyTo";
-            ctxMenuEntriesCopyTo.Size = new Size(180, 22);
+            ctxMenuEntriesCopyTo.Size = new Size(123, 22);
             ctxMenuEntriesCopyTo.Text = "Add to";
             // 
             // ctxMenuEntriesNew
@@ -124,7 +123,7 @@
             // ctxMenuEntriesNote
             // 
             ctxMenuEntriesNote.Name = "ctxMenuEntriesNote";
-            ctxMenuEntriesNote.Size = new Size(180, 22);
+            ctxMenuEntriesNote.Size = new Size(123, 22);
             ctxMenuEntriesNote.Text = "Edit Note";
             ctxMenuEntriesNote.Click += ctxMenuEntriesNote_Click;
             // 
@@ -132,7 +131,7 @@
             // 
             ctxMenuEntriesBackup.Enabled = false;
             ctxMenuEntriesBackup.Name = "ctxMenuEntriesBackup";
-            ctxMenuEntriesBackup.Size = new Size(180, 22);
+            ctxMenuEntriesBackup.Size = new Size(123, 22);
             ctxMenuEntriesBackup.Text = "Backup";
             ctxMenuEntriesBackup.ToolTipText = "Force upload a backup of this code to Discord as a file, requires Auto Discord Backup to be enabled in settings.";
             ctxMenuEntriesBackup.Click += ctxMenuEntriesBackup_Click;
@@ -140,12 +139,12 @@
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(177, 6);
+            toolStripMenuItem2.Size = new Size(120, 6);
             // 
             // ctxMenuEntriesDelete
             // 
             ctxMenuEntriesDelete.Name = "ctxMenuEntriesDelete";
-            ctxMenuEntriesDelete.Size = new Size(180, 22);
+            ctxMenuEntriesDelete.Size = new Size(123, 22);
             ctxMenuEntriesDelete.Text = "Delete";
             ctxMenuEntriesDelete.Click += ctxMenuEntriesDelete_Click;
             // 
@@ -197,37 +196,37 @@
             btnSettings.UseVisualStyleBackColor = false;
             btnSettings.Click += btnSettings_Click;
             // 
-            // button1
+            // btnObjectives
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button1.BackColor = Color.FromArgb(46, 52, 64);
-            button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(0, 223);
-            button1.Name = "button1";
-            button1.Size = new Size(229, 24);
-            button1.TabIndex = 0;
-            button1.TabStop = false;
-            button1.Text = "Objectives";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += btnObjectives_Click;
+            btnObjectives.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnObjectives.BackColor = Color.FromArgb(46, 52, 64);
+            btnObjectives.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnObjectives.FlatStyle = FlatStyle.Flat;
+            btnObjectives.ForeColor = Color.White;
+            btnObjectives.Location = new Point(0, 223);
+            btnObjectives.Name = "btnObjectives";
+            btnObjectives.Size = new Size(229, 24);
+            btnObjectives.TabIndex = 0;
+            btnObjectives.TabStop = false;
+            btnObjectives.Text = "Objectives";
+            btnObjectives.UseVisualStyleBackColor = false;
+            btnObjectives.Click += btnObjectives_Click;
             // 
-            // button2
+            // linkWiki
             // 
-            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button2.BackColor = Color.FromArgb(46, 52, 64);
-            button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(235, 223);
-            button2.Name = "button2";
-            button2.Size = new Size(58, 24);
-            button2.TabIndex = 3;
-            button2.TabStop = false;
-            button2.Text = "Wiki";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += linkWiki_Clicked;
+            linkWiki.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            linkWiki.BackColor = Color.FromArgb(46, 52, 64);
+            linkWiki.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            linkWiki.FlatStyle = FlatStyle.Flat;
+            linkWiki.ForeColor = Color.White;
+            linkWiki.Location = new Point(235, 223);
+            linkWiki.Name = "linkWiki";
+            linkWiki.Size = new Size(58, 24);
+            linkWiki.TabIndex = 3;
+            linkWiki.TabStop = false;
+            linkWiki.Text = "Wiki";
+            linkWiki.UseVisualStyleBackColor = false;
+            linkWiki.Click += linkWiki_Clicked;
             // 
             // splitContainer1
             // 
@@ -244,8 +243,8 @@
             // 
             splitContainer1.Panel2.Controls.Add(linkSupport);
             splitContainer1.Panel2.Controls.Add(listBoxEntries);
-            splitContainer1.Panel2.Controls.Add(button1);
-            splitContainer1.Panel2.Controls.Add(button2);
+            splitContainer1.Panel2.Controls.Add(btnObjectives);
+            splitContainer1.Panel2.Controls.Add(linkWiki);
             splitContainer1.Size = new Size(505, 247);
             splitContainer1.SplitterDistance = 178;
             splitContainer1.TabIndex = 0;
@@ -308,8 +307,8 @@
         private ToolStripMenuItem ctxMenuEntriesDelete;
         private ToolStripMenuItem importToolStripMenuItem;
         private Button btnSettings;
-        private Button button1;
-        private Button button2;
+        private Button btnObjectives;
+        private Button linkWiki;
         private SplitContainer splitContainer1;
         private ToolStripMenuItem ctxMenuEntriesBackup;
         private Button linkSupport;

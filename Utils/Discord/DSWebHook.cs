@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 namespace ToNSaveManager.Utils.Discord
 {
     using Models;
+    using Localization;
 
     internal class Payload
     {
@@ -17,8 +18,22 @@ namespace ToNSaveManager.Utils.Discord
         public Embed Embed => Embeds[0];
     }
 
-    internal static class DSWebHook
-    {
+    internal static class DSWebHook {
+        static string LABEL_PLAYER = "**Player**: `{0}`";
+	    static string LABEL_ROUND = "**Round Type**: `{0}`";
+	    static string LABEL_TERRORS = "**Terrors in Round**: `{0}`";
+        static string LABEL_TERRORS_SPLIT = "`, `";
+        static string LABEL_COUNT = "**Player Count**: `{0}`";
+        static string LABEL_NOTE = "**Note**: `{0}`";
+        internal static void LocalizeContent() {
+            LABEL_PLAYER = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_PLAYER") ?? "**Player**: `{0}`";
+            LABEL_ROUND = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_ROUND") ?? "**Round Type**: `{0}`";
+            LABEL_TERRORS = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS") ?? "**Terrors in Round**: `{0}`";
+            LABEL_TERRORS_SPLIT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT") ?? "**Terrors in Round**: `{0}`";
+            LABEL_COUNT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_COUNT") ?? "**Player Count**: `{0}`";
+            LABEL_NOTE = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_NOTE") ?? "**Note**: `{0}`";
+        }
+
         static Entry? LastEntry;
 
         static readonly Embed[] Embeds = new Embed[1];
@@ -79,30 +94,30 @@ namespace ToNSaveManager.Utils.Discord
                         if (entry.Parent != null && !string.IsNullOrEmpty(entry.Parent.DisplayName))
                         {
                             // if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += "**Player**: `" + entry.Parent.DisplayName + "`";
+                            EmbedData.Description += string.Format(LABEL_PLAYER, entry.Parent.DisplayName);
                         }
 
                         if (!string.IsNullOrEmpty(entry.RType))
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += "**Round Type**: `" + entry.RType + "`";
+                            EmbedData.Description += string.Format(LABEL_ROUND, entry.RType);
                         }
 
                         if (entry.RTerrors != null && entry.RTerrors.Length > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += "**Terrors in Round**: `" + string.Join("`, `", entry.RTerrors) + "`";
+                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.RTerrors));
                         }
 
                         if (entry.PlayerCount > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += $"**Player Count**: `{entry.PlayerCount}`";
+                            EmbedData.Description += string.Format(LABEL_COUNT, entry.PlayerCount);
                         }
 
                         if (ignoreDuplicate && !string.IsNullOrEmpty(entry.Note)) {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += $"**Note**: `{entry.Note.Replace('`', '\'')}`";
+                            EmbedData.Description += string.Format(LABEL_NOTE, entry.Note.Replace('`', '\''));
                         }
 
                         string payloadData = JsonConvert.SerializeObject(PayloadData, JsonSettings);

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager.Models
 {
@@ -188,7 +189,7 @@ namespace ToNSaveManager.Models
                 Directory.Move(currentDatabase, currentDatabase + ".backup_" + DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             }
             catch (Exception e) {
-                MessageBox.Show($"An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {selectedFolder}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(LANG.S("MESSAGE.COPY_FILES_ERROR", selectedFolder) ?? $"An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {selectedFolder}" + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -196,7 +197,7 @@ namespace ToNSaveManager.Models
             Settings.Get.DataLocation = reset ? null : Destination;
             Settings.Export();
 
-            if (reset) MessageBox.Show("Save data location has been reset to default.", "Reset Custom Data Location");
+            if (reset) MessageBox.Show( LANG.S("MESSAGE.SAVE_LOCATION_RESET") ?? "Save data location has been reset to default.", LANG.S("MESSAGE.SAVE_LOCATION_RESET.TITLE") ?? "Reset Custom Data Location");
         }
 
         public static SaveData Import()
@@ -244,7 +245,7 @@ namespace ToNSaveManager.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error trying to import your save:\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.IMPORT_SAVE_ERROR") ?? "Error trying to import your save.") + "\n\n" + ex, "Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 if (!Program.CreateFileBackup(filePath))
                 {
@@ -367,7 +368,7 @@ namespace ToNSaveManager.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show($"An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {Destination}\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.WRITE_SAVE_ERROR", Destination) ?? $"An error ocurred while trying to write your saves to a file.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {Destination}") + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

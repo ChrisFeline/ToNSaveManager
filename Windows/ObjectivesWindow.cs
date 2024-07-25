@@ -1,11 +1,13 @@
-﻿using ToNSaveManager.Extensions;
+﻿using System.Diagnostics;
+using ToNSaveManager.Extensions;
+using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 
 namespace ToNSaveManager
 {
     public partial class ObjectivesWindow : Form
     {
-        static ObjectivesWindow? Instance;
+        internal static ObjectivesWindow? Instance;
         static List<Objective> Objectives = Objective.ImportFromMemory();
 
         public ObjectivesWindow()
@@ -27,7 +29,7 @@ namespace ToNSaveManager
             Instance.StartPosition = FormStartPosition.Manual;
             Instance.Location = new Point(
                 parent.Location.X + (parent.Width - Instance.Width) / 2,
-                parent.Location.Y + (parent.Height - Instance.Height) / 2
+                Math.Max(parent.Location.Y + (parent.Height - Instance.Height) / 2, 0)
             );
             Instance.Show(); // Don't parent
         }
@@ -37,12 +39,24 @@ namespace ToNSaveManager
             Instance?.listBox1.Refresh();
         }
 
+        internal void LocalizeContent() {
+            LANG.C(this, "OBJECTIVES.TITLE");
+
+            foreach (Objective obj in listBox1.Items) {
+                (string? tx, string? tt) = LANG.T("OBJECTIVES." + obj.Name.ToUpperInvariant().Replace(' ', '_'));
+                if (!string.IsNullOrEmpty(tx)) obj.DisplayName = tx;
+                if (!string.IsNullOrEmpty(tt)) obj.Tooltip = tt;
+            }
+        }
+
         private void ObjectivesWindow_Load(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
 
             foreach (Objective ob in Objectives)
                 listBox1.Items.Add(ob);
+
+            LocalizeContent();
         }
 
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
@@ -133,12 +147,12 @@ namespace ToNSaveManager
 
                 if (index < 0)
                 {
-                    TooltipUtil.Set(listBox1, null);
+                    toolTip.SetToolTip(listBox1, null);
                     return;
                 }
 
                 Objective objective = (Objective)listBox1.Items[index];
-                TooltipUtil.Set(listBox1, objective.Description);
+                toolTip.SetToolTip(listBox1, objective.Tooltip ?? objective.Description);
             }
         }
     }
