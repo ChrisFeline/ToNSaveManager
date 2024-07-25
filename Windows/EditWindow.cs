@@ -1,4 +1,6 @@
-﻿namespace ToNSaveManager
+﻿using ToNSaveManager.Localization;
+
+namespace ToNSaveManager
 {
     public struct EditResult
     {
@@ -8,7 +10,7 @@
 
     public partial class EditWindow : Form
     {
-        static EditWindow Instance = new EditWindow();
+        internal static EditWindow Instance = new EditWindow();
         public static Size GetSize() => Instance.Size;
 
         string Content
@@ -53,6 +55,12 @@
         {
             // Focus the text input please!!!
             Instance.textBox1.Focus();
+            LocalizeContent();
+        }
+
+        internal void LocalizeContent() {
+            button1.Text = LANG.S("EDIT.SAVE");
+            button2.Text = LANG.S("EDIT.CANCEL");
         }
     }
 }

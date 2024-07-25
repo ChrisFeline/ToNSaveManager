@@ -16,6 +16,9 @@ namespace ToNSaveManager.Models
 
     internal class Objective
     {
+        [JsonIgnore] public string? DisplayName { get; set; }
+        [JsonIgnore] public string? Tooltip { get; set; }
+
         [JsonIgnore] public bool IsCompleted {
             get => !IsSeparator && MainWindow.SaveData.GetCompleted(Name);
             set
@@ -60,7 +63,7 @@ namespace ToNSaveManager.Models
 
         public override string ToString()
         {
-            return Name;
+            return string.IsNullOrEmpty(DisplayName) ? Name : DisplayName;
         }
 
         public static List<Objective> ImportFromMemory()

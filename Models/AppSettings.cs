@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager.Models
 {
@@ -101,6 +103,11 @@ namespace ToNSaveManager.Models
         public bool RecordInstanceLogs { get; set; } = false;
 
         /// <summary>
+        /// Used internally for language selection.
+        /// </summary>
+        public string SelectedLanguage { get; set; } = string.Empty;
+
+        /// <summary>
         /// Import a settings instance from the local json file
         /// </summary>
         /// <returns>Deserialized Settings object, or else Default Settings object.</returns>
@@ -131,7 +138,18 @@ namespace ToNSaveManager.Models
                 settings = null;
             }
 
-            return settings ?? new Settings();
+            if (settings == null)
+                settings = new Settings();
+
+            string selectedLanguage = settings.SelectedLanguage;
+
+            if (string.IsNullOrEmpty(selectedLanguage)) {
+                selectedLanguage = LANG.FindLanguageKey();
+            }
+
+            LANG.Select(selectedLanguage);
+
+            return settings;
         }
 
         private void TryExport()
@@ -143,7 +161,7 @@ namespace ToNSaveManager.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.WRITE_SETTINGS_ERROR") ?? "An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.") + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
