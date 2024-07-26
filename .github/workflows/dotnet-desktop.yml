@@ -26,19 +26,19 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     # Add MSBuild to the PATH
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v2
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
@@ -72,7 +72,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --property:PublishDir=./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -82,7 +82,7 @@ jobs:
 
     # Upload the build artifacts just in case
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ToNSaveManager
         path: ToNSaveManager.zip
@@ -90,12 +90,12 @@ jobs:
     - name: Create Release
       if: startsWith(github.ref, 'refs/heads/main')
       id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.get_date.outputs.date }}
-        release_name: Release ${{ steps.get_date.outputs.date }}
+        name: Release ${{ steps.get_date.outputs.date }}
         body: |
           # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip)
 
@@ -112,15 +112,4 @@ jobs:
           * If previous option doesn't work, open the file `update.bat`, the new files will be downloaded.
         draft: true
         prerelease: false
-    
-    - name: Upload Release Asset
-      if: startsWith(github.ref, 'refs/heads/main')
-      id: upload_release_asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./ToNSaveManager.zip
-        asset_name: ToNSaveManager.zip
-        asset_content_type: application/zip
+        files: ./ToNSaveManager.zip
