@@ -26,7 +26,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -88,9 +88,9 @@ jobs:
         path: ToNSaveManager.zip
 
     - name: Create Release
-      if: startsWith(github.ref, 'refs/heads/main')
+      # if: startsWith(github.ref, 'refs/heads/main')
       id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -112,15 +112,4 @@ jobs:
           * If previous option doesn't work, open the file `update.bat`, the new files will be downloaded.
         draft: true
         prerelease: false
-    
-    - name: Upload Release Asset
-      if: startsWith(github.ref, 'refs/heads/main')
-      id: upload_release_asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./ToNSaveManager.zip
-        asset_name: ToNSaveManager.zip
-        asset_content_type: application/zip
+        files: ./ToNSaveManager.zip
