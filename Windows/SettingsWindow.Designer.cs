@@ -380,6 +380,7 @@
             // 
             // languageSelectBox
             // 
+            languageSelectBox.AllowDrop = true;
             languageSelectBox.BackColor = SystemColors.Window;
             languageSelectBox.Dock = DockStyle.Top;
             languageSelectBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -391,6 +392,8 @@
             languageSelectBox.TabIndex = 7;
             languageSelectBox.TabStop = false;
             languageSelectBox.SelectedIndexChanged += languageSelectBox_SelectedIndexChanged;
+            languageSelectBox.DragDrop += languageSelect_DragDrop;
+            languageSelectBox.DragEnter += languageSelect_DragEnter;
             // 
             // SettingsWindow
             // 
