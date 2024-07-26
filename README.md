@@ -171,9 +171,17 @@ If your parameters are not being received properly... try resetting the OSC conf
 > ### Please do <u>NOT</u> message Beyond about suggestions or problems with this tool.
 > You can report problems or suggestions under the [Issues](https://github.com/ChrisFeline/ToNSaveManager/issues) tab on this repo. Alternatively see contact information below.
 
+# 🌐 Language & Localizations
+| Language | Translator |
+| -------- | ---------- |
+| English  | -          |
+| Spanish  | -          |
+| Japanese | [github.com/nomlasvrc](https://github.com/nomlasvrc) <br> [twitter.com/nomlasvrc](https://twitter.com/nomlasvrc) |
+
+
 # 📫 Contact:
-> **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
-> **VRChat:** [Kittenji](https://vrchat.com/home/user/usr_7ac745b8-e50e-4c9c-95e5-8e7e3bcde682)
+> - **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
+> - **VRChat:** [Kittenji](https://vrchat.com/home/user/usr_7ac745b8-e50e-4c9c-95e5-8e7e3bcde682)
 > ## Say hi if you see me playing [Terrors of Nowhere](https://vrchat.com/home/world/wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd)!
 > <p> <img src="Resources/loop.gif" alt="Preview" title="AAAAAA!"> </p>
 
