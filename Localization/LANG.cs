@@ -124,10 +124,14 @@ namespace ToNSaveManager.Localization {
             var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             if (obj != null) {
                 string key = Path.GetFileNameWithoutExtension(filePath);
-                LanguageData.Add(key, obj);
+                if (!LanguageData.ContainsKey(key)) {
+                    AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
+                    LanguageData.Add(key, obj);
+                } else {
+                    LanguageData[key] = obj;
+                }
 
                 Debug.WriteLine("Added custom language with key: " + key);
-                AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
                 Select(key);
 
                 SettingsWindow.Instance?.FillLanguageBox();
