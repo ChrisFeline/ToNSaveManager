@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using ToNSaveManager.Windows;
 
 namespace ToNSaveManager.Localization {
@@ -22,6 +23,7 @@ namespace ToNSaveManager.Localization {
 
         static Dictionary<string, string> SelectedLang = new Dictionary<string, string>();
         internal static string SelectedKey { get; private set; } = PREF_DEFAULT_KEY;
+        internal static bool IsRightToLeft = false;
 
         static Dictionary<string, string> SelectedDefault = new Dictionary<string, string>();
         static string SelectedDefaultKey = string.Empty;
@@ -74,17 +76,22 @@ namespace ToNSaveManager.Localization {
                 if (toolTip == null) TooltipUtil.Set(control, tt);
                 else toolTip.SetToolTip(control, tt);
             }
+
+            control.RightToLeft = IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
         public static void C(ToolStripItem item, string key) {
             (string? text, string? tooltip) = T(key);
             if (!string.IsNullOrEmpty(text)) item.Text = text;
             if (!string.IsNullOrEmpty(tooltip)) item.ToolTipText = tooltip;
+
+            item.RightToLeft = IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
         internal static void Select(string key) {
             Debug.WriteLine("Selecting language key: " + key);
             SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
+            IsRightToLeft = SelectedLang.ContainsKey("RIGHT_TO_LEFT") && SelectedLang["RIGHT_TO_LEFT"] == "YES";
         }
 
         internal static string FindLanguageKey() {

@@ -32,6 +32,7 @@ namespace ToNSaveManager
             Instance.Owner = parent;
             Instance.StartPosition = FormStartPosition.CenterParent;
             Instance.Content = content;
+            Instance.RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
             DialogResult res = Instance.ShowDialog();
 

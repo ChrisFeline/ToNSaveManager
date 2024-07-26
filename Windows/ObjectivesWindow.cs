@@ -47,6 +47,8 @@ namespace ToNSaveManager
                 if (!string.IsNullOrEmpty(tx)) obj.DisplayName = tx;
                 if (!string.IsNullOrEmpty(tt)) obj.Tooltip = tt;
             }
+
+            RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
         private void ObjectivesWindow_Load(object sender, EventArgs e)

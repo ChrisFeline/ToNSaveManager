@@ -82,7 +82,7 @@
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "Discord Webhook URL",
-	"SETTINGS.DISCORDWEBHOOKINVALID": "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.",
+	"SETTINGS.DISCORDWEBHOOKINVALID": "The URL you provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.",
 	"SETTINGS.DISCORDWEBHOOKINVALID.TITLE": "Invalid Webhook URL",
 
 	"SETTINGS.DISCORDWEBHOOK.LABEL_PLAYER": "**Player**: `{0}`",

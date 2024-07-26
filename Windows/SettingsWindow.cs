@@ -63,6 +63,8 @@ namespace ToNSaveManager.Windows
             string? versionString = Program.GetVersion()?.ToString();
             if (!string.IsNullOrEmpty(versionString))
                 toolTip.SetToolTip(btnCheckForUpdates, LANG.S("SETTINGS.VERSION", versionString) ?? $"Current Version {versionString}");
+
+            RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
         // Subscribe to events on load

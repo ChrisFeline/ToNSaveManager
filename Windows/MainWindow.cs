@@ -103,6 +103,8 @@ namespace ToNSaveManager
 
             Entry.LocalizeContent();
             DSWebHook.LocalizeContent();
+
+            RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
         #endregion
 
