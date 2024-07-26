@@ -23,16 +23,17 @@
 - Previously detected save codes will be saved to a local database, so if VRChat deletes logs overtime, you'll have a history of Save Codes locally, and safe.
 
 ## Settings Window
-- `Check For Updates` When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
-- `Auto Clipboard Copy` Automatically copy new save codes to clipboard.
-- `Collect Player Names` Save codes will show players that were in the instance.
-- `XSOverlay Popup` XSOverlay notifications when new save codes are detected.
-- `Play Sound` Play a notification audio when a new save is detected.
-  - Double Click to select a custom audio file. (Only '.wav' files)
-  - Right Click to reset audio file back to 'default.wav'
-- `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
-- `Auto Discord Backup` Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
-- `Send OSC Parameters` Sends avatar parameters to VRChat using OSC. Check the [documentation](#osc-documentation) below for more info.
+| Name | Description |
+| --------------------- | - |
+| `Check For Updates` | When clicked, it will check this github repo for new releases, and prompt you to try an automatic update.
+| `Auto Clipboard Copy` | Automatically copy new save codes to clipboard.
+| `Collect Player Names` | Save codes will show players that were in the instance.
+| `XSOverlay Popup` | XSOverlay notifications when new save codes are detected.
+| `Play Sound` | Play a notification audio when a new save is detected.<br><br>Double Click to select a custom audio file. (Only '.wav' files)<br><br>Right Click to reset audio file back to 'default.wav'
+| `Colorful Objectives` | Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
+| `Auto Discord Backup` | Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
+| `Send OSC Parameters` | Sends avatar parameters to VRChat using OSC. Check the [documentation](#osc-documentation) below for more info.
+
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
 ## Right Click Menus
