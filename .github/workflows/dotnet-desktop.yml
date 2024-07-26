@@ -34,7 +34,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     # Add MSBuild to the PATH
     - name: Setup MSBuild.exe
@@ -72,7 +72,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=./publish
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --property:PublishDir=./publish
       env:
         Configuration: ${{ matrix.configuration }}
 

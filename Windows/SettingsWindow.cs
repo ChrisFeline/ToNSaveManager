@@ -238,7 +238,7 @@ namespace ToNSaveManager.Windows
         }
 
         private void languageSelectBox_SelectedIndexChanged(object sender, EventArgs e) {
-            if (!FilledLanguages || languageSelectBox.SelectedIndex < 0) return;
+            if (!FilledLanguages || languageSelectBox.SelectedIndex < 0 || languageSelectBox.SelectedItem == null) return;
             LANG.LangKey langKey = (LANG.LangKey)languageSelectBox.SelectedItem;
 
             if (LANG.SelectedKey != langKey.Key) {
