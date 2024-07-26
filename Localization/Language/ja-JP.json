@@ -108,7 +108,7 @@
 	"SETTINGS.SHOWSECONDS": "秒を表示",
 	"SETTINGS.INVERTMD": "月/日を反転",
 	"SETTINGS.SHOWDATE": "右パネルの日付",
-	"SETTINGS.SHOWDATE.TT": "右パネルのエントリに完全な日付を表示します。",
+	"SETTINGS.SHOWDATE.TT": "右パネルのエントリに日付を表示します。",
 
 	"SETTINGS.GROUP.STYLE": "スタイル",
 	"SETTINGS.COLORFULOBJECTIVES": "カラフルなアイテム",
