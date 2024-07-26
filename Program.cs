@@ -12,6 +12,7 @@ namespace ToNSaveManager
     internal static class Program
     {
         internal const string ProgramName = "ToNSaveManager";
+
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
         internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
