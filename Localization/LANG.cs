@@ -119,6 +119,22 @@ namespace ToNSaveManager.Localization {
             SettingsWindow.Instance?.LocalizeContent();
         }
 
+        internal static void AddFromFile(string filePath) {
+            string json = File.ReadAllText(filePath);
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            if (obj != null) {
+                string key = Path.GetFileNameWithoutExtension(filePath);
+                LanguageData.Add(key, obj);
+
+                Debug.WriteLine("Added custom language with key: " + key);
+                AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
+                Select(key);
+
+                SettingsWindow.Instance?.FillLanguageBox();
+                ReloadAll();
+            }
+        }
+
         internal static void Initialize() {
             Assembly assembly = Assembly.GetExecutingAssembly();
             string[] streamNames = assembly.GetManifestResourceNames();

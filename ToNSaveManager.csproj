@@ -13,9 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Localization\Language\en-US.json" />
-    <None Remove="Localization\Language\es-ES.json" />
-    <None Remove="Localization\Language\ja-JP.json" />
+    <None Remove="Localization\Language\*.*" />
     <None Remove="notification.wav" />
     <None Remove="Resources\FiraCode.ttf" />
     <None Remove="Resources\index.json" />
@@ -28,9 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\Language\es-ES.json" />
-    <EmbeddedResource Include="Localization\Language\en-US.json" />
-    <EmbeddedResource Include="Localization\Language\ja-JP.json" />
+    <EmbeddedResource Include="Localization\Language\*.*" />
     <EmbeddedResource Include="Resources\index.json" />
     <EmbeddedResource Include="Resources\objectives.json" />
     <EmbeddedResource Include="Resources\xs_icon.png">
