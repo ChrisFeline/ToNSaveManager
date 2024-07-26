@@ -79,7 +79,7 @@
 	"SETTINGS.OSCENABLED": "Envoyer les paramètres OSC",
 	"SETTINGS.OSCENABLED.TT": "Envoie des paramètres pour avatars à VRChat via OSC.\nClick droit sur cette entrée pour ouvrir la documentation sur les noms et types des paramètres.",
 
-	"SETTINGS.DISCORDWEBHOOKENABLED": "Sauvegarde automatique sur Discord (Webhook)",
+	"SETTINGS.DISCORDWEBHOOKENABLED": "Sauvegarde automatique sur Discord",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Sauvegarde automatiquement vos nouveaux codes sur un salon Discord via une intégration Webhook.",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "URL du Webhook",
 	"SETTINGS.DISCORDWEBHOOKINVALID": "L'URL que vous avez fournie ne correspond pas à une URL Webhook Discord.\n\nMAssurez vous d'avoir créé et copié L'URL de vos Webhook correctement.",
