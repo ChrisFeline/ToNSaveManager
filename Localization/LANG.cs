@@ -128,6 +128,10 @@ namespace ToNSaveManager.Localization {
                     AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
                     LanguageData.Add(key, obj);
                 } else {
+                    int index = AvailableLang.FindIndex(v => v.Key == key);
+                    if (index > -1)
+                        AvailableLang[index] = new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] };
+
                     LanguageData[key] = obj;
                 }
 
