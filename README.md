@@ -92,6 +92,13 @@ If your parameters are not being received properly... try resetting the OSC conf
 <img src="Resources/osc_reset.png" >
 </p></details>
 
+# 🌐 Available Translations
+| Language | Translator |
+| -------- | ---------- |
+| English  | -          |
+| Spanish  | -          |
+| Japanese | [github.com/nomlasvrc](https://github.com/nomlasvrc) <br> [twitter.com/nomlasvrc](https://twitter.com/nomlasvrc) |
+
 # 📋 FAQ:
 
 > ## How do I use this?
@@ -170,14 +177,6 @@ If your parameters are not being received properly... try resetting the OSC conf
 
 > ### Please do <u>NOT</u> message Beyond about suggestions or problems with this tool.
 > You can report problems or suggestions under the [Issues](https://github.com/ChrisFeline/ToNSaveManager/issues) tab on this repo. Alternatively see contact information below.
-
-# 🌐 Language & Localizations
-| Language | Translator |
-| -------- | ---------- |
-| English  | -          |
-| Spanish  | -          |
-| Japanese | [github.com/nomlasvrc](https://github.com/nomlasvrc) <br> [twitter.com/nomlasvrc](https://twitter.com/nomlasvrc) |
-
 
 # 📫 Contact:
 > - **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
