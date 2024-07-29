@@ -26,8 +26,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateWindow));
             textBox1 = new TextBox();
             SuspendLayout();
             // 
@@ -55,6 +55,7 @@
             ClientSize = new Size(433, 194);
             ControlBox = false;
             Controls.Add(textBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(400, 200);
             Name = "UpdateWindow";
             Text = "ToNSaveManager | Updating";

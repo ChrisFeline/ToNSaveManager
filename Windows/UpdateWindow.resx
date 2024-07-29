@@ -18,7 +18,7 @@
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
     <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
     <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing"">Blue</data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAyJ/8A+v7+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIgAA
+        AAAAAAAAAAACIiIiIiIAAAAAAAAAAAAAAiIiIiIiAAAAAAARAAAAAAIiIiIiIgAAAAAAEQAAAAACIiIi
+        IiIAAAAAAREQAAAAAiIiIAACAAAAAAEREAAAAAIiIiAAAgAAAAABERAAAAACIiIgAiIAAAEAAREQABAA
+        AiIiIAIiAAARAAEREAARAAIiIiIiIgAAEQABERAAEQACIiIgAiIAABEAAREQABEAAiIiIAIiAAARAAER
+        EAARAAIiIiACIgAAEQABERAAEQACIiIgAiIAABEAAREQABEAAiIiIAIiAAABAAEREAAQAAIiIiIiIgAA
+        AAABERAAAAACIiIgAiIAAAAAABEAAAAAAiIiIAIiAAAAAAARAAAAAAIiIiACIgAAAAAAAAAAAAACIiIg
+        AiIAAAAAAAAAAAAAAiIiIAIiAAAAAAAAAAAAAAIiIiIiIiIiIiIiIiIiIiIiIiIgAiIiIiIiIiIiACIi
+        IiIiIAIiIiIiIiIiIgAiIiIiIiAAAgAAAgAAAgAAIiIiIiIgAAIAAAIAAAIAACIiIiIiIiIiIiIiIiIi
+        IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiL/////////////////AAAH/wAAB/8A
+        AAf/AAAH/wAAB+EAAAfhAAAH5wAAB+cAAAf/AAAH5wAAB+cAAAfnAAAH5wAAB+cAAAf/AAAH5wAAB+cA
+        AAfnAAAH5wAAB+cAAAf/////5//8/+f//P/hBBD/4QQQ/////////////////w==
+</value>
+  </data>
 </root>
