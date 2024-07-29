@@ -124,6 +124,7 @@ namespace ToNSaveManager.Localization {
             EditWindow.Instance?.LocalizeContent();
             ObjectivesWindow.Instance?.LocalizeContent();
             SettingsWindow.Instance?.LocalizeContent();
+            StatsWindow.Instance?.LocalizeContent();
         }
 
         internal static void AddFromFile(string filePath) {
