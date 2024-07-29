@@ -9,13 +9,11 @@ namespace ToNSaveManager
     {
         internal static StatsWindow? Instance;
 
-        public StatsWindow()
-        {
+        public StatsWindow() {
             InitializeComponent();
         }
 
-        public static void Open(Form parent)
-        {
+        public static void Open(Form parent) {
             if (Instance == null || Instance.IsDisposed) Instance = new StatsWindow();
 
             if (Instance.Visible)
@@ -37,7 +35,7 @@ namespace ToNSaveManager
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
-        private void ObjectivesWindow_Load(object sender, EventArgs e)
+        private void StatsWindow_Load(object sender, EventArgs e)
         {
             LocalizeContent();
         }

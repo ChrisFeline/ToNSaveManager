@@ -44,7 +44,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "ToN Stats Tracker";
-            Load += ObjectivesWindow_Load;
+            Load += StatsWindow_Load;
             ResumeLayout(false);
         }
 
