@@ -9,12 +9,27 @@ namespace ToNSaveManager
 {
     public partial class StatsWindow : Form {
         internal readonly static StatsData Stats = StatsData.Import();
+        internal readonly static StatsData Lobby = new StatsData();
+
         internal static void SetDirty() => Stats.SetDirty();
         internal static void Export() => Stats.Export();
 
+        internal static void AddRound(bool survived) {
+            if (MainWindow.Started) Stats.AddRound(survived);
+            Lobby.AddRound(survived);
+        }
+        internal static void AddStun(bool isLocal) {
+            if (MainWindow.Started) Stats.AddStun(isLocal);
+            Lobby.AddStun(isLocal);
+        }
+        internal static void AddDamage(int damage) {
+            if (MainWindow.Started) Stats.AddDamage(damage);
+            Lobby.AddDamage(damage);
+        }
+
         internal static StatsWindow? Instance { get; private set; }
 
-        PropertyInfo[] TableProperties;
+        readonly PropertyInfo[] TableProperties;
 
         public StatsWindow() {
             InitializeComponent();

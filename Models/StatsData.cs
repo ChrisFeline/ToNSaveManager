@@ -25,7 +25,6 @@ namespace ToNSaveManager.Models {
         }
 
         #region Properties
-        #region Round Stats
         public int Rounds => Deaths + Survivals;
         public int Deaths { get; set; } = 0;
         public int Survivals { get; set; } = 0;
@@ -38,7 +37,6 @@ namespace ToNSaveManager.Models {
 
             SetDirty();
         }
-        #endregion
 
         public int Stuns { get; set; } = 0;
         public int GlobalStuns { get; set; } = 0;
@@ -61,10 +59,14 @@ namespace ToNSaveManager.Models {
         }
 
         public void Clear() {
+            Debug.WriteLine("Clearing lobby stats");
+
             Deaths = 0;
             Survivals = 0;
+
             Stuns = 0;
             GlobalStuns = 0;
+
             DamageTaken = 0;
         }
         #endregion
@@ -107,7 +109,7 @@ namespace ToNSaveManager.Models {
                     File.WriteAllText(Destination, json);
                 }
             } catch (Exception e) {
-                MessageBox.Show((LANG.S("MESSAGE.WRITE_SETTINGS_ERROR") ?? "An error ocurred while trying to write your stats to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.") + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.WRITE_SETTINGS_ERROR") ?? "An error occurred while trying to write your stats to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.") + "\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

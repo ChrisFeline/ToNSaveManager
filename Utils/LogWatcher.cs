@@ -90,7 +90,10 @@
                         logContext = new LogContext(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
 
-                        if (firstRun) logContext.Position = GetParsedPos(logContext.DateKey);
+                        if (firstRun) {
+                            logContext.Position = GetParsedPos(logContext.DateKey);
+                            logContext.RoomReadPos = logContext.Position;
+                        }
                     }
 
                     if (logContext.Length == fileInfo.Length)
@@ -163,6 +166,7 @@
                         bool isNull;
                         while (true)
                         {
+                            logContext.ReadPos = stream.Position;
                             var line = streamReader.ReadLine();
                             isNull = line == null;
 
@@ -236,7 +240,7 @@
             return true;
         }
 
-        const string LocationKeyword = "[Behaviour] Entering Room: ";
+        internal const string LocationKeyword = "[Behaviour] Entering Room: ";
         private bool ParseLocation(string line, DateTime lineDate, LogContext logContext)
         {
             if (!line.Contains(LocationKeyword)) return false;
@@ -247,7 +251,8 @@
             var worldName = line.Substring(index).Trim('\n', '\r');
             logContext.Enter(worldName, lineDate);
 
-            logContext.RoomReadPos = logContext.Position;
+            logContext.RoomReadPos = logContext.ReadPos;
+            Debug.WriteLine("Setting room read position to: " + logContext.RoomReadPos);
 
             return true;
         }
@@ -296,6 +301,7 @@
 
             public long Length;
             public long Position;
+            public long ReadPos;
             public bool Initialized { get; private set; }
             public void SetInit() => Initialized = true;
 

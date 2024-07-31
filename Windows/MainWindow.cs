@@ -567,7 +567,7 @@ namespace ToNSaveManager
 
                 if (context.IsRecent) {
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
-                    if (Started) StatsWindow.Stats.AddRound(isOptedIn);
+                    StatsWindow.AddRound(isOptedIn);
                 }
                 return true;
             }
@@ -602,21 +602,26 @@ namespace ToNSaveManager
         const string STAT_STUN_TARGET = " was stunned.";
         const string STAT_HIT = "Hit - ";
         private bool HandleStatCollection(string line, DateTime timestamp, LogContext context) {
-            if (!Started) return false;
+            if (!context.IsRecent) return false;
+
+            if (line.Contains(LogWatcher.LocationKeyword)) {
+                StatsWindow.Lobby.Clear();
+                return true;
+            }
 
             if (line.Contains(STAT_STUN_LANDED)) {
-                StatsWindow.Stats.AddStun(true);
+                StatsWindow.AddStun(true);
                 return true;
             }
 
             if (line.Contains(STAT_STUN_TARGET)) {
-                StatsWindow.Stats.AddStun(false);
+                StatsWindow.AddStun(false);
                 return true;
             }
 
             if (line.StartsWith(STAT_HIT)) {
                 string ammount = line.Substring(STAT_HIT.Length).Trim();
-                if (int.TryParse(ammount, out int result)) StatsWindow.Stats.AddDamage(result);
+                if (int.TryParse(ammount, out int result)) StatsWindow.AddDamage(result);
                 return true;
             }
 
