@@ -325,8 +325,8 @@ namespace ToNSaveManager
             History h = (History)listBoxKeys.SelectedItem;
             if (ContextEntry != null) {
                 DialogResult result = MessageBox.Show(
-                    LANG.S("MAIN.CTX_DELETE_ENTRY.SUBTITLE", h.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nDate: {ContextEntry.Timestamp}\nNote: {ContextEntry.Note}\n\nThis operation is not reversible!",
-                    LANG.S("MAIN.CTX_DELETE_ENTRY.TITLE", h.ToString()) ?? "Deleting Entry: " + h.ToString(),
+                    LANG.S("MAIN.CTX_DELETE_ENTRY.SUBTITLE", ContextEntry.ToString()) ?? $"Are you SURE that you want to delete this entry?\n\nDate: {ContextEntry.Timestamp}\nNote: {ContextEntry.Note}\n\nThis operation is not reversible!",
+                    LANG.S("MAIN.CTX_DELETE_ENTRY.TITLE", ContextEntry.ToString()) ?? "Deleting Entry: " + ContextEntry.ToString(),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.OK) {
