@@ -60,6 +60,8 @@ namespace ToNSaveManager
                 ReleaseMutex();
                 Debug.WriteLine("Saving on exit");
                 MainWindow.SaveData.Export();
+                StatsWindow.Export();
+                Debug.WriteLine("Leaving now :)");
             };
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);

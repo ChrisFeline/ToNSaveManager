@@ -24,7 +24,9 @@ namespace ToNSaveManager.Models
             set
             {
                 m_Destination = value;
-                History.Destination = Path.Combine(Path.GetDirectoryName(m_Destination) ?? "./", "Database");
+                string? dirName = Path.GetDirectoryName(m_Destination);
+                History.Destination = Path.Combine(dirName ?? "./", "Database");
+                StatsData.Destination = dirName ?? "./";
             }
         }
         

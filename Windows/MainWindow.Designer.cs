@@ -48,6 +48,7 @@
             linkWiki = new Button();
             splitContainer1 = new SplitContainer();
             linkSupport = new Button();
+            btnStats = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -205,7 +206,7 @@
             btnObjectives.ForeColor = Color.White;
             btnObjectives.Location = new Point(0, 223);
             btnObjectives.Name = "btnObjectives";
-            btnObjectives.Size = new Size(229, 24);
+            btnObjectives.Size = new Size(165, 24);
             btnObjectives.TabIndex = 0;
             btnObjectives.TabStop = false;
             btnObjectives.Text = "Objectives";
@@ -241,6 +242,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(btnStats);
             splitContainer1.Panel2.Controls.Add(linkSupport);
             splitContainer1.Panel2.Controls.Add(listBoxEntries);
             splitContainer1.Panel2.Controls.Add(btnObjectives);
@@ -266,6 +268,22 @@
             linkSupport.TabStop = false;
             linkSupport.UseVisualStyleBackColor = false;
             linkSupport.Click += linkSupport_Click;
+            // 
+            // btnStats
+            // 
+            btnStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnStats.BackColor = Color.FromArgb(46, 52, 64);
+            btnStats.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnStats.FlatStyle = FlatStyle.Flat;
+            btnStats.ForeColor = Color.White;
+            btnStats.Location = new Point(171, 223);
+            btnStats.Name = "btnStats";
+            btnStats.Size = new Size(58, 24);
+            btnStats.TabIndex = 5;
+            btnStats.TabStop = false;
+            btnStats.Text = "Stats";
+            btnStats.UseVisualStyleBackColor = false;
+            btnStats.Click += btnStats_Click;
             // 
             // MainWindow
             // 
@@ -312,5 +330,6 @@
         private SplitContainer splitContainer1;
         private ToolStripMenuItem ctxMenuEntriesBackup;
         private Button linkSupport;
+        private Button btnStats;
     }
 }
