@@ -55,11 +55,13 @@
             groupBoxStyle = new GroupBox();
             checkColorObjectives = new CheckBox();
             languageSelectBox = new ComboBox();
+            panel1 = new Panel();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBoxTime.SuspendLayout();
             ctxData.SuspendLayout();
             groupBoxStyle.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxGeneral
@@ -292,11 +294,11 @@
             // 
             // btnCheckForUpdates
             // 
-            btnCheckForUpdates.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnCheckForUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 393);
+            btnCheckForUpdates.Location = new Point(0, 4);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
             btnCheckForUpdates.Size = new Size(279, 24);
             btnCheckForUpdates.TabIndex = 4;
@@ -306,12 +308,12 @@
             // 
             // btnOpenData
             // 
-            btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             btnOpenData.ContextMenuStrip = ctxData;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(293, 393);
+            btnOpenData.Location = new Point(285, 4);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -396,6 +398,17 @@
             languageSelectBox.DragDrop += languageSelect_DragDrop;
             languageSelectBox.DragEnter += languageSelect_DragEnter;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnCheckForUpdates);
+            panel1.Controls.Add(btnOpenData);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(8, 389);
+            panel1.Name = "panel1";
+            panel1.Padding = new Padding(0, 4, 0, 0);
+            panel1.Size = new Size(338, 28);
+            panel1.TabIndex = 8;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -403,10 +416,9 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(354, 425);
+            ClientSize = new Size(354, 428);
+            Controls.Add(panel1);
             Controls.Add(groupBoxStyle);
-            Controls.Add(btnOpenData);
-            Controls.Add(btnCheckForUpdates);
             Controls.Add(groupBoxTime);
             Controls.Add(groupBoxNotifications);
             Controls.Add(groupBoxGeneral);
@@ -429,6 +441,7 @@
             groupBoxTime.ResumeLayout(false);
             ctxData.ResumeLayout(false);
             groupBoxStyle.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -461,5 +474,6 @@
         private CheckBox checkDiscordBackup;
         private CheckBox checkOSCEnabled;
         private ComboBox languageSelectBox;
+        private Panel panel1;
     }
 }
