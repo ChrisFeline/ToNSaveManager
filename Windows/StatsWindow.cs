@@ -76,9 +76,11 @@ namespace ToNSaveManager
 
                     for (int j = 0; j < statsTable.ColumnCount; j++) {
                         statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-                        Control control = new Label() { Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
+                        Control control = new Label() {
+                            Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
                             TextAlign = ContentAlignment.BottomLeft,
-                            Anchor = AnchorStyles.Left | AnchorStyles.Right };
+                            Anchor = AnchorStyles.Left | AnchorStyles.Right
+                        };
                         control.DataContext = property;
                         statsTable.Controls.Add(control, j, i);
 
@@ -122,6 +124,17 @@ namespace ToNSaveManager
                 ContextField.SetValue(Stats, result);
                 Stats.SetDirty();
             }
+        }
+
+        private void ctxCopyStatName_Click(object sender, EventArgs e) {
+            if (ContextField == null) return;
+
+            string content = ContextField.Name;
+            if (ShowLobbyStats) content = "Lobby" + content;
+            content = '{' + content + '}';
+
+            Clipboard.SetDataObject(content, false, 4, 200);
+            MessageBox.Show("Copied to clipboard: " + content);
         }
 
         private void StatsWindow_Load(object sender, EventArgs e) {

@@ -33,6 +33,7 @@
             contextMenu = new ContextMenuStrip(components);
             ctxTypeInValue = new ToolStripMenuItem();
             btnSwitch = new Button();
+            ctxCopyStatName = new ToolStripMenuItem();
             contextMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -56,14 +57,14 @@
             // 
             // contextMenu
             // 
-            contextMenu.Items.AddRange(new ToolStripItem[] { ctxTypeInValue });
+            contextMenu.Items.AddRange(new ToolStripItem[] { ctxTypeInValue, ctxCopyStatName });
             contextMenu.Name = "contextMenu";
-            contextMenu.Size = new Size(143, 26);
+            contextMenu.Size = new Size(181, 70);
             // 
             // ctxTypeInValue
             // 
             ctxTypeInValue.Name = "ctxTypeInValue";
-            ctxTypeInValue.Size = new Size(142, 22);
+            ctxTypeInValue.Size = new Size(180, 22);
             ctxTypeInValue.Text = "Type in value";
             ctxTypeInValue.Click += ctxTypeInValue_Click;
             // 
@@ -82,6 +83,13 @@
             btnSwitch.Text = "Show Lobby Stats";
             btnSwitch.UseVisualStyleBackColor = false;
             btnSwitch.Click += btnSwitch_Click;
+            // 
+            // ctxCopyStatName
+            // 
+            ctxCopyStatName.Name = "ctxCopyStatName";
+            ctxCopyStatName.Size = new Size(180, 22);
+            ctxCopyStatName.Text = "Copy stat name";
+            ctxCopyStatName.Click += ctxCopyStatName_Click;
             // 
             // StatsWindow
             // 
@@ -114,5 +122,6 @@
         private ContextMenuStrip contextMenu;
         private ToolStripMenuItem ctxTypeInValue;
         private Button btnSwitch;
+        private ToolStripMenuItem ctxCopyStatName;
     }
 }
