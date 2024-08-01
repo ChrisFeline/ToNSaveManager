@@ -34,6 +34,7 @@ namespace ToNSaveManager
         internal static void RefreshTable() => Instance?.UpdateTable();
 
         readonly PropertyInfo[] TableProperties;
+        bool ShowLobbyStats;
 
         public StatsWindow() {
             InitializeComponent();
@@ -75,7 +76,9 @@ namespace ToNSaveManager
 
                     for (int j = 0; j < statsTable.ColumnCount; j++) {
                         statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-                        Control control = new Label() { Text = j == 0 ? NormalizeLabelText(property.Name) : "...", TextAlign = j == 0 ? ContentAlignment.BottomLeft : ContentAlignment.BottomRight, Anchor = AnchorStyles.Left | AnchorStyles.Right };
+                        Control control = new Label() { Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
+                            TextAlign = ContentAlignment.BottomLeft,
+                            Anchor = AnchorStyles.Left | AnchorStyles.Right };
                         control.DataContext = property;
                         statsTable.Controls.Add(control, j, i);
 
@@ -90,8 +93,10 @@ namespace ToNSaveManager
                 Control? control = statsTable.GetControlFromPosition(1, i);
                 if (control == null) continue;
 
-                control.Text = property.GetValue(Stats)?.ToString();
+                control.Text = property.GetValue(ShowLobbyStats ? Lobby : Stats)?.ToString();
             }
+
+            btnSwitch.Text = ShowLobbyStats ? "Show Total Stats" : "Show Lobby Stats";
         }
 
         PropertyInfo? ContextField;
@@ -102,7 +107,7 @@ namespace ToNSaveManager
 
             if (control != null) {
                 ContextField = (PropertyInfo?)control.DataContext;
-                ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
+                ctxTypeInValue.Enabled = !ShowLobbyStats && ContextField != null && ContextField.CanWrite;
                 contextMenu.Show(control, e.Location);
             }
         }
@@ -142,6 +147,11 @@ namespace ToNSaveManager
             }
 
             return text;
+        }
+
+        private void btnSwitch_Click(object sender, EventArgs e) {
+            ShowLobbyStats = !ShowLobbyStats;
+            UpdateTable();
         }
     }
 }

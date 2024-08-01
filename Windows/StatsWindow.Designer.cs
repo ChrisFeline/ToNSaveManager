@@ -32,6 +32,7 @@
             statsTable = new TableLayoutPanel();
             contextMenu = new ContextMenuStrip(components);
             ctxTypeInValue = new ToolStripMenuItem();
+            btnSwitch = new Button();
             contextMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -44,27 +45,43 @@
             statsTable.ColumnCount = 2;
             statsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             statsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            statsTable.ForeColor = SystemColors.ControlLightLight;
-            statsTable.Location = new Point(12, 12);
+            statsTable.ForeColor = Color.White;
+            statsTable.Location = new Point(3, 33);
             statsTable.Name = "statsTable";
             statsTable.RowCount = 1;
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            statsTable.Size = new Size(243, 22);
+            statsTable.Size = new Size(397, 22);
             statsTable.TabIndex = 0;
             // 
             // contextMenu
             // 
             contextMenu.Items.AddRange(new ToolStripItem[] { ctxTypeInValue });
             contextMenu.Name = "contextMenu";
-            contextMenu.Size = new Size(181, 48);
+            contextMenu.Size = new Size(143, 26);
             // 
             // ctxTypeInValue
             // 
             ctxTypeInValue.Name = "ctxTypeInValue";
-            ctxTypeInValue.Size = new Size(180, 22);
+            ctxTypeInValue.Size = new Size(142, 22);
             ctxTypeInValue.Text = "Type in value";
             ctxTypeInValue.Click += ctxTypeInValue_Click;
+            // 
+            // btnSwitch
+            // 
+            btnSwitch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnSwitch.BackColor = Color.FromArgb(46, 52, 64);
+            btnSwitch.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnSwitch.FlatStyle = FlatStyle.Flat;
+            btnSwitch.ForeColor = Color.White;
+            btnSwitch.Location = new Point(3, 3);
+            btnSwitch.Name = "btnSwitch";
+            btnSwitch.Size = new Size(397, 24);
+            btnSwitch.TabIndex = 6;
+            btnSwitch.TabStop = false;
+            btnSwitch.Text = "Show Lobby Stats";
+            btnSwitch.UseVisualStyleBackColor = false;
+            btnSwitch.Click += btnSwitch_Click;
             // 
             // StatsWindow
             // 
@@ -73,12 +90,13 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(267, 74);
+            ClientSize = new Size(403, 132);
+            Controls.Add(btnSwitch);
             Controls.Add(statsTable);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "StatsWindow";
-            Padding = new Padding(0, 0, 0, 8);
+            Padding = new Padding(0, 0, 0, 4);
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
@@ -95,5 +113,6 @@
         private TableLayoutPanel statsTable;
         private ContextMenuStrip contextMenu;
         private ToolStripMenuItem ctxTypeInValue;
+        private Button btnSwitch;
     }
 }
