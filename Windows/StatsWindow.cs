@@ -17,17 +17,21 @@ namespace ToNSaveManager
         internal static void AddRound(bool survived) {
             if (MainWindow.Started) Stats.AddRound(survived);
             Lobby.AddRound(survived);
+            RefreshTable();
         }
         internal static void AddStun(bool isLocal) {
             if (MainWindow.Started) Stats.AddStun(isLocal);
             Lobby.AddStun(isLocal);
+            RefreshTable();
         }
         internal static void AddDamage(int damage) {
             if (MainWindow.Started) Stats.AddDamage(damage);
             Lobby.AddDamage(damage);
+            RefreshTable();
         }
 
         internal static StatsWindow? Instance { get; private set; }
+        internal static void RefreshTable() => Instance?.UpdateTable();
 
         readonly PropertyInfo[] TableProperties;
 
@@ -98,7 +102,8 @@ namespace ToNSaveManager
 
             if (control != null) {
                 ContextField = (PropertyInfo?)control.DataContext;
-                if (ContextField != null && ContextField.CanWrite) contextMenu.Show(control, e.Location);
+                ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
+                contextMenu.Show(control, e.Location);
             }
         }
 

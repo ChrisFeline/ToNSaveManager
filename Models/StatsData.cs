@@ -21,7 +21,6 @@ namespace ToNSaveManager.Models {
         [JsonIgnore] private bool IsDirty = true;
         internal void SetDirty() {
             IsDirty = true;
-            StatsWindow.Instance?.UpdateTable();
         }
 
         #region Properties
