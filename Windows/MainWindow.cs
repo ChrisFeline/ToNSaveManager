@@ -37,10 +37,15 @@ namespace ToNSaveManager
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e) {
+            Debug.WriteLine("Main Window form is closing.");
             WinSettings.Get.LastWindowWidth = this.Width;
             WinSettings.Get.LastWindowHeight = this.Height;
             WinSettings.Get.LastWindowSplit = splitContainer1.SplitterDistance;
             WinSettings.Export();
+        }
+
+        private void MainWindow_Activated(object sender, EventArgs e) {
+            if (EditWindow.IsActive) EditWindow.Instance.Focus();
         }
 
         private void mainWindow_Loaded(object sender, EventArgs e) {
@@ -77,6 +82,7 @@ namespace ToNSaveManager
             SetTitle(null);
 
             LilOSC.SendData(true);
+            StatsWindow.UpdateChatboxContent();
         }
 
         internal void LocalizeContent() {
@@ -605,7 +611,7 @@ namespace ToNSaveManager
             if (!context.IsRecent) return false;
 
             if (line.Contains(LogWatcher.LocationKeyword)) {
-                StatsWindow.Lobby.Clear();
+                StatsWindow.ClearLobby();
                 return true;
             }
 

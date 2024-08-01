@@ -93,6 +93,28 @@ namespace ToNSaveManager.Models
         public bool OSCEnabled { get; set; }
 
         /// <summary>
+        /// Enables OSC chatbox messages.
+        /// </summary>
+        public bool OSCSendChatbox { get; set; } = true;
+
+        /// <summary>
+        /// The template used for the chatbox message. Some strings will be replaced.
+        /// </summary>
+#if DEBUG
+        [JsonIgnore]
+#endif
+        public string OSCMessageTemplate { get; set; } =
+#if DEBUG
+            "Testing\n" +
+#endif
+            "Stuns by Me: {LobbyStuns}\nStuns by Players: {LobbyGlobalStuns}\nDamage: {LobbyDamageTaken}\nDeaths: {LobbyDeaths}\nSurvivals: {LobbySurvivals}";
+
+        /// <summary>
+        /// How often the message will be repeated to VRC for a consistent chatbox.
+        /// </summary>
+        public int OSCMessageInterval { get; set; } = 5;
+
+        /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
         /// </summary>
         public string? IgnoreRelease { get; set; }

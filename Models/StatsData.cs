@@ -18,7 +18,7 @@ namespace ToNSaveManager.Models {
             }
         }
 
-        [JsonIgnore] private bool IsDirty = true;
+        [JsonIgnore] internal bool IsDirty = false;
         internal void SetDirty() {
             IsDirty = true;
         }
@@ -102,7 +102,7 @@ namespace ToNSaveManager.Models {
         public void Export() {
             try {
                 if (IsDirty) {
-                    IsDirty = true;
+                    IsDirty = false;
 
                     string json = JsonConvert.SerializeObject(this);
                     File.WriteAllText(Destination, json);

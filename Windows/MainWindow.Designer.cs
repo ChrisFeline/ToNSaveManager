@@ -47,8 +47,8 @@
             btnObjectives = new Button();
             linkWiki = new Button();
             splitContainer1 = new SplitContainer();
-            linkSupport = new Button();
             btnStats = new Button();
+            linkSupport = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -253,22 +253,6 @@
             splitContainer1.TabStop = false;
             splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
             // 
-            // linkSupport
-            // 
-            linkSupport.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            linkSupport.BackColor = Color.FromArgb(46, 52, 64);
-            linkSupport.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
-            linkSupport.FlatStyle = FlatStyle.Flat;
-            linkSupport.ForeColor = Color.White;
-            linkSupport.Image = (Image)resources.GetObject("linkSupport.Image");
-            linkSupport.Location = new Point(299, 223);
-            linkSupport.Name = "linkSupport";
-            linkSupport.Size = new Size(24, 24);
-            linkSupport.TabIndex = 4;
-            linkSupport.TabStop = false;
-            linkSupport.UseVisualStyleBackColor = false;
-            linkSupport.Click += linkSupport_Click;
-            // 
             // btnStats
             // 
             btnStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -285,6 +269,22 @@
             btnStats.UseVisualStyleBackColor = false;
             btnStats.Click += btnStats_Click;
             // 
+            // linkSupport
+            // 
+            linkSupport.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            linkSupport.BackColor = Color.FromArgb(46, 52, 64);
+            linkSupport.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            linkSupport.FlatStyle = FlatStyle.Flat;
+            linkSupport.ForeColor = Color.White;
+            linkSupport.Image = (Image)resources.GetObject("linkSupport.Image");
+            linkSupport.Location = new Point(299, 223);
+            linkSupport.Name = "linkSupport";
+            linkSupport.Size = new Size(24, 24);
+            linkSupport.TabIndex = 4;
+            linkSupport.TabStop = false;
+            linkSupport.UseVisualStyleBackColor = false;
+            linkSupport.Click += linkSupport_Click;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -297,6 +297,7 @@
             MinimumSize = new Size(412, 256);
             Name = "MainWindow";
             Text = "ToN Save Manager";
+            Activated += MainWindow_Activated;
             FormClosing += MainWindow_FormClosing;
             Load += mainWindow_Loaded;
             Shown += mainWindow_Shown;

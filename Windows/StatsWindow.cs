@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Utils;
 using Windows.ApplicationModel.Contacts;
 
 namespace ToNSaveManager
@@ -11,8 +13,16 @@ namespace ToNSaveManager
         internal readonly static StatsData Stats = StatsData.Import();
         internal readonly static StatsData Lobby = new StatsData();
 
+        internal static void ClearLobby() {
+            Lobby.Clear();
+            RefreshTable();
+        }
+
         internal static void SetDirty() => Stats.SetDirty();
-        internal static void Export() => Stats.Export();
+        internal static void Export() {
+            if (Stats.IsDirty) UpdateChatboxContent();
+            Stats.Export();
+        }
 
         internal static void AddRound(bool survived) {
             if (MainWindow.Started) Stats.AddRound(survived);
@@ -33,15 +43,22 @@ namespace ToNSaveManager
         internal static StatsWindow? Instance { get; private set; }
         internal static void RefreshTable() => Instance?.UpdateTable();
 
-        readonly PropertyInfo[] TableProperties;
-        bool ShowLobbyStats;
-
-        public StatsWindow() {
-            InitializeComponent();
-
+        static readonly PropertyInfo[] TableProperties;
+        static readonly Dictionary<string, PropertyInfo> TableDictionary;
+        static StatsWindow () {
             TableProperties = Stats.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Where(p => !p.Name.StartsWith("_")).ToArray();
+
+            TableDictionary = new Dictionary<string, PropertyInfo>();
+            foreach (PropertyInfo info in TableProperties) {
+                TableDictionary.Add(info.Name.ToUpperInvariant(), info);
+            }
         }
+        public StatsWindow() {
+            InitializeComponent();
+        }
+
+        bool ShowLobbyStats;
 
         public static void Open(Form parent) {
             if (Instance == null || Instance.IsDisposed) Instance = new StatsWindow();
@@ -68,7 +85,6 @@ namespace ToNSaveManager
             PropertyInfo property;
 
             if (TableProperties.Length != statsTable.RowCount) {
-                Debug.WriteLine("Setting Row Count");
                 statsTable.RowCount = TableProperties.Length;
 
                 for (int i = 0; i < TableProperties.Length; i++) {
@@ -123,6 +139,7 @@ namespace ToNSaveManager
             if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result)) {
                 ContextField.SetValue(Stats, result);
                 Stats.SetDirty();
+                UpdateTable();
             }
         }
 
@@ -165,6 +182,30 @@ namespace ToNSaveManager
         private void btnSwitch_Click(object sender, EventArgs e) {
             ShowLobbyStats = !ShowLobbyStats;
             UpdateTable();
+        }
+
+        static readonly Regex MessageTemplatePattern = new Regex(@"{\w+}", RegexOptions.Compiled);
+        const string LOBBY_PREFIX = "LOBBY";
+
+        internal static void UpdateChatboxContent() {
+            if (!MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
+
+            Debug.WriteLine("Updating Chatbox");
+            string template = MessageTemplatePattern.Replace(Settings.Get.OSCMessageTemplate, UpdateChatboxEvaluator);
+            LilOSC.SetChatboxMessage(template);
+        }
+
+        static string UpdateChatboxEvaluator(Match m) {
+            string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+            Debug.WriteLine("KEY: " + key);
+
+            bool isLobby = key.StartsWith(LOBBY_PREFIX, StringComparison.OrdinalIgnoreCase);
+            if (isLobby) key = key.Substring(LOBBY_PREFIX.Length);
+
+            if (!string.IsNullOrEmpty(key) && TableDictionary.ContainsKey(key))
+                return TableDictionary[key].GetValue(isLobby ? Lobby : Stats)?.ToString() ?? m.Value;
+
+            return m.Value;
         }
     }
 }

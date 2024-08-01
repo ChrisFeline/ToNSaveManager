@@ -10,6 +10,8 @@ namespace ToNSaveManager
 
     public partial class EditWindow : Form
     {
+        internal static bool IsActive;
+
         internal static EditWindow Instance = new EditWindow();
         public static Size GetSize() => Instance.Size;
 
@@ -26,6 +28,7 @@ namespace ToNSaveManager
 
         public static EditResult Show(string content, string title, Form parent)
         {
+            IsActive = true;
             if (Instance.IsDisposed) Instance = new EditWindow();
 
             Instance.Text = title;
@@ -35,6 +38,7 @@ namespace ToNSaveManager
             Instance.RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
             DialogResult res = Instance.ShowDialog();
+            IsActive = false;
 
             return new EditResult() { Text = Instance.Content, Accept = (res == DialogResult.OK) };
         }
