@@ -53,9 +53,7 @@ namespace ToNSaveManager.Utils {
         }
 
         internal static void SendData(bool force = false) {
-            if (!Settings.Get.OSCEnabled) return;
-
-            if ((MainWindow.Started && IsDirty) || force) {
+            if (Settings.Get.OSCEnabled && ((MainWindow.Started && IsDirty) || force)) {
                 IsDirty = false;
 
                 int value = (int)TMatrix.RoundType;
@@ -76,8 +74,6 @@ namespace ToNSaveManager.Utils {
             }
 
             if (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage)) {
-                // Debug.WriteLine("Counting down");
-
                 ChatboxCountdown--;
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;

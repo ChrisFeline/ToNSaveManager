@@ -100,14 +100,8 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
-#if DEBUG
-        [JsonIgnore]
-#endif
         public string OSCMessageTemplate { get; set; } =
-#if DEBUG
-            "Testing\n" +
-#endif
-            "Stuns by Me: {LobbyStuns}\nStuns by Players: {LobbyGlobalStuns}\nDamage: {LobbyDamageTaken}\nDeaths: {LobbyDeaths}\nSurvivals: {LobbySurvivals}";
+            "- Lobby Stats -\nStuns by Me: {LobbyStuns}\nStuns by Players: {LobbyGlobalStuns}";
 
         /// <summary>
         /// How often the message will be repeated to VRC for a consistent chatbox.
