@@ -12,6 +12,8 @@ namespace ToNSaveManager
     public partial class StatsWindow : Form {
         internal readonly static StatsData Stats = StatsData.Import();
         internal readonly static StatsData Lobby = new StatsData();
+        internal static StatsWindow? Instance { get; private set; }
+        internal static void RefreshTable() => Instance?.UpdateTable();
 
         internal static void ClearLobby() {
             Lobby.Clear();
@@ -39,9 +41,6 @@ namespace ToNSaveManager
             Lobby.AddDamage(damage);
             RefreshTable();
         }
-
-        internal static StatsWindow? Instance { get; private set; }
-        internal static void RefreshTable() => Instance?.UpdateTable();
 
         static readonly PropertyInfo[] TableProperties;
         static readonly Dictionary<string, PropertyInfo> TableDictionary;
@@ -78,6 +77,31 @@ namespace ToNSaveManager
 
         internal void LocalizeContent() {
             LANG.C(this, "STATS.TITLE");
+            UpdateTable();
+
+            for (int i = 0; i < TableProperties.Length; i++) {
+                Control? control = statsTable.GetControlFromPosition(0, i);
+                if (control == null || control.DataContext == null) continue;
+
+                PropertyInfo property = (PropertyInfo)control.DataContext;
+
+                string key = "STATS.LABEL_" + property.Name.ToUpperInvariant();
+                (string? tx, string? tt) = LANG.T(key);
+
+                if (string.IsNullOrEmpty(tx)) control.Text = property.Name;
+                else control.Text = tx;
+
+                if (string.IsNullOrEmpty(tt)) tt = string.Empty;
+                else tt += "\n\n";
+                tt += LANG.S("STATS.CHATBOX_KEY_TOTAL", '{' + property.Name + '}') + '\n' +
+                      LANG.S("STATS.CHATBOX_KEY_LOBBY", "{Lobby" + property.Name + '}');
+
+                toolTip.SetToolTip(control, tt);
+            }
+
+            LANG.C(ctxTypeInValue, "STATS.CTX_TYPE_IN_VALUE");
+            LANG.C(ctxCopyStatName, "STATS.CTX_COPY_CHATBOX_KEY");
+
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
@@ -98,6 +122,7 @@ namespace ToNSaveManager
                             Anchor = AnchorStyles.Left | AnchorStyles.Right
                         };
                         control.DataContext = property;
+                        control.Tag = control.Text;
                         statsTable.Controls.Add(control, j, i);
 
                         control.MouseClick += Control_MouseClick;
@@ -114,7 +139,11 @@ namespace ToNSaveManager
                 control.Text = property.GetValue(ShowLobbyStats ? Lobby : Stats)?.ToString();
             }
 
-            btnSwitch.Text = ShowLobbyStats ? "Show Total Stats" : "Show Lobby Stats";
+            if (ShowLobbyStats) {
+                LANG.C(btnSwitch, "STATS.SHOW_TOTAL", toolTip, "Show Total Stats");
+            } else {
+                LANG.C(btnSwitch, "STATS.SHOW_LOBBY", toolTip, "Show Lobby Stats");
+            }
         }
 
         PropertyInfo? ContextField;
@@ -134,7 +163,7 @@ namespace ToNSaveManager
             if (ContextField == null) return;
 
             string value = ContextField.GetValue(Stats)?.ToString() ?? "";
-            EditResult show = EditWindow.Show(value, "Type in custom value", this);
+            EditResult show = EditWindow.Show(value, LANG.S("STATS.CTX_TYPE_IN_VALUE.TITLE") ?? "Type in custom value", this);
 
             if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result)) {
                 ContextField.SetValue(Stats, result);
@@ -151,7 +180,7 @@ namespace ToNSaveManager
             content = '{' + content + '}';
 
             Clipboard.SetDataObject(content, false, 4, 200);
-            MessageBox.Show("Copied to clipboard: " + content);
+            MessageBox.Show(LANG.S("STATS.CTX_COPY_CHATBOX_KEY.MESSAGE", content) ?? ("Copied to clipboard: " + content));
         }
 
         private void StatsWindow_Load(object sender, EventArgs e) {
@@ -189,15 +218,12 @@ namespace ToNSaveManager
 
         internal static void UpdateChatboxContent() {
             if (!MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
-
-            Debug.WriteLine("Updating Chatbox");
             string template = MessageTemplatePattern.Replace(Settings.Get.OSCMessageTemplate, UpdateChatboxEvaluator);
             LilOSC.SetChatboxMessage(template);
         }
 
         static string UpdateChatboxEvaluator(Match m) {
             string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
-            Debug.WriteLine("KEY: " + key);
 
             bool isLobby = key.StartsWith(LOBBY_PREFIX, StringComparison.OrdinalIgnoreCase);
             if (isLobby) key = key.Substring(LOBBY_PREFIX.Length);

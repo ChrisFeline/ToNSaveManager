@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Policy;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
@@ -52,6 +53,7 @@ namespace ToNSaveManager.Windows
             LANG.C(groupBoxNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
             LANG.C(groupBoxTime, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
             LANG.C(groupBoxStyle, "SETTINGS.GROUP.STYLE", toolTip);
+            LANG.C(groupBoxOSC, "SETTINGS.GROUP.OSC", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -94,6 +96,7 @@ namespace ToNSaveManager.Windows
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
+            checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
 
             FillLanguageBox();
         }
@@ -157,6 +160,24 @@ namespace ToNSaveManager.Windows
             if (e.Button != MouseButtons.Left) return;
             Stopwatch.Start();
             CancelNext = false;
+        }
+
+        private void checkSendChatbox_MouseDown(object sender, MouseEventArgs e) {
+            if (e.Button != MouseButtons.Right) return;
+
+            string template = Settings.Get.OSCMessageTemplate;
+            template = template.Replace("\n", "\\n");
+
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this);
+            if (edit.Accept) {
+                template = edit.Text.Replace("\\n", "\n");
+                Settings.Get.OSCMessageTemplate = template;
+                Settings.Export();
+            }
+        }
+
+        private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
+            if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
         }
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {

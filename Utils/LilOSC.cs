@@ -82,7 +82,6 @@ namespace ToNSaveManager.Utils {
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;
 
-                    Debug.WriteLine("Sending Message: " + ChatboxMessage);
                     SendChatbox(ChatboxMessage);
                 }
             }

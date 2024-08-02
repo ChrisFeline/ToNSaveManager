@@ -62,6 +62,11 @@ namespace ToNSaveManager.Localization {
                 });
             }
 
+#if DEBUG
+            if (!string.IsNullOrEmpty(result))
+                result = '!' + result;
+#endif
+
             return result;
         }
 
@@ -69,9 +74,10 @@ namespace ToNSaveManager.Localization {
             return (S(key, args), S(key + ".TT", args));
         }
 
-        public static void C(Control control, string key, ToolTip? toolTip = null) {
+        public static void C(Control control, string key, ToolTip? toolTip = null, string? value = null) {
             (string? tx, string? tt) = T(key);
             if (!string.IsNullOrEmpty(tx)) control.Text = tx;
+            else if (!string.IsNullOrEmpty(value)) control.Text = value;
             if (!string.IsNullOrEmpty(tt)) {
                 if (toolTip == null) TooltipUtil.Set(control, tt);
                 else toolTip.SetToolTip(control, tt);

@@ -56,19 +56,21 @@
             checkColorObjectives = new CheckBox();
             languageSelectBox = new ComboBox();
             panel1 = new Panel();
+            groupBoxOSC = new GroupBox();
+            checkSendChatbox = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
             groupBoxTime.SuspendLayout();
             ctxData.SuspendLayout();
             groupBoxStyle.SuspendLayout();
             panel1.SuspendLayout();
+            groupBoxOSC.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxGeneral
             // 
             groupBoxGeneral.AutoSize = true;
             groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxGeneral.Controls.Add(checkOSCEnabled);
             groupBoxGeneral.Controls.Add(checkDiscordBackup);
             groupBoxGeneral.Controls.Add(checkShowWinLose);
             groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
@@ -80,7 +82,7 @@
             groupBoxGeneral.ForeColor = Color.White;
             groupBoxGeneral.Location = new Point(8, 31);
             groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(338, 174);
+            groupBoxGeneral.Size = new Size(338, 155);
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
@@ -89,7 +91,7 @@
             // 
             checkOSCEnabled.AutoSize = true;
             checkOSCEnabled.Dock = DockStyle.Top;
-            checkOSCEnabled.Location = new Point(3, 152);
+            checkOSCEnabled.Location = new Point(3, 19);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
             checkOSCEnabled.Size = new Size(332, 19);
@@ -201,7 +203,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 205);
+            groupBoxNotifications.Location = new Point(8, 246);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(338, 60);
             groupBoxNotifications.TabIndex = 2;
@@ -247,7 +249,7 @@
             groupBoxTime.Controls.Add(check24Hour);
             groupBoxTime.Dock = DockStyle.Top;
             groupBoxTime.ForeColor = Color.White;
-            groupBoxTime.Location = new Point(8, 265);
+            groupBoxTime.Location = new Point(8, 306);
             groupBoxTime.Name = "groupBoxTime";
             groupBoxTime.Size = new Size(338, 98);
             groupBoxTime.TabIndex = 3;
@@ -376,7 +378,7 @@
             groupBoxStyle.Controls.Add(checkColorObjectives);
             groupBoxStyle.Dock = DockStyle.Top;
             groupBoxStyle.ForeColor = Color.White;
-            groupBoxStyle.Location = new Point(8, 363);
+            groupBoxStyle.Location = new Point(8, 404);
             groupBoxStyle.Name = "groupBoxStyle";
             groupBoxStyle.Size = new Size(338, 41);
             groupBoxStyle.TabIndex = 6;
@@ -418,11 +420,40 @@
             panel1.Controls.Add(btnCheckForUpdates);
             panel1.Controls.Add(btnOpenData);
             panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(8, 404);
+            panel1.Location = new Point(8, 445);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(0, 4, 0, 0);
             panel1.Size = new Size(338, 28);
             panel1.TabIndex = 8;
+            // 
+            // groupBoxOSC
+            // 
+            groupBoxOSC.AutoSize = true;
+            groupBoxOSC.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBoxOSC.Controls.Add(checkSendChatbox);
+            groupBoxOSC.Controls.Add(checkOSCEnabled);
+            groupBoxOSC.Dock = DockStyle.Top;
+            groupBoxOSC.ForeColor = Color.White;
+            groupBoxOSC.Location = new Point(8, 186);
+            groupBoxOSC.Name = "groupBoxOSC";
+            groupBoxOSC.Size = new Size(338, 60);
+            groupBoxOSC.TabIndex = 7;
+            groupBoxOSC.TabStop = false;
+            groupBoxOSC.Text = "OSC";
+            // 
+            // checkSendChatbox
+            // 
+            checkSendChatbox.AutoSize = true;
+            checkSendChatbox.Dock = DockStyle.Top;
+            checkSendChatbox.Location = new Point(3, 38);
+            checkSendChatbox.Name = "checkSendChatbox";
+            checkSendChatbox.Padding = new Padding(3, 0, 3, 0);
+            checkSendChatbox.Size = new Size(332, 19);
+            checkSendChatbox.TabIndex = 8;
+            checkSendChatbox.Tag = "OSCSendChatbox|Sends ToN information to the VRChat chatbox.\\nRight click to customize the message template.";
+            checkSendChatbox.Text = "Send Chatbox Message";
+            checkSendChatbox.UseVisualStyleBackColor = true;
+            checkSendChatbox.MouseDown += checkSendChatbox_MouseDown;
             // 
             // SettingsWindow
             // 
@@ -436,6 +467,7 @@
             Controls.Add(groupBoxStyle);
             Controls.Add(groupBoxTime);
             Controls.Add(groupBoxNotifications);
+            Controls.Add(groupBoxOSC);
             Controls.Add(groupBoxGeneral);
             Controls.Add(languageSelectBox);
             ForeColor = Color.White;
@@ -461,6 +493,8 @@
             groupBoxStyle.ResumeLayout(false);
             groupBoxStyle.PerformLayout();
             panel1.ResumeLayout(false);
+            groupBoxOSC.ResumeLayout(false);
+            groupBoxOSC.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -494,5 +528,7 @@
         private CheckBox checkOSCEnabled;
         private ComboBox languageSelectBox;
         private Panel panel1;
+        private GroupBox groupBoxOSC;
+        private CheckBox checkSendChatbox;
     }
 }

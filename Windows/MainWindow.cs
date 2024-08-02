@@ -90,6 +90,7 @@ namespace ToNSaveManager
             LANG.C(btnObjectives, "MAIN.OBJECTIVES");
             LANG.C(linkWiki, "MAIN.WIKI");
             LANG.C(linkSupport, "MAIN.SUPPORT");
+            LANG.C(btnStats, "MAIN.STATS");
 
             LANG.C(importToolStripMenuItem, "MAIN.CTX_IMPORT"); // .TITLE
             LANG.C(renameToolStripMenuItem, "MAIN.CTX_RENAME"); // .TITLE

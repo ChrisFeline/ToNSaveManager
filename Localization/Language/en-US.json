@@ -27,6 +27,8 @@
 	"MAIN.WIKI": "Wiki",
 	"MAIN.WIKI.TT": "Visit the wiki \"terror.moe\" for more useful information.",
 	"MAIN.SUPPORT.TT": "Buy Me A Coffee ❤️",
+	"MAIN.STATS": "Stats",
+	"MAIN.STATS.TT": "Display a list of tracked stats.",
 
 	"MAIN.CTX_IMPORT": "Import",
 	"MAIN.CTX_IMPORT.TITLE": "Import Save Code",
@@ -76,8 +78,6 @@
 	"SETTINGS.SAVEROUNDNOTE.TT": "Automatically set survived terror names as note.",
 	"SETTINGS.SHOWWINLOSE": "Show [R][W][D] Tags",
 	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a [R], [W] or [D] tag based on the source that triggered the save.",
-	"SETTINGS.OSCENABLED": "Send OSC Parameters",
-	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC.\nRight click this entry to open documentation about parameter names and types.",
 
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
@@ -91,6 +91,12 @@
 	"SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT": "`, `",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_COUNT": "**Player Count**: `{0}`",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_NOTE": "**Note**: `{0}`",
+
+	"SETTINGS.GROUP.OSC": "OSC",
+	"SETTINGS.OSCENABLED": "Send OSC Parameters",
+	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC.\nRight click this entry to open documentation about parameter names and types.",
+	"SETTINGS.OSCSENDCHATBOX": "Send Chatbox Message",
+	"SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nRight click this toggle to customize the message template.",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 
@@ -163,5 +169,24 @@
 	"OBJECTIVES.SNOWY_SPEED_COIL": "Snowy Speed Coil",
 	"OBJECTIVES.SNOWY_SPEED_COIL.TT": "There's something in the snow for you.",
 	"OBJECTIVES.TORCH_OF_OBSESSION": "Torch Of Obsession",
-	"OBJECTIVES.TORCH_OF_OBSESSION.TT": "Survive the Cold Night."
+	"OBJECTIVES.TORCH_OF_OBSESSION.TT": "Survive the Cold Night.",
+
+	"STATS.TITLE": "ToN Stats Tracker",
+	"STATS.SHOW_LOBBY": "Show Lobby Stats",
+	"STATS.SHOW_TOTAL": "Show Total Stats",
+	"STATS.LABEL_ROUNDS": "Rounds",
+	"STATS.LABEL_ROUNDS.TT": "Total ammount of rounds played. This is the same as (Deaths + Survivals = Rounds)",
+	"STATS.LABEL_DEATHS": "Deaths",
+	"STATS.LABEL_SURVIVALS": "Survivals",
+	"STATS.LABEL_STUNS": "Stuns",
+	"STATS.LABEL_GLOBALSTUNS": "Global Stuns",
+	"STATS.LABEL_DAMAGETAKEN": "Damage Taken",
+	"STATS.CHATBOX_KEY_TOTAL": "Total Chatbox Key: {0}",
+	"STATS.CHATBOX_KEY_LOBBY": "Lobby Chatbox Key: {0}",
+	"STATS.CTX_TYPE_IN_VALUE": "Type In Value",
+	"STATS.CTX_TYPE_IN_VALUE.TT": "You can type your own custom values to match the stats displayed on the ToN map.",
+	"STATS.CTX_TYPE_IN_VALUE.TITLE": "Type in custom value",
+	"STATS.CTX_COPY_CHATBOX_KEY": "Copy Chatbox Key",
+	"STATS.CTX_COPY_CHATBOX_KEY.TT": "Copy the chatbox key for this stat.\nThis can be used in the OSC Chatbox Template under Settings.",
+	"STATS.CTX_COPY_CHATBOX_KEY.MESSAGE": "Copied to clipboard: {0}"
 }
