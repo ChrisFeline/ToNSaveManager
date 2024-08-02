@@ -32,64 +32,65 @@
             statsTable = new TableLayoutPanel();
             contextMenu = new ContextMenuStrip(components);
             ctxTypeInValue = new ToolStripMenuItem();
-            btnSwitch = new Button();
             ctxCopyStatName = new ToolStripMenuItem();
+            btnSwitch = new Button();
             contextMenu.SuspendLayout();
             SuspendLayout();
             // 
             // statsTable
             // 
-            statsTable.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             statsTable.AutoSize = true;
             statsTable.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             statsTable.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             statsTable.ColumnCount = 2;
             statsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             statsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            statsTable.Dock = DockStyle.Top;
             statsTable.ForeColor = Color.White;
-            statsTable.Location = new Point(3, 33);
+            statsTable.Location = new Point(4, 28);
+            statsTable.Margin = new Padding(3, 10, 3, 3);
             statsTable.Name = "statsTable";
             statsTable.RowCount = 1;
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            statsTable.Size = new Size(397, 22);
+            statsTable.Size = new Size(316, 22);
             statsTable.TabIndex = 0;
             // 
             // contextMenu
             // 
             contextMenu.Items.AddRange(new ToolStripItem[] { ctxTypeInValue, ctxCopyStatName });
             contextMenu.Name = "contextMenu";
-            contextMenu.Size = new Size(181, 70);
+            contextMenu.Size = new Size(158, 48);
             // 
             // ctxTypeInValue
             // 
             ctxTypeInValue.Name = "ctxTypeInValue";
-            ctxTypeInValue.Size = new Size(180, 22);
+            ctxTypeInValue.Size = new Size(157, 22);
             ctxTypeInValue.Text = "Type in value";
             ctxTypeInValue.Click += ctxTypeInValue_Click;
             // 
+            // ctxCopyStatName
+            // 
+            ctxCopyStatName.Name = "ctxCopyStatName";
+            ctxCopyStatName.Size = new Size(157, 22);
+            ctxCopyStatName.Text = "Copy stat name";
+            ctxCopyStatName.Click += ctxCopyStatName_Click;
+            // 
             // btnSwitch
             // 
-            btnSwitch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnSwitch.BackColor = Color.FromArgb(46, 52, 64);
+            btnSwitch.Dock = DockStyle.Top;
             btnSwitch.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnSwitch.FlatStyle = FlatStyle.Flat;
             btnSwitch.ForeColor = Color.White;
-            btnSwitch.Location = new Point(3, 3);
+            btnSwitch.Location = new Point(4, 4);
             btnSwitch.Name = "btnSwitch";
-            btnSwitch.Size = new Size(397, 24);
+            btnSwitch.Size = new Size(316, 24);
             btnSwitch.TabIndex = 6;
             btnSwitch.TabStop = false;
             btnSwitch.Text = "Show Lobby Stats";
             btnSwitch.UseVisualStyleBackColor = false;
             btnSwitch.Click += btnSwitch_Click;
-            // 
-            // ctxCopyStatName
-            // 
-            ctxCopyStatName.Name = "ctxCopyStatName";
-            ctxCopyStatName.Size = new Size(180, 22);
-            ctxCopyStatName.Text = "Copy stat name";
-            ctxCopyStatName.Click += ctxCopyStatName_Click;
             // 
             // StatsWindow
             // 
@@ -98,13 +99,14 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(403, 132);
-            Controls.Add(btnSwitch);
+            ClientSize = new Size(324, 120);
             Controls.Add(statsTable);
+            Controls.Add(btnSwitch);
             MaximizeBox = false;
             MinimizeBox = false;
+            MinimumSize = new Size(340, 0);
             Name = "StatsWindow";
-            Padding = new Padding(0, 0, 0, 4);
+            Padding = new Padding(4);
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
