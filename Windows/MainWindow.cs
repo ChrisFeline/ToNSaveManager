@@ -126,16 +126,50 @@ namespace ToNSaveManager
                     return;
 
                 if (isRight && index == listBoxKeys.IndexFromPoint(e.Location)) {
-                    renameToolStripMenuItem.Enabled = listBoxKeys.SelectedItem != null && ((History)listBoxKeys.SelectedItem).IsCustom;
-                    ctxMenuKeys.Show((ListBox)sender, e.Location);
+                    ctxMenuKeys_Show((ListBox)sender, e.Location);
                 }
 
                 UpdateEntries();
             }
         }
 
-        private void listBoxKeys_KeyPress(object sender, KeyPressEventArgs e) {
-            if (listBoxKeys.SelectedItem != null) UpdateEntries();
+        private void listBoxKeys_KeyDown(object sender, KeyEventArgs e) {
+            int count = listBoxKeys.Items.Count, index;
+
+            if (count > 0) {
+                switch (e.KeyCode) {
+                    case Keys.Enter:
+                        if (listBoxKeys.SelectedItem != null) {
+                            if (e.Shift) ctxMenuKeys_Show((ListBox)sender, listBoxKeys.GetItemRectangle(listBoxKeys.SelectedIndex).Location);
+                            else UpdateEntries();
+                        }
+                        break;
+
+                    case Keys.Down:
+                        index = listBoxKeys.SelectedIndex + 1;
+                        if (index >= listBoxKeys.Items.Count) index = 0;
+                        listBoxKeys.SelectedIndex = Math.Max(index, 0);
+                        break;
+
+                    case Keys.Up:
+                        index = listBoxKeys.SelectedIndex - 1;
+                        if (index < 0) index = listBoxKeys.Items.Count - 1;
+                        listBoxKeys.SelectedIndex = Math.Min(index, listBoxKeys.Items.Count - 1);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            e.Handled = true;
+        }
+
+        private void ctxMenuKeys_Show(Control control, Point position) {
+            importToolStripMenuItem.Enabled = renameToolStripMenuItem.Enabled =
+                listBoxKeys.SelectedItem != null && ((History)listBoxKeys.SelectedItem).IsCustom;
+
+            ctxMenuKeys.Show(control, position);
         }
 
         #region Context Menu | Keys
