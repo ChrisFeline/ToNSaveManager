@@ -165,6 +165,7 @@ namespace ToNSaveManager
             e.Handled = true;
         }
 
+        #region Context Menu | Keys
         private void ctxMenuKeys_Show(Control control, Point position) {
             importToolStripMenuItem.Enabled = renameToolStripMenuItem.Enabled =
                 listBoxKeys.SelectedItem != null && ((History)listBoxKeys.SelectedItem).IsCustom;
@@ -172,7 +173,6 @@ namespace ToNSaveManager
             ctxMenuKeys.Show(control, position);
         }
 
-        #region Context Menu | Keys
         private void ctxMenuKeysImport_Click(object sender, EventArgs e) {
             if (listBoxKeys.SelectedItem == null) return;
             History h = (History)listBoxKeys.SelectedItem;
