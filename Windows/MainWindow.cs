@@ -125,11 +125,17 @@ namespace ToNSaveManager
                 if (index < 0)
                     return;
 
-                if (isRight && index == listBoxKeys.IndexFromPoint(e.Location))
+                if (isRight && index == listBoxKeys.IndexFromPoint(e.Location)) {
+                    renameToolStripMenuItem.Enabled = listBoxKeys.SelectedItem != null && ((History)listBoxKeys.SelectedItem).IsCustom;
                     ctxMenuKeys.Show((ListBox)sender, e.Location);
+                }
 
                 UpdateEntries();
             }
+        }
+
+        private void listBoxKeys_KeyPress(object sender, KeyPressEventArgs e) {
+            if (listBoxKeys.SelectedItem != null) UpdateEntries();
         }
 
         #region Context Menu | Keys
@@ -149,6 +155,7 @@ namespace ToNSaveManager
         private void ctxMenuKeysRename_Click(object sender, EventArgs e) {
             if (listBoxKeys.SelectedItem == null) return;
             History h = (History)listBoxKeys.SelectedItem;
+            if (!h.IsCustom) return;
 
             EditResult edit = EditWindow.Show(h.Name, LANG.S("MAIN.CTX_RENAME.TITLE") ?? "Set Collection Name", this);
             if (edit.Accept && !string.IsNullOrWhiteSpace(edit.Text)) {
@@ -757,5 +764,6 @@ namespace ToNSaveManager
         }
 
         #endregion
+
     }
 }

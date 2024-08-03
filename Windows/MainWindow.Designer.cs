@@ -73,6 +73,7 @@
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
+            listBoxKeys.KeyPress += listBoxKeys_KeyPress;
             listBoxKeys.MouseDown += listBoxKeys_MouseDown;
             listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
