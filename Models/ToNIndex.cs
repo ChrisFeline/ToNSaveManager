@@ -1,16 +1,18 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace ToNSaveManager.Models
 {
     internal struct TerrorMatrix
     {
+        const string ROUND_TYPE_ALTERNATE = " (Alternate)";
         internal static TerrorMatrix Empty = new TerrorMatrix();
 
         public int[] TerrorIndex;
         public string[] TerrorNames;
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
-        public bool IsSaboteour;
+        public bool IsSaboteur;
 
         public int Terror1 => TerrorIndex != null && TerrorIndex.Length > 0 ? TerrorIndex[0] : 0;
         public int Terror2 => TerrorIndex != null && TerrorIndex.Length > 1 ? TerrorIndex[1] : 0;
@@ -26,8 +28,12 @@ namespace ToNSaveManager.Models
 
         public TerrorMatrix(string roundType, params int[] indexes)
         {
+            int index = roundType.IndexOf(ROUND_TYPE_ALTERNATE);
+            bool isAlt = index > 0;
+            if (isAlt) roundType = roundType.Substring(0, index);
+
             TerrorIndex = indexes;
-            RoundTypeRaw = GetEngRoundType(roundType);
+            RoundTypeRaw = GetEngRoundType(roundType, isAlt);
             RoundType = GetRoundType(RoundTypeRaw);
 
             switch (RoundType)
@@ -35,16 +41,21 @@ namespace ToNSaveManager.Models
                 // first index only
                 case ToNRoundType.Classic:
                 case ToNRoundType.Fog:
+                case ToNRoundType.Ghost:
                 case ToNRoundType.Punished:
                 case ToNRoundType.Sabotage:
                 case ToNRoundType.Cracked:
                 case ToNRoundType.Alternate: // index is alt
-                    int index = indexes[0];
-                    string name = ToNIndex.Instance[index, RoundType == ToNRoundType.Alternate];
+                case ToNRoundType.Fog_Alternate:
+                case ToNRoundType.Ghost_Alternate:
+                    index = indexes[0];
+                    string name = ToNIndex.Instance[index, RoundType == ToNRoundType.Alternate || isAlt];
                     TerrorNames = new string[] { name };
                     break;
 
                 case ToNRoundType.Bloodbath:
+                case ToNRoundType.Double_Trouble:
+                case ToNRoundType.EX:
                 case ToNRoundType.Midnight:
                     TerrorNames = new string[indexes.Length];
                     for (int i = 0; i < TerrorNames.Length; i++)
@@ -63,6 +74,10 @@ namespace ToNSaveManager.Models
                     break;
                 case ToNRoundType.Eight_Pages: // ???
                     TerrorNames = new string[] { "???" }; // ???
+                    break;
+
+                case ToNRoundType.Cold_Night:
+                    TerrorNames = new string[] { "Rift Monsters" };
                     break;
 
                 default:
@@ -84,6 +99,10 @@ namespace ToNSaveManager.Models
             "Fog"         , "霧", // Like classic
             "Punished"    , "パニッシュ", // Like classic
             "Sabotage"    , "サボタージュ", // Like classic
+
+            "Sabotage"    , "Among Us",   // April fools
+            "Sabotage"    , "アモングアス", // April fools
+
             "Cracked"     , "狂気", // Like classic
             "Bloodbath"   , "ブラッドバス", // (0, 1, 2)
 
@@ -103,12 +122,20 @@ namespace ToNSaveManager.Models
 
             // Events
             "Cold Night"  , "冷たい夜", // Winterfest
+
+            // New
+            "Unbound"     , "アンバウンド",
+            "Ghost"       , "ゴースト",
+
+            "Double Trouble", "ダブル・トラブル",
         };
 
-        static string GetEngRoundType(string roundType)
+        static string GetEngRoundType(string roundType, bool alternate)
         {
             int index = Array.IndexOf(RoundTypeNames, roundType);
-            return index < 0 ? roundType : RoundTypeNames[index - (index % 2)];
+            string name = index < 0 ? roundType : RoundTypeNames[index - (index % 2)];
+            if (alternate) name += " Alternate";
+            return name;
         }
 
         static readonly Dictionary<ToNRoundType, string> MoonNames = new () {
@@ -128,36 +155,37 @@ namespace ToNSaveManager.Models
 
         internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
         {
-            { ToNRoundType.Unknown,     16721714 },
-            { ToNRoundType.Classic,     0xFFFFFF },
-            { ToNRoundType.Fog,         0x808486 },
-            { ToNRoundType.Punished,    0xFFF800 },
-            { ToNRoundType.Sabotage,    0x3BF37D },
-            { ToNRoundType.Cracked,     0xFF00D3 },
-            { ToNRoundType.Bloodbath,   0xF51313 },
+            { ToNRoundType.Unknown,             16721714 },
+            { ToNRoundType.Classic,             0xFFFFFF },
+            { ToNRoundType.Fog,                 0x808486 },
+            { ToNRoundType.Fog_Alternate,       0x808486 },
+            { ToNRoundType.Punished,            0xFFF800 },
+            { ToNRoundType.Sabotage,            0x3BF37D },
+            { ToNRoundType.Cracked,             0xFF00D3 },
 
-            { ToNRoundType.Midnight,    0xE23232 },
-            { ToNRoundType.Alternate,   0xF1F1F1 },
+            { ToNRoundType.Bloodbath,           0xF51313 },
+            { ToNRoundType.Double_Trouble,      0xF51313 },
+            { ToNRoundType.EX,                  0xF51313 },
 
-            { ToNRoundType.Mystic_Moon, 0xB0DEF9 },
-            { ToNRoundType.Twilight,    0xF8A900 },
-            { ToNRoundType.Blood_Moon,  0xF51313 },
-            { ToNRoundType.Solstice,    0x3BF3B3 },
+            { ToNRoundType.Midnight,            0xE23232 },
+            { ToNRoundType.Alternate,           0xF1F1F1 },
 
-            { ToNRoundType.RUN,         0xC15E3D },
-            { ToNRoundType.Eight_Pages, 0xFFFFFF },
+            { ToNRoundType.Mystic_Moon,         0xB0DEF9 },
+            { ToNRoundType.Twilight,            0xF8A900 },
+            { ToNRoundType.Blood_Moon,          0xF51313 },
+            { ToNRoundType.Solstice,            0x3BF3B3 },
 
-            { ToNRoundType.Cold_Night,  0xA37BE4 },
+            { ToNRoundType.RUN,                 0xC15E3D },
+            { ToNRoundType.Eight_Pages,         0xFFFFFF },
+
+            { ToNRoundType.Cold_Night,          0xA37BE4 },
+
+            { ToNRoundType.Unbound,             0xF17944 },
+            { ToNRoundType.Ghost,               0xC3F7FF },
+            { ToNRoundType.Ghost_Alternate,     0xC3F7FF },
         };
     }
-
-    public enum ToNRoundResult
-    {
-        R, // Respawn
-        W, // Win
-        D, // Leaving
-    }
-
+    
     public enum ToNRoundType
     {
         Unknown, // Default
@@ -177,7 +205,24 @@ namespace ToNSaveManager.Models
         RUN, Eight_Pages,
 
         // New
-        Cold_Night
+        Cold_Night,
+
+        Unbound, // Don't know how it works
+        Ghost,
+
+        Fog_Alternate,
+        Ghost_Alternate,
+
+        GIGABYTE,
+
+        Double_Trouble, // Bloodbath - Two killers have same id
+        EX              // Bloodbath - All killers have same id
+    }
+
+    public enum ToNRoundResult {
+        R, // Respawn
+        W, // Win
+        D, // Leaving
     }
 
     internal class ToNIndex

@@ -532,6 +532,8 @@ namespace ToNSaveManager
         const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
 
         const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
+        const string KILLER_MATRIX_UNKNOWN = "Killers is unknown - ";
+        const string KILLER_MATRIX_REVEAL = "Killers have been revealed - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
@@ -620,21 +622,27 @@ namespace ToNSaveManager
                 return true;
             }
 
-            if (line.StartsWith(KILLER_MATRIX_KEYWORD)) {
+            bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN);
+            bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL);
+            if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) {
                 int index = KILLER_MATRIX_KEYWORD.Length;
                 int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
                 if (rndInd < 0) return true;
 
                 string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
-                string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 int[] killerMatrix = new int[3];
 
-                for (int i = 0; i < kMatrixRaw.Length; i++) {
-                    killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                if (isUnknown) {
+                    killerMatrix[0] = killerMatrix[1] = killerMatrix[2] = byte.MaxValue;
+                } else {
+                    string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    for (int i = 0; i < kMatrixRaw.Length; i++) {
+                        killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                    }
                 }
 
                 TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
-                terrorMatrix.IsSaboteour = context.Get<bool>(ROUND_IS_SABO_KEY);
+                terrorMatrix.IsSaboteur = context.Get<bool>(ROUND_IS_SABO_KEY);
 
                 context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                 context.Rem(ROUND_IS_SABO_KEY);

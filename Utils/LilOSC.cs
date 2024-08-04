@@ -68,7 +68,7 @@ namespace ToNSaveManager.Utils {
                 value = TMatrix.Terror3;
                 if (LastTerror3 != value || force) SendParam(ParamTerror3, LastTerror3 = value);
 
-                if (LastSaboteur != TMatrix.IsSaboteour || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteour);
+                if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
 
                 if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
             }
