@@ -57,9 +57,16 @@ namespace ToNSaveManager.Models
                 case ToNRoundType.Double_Trouble:
                 case ToNRoundType.EX:
                 case ToNRoundType.Midnight:
+                    if (RoundType == ToNRoundType.Double_Trouble) {
+                        int ind = Array.IndexOf(indexes, indexes[0], 1);
+                        if (ind < 0) (indexes[0], indexes[2]) = (indexes[2], indexes[0]);
+                        else if (ind > 1) (indexes[2], indexes[1]) = (indexes[1], indexes[2]);
+                    }
+
                     TerrorNames = new string[indexes.Length];
                     for (int i = 0; i < TerrorNames.Length; i++)
                         TerrorNames[i] = ToNIndex.Instance[indexes[i], i > 1 && RoundType == ToNRoundType.Midnight];
+
                     break;
 
                 case ToNRoundType.Mystic_Moon:
