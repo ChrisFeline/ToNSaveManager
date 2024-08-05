@@ -34,12 +34,14 @@ namespace ToNSaveManager.Models
         static string TextRound = "Round Type:";
         static string TextTerrors = "Terrors in round:";
         static string TextPlayers = "Players in room:";
+        static string TextMap = "Map:";
 
         internal static void LocalizeContent() {
             TextNote = LANG.S("MAIN.ENTRY_NOTE") ?? "Note:";
             TextRound = LANG.S("MAIN.ENTRY_ROUND") ?? "Round Type:";
             TextTerrors = LANG.S("MAIN.ENTRY_TERRORS") ?? "Terrors in round:";
             TextPlayers = LANG.S("MAIN.ENTRY_PLAYERS") ?? "Players in room:";
+            TextMap = LANG.S("MAIN.ENTRY_MAP") ?? "Map:";
         }
 
         public string Note = string.Empty;
@@ -58,6 +60,7 @@ namespace ToNSaveManager.Models
 
         public ToNRoundType RT;
         public ToNIndex.TerrorInfo[]? TD;
+        public int MapID = -1;
 
         public ToNRoundResult RResult;
 
@@ -95,7 +98,7 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true)
+        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Timestamp.ToString("F"));
@@ -118,16 +121,24 @@ namespace ToNSaveManager.Models
                 else sb.AppendLine(TextRound + " " + RT.ToString());
                 
                 if (TD != null && TD.Length > 0) {
-                    sb.AppendLine(TextTerrors);
+                    sb.Append(TextTerrors);
                     for (int i = 0; i < TD.Length; i++) {
                         var t = TD[i];
-                        sb.AppendLine("- " + ToNIndex.Instance.GetTerror(t));
+                        sb.AppendLine();
+                        sb.Append("- " + ToNIndex.Instance.GetTerror(t));
                     }
                 } else if (RTerrors != null && RTerrors.Length > 0) {
                     sb.AppendLine(TextTerrors);
                     sb.AppendJoin("- ", RTerrors);
                 }
 #pragma warning restore CS0612 // Type or member is obsolete
+            }
+            if (showMap && MapID > -1) {
+                sb.AppendLine();
+                sb.AppendLine();
+
+                var map = ToNIndex.Instance.GetMap(MapID);
+                if (!map.IsEmpty) sb.AppendLine(TextMap + " " + map);
             }
             if (showPlayers && !string.IsNullOrEmpty(Players))
             {

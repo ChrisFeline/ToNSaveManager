@@ -56,6 +56,7 @@
 	"MAIN.ENTRY_ROUND": "Round Type:",
 	"MAIN.ENTRY_TERRORS": "Terrors in round:",
 	"MAIN.ENTRY_PLAYERS": "Players in room:",
+	"MAIN.ENTRY_MAP": "Map:",
 
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
 	"SETTINGS.OPEN_DATA_BTN": "Data",

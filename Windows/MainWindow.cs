@@ -537,6 +537,9 @@ namespace ToNSaveManager
         const string KILLER_MATRIX_REVEAL = "Killers have been revealed - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
+        const string ROUND_MAP_KEY = "rMap";
+        const string ROUND_MAP_LOCATION = "This round is taking place at ";
+
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
             LogContext context = e.Context;
@@ -592,10 +595,12 @@ namespace ToNSaveManager
                     context.Rem(ROUND_KILLERS_KEY);
                     context.Rem(ROUND_RESULT_KEY);
                     context.Rem(ROUND_IS_SABO_KEY);
+                    context.Rem(ROUND_MAP_KEY);
                 }
 
                 if (context.IsRecent) {
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+                    LilOSC.SetMap();
                     LilOSC.SetOptInStatus(isOptedIn);
                 }
                 return true;
@@ -604,6 +609,29 @@ namespace ToNSaveManager
             }
 
             if (!isOptedIn) return false;
+
+            // Handle map location
+            if (line.StartsWith(ROUND_MAP_LOCATION)) {
+                int index = line.LastIndexOf('(') + 1;
+                if (index <= 0) return true;
+
+                int indexEnd = line.IndexOf(')', index);
+                if (indexEnd < 0 || index >= indexEnd) return true;
+
+                int length = (line.IndexOf(')', index) - index);
+
+                string id_str = line.Substring(index, length);
+                string name = line.Substring(ROUND_MAP_LOCATION.Length, index - ROUND_MAP_LOCATION.Length - 1).Trim();
+
+                ToNIndex.Map map = ToNIndex.Instance.GetMap(name);
+                if (map.IsEmpty && int.TryParse(id_str, out int mapIndex))
+                    map = ToNIndex.Instance.GetMap(mapIndex);
+
+                context.Set(ROUND_MAP_KEY, map);
+
+                if (context.IsRecent) LilOSC.SetMap(map);
+                return true;
+            }
 
             if (line.StartsWith(ROUND_IS_SABO)) {
                 context.Set(ROUND_IS_SABO_KEY, true);
@@ -618,6 +646,7 @@ namespace ToNSaveManager
 
                 if (context.IsRecent) {
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+                    LilOSC.SetMap();
                     StatsWindow.AddRound(isOptedIn);
                 }
                 return true;
@@ -775,6 +804,12 @@ namespace ToNSaveManager
                     }
 
                     context.Rem(ROUND_KILLERS_KEY);
+                }
+
+                if (context.HasKey(ROUND_MAP_KEY)) {
+                    var map = context.Get<ToNIndex.Map>(ROUND_MAP_KEY);
+                    entry.MapID = map.IsEmpty ? -1 : map.Id;
+                    context.Rem(ROUND_MAP_KEY);
                 }
             }
 

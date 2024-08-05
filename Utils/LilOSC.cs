@@ -17,6 +17,7 @@ namespace ToNSaveManager.Utils {
         const string ParamTerror3 = "ToN_Terror3";
         const string ParamOptedIn = "ToN_OptedIn";
         const string ParamSaboteur = "ToN_Saboteur";
+        const string ParamMap = "ToN_Map";
 
         static bool IsDirty = false;
 
@@ -26,9 +27,13 @@ namespace ToNSaveManager.Utils {
         static int LastTerror3 = -1;
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
+        static int LastMapID = -1;
 
         static bool IsOptedIn = false;
         public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
+
+        static readonly ToNIndex.Map EmptyMap = new ToNIndex.Map() { IsEmpty = true, Id = 255, Name = "Empty" };
+        public static ToNIndex.Map RMap = EmptyMap;
 
         static string ChatboxMessage = string.Empty;
         static int ChatboxInterval;
@@ -44,6 +49,11 @@ namespace ToNSaveManager.Utils {
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             TMatrix = terrorMatrix;
+            IsDirty = true;
+        }
+
+        internal static void SetMap(ToNIndex.Map? map = null) {
+            RMap = map == null || map.IsEmpty ? EmptyMap : map;
             IsDirty = true;
         }
 
@@ -85,6 +95,7 @@ namespace ToNSaveManager.Utils {
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
 
                 if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
+                if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
             }
 
             if (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage)) {

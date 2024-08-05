@@ -308,6 +308,13 @@ namespace ToNSaveManager.Models
         public Map GetMap(int mapIndex) {
             return Maps.ContainsKey(mapIndex) ? Maps[mapIndex] : Map.Empty;
         }
+        public Map GetMap(string mapName) {
+            foreach (var pair in Maps) {
+                if (pair.Value.Name == mapName) return pair.Value;
+            }
+
+            return Map.Empty;
+        }
 
         public enum TerrorGroup {
             Terrors,
