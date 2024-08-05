@@ -214,7 +214,7 @@ namespace ToNSaveManager.Models
         // New
         Cold_Night,
 
-        Unbound, // Don't know how it works
+        Unbound, // Don't know how it works yet
         Ghost,
 
         Fog_Alternate,

@@ -529,6 +529,7 @@ namespace ToNSaveManager
         const string ROUND_LOST_KEYWORD = "Player lost,";
 
         const string ROUND_IS_SABO_KEY = "rSabo";
+        const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
         const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
 
         const string KILLER_MATRIX_KEYWORD = "Killers have been set - ";
@@ -648,6 +649,12 @@ namespace ToNSaveManager
                 context.Rem(ROUND_IS_SABO_KEY);
 
                 if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
+                return true;
+            }
+
+            if (context.Get<bool>(ROUND_IS_SABO_KEY) && line.StartsWith("Clearing Items // Ran Item Removal")) {
+                context.Rem(ROUND_IS_SABO_KEY);
+                if (context.IsRecent) LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                 return true;
             }
 
