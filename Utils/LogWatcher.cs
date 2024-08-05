@@ -97,8 +97,6 @@
                         if (firstRun) {
                             logContext.Position = GetParsedPos(logContext.DateKey);
                             logContext.RoomReadPos = logContext.Position;
-
-                            Debug.WriteLine("Setting Log Position: " + logContext.DateKey + " | " + logContext.Position);
                         }
                     }
 
@@ -191,17 +189,11 @@
             {
                 using (var stream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 65536, false))
                 {
-                    Debug.WriteLine("Setting write pos to: " + logContext.Position);
                     stream.Position = logContext.Position;
 
                     using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                     {
                         bool isNull;
-
-#if DEBUG
-                        bool firstLineIs = false;
-#endif
-
                         while (true)
                         {
                             var line = streamReader.ReadLine();
@@ -212,12 +204,6 @@
                             {
                                 if (LogBuilder.Length > 0)
                                 {
-#if DEBUG
-                                    if (!firstLineIs) {
-                                        firstLineIs = true;
-                                        Debug.WriteLine(" > " + LogBuilder);
-                                    }
-#endif
                                     HandleLine(LogBuilder.ToString(), logContext);
                                     LogBuilder.Clear();
 
@@ -309,7 +295,6 @@
                 logContext.Enter(worldName, lineDate);
 
                 logContext.RoomReadPos = logContext.ReadPos;
-                Debug.WriteLine("Setting room read position to: " + logContext.RoomReadPos);
 
                 return true;
             }

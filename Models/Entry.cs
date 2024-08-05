@@ -29,8 +29,7 @@ namespace ToNSaveManager.Models
         }
     }
 
-    internal class Entry
-    {
+    internal class Entry {
         static string TextNote = "Note:";
         static string TextRound = "Round Type:";
         static string TextTerrors = "Terrors in round:";
@@ -52,9 +51,14 @@ namespace ToNSaveManager.Models
         public int PlayerCount;
         public string? Players;
 
-        public string[]? RTerrors;
-        public string? RType;
+        // Obsolete
+        [Obsolete] public string[]? RTerrors { get; set; }
+        [Obsolete] public string? RType { get; set; }
+        // Obsolete
+
         public ToNRoundType RT;
+        public ToNIndex.TerrorInfo[]? TD;
+
         public ToNRoundResult RResult;
 
         [JsonIgnore] public History? Parent;
@@ -109,14 +113,21 @@ namespace ToNSaveManager.Models
 
                 // sb.AppendLine("Round info: " + (RResult == ToNRoundResult.W ? "Survived" : "Died"));
 
-                if (!string.IsNullOrEmpty(RType))
-                    sb.AppendLine(TextRound + " " + RType);
-
-                if (RTerrors != null && RTerrors.Length > 0)
-                {
+#pragma warning disable CS0612 // Type or member is obsolete
+                if (!string.IsNullOrEmpty(RType)) sb.AppendLine(TextRound + " " + RType);
+                else sb.AppendLine(TextRound + " " + RT.ToString());
+                
+                if (TD != null && TD.Length > 0) {
+                    sb.AppendLine(TextTerrors);
+                    for (int i = 0; i < TD.Length; i++) {
+                        var t = TD[i];
+                        sb.AppendLine("- " + ToNIndex.Instance.GetTerror(t));
+                    }
+                } else if (RTerrors != null && RTerrors.Length > 0) {
                     sb.AppendLine(TextTerrors);
                     sb.AppendJoin("- ", RTerrors);
                 }
+#pragma warning restore CS0612 // Type or member is obsolete
             }
             if (showPlayers && !string.IsNullOrEmpty(Players))
             {

@@ -59,14 +59,28 @@ namespace ToNSaveManager.Utils {
                 int value = (int)TMatrix.RoundType;
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
-                value = TMatrix.Terror1;
-                if (LastTerror1 != value || force) SendParam(ParamTerror1, LastTerror1 = value);
+                ToNIndex.TerrorInfo info1 = TMatrix.Terror1;
+                ToNIndex.TerrorInfo info2 = TMatrix.Terror1;
+                ToNIndex.TerrorInfo info3 = TMatrix.Terror1;
 
-                value = TMatrix.Terror2;
-                if (LastTerror2 != value || force) SendParam(ParamTerror2, LastTerror2 = value);
+                int value1 = info1.Index;
+                int value2 = info2.Index;
+                int value3 = info3.Index;
 
-                value = TMatrix.Terror3;
-                if (LastTerror3 != value || force) SendParam(ParamTerror3, LastTerror3 = value);
+                switch (TMatrix.RoundType) {
+                    case ToNRoundType.Eight_Pages:
+                        ToNIndex.Terror terror = ToNIndex.Instance.GetTerror(info1);
+                        value1 = terror.Id;
+                        value2 = (int)terror.Group;
+                        value3 = info1.Index;
+                        break;
+
+                    default: break;
+                }
+
+                if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
+                if (LastTerror2 != value2 || force) SendParam(ParamTerror2, LastTerror2 = value2);
+                if (LastTerror3 != value3 || force) SendParam(ParamTerror3, LastTerror3 = value3);
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
 

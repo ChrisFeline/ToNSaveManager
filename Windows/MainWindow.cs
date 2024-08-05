@@ -636,7 +636,9 @@ namespace ToNSaveManager
                 if (isUnknown) {
                     killerMatrix[0] = killerMatrix[1] = killerMatrix[2] = byte.MaxValue;
                 } else {
+                    if (isRevealed) index = KILLER_MATRIX_REVEAL.Length;
                     string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    Debug.WriteLine("ON: " + line);
                     for (int i = 0; i < kMatrixRaw.Length; i++) {
                         killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
                     }
@@ -764,21 +766,18 @@ namespace ToNSaveManager
 
                 if (context.HasKey(ROUND_KILLERS_KEY)) {
                     TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                    entry.RT = killers.RoundType;
+                    entry.TD = killers.Terrors;
 
-                    if (killers.TerrorNames.Length > 0) {
-                        entry.RTerrors = killers.TerrorNames;
-                        entry.RType = killers.RoundTypeRaw;
-                        entry.RT = killers.RoundType;
-
+                    if (killers.Terrors.Length > 0) {
                         if (Settings.Get.SaveRoundNote)
-                            entry.Note = string.Join(", ", killers.TerrorNames);
+                            entry.Note = string.Join(", ", killers.Terrors.Select(ToNIndex.Instance.GetTerror));
                     }
 
                     context.Rem(ROUND_KILLERS_KEY);
                 }
             }
 
-            Debug.WriteLine("SAVED SOMETHING");
             if (!context.IsHomeWorld) entry.Note = "(BETA) " + entry.Note;
 
             if (listBoxKeys.SelectedItem == collection)

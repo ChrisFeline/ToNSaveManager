@@ -97,16 +97,16 @@ namespace ToNSaveManager.Utils.Discord
                             EmbedData.Description += string.Format(LABEL_PLAYER, entry.Parent.DisplayName);
                         }
 
-                        if (!string.IsNullOrEmpty(entry.RType))
+                        if (entry.RT != ToNRoundType.Unknown)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_ROUND, entry.RType);
+                            EmbedData.Description += string.Format(LABEL_ROUND, entry.RT);
                         }
 
-                        if (entry.RTerrors != null && entry.RTerrors.Length > 0)
+                        if (entry.TD != null && entry.TD.Length > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.RTerrors));
+                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.TD.Select(ToNIndex.Instance.GetTerror)));
                         }
 
                         if (entry.PlayerCount > 0)
