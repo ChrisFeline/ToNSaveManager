@@ -14,7 +14,7 @@ namespace ToNSaveManager
 {
     public partial class MainWindow : Form {
         #region Initialization
-        internal static readonly LogWatcher LogWatcher = new LogWatcher();
+        internal static readonly LogWatcher LogWatcher = new LogWatcher("wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd");
         // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
         internal static MainWindow? Instance;
@@ -777,6 +777,9 @@ namespace ToNSaveManager
                     context.Rem(ROUND_KILLERS_KEY);
                 }
             }
+
+            Debug.WriteLine("SAVED SOMETHING");
+            if (!context.IsHomeWorld) entry.Note = "(BETA) " + entry.Note;
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);

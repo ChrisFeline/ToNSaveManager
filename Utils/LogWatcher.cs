@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using ToNSaveManager.Models;
@@ -42,12 +43,15 @@
 
         long GetParsedPos(string name) => MainWindow.SaveData.GetParsedPos(name);
         void SetParsedPos(string name, long pos, bool save) => MainWindow.SaveData.SetParsedPos(name, pos, save);
+
+        string HomeWorldID = string.Empty;
         #endregion
 
-        public LogWatcher()
+        public LogWatcher(string homeWorldID)
         {
             var logPath = GetVRChatDataLocation() + @"\VRChat";
             m_LogDirectoryInfo = new DirectoryInfo(logPath);
+            HomeWorldID = homeWorldID;
         }
 
         public void Start()
@@ -93,6 +97,8 @@
                         if (firstRun) {
                             logContext.Position = GetParsedPos(logContext.DateKey);
                             logContext.RoomReadPos = logContext.Position;
+
+                            Debug.WriteLine("Setting Log Position: " + logContext.DateKey + " | " + logContext.Position);
                         }
                     }
 
@@ -148,6 +154,32 @@
         static readonly Regex LogPattern = new Regex(@"^\d{4}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\s", RegexOptions.Compiled);
         static readonly StringBuilder LogBuilder = new StringBuilder();
 
+#pragma warning disable CS8601, CS8605, CS8600, CS8604 // Possible null reference assignment.
+        // https://stackoverflow.com/a/22975649
+        readonly static FieldInfo charPosField = typeof(StreamReader).GetField("_charPos", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        readonly static FieldInfo byteLenField = typeof(StreamReader).GetField("_byteLen", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        readonly static FieldInfo charBufferField = typeof(StreamReader).GetField("_charBuffer", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+        static long GetReaderPosition(StreamReader reader) {
+            // shift position back from BaseStream.Position by the number of bytes read
+            // into internal buffer.
+            int byteLen = (int)byteLenField.GetValue(reader);
+            var position = reader.BaseStream.Position - byteLen;
+
+            // if we have consumed chars from the buffer we need to calculate how many
+            // bytes they represent in the current encoding and add that to the position.
+            int charPos = (int)charPosField.GetValue(reader);
+            if (charPos > 0) {
+                char[] charBuffer = (char[])charBufferField.GetValue(reader);
+                var encoding = reader.CurrentEncoding;
+                var bytesConsumed = encoding.GetBytes(charBuffer, 0, charPos).Length;
+                position += bytesConsumed;
+            }
+
+            return position;
+        }
+#pragma warning restore CS8601, CS8605, CS8600, CS8604 // Possible null reference assignment.
+
         /// <summary>
         /// Parses the log file starting from the current position and updates the log context.
         /// </summary>
@@ -159,14 +191,19 @@
             {
                 using (var stream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 65536, false))
                 {
+                    Debug.WriteLine("Setting write pos to: " + logContext.Position);
                     stream.Position = logContext.Position;
 
                     using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                     {
                         bool isNull;
+
+#if DEBUG
+                        bool firstLineIs = false;
+#endif
+
                         while (true)
                         {
-                            logContext.ReadPos = stream.Position;
                             var line = streamReader.ReadLine();
                             isNull = line == null;
 
@@ -175,8 +212,16 @@
                             {
                                 if (LogBuilder.Length > 0)
                                 {
+#if DEBUG
+                                    if (!firstLineIs) {
+                                        firstLineIs = true;
+                                        Debug.WriteLine(" > " + LogBuilder);
+                                    }
+#endif
                                     HandleLine(LogBuilder.ToString(), logContext);
                                     LogBuilder.Clear();
+
+                                    logContext.ReadPos = GetReaderPosition(streamReader);
                                 }
 
                                 if (isNull)
@@ -241,20 +286,35 @@
         }
 
         internal const string LocationKeyword = "[Behaviour] Entering Room: ";
+        internal const string InstanceKeyword = "[Behaviour] Joining wrld_";
+        internal const int InstanceKeywordLength = 20;
         private bool ParseLocation(string line, DateTime lineDate, LogContext logContext)
         {
-            if (!line.Contains(LocationKeyword)) return false;
+            if (line.Contains(InstanceKeyword)) {
+                var index = line.IndexOf(InstanceKeyword) + InstanceKeywordLength;
+                if (index >= line.Length) return false;
 
-            var index = line.IndexOf(LocationKeyword) + LocationKeyword.Length;
-            if (index >= line.Length) return false;
+                var instanceId = line.Substring(index).Trim('\n', '\r');
+                logContext.Enter(instanceId, instanceId.StartsWith(HomeWorldID));
 
-            var worldName = line.Substring(index).Trim('\n', '\r');
-            logContext.Enter(worldName, lineDate);
+                return true;
+            }
 
-            logContext.RoomReadPos = logContext.ReadPos;
-            Debug.WriteLine("Setting room read position to: " + logContext.RoomReadPos);
+            if (line.Contains(LocationKeyword)) {
 
-            return true;
+                var index = line.IndexOf(LocationKeyword) + LocationKeyword.Length;
+                if (index >= line.Length) return false;
+
+                var worldName = line.Substring(index).Trim('\n', '\r');
+                logContext.Enter(worldName, lineDate);
+
+                logContext.RoomReadPos = logContext.ReadPos;
+                Debug.WriteLine("Setting room read position to: " + logContext.RoomReadPos);
+
+                return true;
+            }
+
+            return false;
         }
 
         const string UserJoinKeyword = "[Behaviour] OnPlayerJoined";
@@ -312,6 +372,10 @@
             // Recent Instance info
             public long RoomReadPos { get; set; }
             public string? RoomName { get; private set; }
+
+            public string? InstanceID { get; private set; }
+            public bool IsHomeWorld { get; private set; }
+
             public DateTime RoomDate { get; private set; }
             public readonly HashSet<string> Players;
 
@@ -388,6 +452,14 @@
                 Players.Clear();
                 InstanceExceptions.Clear();
                 InstanceLogs.Clear();
+
+                Debug.WriteLine("Entering Room Name: " + name);
+            }
+            public void Enter(string instanceID, bool isHomeWorld) {
+                InstanceID = instanceID;
+                IsHomeWorld = isHomeWorld;
+
+                Debug.WriteLine($"Instace [{isHomeWorld}] : {instanceID}");
             }
 
             public void AddException(string exceptionLog)
