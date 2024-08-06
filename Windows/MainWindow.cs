@@ -628,8 +628,13 @@ namespace ToNSaveManager
                     map = ToNIndex.Instance.GetMap(mapIndex);
 
                 context.Set(ROUND_MAP_KEY, map);
-
                 if (context.IsRecent) LilOSC.SetMap(map);
+
+                if (map.Id == 68) { // RUN | The Meatball Man
+                    TerrorMatrix terrorMatrix = new TerrorMatrix("RUN", 0, 0, 0);
+                    context.Set(ROUND_KILLERS_KEY, terrorMatrix);
+                    if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
+                }
                 return true;
             }
 
@@ -667,7 +672,6 @@ namespace ToNSaveManager
                 } else {
                     if (isRevealed) index = KILLER_MATRIX_REVEAL.Length;
                     string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    Debug.WriteLine("ON: " + line);
                     for (int i = 0; i < kMatrixRaw.Length; i++) {
                         killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
                     }
