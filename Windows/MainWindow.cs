@@ -401,7 +401,8 @@ namespace ToNSaveManager
 
         private void linkWiki_Clicked(object sender, EventArgs e) {
             const string wiki = "https://terror.moe/";
-            OpenExternalLink(wiki);
+            const string wikiJP = "https://www.ton-jp.com/";
+            OpenExternalLink(LANG.SelectedKey == "ja-JP" ? wikiJP : wiki);
         }
 
         private void linkSupport_Click(object sender, EventArgs e) {

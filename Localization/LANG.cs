@@ -204,6 +204,8 @@ namespace ToNSaveManager.Localization {
             }
 
 #if DEBUG
+            Dictionary<string, Dictionary<string, string>> missingKeys = new Dictionary<string, Dictionary<string, string>>();
+            bool hasMissingKeys = false;
             foreach (var lang in LanguageData) {
                 string langKey = lang.Key;
                 if (langKey == "ts-TS") continue;
@@ -212,7 +214,15 @@ namespace ToNSaveManager.Localization {
                     if (lang.Value.ContainsKey(pair.Key)) continue;
 
                     Debug.WriteLine($"'{langKey}' Missing Key: '{pair.Key}'");
+                    if (!missingKeys.ContainsKey(langKey)) missingKeys[langKey] = new Dictionary<string, string>();
+                    missingKeys[langKey][pair.Key] = pair.Value;
+                    hasMissingKeys = true;
                 }
+            }
+
+            if (hasMissingKeys) {
+                string _json = JsonConvert.SerializeObject(missingKeys, Formatting.Indented);
+                File.WriteAllText("LANG_KEYS_PENDING.json", _json);
             }
 #endif
         }
