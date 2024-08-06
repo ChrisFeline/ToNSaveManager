@@ -202,6 +202,19 @@ namespace ToNSaveManager.Localization {
             } else if (string.IsNullOrEmpty(firstKey)) {
                 throw new Exception("Could not load any language pack.");
             }
+
+#if DEBUG
+            foreach (var lang in LanguageData) {
+                string langKey = lang.Key;
+                if (langKey == "ts-TS") continue;
+
+                foreach (var pair in SelectedDefault) {
+                    if (lang.Value.ContainsKey(pair.Key)) continue;
+
+                    Debug.WriteLine($"'{langKey}' Missing Key: '{pair.Key}'");
+                }
+            }
+#endif
         }
     }
 }
