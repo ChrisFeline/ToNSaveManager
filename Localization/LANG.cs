@@ -63,8 +63,8 @@ namespace ToNSaveManager.Localization {
             }
 
 #if DEBUG
-            if (!string.IsNullOrEmpty(result))
-                result = '!' + result;
+            //if (!string.IsNullOrEmpty(result))
+                //result = '!' + result;
 #endif
 
             return result;

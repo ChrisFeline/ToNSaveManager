@@ -100,6 +100,7 @@
 	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC.\nRight click this entry to open documentation about parameter names and types.",
 	"SETTINGS.OSCSENDCHATBOX": "Send Chatbox Message",
 	"SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nRight click this toggle to customize the message template.",
+	"SETTINGS.OSCSENDCHATBOX.TITLE": "Set Chatbox Message Template",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 

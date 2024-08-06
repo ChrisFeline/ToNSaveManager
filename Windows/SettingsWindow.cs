@@ -173,6 +173,8 @@ namespace ToNSaveManager.Windows
                 template = edit.Text.Replace("\\n", "\n");
                 Settings.Get.OSCMessageTemplate = template;
                 Settings.Export();
+
+                StatsWindow.UpdateChatboxContent();
             }
         }
 

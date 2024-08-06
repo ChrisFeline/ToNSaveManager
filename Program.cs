@@ -120,6 +120,9 @@ namespace ToNSaveManager
         /// <param name="showUpToDate">Shows a message if there's no updates available.</param>
         internal static bool StartCheckForUpdate(bool showUpToDate = false)
         {
+#if DEBUG
+            return false;
+#else
             Version? currentVersion = GetVersion();
             if (currentVersion == null) return false; // No current version?
 
@@ -160,6 +163,7 @@ namespace ToNSaveManager
             }
 
             return false;
+#endif
         }
 
         internal static bool CreateFileBackup(string filePath)
