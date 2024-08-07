@@ -18,6 +18,7 @@ namespace ToNSaveManager
         internal static void ClearLobby() {
             Lobby.Clear();
             RefreshTable();
+            UpdateChatboxContent();
         }
 
         internal static void SetDirty() => Stats.SetDirty();

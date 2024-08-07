@@ -70,16 +70,6 @@ namespace ToNSaveManager.Models {
         }
         #endregion
 
-        #region OSC Settings
-#if DEBUG
-        [JsonIgnore] private int m_MessageInterval = 3;
-#else
-        [JsonIgnore] private int m_MessageInterval = 15;
-#endif
-        public int _OSCMessageInterval { get => m_MessageInterval; set => m_MessageInterval = Math.Max(3, value); }
-        public string _OSCMessageTemplate { get; set; } = string.Empty;
-#endregion
-
         public static StatsData Import() {
             StatsData? statsData = null;
 

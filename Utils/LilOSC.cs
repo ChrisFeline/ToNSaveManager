@@ -70,8 +70,8 @@ namespace ToNSaveManager.Utils {
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 ToNIndex.TerrorInfo info1 = TMatrix.Terror1;
-                ToNIndex.TerrorInfo info2 = TMatrix.Terror1;
-                ToNIndex.TerrorInfo info3 = TMatrix.Terror1;
+                ToNIndex.TerrorInfo info2 = TMatrix.Terror2;
+                ToNIndex.TerrorInfo info3 = TMatrix.Terror3;
 
                 int value1 = info1.Index;
                 int value2 = info2.Index;
