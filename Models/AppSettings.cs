@@ -95,7 +95,7 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// Enables OSC chatbox messages.
         /// </summary>
-        public bool OSCSendChatbox { get; set; } = true;
+        public bool OSCSendChatbox { get; set; } = false;
 
         /// <summary>
         /// The template used for the chatbox message. Some strings will be replaced.
