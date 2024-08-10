@@ -6,35 +6,39 @@ using System.Threading.Tasks;
 
 namespace ToNSaveManager.Models.Index {
     public enum ToNRoundType {
-        Unknown, // Default
+        Unknown = 0,
 
         // Normal
-        Classic, Fog,
-        Punished, Sabotage,
-        Cracked, Bloodbath,
+        Classic,         //  1
+        Fog,             //  2
+        Punished,        //  3
+        Sabotage,        //  4
+        Cracked,         //  5
+        Bloodbath,       //  6
+        Double_Trouble,  //  7 // Bloodbath - Two killers have same id
+        EX,              //  8 // Bloodbath - All killers have same id
+        Ghost,           //  9
+        Unbound,         // 10
 
         // Contains alternates
-        Midnight, Alternate,
+        Midnight     =  50,
+        Alternate,   // 51
+        Fog_Alt,     // 52
+        Ghost_Alt,   // 53
 
         // Moons // Replace spaces with underscore
-        Mystic_Moon, Blood_Moon, Twilight, Solstice,
+        Mystic_Moon  =  100,
+        Blood_Moon,  // 101
+        Twilight,    // 102
+        Solstice,    // 103
 
-        // Special // Replace 8 with Eight
-        RUN, Eight_Pages,
+        // Specials
+        RUN,         // 104
+        Eight_Pages, // 105 // Replace 8 with Eight
+        GIGABYTE,    // 106
 
-        // New
-        Cold_Night,
-
-        Unbound, // Don't know how it works yet
-        Ghost,
-
-        Fog_Alternate,
-        Ghost_Alternate,
-
-        GIGABYTE,
-
-        Double_Trouble, // Bloodbath - Two killers have same id
-        EX              // Bloodbath - All killers have same id
+        // Events
+        Cold_Night   =  150 // Winterfest
     }
 
     public enum ToNRoundResult {
