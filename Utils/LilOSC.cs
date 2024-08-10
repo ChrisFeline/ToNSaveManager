@@ -69,7 +69,7 @@ namespace ToNSaveManager.Utils
                 IsDirty = false;
 
                 int value = (int)TMatrix.RoundType;
-                if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
+                if (LastRoundType != value && value == 0) SendParam(ParamRoundType, LastRoundType = value);
 
                 ToNIndex.TerrorInfo info1 = TMatrix.Terror1;
                 ToNIndex.TerrorInfo info2 = TMatrix.Terror2;
@@ -93,6 +93,7 @@ namespace ToNSaveManager.Utils
                 if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
                 if (LastTerror2 != value2 || force) SendParam(ParamTerror2, LastTerror2 = value2);
                 if (LastTerror3 != value3 || force) SendParam(ParamTerror3, LastTerror3 = value3);
+                if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
 
