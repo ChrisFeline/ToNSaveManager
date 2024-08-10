@@ -9,6 +9,7 @@ using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
 using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Localization;
+using ToNSaveManager.Models.Index;
 
 namespace ToNSaveManager
 {

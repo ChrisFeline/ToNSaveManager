@@ -7,8 +7,10 @@ using System.Text;
 using ToNSaveManager.Models;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using ToNSaveManager.Models.Index;
 
-namespace ToNSaveManager.Utils {
+namespace ToNSaveManager.Utils
+{
     internal static class LilOSC {
         static UdpClient? UdpClient;
         const string ParamRoundType = "ToN_RoundType";
