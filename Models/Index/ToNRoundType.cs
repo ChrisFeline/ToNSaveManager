@@ -38,7 +38,7 @@ namespace ToNSaveManager.Models.Index {
         GIGABYTE,    // 106
 
         // Events
-        Cold_Night   =  150 // Winterfest
+        Cold_Night   // 107 // Winterfest
     }
 
     public enum ToNRoundResult {
