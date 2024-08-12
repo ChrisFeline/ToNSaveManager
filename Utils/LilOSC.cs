@@ -54,6 +54,8 @@ namespace ToNSaveManager.Utils
         }
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
+            Debug.WriteLine("Setting Terror Matrix: " + terrorMatrix);
+
             TMatrix = terrorMatrix;
             IsDirty = true;
         }

@@ -10,6 +10,7 @@ using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models.Index;
+using System.Xml.Linq;
 
 namespace ToNSaveManager
 {
@@ -541,6 +542,7 @@ namespace ToNSaveManager
 
         const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
+        const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
 
         // Encounters
         static ToNIndex.Terror[] EncounterList = ToNIndex.Instance.Encounters.Values.ToArray();
@@ -640,6 +642,17 @@ namespace ToNSaveManager
                     context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
                 }
+                return true;
+            }
+            // Handle map swap
+            if (line.StartsWith(ROUND_MAP_SWAPPED)) {
+                string id_str = line.Substring(ROUND_MAP_SWAPPED.Length).Trim();
+                if (int.TryParse(id_str, out int mapIndex)) {
+                    ToNIndex.Map map = ToNIndex.Instance.GetMap(mapIndex);
+                    Debug.WriteLine($"Map swapped to: {map} ({mapIndex})");
+                    if (context.IsRecent) LilOSC.SetMap(map);
+                }
+
                 return true;
             }
 

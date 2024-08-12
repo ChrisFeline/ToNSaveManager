@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,10 @@ namespace ToNSaveManager.Models.Index {
             else Array.Resize(ref Encounter, Encounter.Length + 1);
 
             Encounter[Encounter.Length - 1] = index;
+        }
+
+        public override string ToString() {
+            return string.Join(", ", Terrors);
         }
 
         public TerrorMatrix() {
@@ -82,7 +87,7 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Blood_Moon:
                 case ToNRoundType.Twilight:
                 case ToNRoundType.Solstice:
-                    index = (int)RoundType - 9;
+                    index = (int)RoundType - (int)ToNRoundType.Mystic_Moon;
                     Terrors = [new(index, ToNIndex.TerrorGroup.Moons)];
                     break;
 

@@ -183,6 +183,10 @@ namespace ToNSaveManager.Models.Index {
                 Index = index;
                 Group = group;
             }
+
+            public override string ToString() {
+                return Index.ToString();
+            }
         }
         #endregion
     }
