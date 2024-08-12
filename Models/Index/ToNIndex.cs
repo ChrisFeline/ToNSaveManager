@@ -22,21 +22,22 @@ namespace ToNSaveManager.Models.Index {
         #endregion
 
         #region Properties & Fields
-        public Dictionary<int, Map> Maps { get; private set; } = new();
+        [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
+        [JsonProperty("t")] public Dictionary<int, Terror> Terrors { get; private set; } = new();
+        [JsonProperty("a")] public Dictionary<int, Terror> Alternates { get; private set; } = new();
 
-        public Dictionary<int, Terror> Terrors { get; private set; } = new();
-        public Dictionary<int, Terror> Alternates { get; private set; } = new();
+        [JsonProperty("n")] public Dictionary<int, Terror> Moons { get; private set; } = new();
+        [JsonProperty("s")] public Dictionary<int, Terror> Specials { get; private set; } = new();
+        [JsonProperty("e")] public Dictionary<int, Terror> Events { get; private set; } = new();
 
-        public Dictionary<int, Terror> Moons { get; private set; } = new();
-        public Dictionary<int, Terror> Specials { get; private set; } = new();
-        public Dictionary<int, Terror> Events { get; private set; } = new();
+        [JsonProperty("er")] public Dictionary<int, int[]> EightPRedirect { get; private set; } = new();
+        [JsonProperty("ep")] public Dictionary<int, Terror> EightPages { get; private set; } = new();
 
-        public Dictionary<int, int[]> EightPRedirect { get; private set; } = new();
-        public Dictionary<int, Terror> EightPages { get; private set; } = new();
+        [JsonProperty("u")] public Dictionary<int, Terror> Unbound { get; private set; } = new();
 
-        public Dictionary<int, Terror> Unbound { get; private set; } = new();
+        [JsonProperty("c")] public Dictionary<int, Terror> Encounters { get; private set; } = new();
 
-        public Dictionary<int, Item> Items { get; private set; } = new();
+        [JsonProperty("i")] public Dictionary<int, Item> Items { get; private set; } = new();
         #endregion
 
         #region Index Access Methods
@@ -68,6 +69,7 @@ namespace ToNSaveManager.Models.Index {
                 case TerrorGroup.Moons: table = Moons; break;
                 case TerrorGroup.Specials: table = Specials; break;
                 case TerrorGroup.Events: table = Events; break;
+                case TerrorGroup.Encounter: table = Encounters; break;
             }
             return table.ContainsKey(terrorIndex) ? table[terrorIndex] : Terror.Empty;
         }
@@ -113,7 +115,8 @@ namespace ToNSaveManager.Models.Index {
             Unbound,
             Moons,
             Specials,
-            Events
+            Events,
+            Encounter
         }
         #endregion
 
