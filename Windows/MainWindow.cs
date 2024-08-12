@@ -542,6 +542,9 @@ namespace ToNSaveManager
         const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
 
+        // Encounters
+        static ToNIndex.Terror[] EncounterList = ToNIndex.Instance.Encounters.Values.ToArray();
+
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
             LogContext context = e.Context;
@@ -693,6 +696,22 @@ namespace ToNSaveManager
                 context.Rem(ROUND_IS_SABO_KEY);
                 if (context.IsRecent) LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                 return true;
+            }
+
+            if (context.HasKey(ROUND_KILLERS_KEY)) {
+                for (int i = 0; i < EncounterList.Length; i++) {
+                    ToNIndex.Terror encounter = EncounterList[i];
+                    if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
+
+                    Debug.WriteLine("ENCOUNTERED: " + encounter);
+
+                    TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                    matrix.AddEncounter(encounter.Id);
+                    context.Set(ROUND_KILLERS_KEY, matrix);
+
+                    if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                    return true;
+                }
             }
 
             return false;

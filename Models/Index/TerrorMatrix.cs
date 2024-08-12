@@ -10,7 +10,7 @@ namespace ToNSaveManager.Models.Index {
         internal static TerrorMatrix Empty = new TerrorMatrix();
 
         public ToNIndex.TerrorInfo[] Terrors;
-        public ToNIndex.TerrorInfo[]? Encounter;
+        public int[]? Encounter;
 
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
@@ -20,8 +20,11 @@ namespace ToNSaveManager.Models.Index {
         public ToNIndex.TerrorInfo Terror2 => Terrors != null && Terrors.Length > 1 ? Terrors[1] : ToNIndex.TerrorInfo.Empty;
         public ToNIndex.TerrorInfo Terror3 => Terrors != null && Terrors.Length > 2 ? Terrors[2] : ToNIndex.TerrorInfo.Empty;
 
-        public void SetEncounter(int index) {
-            if (Encounter == null) Encounter = new ToNIndex.TerrorInfo[1];
+        public void AddEncounter(int index) {
+            if (Encounter == null) Encounter = new int[1];
+            else Array.Resize(ref Encounter, Encounter.Length + 1);
+
+            Encounter[Encounter.Length - 1] = index;
         }
 
         public TerrorMatrix() {

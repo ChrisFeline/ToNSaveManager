@@ -55,32 +55,48 @@
 Parameter Name | Type |
 ---------------|------|--------------------------
 ToN_RoundType  | INT  | The current round type.
+ToN_Map        | INT  | The current map of this round.
 ToN_Terror1    | INT  | The current terror index.
 ToN_Terror2    | INT  | The second terror index.
 ToN_Terror3    | INT  | The third terror index.
 ToN_OptedIn    | BOOL | Is the player opted-in at the lobby
 ToN_Saboteur   | BOOL | Is the player currently the Saboteur
+---------------|------|--------------------------
+ToN_Encounter0 | BOOL | Hungry Home Invader (Stop raiding my refrigerator)
+ToN_Encounter1 | BOOL | Atrached
+ToN_Encounter2 | BOOL | Wild Yet Bloodthirsty Creature
 </pre>
 </p></details>
 
 <details><summary>Round Type Values</summary><p>
 <pre>
- 0  =  Unknown
- 1  =  Classic
- 2  =  Fog
- 3  =  Punished
- 4  =  Sabotage
- 5  =  Cracked
- 6  =  Bloodbath
- 7  =  Midnight
- 8  =  Alternate
- 9  =  Mystic_Moon
-10  =  Blood_Moon
-11  =  Twilight
-12  =  Solstice
-13  =  RUN
-14  =  Eight_Pages
-15  =  Cold_Night
+<b>Basic</b>
+ 0   =  Unknown
+ 1   =  Classic
+ 2   =  Fog
+ 3   =  Punished
+ 4   =  Sabotage
+ 5   =  Cracked
+ 6   =  Bloodbath
+ 7   =  Double_Trouble
+ 8   =  EX
+ 9   =  Ghost
+ 10  =  Unbound
+<br><b>Alternates</b>
+ 50   =  Midnight
+ 51   =  Alternate
+ 52   =  Fog   (Alternate)
+ 53   =  Ghost (Alternate)
+<br><b>Moons</b>
+ 100  =  Mystic Moon
+ 101  =  Blood Moon
+ 102  =  Twilight
+ 103  =  Solstice
+<br><b>Specials</b>
+ 104  =  RUN
+ 105  =  8 PAGES
+ 106  =  GIGABYTE   (April Fools)
+ 107  =  COLD NIGHT (Winterfest)
 </pre>
 </p></details>
 

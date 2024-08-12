@@ -20,6 +20,7 @@ namespace ToNSaveManager.Utils
         const string ParamOptedIn = "ToN_OptedIn";
         const string ParamSaboteur = "ToN_Saboteur";
         const string ParamMap = "ToN_Map";
+        const string ParamEncounter = "ToN_Encounter";
 
         static bool IsDirty = false;
 
@@ -30,6 +31,9 @@ namespace ToNSaveManager.Utils
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
         static int LastMapID = -1;
+
+        static int[] EncounterKeys = ToNIndex.Instance.Encounters.Keys.ToArray();
+        static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
 
         static bool IsOptedIn = false;
         public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
@@ -93,6 +97,15 @@ namespace ToNSaveManager.Utils
                 if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
                 if (LastTerror2 != value2 || force) SendParam(ParamTerror2, LastTerror2 = value2);
                 if (LastTerror3 != value3 || force) SendParam(ParamTerror3, LastTerror3 = value3);
+
+                // Encounters
+                for (int i = 0; i < EncounterKeys.Length; i++) {
+                    bool value0 = TMatrix.Encounter != null && Array.IndexOf(TMatrix.Encounter, i) > -1;
+                    if (force || !LastEncounters.ContainsKey(i) || LastEncounters[i] != value0) {
+                        SendParam(ParamEncounter + i, LastEncounters[i] = value0);
+                    }
+                }
+
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
@@ -185,12 +198,20 @@ namespace ToNSaveManager.Utils
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
+
+#if DEBUG
+            Debug.WriteLine("Sending Param: " + name + " = " + value);
+#endif
         }
 
         private static void SendParam(string name, bool value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
+
+#if DEBUG
+            Debug.WriteLine("Sending Param: " + name + " = " + value);
+#endif
         }
 
         private static void SendChatbox(string message, bool direct = true, bool complete = false) {
