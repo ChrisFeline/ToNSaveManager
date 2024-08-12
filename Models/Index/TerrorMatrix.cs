@@ -44,8 +44,8 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Cracked:
                 // index is alt
                 case ToNRoundType.Alternate:
-                case ToNRoundType.Fog_Alt:
-                case ToNRoundType.Ghost_Alt:
+                case ToNRoundType.Fog_Alternate:
+                case ToNRoundType.Ghost_Alternate:
                     Terrors = [new(indexes[0], RoundType == ToNRoundType.Alternate || isAlt ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors)];
                     break;
 
@@ -154,7 +154,7 @@ namespace ToNSaveManager.Models.Index {
             { ToNRoundType.Unknown,             16721714 },
             { ToNRoundType.Classic,             0xFFFFFF },
             { ToNRoundType.Fog,                 0x808486 },
-            { ToNRoundType.Fog_Alt,             0x808486 },
+            { ToNRoundType.Fog_Alternate,       0x808486 },
             { ToNRoundType.Punished,            0xFFF800 },
             { ToNRoundType.Sabotage,            0x3BF37D },
             { ToNRoundType.Cracked,             0xFF00D3 },
@@ -178,7 +178,7 @@ namespace ToNSaveManager.Models.Index {
 
             { ToNRoundType.Unbound,             0xF17944 },
             { ToNRoundType.Ghost,               0xC3F7FF },
-            { ToNRoundType.Ghost_Alt,           0xC3F7FF },
+            { ToNRoundType.Ghost_Alternate,     0xC3F7FF },
         };
     }
 }

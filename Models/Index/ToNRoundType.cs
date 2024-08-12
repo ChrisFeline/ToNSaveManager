@@ -21,10 +21,10 @@ namespace ToNSaveManager.Models.Index {
         Unbound,         // 10
 
         // Contains alternates
-        Midnight     =  50,
-        Alternate,   // 51
-        Fog_Alt,     // 52
-        Ghost_Alt,   // 53
+        Midnight           =  50,
+        Alternate,         // 51
+        Fog_Alternate,     // 52
+        Ghost_Alternate,   // 53
 
         // Moons // Replace spaces with underscore
         Mystic_Moon  =  100,
