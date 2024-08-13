@@ -113,14 +113,14 @@ namespace ToNSaveManager.Models.Index {
 
         #region Enums
         public enum TerrorGroup {
-            Terrors,
-            Alternates,
-            EightPages,
-            Unbound,
-            Moons,
-            Specials,
-            Events,
-            Encounter
+            Terrors,    // 0
+            Alternates, // 1
+            EightPages, // 2
+            Unbound,    // 3
+            Moons,      // 4
+            Specials,   // 5
+            Events,     // 6
+            Encounter   // 7
         }
         #endregion
 
@@ -146,7 +146,7 @@ namespace ToNSaveManager.Models.Index {
         #region Model Classes
         public class Terror : EntryBase
         {
-            public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = 255 };
+            public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = byte.MaxValue };
 
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
@@ -157,7 +157,7 @@ namespace ToNSaveManager.Models.Index {
 
         public class Map : EntryBase
         {
-            public static readonly Map Empty = new Map() { IsEmpty = true, Id = 255 };
+            public static readonly Map Empty = new Map() { IsEmpty = true, Id = byte.MaxValue };
 
             [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Creator = string.Empty;
             [JsonProperty("o", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Origin = string.Empty;
@@ -168,7 +168,7 @@ namespace ToNSaveManager.Models.Index {
 
         public class Item : EntryBase
         {
-            public static readonly Item Empty = new Item() { IsEmpty = true, Id = 255 };
+            public static readonly Item Empty = new Item() { IsEmpty = true, Id = byte.MaxValue };
 
             [JsonProperty("d", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Description { get; set; } = string.Empty;
             [JsonProperty("u", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Usage { get; set; } = string.Empty;
@@ -177,7 +177,7 @@ namespace ToNSaveManager.Models.Index {
 
         public struct TerrorInfo
         {
-            public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = 0 };
+            public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue };
 
             [JsonProperty("i")] public int Index;
             [JsonProperty("g")] public TerrorGroup Group;

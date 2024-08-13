@@ -404,38 +404,5 @@ namespace ToNSaveManager.Models
                 new LegacyObjective() { Name = "Pale Pistol" },
             };
         }
-
-        /*
-        private static void GetDefaultObjectives()
-        {
-            return new List<Objective>() // Initialize default objectives
-            {
-                // Event items
-                Objective.Separator("Event Items Unlocks"),
-                new Objective("Sealed Sword", "Found in Museum. Break case with a stun tool.", "https://terror.moe/items/sealed_sword", Color.FromArgb(224, 208, 183)),
-                new Objective("Gran Faust", "Survive Arkus with the Sealed Sword.", "https://terror.moe/items/gran_faust", Color.FromArgb(255, 95, 198)),
-                new Objective("Divine Avenger", "Survive Arkus with the Sealed Sword after hitting them at least two times.", "https://terror.moe/items/divine_avenger", Color.FromArgb(255, 213, 90)),
-                new Objective("Maxwell", "Found in Its Maze. (spawns once per round)", "https://terror.moe/items/maxwell", Color.FromArgb(212, 212, 212)),
-                new Objective("Rock", "Survive Fusion Pilot.", "https://terror.moe/items/rock", Color.FromArgb(180, 180, 180)),
-                new Objective("Illumina", "Survive Bliss.", "https://terror.moe/items/illumina", Color.FromArgb(215, 134, 255)),
-                new Objective("Redbull", "Survive Roblander.", "https://terror.moe/items/redbull", Color.FromArgb(255, 61, 61)),
-                new Objective("Omori Plush", "Survive Something.", "https://terror.moe/items/omori_plush", Color.FromArgb(125, 133, 159)),
-                new Objective("Paradise Lost", "Beat the shit out of Apostles.", "https://terror.moe/items/paradise_lost", Color.FromArgb(255, 94, 93)),
-                // Skin Unlocks
-                Objective.Separator("Item Skin Unlocks"),
-                new Objective("Red Medkit", "Survive Virus with Medkit.", "https://terror.moe/items/medkit", Color.FromArgb(255, 48, 42)),
-                new Objective("Psycho Coil", "Survive Psychosis with Glow Coil.", "https://terror.moe/items/glow_coil", Color.FromArgb(158, 184, 255)),
-                new Objective("Bloody Teleporter", "Survive a Bloodbath round with Teleporter.", "https://terror.moe/items/teleporter", Color.FromArgb(255, 77, 71)),
-                new Objective("Pale Suitcase", "Survive an Alternate round with Teleporter.", "https://terror.moe/items/teleporter", Color.FromArgb(158, 254, 255)),
-                new Objective("Bloody Coil", "Survive a Bloodbath round with Speed Coil.", "https://terror.moe/items/speed_coil", Color.FromArgb(255, 77, 71)),
-                new Objective("Bloody Bat", "Survive a Bloodbath round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(255, 77, 71)),
-                new Objective("Metal Pipe", "Survive an Alternate round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(197, 197, 197)),
-                new Objective("Colorable Bat", "Survive a Cracked round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(187, 76, 255)),
-                new Objective("Justitia", "Survive a Midnight round with Metal Bat.", "https://terror.moe/items/metal_bat", Color.FromArgb(127, 242, 243)),
-                new Objective("Twilight Coil", "Survive Apocalypse Bird with Chaos Coil.", "https://terror.moe/items/chaos_coil", Color.FromArgb(255, 232, 158)),
-                new Objective("Pale Pistol", "Survive an Alternate round with Antique Revolver.", "https://terror.moe/items/antique_revolver", Color.FromArgb(158, 254, 255))
-            };
-        }
-        */
     }
 }

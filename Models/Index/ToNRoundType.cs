@@ -35,9 +35,8 @@ namespace ToNSaveManager.Models.Index {
         // Specials
         RUN,         // 104
         Eight_Pages, // 105 // Replace 8 with Eight
-        GIGABYTE,    // 106
-
         // Events
+        GIGABYTE,    // 106 // April Fools
         Cold_Night   // 107 // Winterfest
     }
 

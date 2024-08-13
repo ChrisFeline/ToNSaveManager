@@ -188,6 +188,7 @@ namespace ToNSaveManager.Models.Index {
             { ToNRoundType.Eight_Pages,         0xFFFFFF },
 
             { ToNRoundType.Cold_Night,          0xA37BE4 },
+            { ToNRoundType.GIGABYTE,            0xA37BE4 },
 
             { ToNRoundType.Unbound,             0xF17944 },
             { ToNRoundType.Ghost,               0xC3F7FF },

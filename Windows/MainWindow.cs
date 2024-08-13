@@ -658,6 +658,7 @@ namespace ToNSaveManager
 
             if (line.StartsWith(ROUND_IS_SABO)) {
                 context.Set(ROUND_IS_SABO_KEY, true);
+                if (context.IsRecent) LilOSC.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = true });
                 return true;
             }
 
@@ -675,10 +676,10 @@ namespace ToNSaveManager
                 return true;
             }
 
-            bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN);
-            bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL);
-            if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) {
-                int index = KILLER_MATRIX_KEYWORD.Length;
+            bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN); // Killers is unknown - 
+            bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL); // Killers have been revealed - 
+            if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) { // Killers have been set - 
+                int index  = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
                 int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
                 if (rndInd < 0) return true;
 
@@ -688,7 +689,6 @@ namespace ToNSaveManager
                 if (isUnknown) {
                     killerMatrix[0] = killerMatrix[1] = killerMatrix[2] = byte.MaxValue;
                 } else {
-                    if (isRevealed) index = KILLER_MATRIX_REVEAL.Length;
                     string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                     for (int i = 0; i < kMatrixRaw.Length; i++) {
                         killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
@@ -716,12 +716,17 @@ namespace ToNSaveManager
                     ToNIndex.Terror encounter = EncounterList[i];
                     if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
 
-                    Debug.WriteLine("ENCOUNTERED: " + encounter);
-
                     TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
-                    matrix.AddEncounter(encounter.Id);
-                    context.Set(ROUND_KILLERS_KEY, matrix);
 
+                    if (encounter.Id == 4) { // GIGABYTES
+                        Debug.WriteLine("Correcting Round Type to GIGABYTE.");
+                        matrix.RoundType = ToNRoundType.GIGABYTE;
+                        matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
+                    } else {
+                        matrix.AddEncounter(encounter.Id);
+                    }
+
+                    context.Set(ROUND_KILLERS_KEY, matrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
                     return true;
                 }

@@ -38,7 +38,7 @@ namespace ToNSaveManager.Utils
         static bool IsOptedIn = false;
         public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
 
-        static readonly ToNIndex.Map EmptyMap = new ToNIndex.Map() { IsEmpty = true, Id = 255, Name = "Empty" };
+        static readonly ToNIndex.Map EmptyMap = new ToNIndex.Map() { IsEmpty = true, Id = byte.MaxValue, Name = "Empty" };
         public static ToNIndex.Map RMap = EmptyMap;
 
         static string ChatboxMessage = string.Empty;
@@ -87,10 +87,12 @@ namespace ToNSaveManager.Utils
 
                 switch (TMatrix.RoundType) {
                     case ToNRoundType.Eight_Pages:
-                        ToNIndex.Terror terror = ToNIndex.Instance.GetTerror(info1);
-                        value1 = terror.Id;
-                        value2 = (int)terror.Group;
-                        value3 = info1.Index;
+                        if (value1 < 255) {
+                            ToNIndex.Terror terror = ToNIndex.Instance.GetTerror(info1);
+                            value1 = terror.Id;
+                            value2 = (int)terror.Group;
+                            value3 = info1.Index;
+                        }
                         break;
 
                     default: break;
