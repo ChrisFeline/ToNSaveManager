@@ -65,6 +65,7 @@ ToN_Saboteur   | BOOL | Is the player currently the Saboteur
 ToN_Encounter0 | BOOL | Hungry Home Invader (Stop raiding my refrigerator)
 ToN_Encounter1 | BOOL | Atrached
 ToN_Encounter2 | BOOL | Wild Yet Bloodthirsty Creature
+ToN_Encounter3 | BOOL | Glorbo
 </pre>
 </p></details>
 

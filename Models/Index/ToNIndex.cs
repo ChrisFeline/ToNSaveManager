@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace ToNSaveManager.Models.Index {
     internal class ToNIndex {
+#if !UNITY_EDITOR
         #region Import From Memory
         public static readonly ToNIndex Instance = Import();
 
@@ -20,6 +23,7 @@ namespace ToNSaveManager.Models.Index {
             }
         }
         #endregion
+#endif
 
         #region Properties & Fields
         [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
@@ -142,7 +146,7 @@ namespace ToNSaveManager.Models.Index {
         #region Model Classes
         public class Terror : EntryBase
         {
-            public static readonly Terror Empty = new Terror() { IsEmpty = true };
+            public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = 255 };
 
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
@@ -153,7 +157,7 @@ namespace ToNSaveManager.Models.Index {
 
         public class Map : EntryBase
         {
-            public static readonly Map Empty = new Map() { IsEmpty = true };
+            public static readonly Map Empty = new Map() { IsEmpty = true, Id = 255 };
 
             [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Creator = string.Empty;
             [JsonProperty("o", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Origin = string.Empty;
@@ -164,7 +168,7 @@ namespace ToNSaveManager.Models.Index {
 
         public class Item : EntryBase
         {
-            public static readonly Item Empty = new Item() { IsEmpty = true };
+            public static readonly Item Empty = new Item() { IsEmpty = true, Id = 255 };
 
             [JsonProperty("d", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Description { get; set; } = string.Empty;
             [JsonProperty("u", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Usage { get; set; } = string.Empty;
