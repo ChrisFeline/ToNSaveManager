@@ -42,6 +42,7 @@ namespace ToNSaveManager.Utils
         public static ToNIndex.Map RMap = EmptyMap;
 
         static string ChatboxMessage = string.Empty;
+        static bool ChatboxClear = false;
         static int ChatboxInterval;
         static int ChatboxCountdown = 0;
 
@@ -51,6 +52,7 @@ namespace ToNSaveManager.Utils
             ChatboxMessage = message;
 
             ChatboxCountdown = Math.Max(3 - (ChatboxInterval - ChatboxCountdown), 0);
+            ChatboxClear = string.IsNullOrEmpty(message);
         }
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
@@ -118,12 +120,13 @@ namespace ToNSaveManager.Utils
                 if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
             }
 
-            if (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage)) {
+            if (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && (!string.IsNullOrEmpty(ChatboxMessage) || ChatboxClear)) {
                 ChatboxCountdown--;
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;
 
                     SendChatbox(ChatboxMessage);
+                    if (ChatboxClear) ChatboxClear = false;
                 }
             }
         }

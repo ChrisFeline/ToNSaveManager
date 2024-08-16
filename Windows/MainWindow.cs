@@ -609,6 +609,7 @@ namespace ToNSaveManager
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                     LilOSC.SetMap();
                     LilOSC.SetOptInStatus(isOptedIn);
+                    StatsWindow.SetRoundActive(false);
                 }
                 return true;
             } else {
@@ -672,6 +673,7 @@ namespace ToNSaveManager
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                     LilOSC.SetMap();
                     StatsWindow.AddRound(isOptedIn);
+                    StatsWindow.SetRoundActive(false);
                 }
                 return true;
             }
@@ -701,13 +703,19 @@ namespace ToNSaveManager
                 context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                 context.Rem(ROUND_IS_SABO_KEY);
 
-                if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
+                if (context.IsRecent) {
+                    LilOSC.SetTerrorMatrix(terrorMatrix);
+                    StatsWindow.SetRoundActive(true);
+                }
                 return true;
             }
 
             if (context.Get<bool>(ROUND_IS_SABO_KEY) && line.StartsWith("Clearing Items // Ran Item Removal")) {
                 context.Rem(ROUND_IS_SABO_KEY);
-                if (context.IsRecent) LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+                if (context.IsRecent) {
+                    LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+                    StatsWindow.SetRoundActive(false);
+                }
                 return true;
             }
 

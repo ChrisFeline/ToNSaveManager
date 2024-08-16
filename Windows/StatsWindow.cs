@@ -43,6 +43,17 @@ namespace ToNSaveManager
             RefreshTable();
         }
 
+        internal static bool IsRoundActive;
+        internal static void SetRoundActive(bool active) {
+            if (IsRoundActive != active) {
+                Debug.WriteLine("Setting Round Active: " + active);
+
+                IsRoundActive = active;
+                if (IsRoundActive) LilOSC.SetChatboxMessage(string.Empty);
+                else UpdateChatboxContent();
+            }
+        }
+
         static readonly PropertyInfo[] TableProperties;
         static readonly Dictionary<string, PropertyInfo> TableDictionary;
         static StatsWindow () {
@@ -218,7 +229,7 @@ namespace ToNSaveManager
         const string LOBBY_PREFIX = "LOBBY";
 
         internal static void UpdateChatboxContent() {
-            if (!MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
+            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
             string template = MessageTemplatePattern.Replace(Settings.Get.OSCMessageTemplate, UpdateChatboxEvaluator);
             LilOSC.SetChatboxMessage(template);
         }
