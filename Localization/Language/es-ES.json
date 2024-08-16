@@ -173,6 +173,7 @@
     "SETTINGS.GROUP.OSC": "OSC",
     "SETTINGS.OSCSENDCHATBOX": "Enviar Mensaje de Chatbox",
     "SETTINGS.OSCSENDCHATBOX.TT": "Envía información del Terrors al chat de VRChat.\nHaga clic derecho para personalizar la plantilla del mensaje.",
+	"SETTINGS.OSCSENDCHATBOX.TITLE": "Establecer mensaje de Chatbox",
     "STATS.TITLE": "Estadísticas ToN",
     "STATS.SHOW_LOBBY": "Mostrar Stats de Sala",
     "STATS.SHOW_TOTAL": "Mostrar Stats Globales",

@@ -173,6 +173,7 @@
     "SETTINGS.GROUP.OSC": "OSC",
     "SETTINGS.OSCSENDCHATBOX": "Send Chatbox Message",
     "SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nRight click this toggle to customize the message template.",
+	"SETTINGS.OSCSENDCHATBOX.TITLE": "Set Chatbox Message Template",
     "STATS.TITLE": "ToN Stats Tracker",
     "STATS.SHOW_LOBBY": "Show Lobby Stats",
     "STATS.SHOW_TOTAL": "Show Total Stats",
