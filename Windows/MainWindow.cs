@@ -606,11 +606,15 @@ namespace ToNSaveManager
                 }
 
                 if (context.IsRecent) {
+                    Debug.WriteLine("RECENT");
+
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                     LilOSC.SetMap();
                     LilOSC.SetOptInStatus(isOptedIn);
                     StatsWindow.SetRoundActive(false);
                 }
+
+                Debug.WriteLine("Opted In: " + isOptedIn);
                 return true;
             } else {
                 isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
@@ -730,6 +734,7 @@ namespace ToNSaveManager
                         Debug.WriteLine("Correcting Round Type to GIGABYTE.");
                         matrix.RoundType = ToNRoundType.GIGABYTE;
                         matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
+                        matrix.TerrorCount = 1;
                     } else {
                         matrix.AddEncounter(encounter.Id);
                     }

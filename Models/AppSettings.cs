@@ -6,6 +6,7 @@ namespace ToNSaveManager.Models
 {
     internal class Settings
     {
+        internal static readonly Settings Default = new ();
         internal static readonly Settings Get;
         internal static void Export() => Get.TryExport();
 
@@ -91,6 +92,11 @@ namespace ToNSaveManager.Models
         /// Enables OSC and sends avatar parameters based on in-game events.
         /// </summary>
         public bool OSCEnabled { get; set; }
+
+        /// <summary>
+        /// Sends Terror color via OSC with HSV values.
+        /// </summary>
+        public bool OSCSendColor { get; set; }
 
         /// <summary>
         /// Enables OSC chatbox messages.

@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 
 namespace ToNSaveManager.Models.Index {
     internal class ToNIndex {
@@ -138,8 +140,21 @@ namespace ToNSaveManager.Models.Index {
         {
             [JsonIgnore] public bool IsEmpty { get; set; }
             [JsonProperty("i")] public int Id { get; set; }
-            [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)] public Color Color { get; set; }
             [JsonProperty("n", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Name { get; set; } = string.Empty;
+            [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)] public Color Color { get; set; } = Color.White;
+
+            [JsonIgnore] public Vector3 HSV {
+                get {
+                    int max = Math.Max(Color.R, Math.Max(Color.G, Color.B));
+                    int min = Math.Min(Color.R, Math.Min(Color.G, Color.B));
+
+                    float hue = Color.GetHue() / 360f;
+                    float sat = (max == 0) ? 0 : 1f - (1f * min / max);
+                    float val = max / 255f;
+
+                    return new Vector3(hue, sat, val);
+                }
+            }
         }
         #endregion
 

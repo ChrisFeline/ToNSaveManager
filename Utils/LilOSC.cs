@@ -8,6 +8,7 @@ using ToNSaveManager.Models;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
 using ToNSaveManager.Models.Index;
+using System.Numerics;
 
 namespace ToNSaveManager.Utils
 {
@@ -22,6 +23,10 @@ namespace ToNSaveManager.Utils
         const string ParamMap = "ToN_Map";
         const string ParamEncounter = "ToN_Encounter";
 
+        const string ParamTerrorColorH = "ToN_TerrorColorH";
+        const string ParamTerrorColorS = "ToN_TerrorColorS";
+        const string ParamTerrorColorV = "ToN_TerrorColorV";
+
         static bool IsDirty = false;
 
         static int LastRoundType = -1;
@@ -31,6 +36,7 @@ namespace ToNSaveManager.Utils
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
         static int LastMapID = -1;
+        static Color LastTerrorColor = Color.Black;
 
         static int[] EncounterKeys = ToNIndex.Instance.Encounters.Keys.ToArray();
         static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
@@ -88,8 +94,10 @@ namespace ToNSaveManager.Utils
                 int value3 = info3.Index;
 
                 switch (TMatrix.RoundType) {
+                    case ToNRoundType.Fog_Alternate:
+                    case ToNRoundType.Fog:
                     case ToNRoundType.Eight_Pages:
-                        if (value1 < 255) {
+                        if (TMatrix.RoundType == ToNRoundType.Eight_Pages && value1 < 255) {
                             ToNIndex.Terror terror = ToNIndex.Instance.GetTerror(info1);
                             value1 = terror.Id;
                             value2 = (int)terror.Group;
@@ -97,7 +105,43 @@ namespace ToNSaveManager.Utils
                         }
                         break;
 
-                    default: break;
+                    default:
+                        break;
+                }
+
+                // Color Testing
+                Color terrorColor;
+                if (TMatrix.TerrorCount > 0) {
+                    Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
+                    Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
+                    Color color3 = ToNIndex.Instance.GetTerror(info3).Color;
+
+                    Color c;
+                    int R = 0, G = 0, B = 0;
+                    for (int i = 0; i < TMatrix.TerrorCount; i++) {
+                        if (i > 2) break;
+
+                        switch (i) {
+                            case 0: c = color1; break;
+                            case 1: c = color2; break;
+                            case 2: c = color3; break;
+
+                            default: c = Color.White; break;
+                        }
+
+                        R += c.R;
+                        G += c.G;
+                        B += c.B;
+                    }
+
+                    terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
+                } else terrorColor = Color.White;
+
+                if (LastTerrorColor != terrorColor || force) {
+                    Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);
+                    SendParam(ParamTerrorColorH, hsv.X);
+                    SendParam(ParamTerrorColorS, hsv.Y);
+                    SendParam(ParamTerrorColorV, hsv.Z);
                 }
 
                 if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
@@ -131,6 +175,17 @@ namespace ToNSaveManager.Utils
             }
         }
 
+        static Vector3 Color2HSV(Color color) {
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            float hue = color.GetHue() / 360f;
+            float sat = (max == 0) ? 0 : 1f - (1f * min / max);
+            float val = max / 255f;
+
+            return new Vector3(hue, sat, val);
+        }
+
         static readonly byte[] temp_buffer = new byte[2048];
 
         private static void EncodeInto(byte[] data, ref int offset, string path, int value) {
@@ -152,6 +207,32 @@ namespace ToNSaveManager.Utils
             }
 
             Array.Copy(BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)), 0, data, offset, 4);
+            offset += 4;
+        }
+
+        private static void EncodeInto(byte[] data, ref int offset, string path, float value) {
+            byte[] tmp = Encoding.UTF8.GetBytes(path);
+            Array.Copy(tmp, 0, data, offset, tmp.Length);
+            data[tmp.Length + offset] = 0;
+            offset += tmp.Length;
+            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
+                data[offset] = 0;
+            }
+
+            tmp = new byte[] { 44, 102 }; // ",f"
+
+            Array.Copy(tmp, 0, data, offset, tmp.Length);
+            data[tmp.Length + offset] = 0;
+            offset += tmp.Length;
+            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
+                data[offset] = 0;
+            }
+
+            tmp = BitConverter.GetBytes(value);
+            if (BitConverter.IsLittleEndian) {
+                Array.Reverse(tmp);
+            }
+            Array.Copy(tmp, 0, data, offset, 4);
             offset += 4;
         }
 
@@ -202,6 +283,16 @@ namespace ToNSaveManager.Utils
         }
 
         private static void SendParam(string name, int value) {
+            int encodedLength = 0;
+            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
+            SendBuffer(temp_buffer, encodedLength);
+
+#if DEBUG
+            Debug.WriteLine("Sending Param: " + name + " = " + value);
+#endif
+        }
+
+        private static void SendParam(string name, float value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);

@@ -12,6 +12,7 @@ namespace ToNSaveManager.Models.Index {
 
         public ToNIndex.TerrorInfo[] Terrors;
         public int[]? Encounter;
+        public int TerrorCount;
 
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
@@ -60,27 +61,33 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Fog_Alternate:
                 case ToNRoundType.Ghost_Alternate:
                     Terrors = [new(indexes[0], RoundType == ToNRoundType.Alternate || isAlt ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors)];
+                    TerrorCount = 1;
                     break;
 
                 case ToNRoundType.Unbound:
                     Terrors = [new(indexes[0], ToNIndex.TerrorGroup.Unbound)];
+                    TerrorCount = 1;
                     break;
 
                 case ToNRoundType.Bloodbath:
                 case ToNRoundType.Double_Trouble:
                 case ToNRoundType.EX:
                 case ToNRoundType.Midnight:
-                    if (RoundType == ToNRoundType.Double_Trouble) {
+                    if (RoundType == ToNRoundType.EX) {
+                        TerrorCount = 1;
+                    } else if (RoundType == ToNRoundType.Double_Trouble) {
                         int ind = Array.IndexOf(indexes, indexes[0], 1);
                         if (ind < 0) (indexes[0], indexes[2]) = (indexes[2], indexes[0]);
                         else if (ind > 1) (indexes[2], indexes[1]) = (indexes[1], indexes[2]);
+                        TerrorCount = 2;
+                    } else {
+                        TerrorCount = 3;
                     }
 
                     Terrors = new ToNIndex.TerrorInfo[indexes.Length];
                     for (int i = 0; i < Terrors.Length; i++) {
                         Terrors[i] = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
                     }
-
                     break;
 
                 case ToNRoundType.Mystic_Moon:
@@ -89,22 +96,27 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Solstice:
                     index = (int)RoundType - (int)ToNRoundType.Mystic_Moon;
                     Terrors = [new(index, ToNIndex.TerrorGroup.Moons)];
+                    TerrorCount = 1;
                     break;
 
                 case ToNRoundType.RUN:
                     Terrors = [new(0, ToNIndex.TerrorGroup.Specials)];
+                    TerrorCount = 1;
                     break;
 
                 case ToNRoundType.Eight_Pages: // ???
                     Terrors = [new(indexes[0], ToNIndex.TerrorGroup.EightPages)];
+                    TerrorCount = 1;
                     break;
 
                 case ToNRoundType.Cold_Night:
                     Terrors = [new(0, ToNIndex.TerrorGroup.Events)];
+                    TerrorCount = 1;
                     break;
 
                 default:
                     Terrors = [];
+                    TerrorCount = -1;
                     break;
             }
         }
