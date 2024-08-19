@@ -119,7 +119,10 @@ namespace ToNSaveManager.Utils
                 // Color Testing
                 if (Settings.Get.OSCSendColor) {
                     Color terrorColor;
-                    if (TMatrix.TerrorCount > 0 && TMatrix.RoundType != ToNRoundType.Eight_Pages) {
+                    if (TMatrix.TerrorCount > 0 &&
+                        TMatrix.RoundType != ToNRoundType.Eight_Pages &&
+                        TMatrix.RoundType != ToNRoundType.Fog &&
+                        TMatrix.RoundType != ToNRoundType.Fog_Alternate) {
                         Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
                         Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
                         // Change this after color update :3
@@ -143,7 +146,7 @@ namespace ToNSaveManager.Utils
                         }
 
                         terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
-                    } else terrorColor = TMatrix.RoundType == ToNRoundType.Fog || TMatrix.RoundType == ToNRoundType.Fog_Alternate ? Color.Gray : Color.White;
+                    } else terrorColor = Color.White;
 
                     if (LastTerrorColor != terrorColor || force) {
                         Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);
