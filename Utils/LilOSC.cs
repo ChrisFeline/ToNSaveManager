@@ -23,9 +23,9 @@ namespace ToNSaveManager.Utils
         const string ParamMap = "ToN_Map";
         const string ParamEncounter = "ToN_Encounter";
 
-        const string ParamTerrorColorH = "ToN_ColorHue";
-        const string ParamTerrorColorS = "ToN_ColorSat";
-        const string ParamTerrorColorV = "ToN_ColorVal";
+        const string ParamTerrorColorH = "ToN_ColorH";
+        const string ParamTerrorColorS = "ToN_ColorS";
+        const string ParamTerrorColorV = "ToN_ColorV";
 
         static bool IsDirty = false;
 
@@ -117,39 +117,40 @@ namespace ToNSaveManager.Utils
                 }
 
                 // Color Testing
-                Color terrorColor;
-                if (TMatrix.TerrorCount > 0 && TMatrix.RoundType != ToNRoundType.Eight_Pages) {
-                    Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
-                    Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
-                    // Change this after color update :3
-                    Color color3 = ToNIndex.Instance.GetTerror(info3.Index, ToNIndex.TerrorGroup.Terrors).Color;
+                if (Settings.Get.OSCSendColor) {
+                    Color terrorColor;
+                    if (TMatrix.TerrorCount > 0 && TMatrix.RoundType != ToNRoundType.Eight_Pages) {
+                        Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
+                        Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
+                        // Change this after color update :3
+                        Color color3 = ToNIndex.Instance.GetTerror(info3.Index, ToNIndex.TerrorGroup.Terrors).Color;
 
-                    Color c;
-                    int R = 0, G = 0, B = 0;
-                    for (int i = 0; i < TMatrix.TerrorCount; i++) {
-                        if (i > 2) break;
+                        Color c;
+                        int R = 0, G = 0, B = 0;
+                        for (int i = 0; i < TMatrix.TerrorCount; i++) {
+                            if (i > 2) break;
 
-                        switch (i) {
-                            case 0: c = color1; break;
-                            case 1: c = color2; break;
-                            case 2: c = color3; break;
+                            switch (i) {
+                                case 0: c = color1; break;
+                                case 1: c = color2; break;
+                                case 2: c = color3; break;
+                                default: c = Color.White; break;
+                            }
 
-                            default: c = Color.White; break;
+                            R += c.R;
+                            G += c.G;
+                            B += c.B;
                         }
 
-                        R += c.R;
-                        G += c.G;
-                        B += c.B;
+                        terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
+                    } else terrorColor = TMatrix.RoundType == ToNRoundType.Fog || TMatrix.RoundType == ToNRoundType.Fog_Alternate ? Color.Gray : Color.White;
+
+                    if (LastTerrorColor != terrorColor || force) {
+                        Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);
+                        SendParam(ParamTerrorColorH, hsv.X);
+                        SendParam(ParamTerrorColorS, hsv.Y);
+                        SendParam(ParamTerrorColorV, hsv.Z);
                     }
-
-                    terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
-                } else terrorColor = TMatrix.RoundType == ToNRoundType.Fog || TMatrix.RoundType == ToNRoundType.Fog_Alternate ? Color.Gray : Color.White;
-
-                if (LastTerrorColor != terrorColor || force) {
-                    Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);
-                    SendParam(ParamTerrorColorH, hsv.X);
-                    SendParam(ParamTerrorColorS, hsv.Y);
-                    SendParam(ParamTerrorColorV, hsv.Z);
                 }
 
                 if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
@@ -172,7 +173,7 @@ namespace ToNSaveManager.Utils
                 if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
             }
 
-            if (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && (!string.IsNullOrEmpty(ChatboxMessage) || ChatboxClear)) {
+            if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
                 ChatboxCountdown--;
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;
@@ -187,7 +188,7 @@ namespace ToNSaveManager.Utils
             int max = Math.Max(color.R, Math.Max(color.G, color.B));
             int min = Math.Min(color.R, Math.Min(color.G, color.B));
 
-            float hue = color.GetHue() / 360f;
+            float hue = color.GetHue() / 360f; // Hue is always the same for HSL & HSV
             float sat = (max == 0) ? 0 : 1f - (1f * min / max);
             float val = max / 255f;
 

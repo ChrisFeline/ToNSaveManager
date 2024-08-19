@@ -101,6 +101,8 @@
 	"SETTINGS.OSCSENDCHATBOX": "Send Chatbox Message",
 	"SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nRight click this toggle to customize the message template.",
 	"SETTINGS.OSCSENDCHATBOX.TITLE": "Set Chatbox Message Template",
+	"SETTINGS.OSCSENDCOLOR": "Send Terror Color (HSV)",
+	"SETTINGS.OSCSENDCOLOR.TT": "Sends the current Terror color represented as HSV.\nColor will be sent as 3 FLOAT parameters:\n- ToN_ColorH (Hue)\n- ToN_ColorS (Saturation)\n- ToN_ColorV (Value)",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 

@@ -29,7 +29,6 @@
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             groupBoxGeneral = new GroupBox();
-            checkOSCEnabled = new CheckBox();
             checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
@@ -37,6 +36,7 @@
             checkPlayerNames = new CheckBox();
             checkAutoCopy = new CheckBox();
             checkSkipParsedLogs = new CheckBox();
+            checkOSCEnabled = new CheckBox();
             groupBoxNotifications = new GroupBox();
             checkPlayAudio = new CheckBox();
             checkXSOverlay = new CheckBox();
@@ -57,6 +57,7 @@
             languageSelectBox = new ComboBox();
             panel1 = new Panel();
             groupBoxOSC = new GroupBox();
+            checkOSCSendColor = new CheckBox();
             checkSendChatbox = new CheckBox();
             groupBoxGeneral.SuspendLayout();
             groupBoxNotifications.SuspendLayout();
@@ -86,20 +87,6 @@
             groupBoxGeneral.TabIndex = 0;
             groupBoxGeneral.TabStop = false;
             groupBoxGeneral.Text = "General";
-            // 
-            // checkOSCEnabled
-            // 
-            checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Dock = DockStyle.Top;
-            checkOSCEnabled.Location = new Point(3, 19);
-            checkOSCEnabled.Name = "checkOSCEnabled";
-            checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
-            checkOSCEnabled.Size = new Size(332, 19);
-            checkOSCEnabled.TabIndex = 7;
-            checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
-            checkOSCEnabled.Text = "Send OSC Parameters";
-            checkOSCEnabled.UseVisualStyleBackColor = true;
-            checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
             // checkDiscordBackup
             // 
@@ -195,6 +182,20 @@
             checkSkipParsedLogs.Text = "Skip Parsed Logs (!)";
             checkSkipParsedLogs.UseVisualStyleBackColor = true;
             // 
+            // checkOSCEnabled
+            // 
+            checkOSCEnabled.AutoSize = true;
+            checkOSCEnabled.Dock = DockStyle.Top;
+            checkOSCEnabled.Location = new Point(3, 19);
+            checkOSCEnabled.Name = "checkOSCEnabled";
+            checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
+            checkOSCEnabled.Size = new Size(332, 19);
+            checkOSCEnabled.TabIndex = 7;
+            checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
+            checkOSCEnabled.Text = "Send OSC Parameters";
+            checkOSCEnabled.UseVisualStyleBackColor = true;
+            checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
+            // 
             // groupBoxNotifications
             // 
             groupBoxNotifications.AutoSize = true;
@@ -203,7 +204,7 @@
             groupBoxNotifications.Controls.Add(checkXSOverlay);
             groupBoxNotifications.Dock = DockStyle.Top;
             groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 246);
+            groupBoxNotifications.Location = new Point(8, 265);
             groupBoxNotifications.Name = "groupBoxNotifications";
             groupBoxNotifications.Size = new Size(338, 60);
             groupBoxNotifications.TabIndex = 2;
@@ -249,7 +250,7 @@
             groupBoxTime.Controls.Add(check24Hour);
             groupBoxTime.Dock = DockStyle.Top;
             groupBoxTime.ForeColor = Color.White;
-            groupBoxTime.Location = new Point(8, 306);
+            groupBoxTime.Location = new Point(8, 325);
             groupBoxTime.Name = "groupBoxTime";
             groupBoxTime.Size = new Size(338, 98);
             groupBoxTime.TabIndex = 3;
@@ -378,7 +379,7 @@
             groupBoxStyle.Controls.Add(checkColorObjectives);
             groupBoxStyle.Dock = DockStyle.Top;
             groupBoxStyle.ForeColor = Color.White;
-            groupBoxStyle.Location = new Point(8, 404);
+            groupBoxStyle.Location = new Point(8, 423);
             groupBoxStyle.Name = "groupBoxStyle";
             groupBoxStyle.Size = new Size(338, 41);
             groupBoxStyle.TabIndex = 6;
@@ -420,7 +421,7 @@
             panel1.Controls.Add(btnCheckForUpdates);
             panel1.Controls.Add(btnOpenData);
             panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(8, 445);
+            panel1.Location = new Point(8, 464);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(0, 4, 0, 0);
             panel1.Size = new Size(338, 28);
@@ -431,21 +432,36 @@
             groupBoxOSC.AutoSize = true;
             groupBoxOSC.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             groupBoxOSC.Controls.Add(checkSendChatbox);
+            groupBoxOSC.Controls.Add(checkOSCSendColor);
             groupBoxOSC.Controls.Add(checkOSCEnabled);
             groupBoxOSC.Dock = DockStyle.Top;
             groupBoxOSC.ForeColor = Color.White;
             groupBoxOSC.Location = new Point(8, 186);
             groupBoxOSC.Name = "groupBoxOSC";
-            groupBoxOSC.Size = new Size(338, 60);
+            groupBoxOSC.Size = new Size(338, 79);
             groupBoxOSC.TabIndex = 7;
             groupBoxOSC.TabStop = false;
             groupBoxOSC.Text = "OSC";
+            // 
+            // checkOSCSendColor
+            // 
+            checkOSCSendColor.AutoSize = true;
+            checkOSCSendColor.Dock = DockStyle.Top;
+            checkOSCSendColor.ForeColor = Color.PowderBlue;
+            checkOSCSendColor.Location = new Point(3, 38);
+            checkOSCSendColor.Name = "checkOSCSendColor";
+            checkOSCSendColor.Padding = new Padding(21, 0, 3, 0);
+            checkOSCSendColor.Size = new Size(332, 19);
+            checkOSCSendColor.TabIndex = 9;
+            checkOSCSendColor.Tag = "OSCSendColor|Sends the current Terror color as HSV parameters.";
+            checkOSCSendColor.Text = "Send Terror Color (HSV)";
+            checkOSCSendColor.UseVisualStyleBackColor = true;
             // 
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
             checkSendChatbox.Dock = DockStyle.Top;
-            checkSendChatbox.Location = new Point(3, 38);
+            checkSendChatbox.Location = new Point(3, 57);
             checkSendChatbox.Name = "checkSendChatbox";
             checkSendChatbox.Padding = new Padding(3, 0, 3, 0);
             checkSendChatbox.Size = new Size(332, 19);
@@ -462,7 +478,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(354, 484);
+            ClientSize = new Size(354, 499);
             Controls.Add(panel1);
             Controls.Add(groupBoxStyle);
             Controls.Add(groupBoxTime);
@@ -530,5 +546,6 @@
         private Panel panel1;
         private GroupBox groupBoxOSC;
         private CheckBox checkSendChatbox;
+        private CheckBox checkOSCSendColor;
     }
 }

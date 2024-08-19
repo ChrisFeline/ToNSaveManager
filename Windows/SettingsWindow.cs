@@ -96,6 +96,7 @@ namespace ToNSaveManager.Windows
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
+            checkOSCEnabled_CheckedChanged(null, new EventArgs());
             checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
 
             FillLanguageBox();
@@ -180,6 +181,7 @@ namespace ToNSaveManager.Windows
 
         private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
             if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
+            else LilOSC.SetChatboxMessage(string.Empty);
         }
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
@@ -231,6 +233,7 @@ namespace ToNSaveManager.Windows
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
             if (checkOSCEnabled.Checked) LilOSC.SendData(true);
+            checkOSCSendColor.ForeColor = checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 
         private void checkOSCEnabled_MouseUp(object sender, MouseEventArgs e) {
