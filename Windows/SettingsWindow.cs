@@ -98,8 +98,13 @@ namespace ToNSaveManager.Windows
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
             checkOSCEnabled_CheckedChanged(null, new EventArgs());
             checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
+            checkOSCSendColor.CheckedChanged += CheckOSCSendColor_CheckedChanged;
 
             FillLanguageBox();
+        }
+
+        private void CheckOSCSendColor_CheckedChanged(object? sender, EventArgs e) {
+            if (checkOSCSendColor.Checked) LilOSC.IsDirty = true;
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
@@ -172,7 +177,7 @@ namespace ToNSaveManager.Windows
             EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this);
             if (edit.Accept) {
                 template = edit.Text.Replace("\\n", "\n");
-                Settings.Get.OSCMessageTemplate = template;
+                Settings.Get.OSCMessageTemplate = string.IsNullOrEmpty(template) ? Settings.Default.OSCMessageTemplate : template;
                 Settings.Export();
 
                 StatsWindow.UpdateChatboxContent();
@@ -232,7 +237,7 @@ namespace ToNSaveManager.Windows
         }
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
-            if (checkOSCEnabled.Checked) LilOSC.SendData(true);
+            if (checkOSCEnabled.Checked && sender != null) LilOSC.SendData(true);
             checkOSCSendColor.ForeColor = checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 

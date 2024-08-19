@@ -27,7 +27,7 @@ namespace ToNSaveManager.Utils
         const string ParamTerrorColorS = "ToN_ColorS";
         const string ParamTerrorColorV = "ToN_ColorV";
 
-        static bool IsDirty = false;
+        internal static bool IsDirty = false;
 
         static int LastRoundType = -1;
         static int LastTerror1 = -1;
