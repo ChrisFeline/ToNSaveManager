@@ -23,9 +23,9 @@ namespace ToNSaveManager.Utils
         const string ParamMap = "ToN_Map";
         const string ParamEncounter = "ToN_Encounter";
 
-        const string ParamTerrorColorH = "ToN_TerrorColorH";
-        const string ParamTerrorColorS = "ToN_TerrorColorS";
-        const string ParamTerrorColorV = "ToN_TerrorColorV";
+        const string ParamTerrorColorH = "ToN_ColorHue";
+        const string ParamTerrorColorS = "ToN_ColorSat";
+        const string ParamTerrorColorV = "ToN_ColorVal";
 
         static bool IsDirty = false;
 
@@ -62,7 +62,14 @@ namespace ToNSaveManager.Utils
         }
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            Debug.WriteLine("Setting Terror Matrix: " + terrorMatrix);
+#if DEBUG
+            if (terrorMatrix.TerrorCount > 0) {
+                Debug.WriteLine("----------------------------------");
+                Debug.WriteLine("Terror Matrix: " + terrorMatrix);
+                Debug.WriteLine("Terror Names: " + string.Join(", ", terrorMatrix.Terrors.Select(t => ToNIndex.Instance.GetTerror(t).ToString())));
+                Debug.WriteLine("----------------------------------");
+            }
+#endif
 
             TMatrix = terrorMatrix;
             IsDirty = true;
@@ -111,10 +118,11 @@ namespace ToNSaveManager.Utils
 
                 // Color Testing
                 Color terrorColor;
-                if (TMatrix.TerrorCount > 0) {
+                if (TMatrix.TerrorCount > 0 && TMatrix.RoundType != ToNRoundType.Eight_Pages) {
                     Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
                     Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
-                    Color color3 = ToNIndex.Instance.GetTerror(info3).Color;
+                    // Change this after color update :3
+                    Color color3 = ToNIndex.Instance.GetTerror(info3.Index, ToNIndex.TerrorGroup.Terrors).Color;
 
                     Color c;
                     int R = 0, G = 0, B = 0;
@@ -135,7 +143,7 @@ namespace ToNSaveManager.Utils
                     }
 
                     terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
-                } else terrorColor = Color.White;
+                } else terrorColor = TMatrix.RoundType == ToNRoundType.Fog || TMatrix.RoundType == ToNRoundType.Fog_Alternate ? Color.Gray : Color.White;
 
                 if (LastTerrorColor != terrorColor || force) {
                     Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);

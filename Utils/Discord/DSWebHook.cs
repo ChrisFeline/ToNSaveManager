@@ -108,7 +108,7 @@ namespace ToNSaveManager.Utils.Discord
 
                         if (entry.MapID > -1) {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_MAP, ToNIndex.Instance.GetMap(entry.MapID));
+                            EmbedData.Description += string.Format(LABEL_MAP, ToNIndex.Instance.GetMap(entry.MapID).Name);
                         }
 
                         if (entry.TD != null && entry.TD.Length > 0)

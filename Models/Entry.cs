@@ -135,11 +135,12 @@ namespace ToNSaveManager.Models
 #pragma warning restore CS0612 // Type or member is obsolete
             }
             if (showMap && MapID > -1) {
-                sb.AppendLine();
-                sb.AppendLine();
-
                 var map = ToNIndex.Instance.GetMap(MapID);
-                if (!map.IsEmpty) sb.AppendLine(TextMap + " " + map);
+                if (!map.IsEmpty) {
+                    sb.AppendLine();
+                    sb.AppendLine();
+                    sb.AppendLine(TextMap + " " + map.Name);
+                }
             }
             if (showPlayers && !string.IsNullOrEmpty(Players))
             {

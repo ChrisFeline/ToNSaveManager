@@ -102,6 +102,10 @@ namespace ToNSaveManager.Models.Index {
         {
             return Maps.ContainsKey(mapIndex) ? Maps[mapIndex] : Map.Empty;
         }
+        /// <summary>
+        /// Get Map information based on it's display name.
+        /// </summary>
+        /// <param name="mapName"></param>
         public Map GetMap(string mapName)
         {
             foreach (var pair in Maps)
@@ -178,7 +182,7 @@ namespace ToNSaveManager.Models.Index {
             [JsonProperty("o", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Origin = string.Empty;
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool EightP = false;
 
-            public override string ToString() => Name;
+            public override string ToString() => Id + ". " + Name;
         }
 
         public class Item : EntryBase
