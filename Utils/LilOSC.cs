@@ -125,8 +125,7 @@ namespace ToNSaveManager.Utils
                         TMatrix.RoundType != ToNRoundType.Fog_Alternate) {
                         Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
                         Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
-                        // Change this after color update :3
-                        Color color3 = ToNIndex.Instance.GetTerror(info3.Index, ToNIndex.TerrorGroup.Terrors).Color;
+                        Color color3 = ToNIndex.Instance.GetTerror(info3).Color;
 
                         Color c;
                         int R = 0, G = 0, B = 0;
