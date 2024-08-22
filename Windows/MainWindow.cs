@@ -67,6 +67,10 @@ namespace ToNSaveManager
 
             SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
             TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
+
+#if DEBUG
+            EmulatorWindow.Open(this);
+#endif
         }
 
         private void mainWindow_Shown(object sender, EventArgs e) {
