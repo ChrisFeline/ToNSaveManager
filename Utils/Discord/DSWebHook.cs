@@ -12,6 +12,9 @@ namespace ToNSaveManager.Utils.Discord
 
     internal class Payload
     {
+        [JsonProperty("content", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? Content;
+
         [JsonProperty("embeds")]
         public Embed[] Embeds = new Embed[1] { new Embed() };
 
