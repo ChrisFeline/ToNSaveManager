@@ -32,12 +32,18 @@ namespace ToNSaveManager
             return AppMutex != null && !AppMutex.WaitOne(TimeSpan.Zero, true);
         }
 
+        static string[] Arguments = Array.Empty<string>();
+        internal static bool ContainsArg(string arg) {
+            return Array.IndexOf(Arguments, arg) != -1;
+        }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
+            Arguments = args;
             LANG.Initialize();
 
             UpdateWindow.RunPostUpdateCheck(args);

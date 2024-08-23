@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text;
 
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Utils;
 using static ToNSaveManager.Models.Index.ToNIndex;
 // using EntryBase = ToNSaveManager.Models.Index.ToNIndex.EntryBase;
 // using Terror = ToNSaveManager.Models.Index.ToNIndex.Terror;
@@ -21,6 +22,9 @@ namespace ToNSaveManager.Windows
             public int MapIndex = -1;
             public bool IsSaboteur = false; // Only on sabotage
 
+            public bool IsHidden => RoundType == ToNRoundType.Eight_Pages ||
+                RoundType == ToNRoundType.Fog || RoundType == ToNRoundType.Fog_Alternate;
+
             public override string ToString() {
                 return $"M:{MapIndex} | T:{TerrorIndex} | {RoundType} | {IsSaboteur}";
             }
@@ -36,7 +40,7 @@ namespace ToNSaveManager.Windows
             }
 
             public override string ToString() {
-                return ((int)Value).ToString().PadRight(3) + " : " + DisplayName;
+                return ((int)Value).ToString().PadRight(3) + " | " + DisplayName;
             }
         }
         #endregion
@@ -56,6 +60,14 @@ namespace ToNSaveManager.Windows
 
         internal static Terror[] EightPages;
         internal static Map[] Maps8P;
+
+        internal static Dictionary<ToNRoundType, int> RoundTypeToMapID = new Dictionary<ToNRoundType, int>() {
+            { ToNRoundType.RUN,        Database.Maps.Count - 1},
+            { ToNRoundType.Cold_Night, 37},
+            { ToNRoundType.GIGABYTE,    2},
+            { ToNRoundType.Twilight,   67},
+        };
+
         #endregion
 
         #region Initialization
@@ -68,7 +80,7 @@ namespace ToNSaveManager.Windows
             Unbound = Database.Unbound.Values.ToArray();
 
             var redirect = Database.EightPRedirect;
-            var eightP = Database.EightPages;
+            var eightP = Database.EightPages.ToDictionary();
 
             foreach (var pair in redirect) {
                 int key = pair.Key;
@@ -86,7 +98,7 @@ namespace ToNSaveManager.Windows
                 };
             }
 
-            EightPages = Database.EightPages.Values.ToArray();
+            EightPages = eightP.Values.ToArray();
             Maps8P = Maps.Where(m => m.EightP).ToArray();
         }
 
@@ -96,6 +108,8 @@ namespace ToNSaveManager.Windows
         #endregion
 
         #region UI Code
+        internal static readonly ComboBox[] TerrorComboBoxes = new ComboBox[3];
+
         public static void Open(Form parent) {
             if (Instance == null || Instance.IsDisposed) Instance = new();
 
@@ -122,9 +136,15 @@ namespace ToNSaveManager.Windows
             SetMonsterDataSource(null);
             SetLocationDataSource(null);
 
+            TerrorComboBoxes[0] = comboMonster;
+            TerrorComboBoxes[1] = comboMonster2;
+            TerrorComboBoxes[2] = comboMonster3;
+
             var values = ((ToNRoundType[])Enum.GetValues(typeof(ToNRoundType))).Select(rt => new RoundTypeProxy(rt)).ToArray();
             comboRoundType.DataSource = values;
             comboRoundType.SelectedIndex = 0;
+
+            buttonStep_Reset();
         }
 
         private void SetMonsterDataSource(Terror[]? source) {
@@ -181,9 +201,10 @@ namespace ToNSaveManager.Windows
                     // These have map pools
                     case ToNRoundType.Unknown: // Dont do anything
                     case ToNRoundType.RUN:
+                    case ToNRoundType.Cold_Night:
+                    case ToNRoundType.GIGABYTE:
                     case ToNRoundType.Twilight:
                     case ToNRoundType.Solstice: // This one doesn't matter
-                    case ToNRoundType.Cold_Night:
                         SetMonsterDataSource(null);
                         SetLocationDataSource(null);
                         break;
@@ -217,12 +238,14 @@ namespace ToNSaveManager.Windows
                         SetLocationDataSource(Maps);
                         break;
                     default:
-                        break;
+                        throw new NotImplementedException();
                 }
 
                 SetComboDataSource(comboMonster2, roundTypeInt > 5 && roundTypeInt < 8 || roundType == ToNRoundType.Midnight ? Whitelisted : null);
                 SetComboDataSource(comboMonster3, roundTypeInt > 5 && roundTypeInt < 7 ? Terrors :
                     (roundType == ToNRoundType.Midnight ? Alternates : null));
+
+                checkBoxIsKiller.Visible = roundType == ToNRoundType.Sabotage;
             }
         }
 
@@ -266,7 +289,7 @@ namespace ToNSaveManager.Windows
             EntryBase item = (EntryBase?)comboBox.Items[e.Index] ?? Terror.Empty;
 
             // Get the item text and color
-            string? itemText = item.Id.ToString() + ". " + item.ToString();
+            string? itemText = item.Id.ToString().PadRight(3) + " | " + item.ToString();
             Color textColor = item.Color;
 
             // Draw the item background
@@ -285,12 +308,93 @@ namespace ToNSaveManager.Windows
         private void comboMonster_EnabledChanged(object sender, EventArgs e) {
             ComboBox comboBox = (ComboBox)sender;
             comboBox.DrawMode = comboBox.Enabled ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
-            if (comboBox != comboMonster) comboBox.Visible = comboBox.Enabled;
+            // if (comboBox != comboMonster) comboBox.Visible = comboBox.Enabled;
         }
         #endregion
 
-        #region Emulator Logic
+        private void buttonStep_Reset() {
+            mainPanel.Enabled = true;
+            buttonStepStart.Enabled = true;
+            buttonStepKillerSet.Enabled = false;
+            buttonStepReveal.Enabled = false;
+            buttonStepEndRound.Enabled = false;
+        }
 
-        #endregion
+        private void buttonStep_Click(object sender, EventArgs e) {
+            Button button = (Button)sender;
+            switch (button.TabIndex) {
+                case 0: // Start
+                    mainPanel.Enabled = false;
+                    buttonStepStart.Enabled = false;
+                    buttonStepKillerSet.Enabled = true;
+                    buttonStepEndRound.Enabled = true;
+                    OnRoundStart();
+                    break;
+
+                case 1: // Set
+                    buttonStepKillerSet.Enabled = false;
+                    buttonStepReveal.Enabled = Operation.IsHidden;
+                    OnRoundSetKillers(!buttonStepReveal.Enabled);
+                    break;
+
+                case 2: // Reveal
+                    buttonStepReveal.Enabled = false;
+                    OnRoundSetKillers(true);
+                    break;
+
+                default:
+                    buttonStep_Reset();
+                    OnRoundEnd();
+                    break;
+            }
+        }
+
+        private ToNRoundType CurrentRoundType;
+        private bool CurrentIsKiller => CurrentRoundType == ToNRoundType.Sabotage && checkBoxIsKiller.Checked;
+
+        private void OnRoundStart() {
+            // Round is random
+            if (comboRoundType.SelectedIndex == 0)
+                comboRoundType.SelectedIndex = Random.Shared.Next(1, comboRoundType.Items.Count);
+
+            RoundTypeProxy roundTypeProxy = (RoundTypeProxy?)comboRoundType.SelectedItem ?? new RoundTypeProxy(ToNRoundType.Classic);
+            CurrentRoundType = roundTypeProxy.Value;
+
+            Map selectedMap = Map.Empty;
+            if (comboLocation.Items.Count > 0) {
+                if (comboLocation.SelectedIndex == 0) comboLocation.SelectedIndex = Random.Shared.Next(1, comboLocation.Items.Count);
+                selectedMap = (Map?)comboLocation.SelectedItem ?? selectedMap;
+            } else if (RoundTypeToMapID.TryGetValue(roundTypeProxy.Value, out int mapId)) selectedMap = Database.GetMap(mapId);
+
+            if (selectedMap.IsEmpty) throw new Exception("Failed to emulate map.");
+
+            LilOSC.SetOptInStatus(true);
+            LilOSC.SetMap(selectedMap);
+            LilOSC.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = CurrentIsKiller });
+        }
+
+        private void OnRoundSetKillers(bool reveal = true) {
+            int[] terrors = new int[TerrorComboBoxes.Length];
+            for (int i = 0; i < TerrorComboBoxes.Length; i++) {
+                if (reveal) {
+                    var comboBox = TerrorComboBoxes[i];
+                    if (comboBox.Items.Count > 0) {
+                        if (comboBox.SelectedIndex == 0) comboBox.SelectedIndex = Random.Shared.Next(1, comboBox.Items.Count);
+                        terrors[i] = ((Terror?)comboBox.SelectedItem ?? Terror.Zero).Id;
+                    } else terrors[i] = 0;
+                } else terrors[i] = byte.MaxValue;
+            }
+
+            TerrorMatrix terrorMatrix = new TerrorMatrix(CurrentRoundType.ToString().Replace('_', ' ').Replace(" Alternate", " (Alternate)"), terrors);
+            terrorMatrix.IsSaboteur = CurrentIsKiller;
+            terrorMatrix.RoundType = CurrentRoundType;
+            LilOSC.SetTerrorMatrix(terrorMatrix);
+        }
+
+        private void OnRoundEnd() {
+            LilOSC.SetOptInStatus(false);
+            LilOSC.SetMap(Map.Empty);
+            LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+        }
     }
 }

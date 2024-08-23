@@ -29,7 +29,7 @@
             comboRoundType = new ComboBox();
             panel1 = new Panel();
             label1 = new Label();
-            panel2 = new Panel();
+            mainPanel = new Panel();
             panel7 = new Panel();
             comboMonster3 = new ComboBox();
             panel6 = new Panel();
@@ -42,13 +42,23 @@
             label3 = new Label();
             comboLocation = new ComboBox();
             panel9 = new Panel();
-            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            checkBoxIsKiller = new CheckBox();
+            panel5 = new Panel();
+            buttonStepEndRound = new Button();
+            panel2 = new Panel();
+            buttonStepReveal = new Button();
+            panel11 = new Panel();
+            buttonStepKillerSet = new Button();
+            panel10 = new Panel();
+            buttonStepStart = new Button();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            mainPanel.SuspendLayout();
             panel7.SuspendLayout();
             panel6.SuspendLayout();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
+            panel9.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // comboRoundType
@@ -85,22 +95,22 @@
             label1.Text = "Round Type";
             label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // panel2
+            // mainPanel
             // 
-            panel2.AutoSize = true;
-            panel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel2.Controls.Add(panel7);
-            panel2.Controls.Add(panel6);
-            panel2.Controls.Add(panel3);
-            panel2.Controls.Add(panel8);
-            panel2.Controls.Add(panel4);
-            panel2.Controls.Add(panel9);
-            panel2.Controls.Add(panel1);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(10, 10);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(314, 161);
-            panel2.TabIndex = 3;
+            mainPanel.AutoSize = true;
+            mainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            mainPanel.Controls.Add(panel7);
+            mainPanel.Controls.Add(panel6);
+            mainPanel.Controls.Add(panel3);
+            mainPanel.Controls.Add(panel8);
+            mainPanel.Controls.Add(panel4);
+            mainPanel.Controls.Add(panel9);
+            mainPanel.Controls.Add(panel1);
+            mainPanel.Dock = DockStyle.Top;
+            mainPanel.Location = new Point(10, 10);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(314, 161);
+            mainPanel.TabIndex = 3;
             // 
             // panel7
             // 
@@ -241,11 +251,133 @@
             // panel9
             // 
             panel9.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel9.Controls.Add(checkBoxIsKiller);
             panel9.Dock = DockStyle.Top;
             panel9.Location = new Point(0, 23);
             panel9.Name = "panel9";
             panel9.Size = new Size(314, 23);
             panel9.TabIndex = 9;
+            // 
+            // checkBoxIsKiller
+            // 
+            checkBoxIsKiller.AutoSize = true;
+            checkBoxIsKiller.CheckAlign = ContentAlignment.TopRight;
+            checkBoxIsKiller.Dock = DockStyle.Right;
+            checkBoxIsKiller.ForeColor = Color.White;
+            checkBoxIsKiller.Location = new Point(251, 0);
+            checkBoxIsKiller.Name = "checkBoxIsKiller";
+            checkBoxIsKiller.Size = new Size(63, 23);
+            checkBoxIsKiller.TabIndex = 0;
+            checkBoxIsKiller.Text = "Is Killer";
+            checkBoxIsKiller.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            panel5.AutoSize = true;
+            panel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel5.Controls.Add(buttonStepEndRound);
+            panel5.Controls.Add(panel2);
+            panel5.Controls.Add(buttonStepReveal);
+            panel5.Controls.Add(panel11);
+            panel5.Controls.Add(buttonStepKillerSet);
+            panel5.Controls.Add(panel10);
+            panel5.Controls.Add(buttonStepStart);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(10, 171);
+            panel5.MinimumSize = new Size(0, 10);
+            panel5.Name = "panel5";
+            panel5.Padding = new Padding(0, 10, 0, 0);
+            panel5.Size = new Size(314, 145);
+            panel5.TabIndex = 4;
+            // 
+            // buttonStepEndRound
+            // 
+            buttonStepEndRound.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepEndRound.Dock = DockStyle.Top;
+            buttonStepEndRound.FlatStyle = FlatStyle.Flat;
+            buttonStepEndRound.ForeColor = Color.White;
+            buttonStepEndRound.Location = new Point(0, 115);
+            buttonStepEndRound.Name = "buttonStepEndRound";
+            buttonStepEndRound.Size = new Size(314, 30);
+            buttonStepEndRound.TabIndex = 3;
+            buttonStepEndRound.Text = "End Round";
+            buttonStepEndRound.UseVisualStyleBackColor = false;
+            buttonStepEndRound.Click += buttonStep_Click;
+            // 
+            // panel2
+            // 
+            panel2.AutoSize = true;
+            panel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 110);
+            panel2.MinimumSize = new Size(0, 5);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(314, 5);
+            panel2.TabIndex = 4;
+            // 
+            // buttonStepReveal
+            // 
+            buttonStepReveal.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepReveal.Dock = DockStyle.Top;
+            buttonStepReveal.FlatStyle = FlatStyle.Flat;
+            buttonStepReveal.ForeColor = Color.White;
+            buttonStepReveal.Location = new Point(0, 80);
+            buttonStepReveal.Name = "buttonStepReveal";
+            buttonStepReveal.Size = new Size(314, 30);
+            buttonStepReveal.TabIndex = 2;
+            buttonStepReveal.Text = "Reveal";
+            buttonStepReveal.UseVisualStyleBackColor = false;
+            buttonStepReveal.Click += buttonStep_Click;
+            // 
+            // panel11
+            // 
+            panel11.AutoSize = true;
+            panel11.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel11.Dock = DockStyle.Top;
+            panel11.Location = new Point(0, 75);
+            panel11.MinimumSize = new Size(0, 5);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(314, 5);
+            panel11.TabIndex = 6;
+            // 
+            // buttonStepKillerSet
+            // 
+            buttonStepKillerSet.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepKillerSet.Dock = DockStyle.Top;
+            buttonStepKillerSet.FlatStyle = FlatStyle.Flat;
+            buttonStepKillerSet.ForeColor = Color.White;
+            buttonStepKillerSet.Location = new Point(0, 45);
+            buttonStepKillerSet.Name = "buttonStepKillerSet";
+            buttonStepKillerSet.Size = new Size(314, 30);
+            buttonStepKillerSet.TabIndex = 1;
+            buttonStepKillerSet.Text = "Killer Set";
+            buttonStepKillerSet.UseVisualStyleBackColor = false;
+            buttonStepKillerSet.Click += buttonStep_Click;
+            // 
+            // panel10
+            // 
+            panel10.AutoSize = true;
+            panel10.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel10.Dock = DockStyle.Top;
+            panel10.Location = new Point(0, 40);
+            panel10.MinimumSize = new Size(0, 5);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(314, 5);
+            panel10.TabIndex = 5;
+            // 
+            // buttonStepStart
+            // 
+            buttonStepStart.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepStart.Dock = DockStyle.Top;
+            buttonStepStart.FlatStyle = FlatStyle.Flat;
+            buttonStepStart.ForeColor = Color.White;
+            buttonStepStart.Location = new Point(0, 10);
+            buttonStepStart.Name = "buttonStepStart";
+            buttonStepStart.Size = new Size(314, 30);
+            buttonStepStart.TabIndex = 0;
+            buttonStepStart.Text = "Start";
+            buttonStepStart.UseVisualStyleBackColor = false;
+            buttonStepStart.Click += buttonStep_Click;
             // 
             // EmulatorWindow
             // 
@@ -255,7 +387,8 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(334, 340);
-            Controls.Add(panel2);
+            Controls.Add(panel5);
+            Controls.Add(mainPanel);
             MinimumSize = new Size(350, 100);
             Name = "EmulatorWindow";
             Padding = new Padding(10);
@@ -263,11 +396,15 @@
             Text = "ToN Parameter Emulator";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
-            panel2.ResumeLayout(false);
+            mainPanel.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel4.ResumeLayout(false);
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -276,7 +413,7 @@
         private ComboBox comboRoundType;
         private Panel panel1;
         private Label label1;
-        private Panel panel2;
+        private Panel mainPanel;
         private Panel panel3;
         private Label label2;
         private ComboBox comboMonster;
@@ -289,6 +426,14 @@
         private ComboBox comboMonster2;
         private Panel panel8;
         private Panel panel9;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Panel panel5;
+        private Button buttonStepStart;
+        private Button buttonStepKillerSet;
+        private Button buttonStepReveal;
+        private Button buttonStepEndRound;
+        private Panel panel2;
+        private Panel panel11;
+        private Panel panel10;
+        private CheckBox checkBoxIsKiller;
     }
 }

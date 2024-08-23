@@ -166,6 +166,7 @@ namespace ToNSaveManager.Models.Index {
         public class Terror : EntryBase
         {
             public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = byte.MaxValue };
+            public static readonly Terror Zero = new Terror() { IsEmpty = true, Id = 0 };
 
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }

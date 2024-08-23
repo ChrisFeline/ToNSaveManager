@@ -89,6 +89,9 @@ namespace ToNSaveManager.Utils
             if (Settings.Get.OSCEnabled && ((MainWindow.Started && IsDirty) || force)) {
                 IsDirty = false;
 
+                if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
+                if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
+
                 int value = (int)TMatrix.RoundType;
                 if (LastRoundType != value && value == 0) SendParam(ParamRoundType, LastRoundType = value);
 
@@ -170,9 +173,6 @@ namespace ToNSaveManager.Utils
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
-
-                if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
-                if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
             }
 
             if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
