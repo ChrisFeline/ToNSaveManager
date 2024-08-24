@@ -72,7 +72,7 @@ namespace ToNSaveManager.Windows
 
         #region Initialization
         static EmulatorWindow() {
-            Maps = Database.Maps.Values.ToArray();
+            Maps = Database.Maps.Values.Where((t, i) => i < Database.Maps.Count - 1).ToArray();
             Terrors = Database.Terrors.Values.ToArray();
             Alternates = Database.Alternates.Values.ToArray();
             Whitelisted = Terrors.Where(t => !t.CantBB).ToArray();
