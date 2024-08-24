@@ -381,7 +381,9 @@ namespace ToNSaveManager.Windows
                     if (comboBox.Items.Count > 0) {
                         if (comboBox.SelectedIndex == 0) comboBox.SelectedIndex = Random.Shared.Next(1, comboBox.Items.Count);
                         terrors[i] = ((Terror?)comboBox.SelectedItem ?? Terror.Zero).Id;
-                    } else terrors[i] = 0;
+                    } else {
+                        terrors[i] = CurrentRoundType == ToNRoundType.Double_Trouble || CurrentRoundType == ToNRoundType.EX ? terrors[i-1] : 0;
+                    }
                 } else terrors[i] = byte.MaxValue;
             }
 

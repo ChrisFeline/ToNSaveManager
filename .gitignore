@@ -401,3 +401,4 @@ FodyWeavers.xsd
 Environment/
 publish.bat
 Localization/Language/ts-TS.json
+Properties/launchSettings.json
