@@ -204,10 +204,10 @@ namespace ToNSaveManager.Windows
                     case ToNRoundType.Cold_Night:
                     case ToNRoundType.GIGABYTE:
                     case ToNRoundType.Twilight:
-                    case ToNRoundType.Solstice: // This one doesn't matter
                         SetMonsterDataSource(null);
                         SetLocationDataSource(null);
                         break;
+                    case ToNRoundType.Solstice:
                     case ToNRoundType.Mystic_Moon:
                     case ToNRoundType.Blood_Moon:
                         SetMonsterDataSource(null);
