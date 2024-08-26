@@ -27,6 +27,7 @@ namespace ToNSaveManager.Models.Index {
             else Array.Resize(ref Encounter, Encounter.Length + 1);
 
             Encounter[Encounter.Length - 1] = index;
+            Debug.WriteLine("Added Encounter: " + index);
         }
 
         public override string ToString() {

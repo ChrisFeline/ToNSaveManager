@@ -145,6 +145,14 @@ namespace ToNSaveManager.Windows
             comboRoundType.SelectedIndex = 0;
 
             buttonStep_Reset();
+            UpdateSpecialCheckbox();
+        }
+
+        private void UpdateSpecialCheckbox() {
+            checkHHInvader.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 47;
+            checkWildYetBloodthirsty.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 106;
+            checkGlorbo.Visible = Operation.RoundType == ToNRoundType.Punished && Operation.TerrorIndex == 61;
+            checkAtrached.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 40;
         }
 
         private void SetMonsterDataSource(Terror[]? source) {
@@ -261,6 +269,8 @@ namespace ToNSaveManager.Windows
             }
             indexOutput = output;
             Debug.WriteLine($"Selected: {output} | {element.Name}");
+
+            UpdateSpecialCheckbox();
         }
 
         private void comboMonster_SelectedIndexChanged(object sender, EventArgs e) {
@@ -390,6 +400,13 @@ namespace ToNSaveManager.Windows
             TerrorMatrix terrorMatrix = new TerrorMatrix(CurrentRoundType.ToString().Replace('_', ' ').Replace(" Alternate", " (Alternate)"), terrors);
             terrorMatrix.IsSaboteur = CurrentIsKiller;
             terrorMatrix.RoundType = CurrentRoundType;
+
+            // Check for specials
+            if (checkHHInvader.Visible && checkHHInvader.Checked) terrorMatrix.AddEncounter(checkHHInvader.TabIndex);
+            if (checkWildYetBloodthirsty.Visible && checkWildYetBloodthirsty.Checked) terrorMatrix.AddEncounter(checkWildYetBloodthirsty.TabIndex);
+            if (checkAtrached.Visible && checkAtrached.Checked) terrorMatrix.AddEncounter(checkAtrached.TabIndex);
+            if (checkGlorbo.Visible && checkGlorbo.Checked) terrorMatrix.AddEncounter(checkGlorbo.TabIndex);
+
             LilOSC.SetTerrorMatrix(terrorMatrix);
         }
 
