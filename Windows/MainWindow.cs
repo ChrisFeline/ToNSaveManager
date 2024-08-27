@@ -567,7 +567,7 @@ namespace ToNSaveManager
         }
 
         private bool HandleSaveCode(string line, DateTime timestamp, LogContext context) {
-            int index = line.IndexOf(SaveInitKeyword);
+            int index = line.IndexOf(SaveInitKeyword, StringComparison.InvariantCulture);
             if (index > -1) {
                 context.Set(SaveInitKey, true);
                 return true;
@@ -575,12 +575,12 @@ namespace ToNSaveManager
 
             if (!context.Get<bool>(SaveInitKey)) return false;
 
-            index = line.IndexOf(SaveStartKeyword);
+            index = line.IndexOf(SaveStartKeyword, StringComparison.InvariantCulture);
             if (index < 0) return false;
 
             index += SaveStartKeyword.Length;
 
-            int end = line.IndexOf(SaveEndKeyword, index);
+            int end = line.IndexOf(SaveEndKeyword, index, StringComparison.InvariantCulture);
             if (end < 0) return false;
             end -= index;
 
@@ -626,13 +626,13 @@ namespace ToNSaveManager
 
             // Handle map location
             if (line.StartsWith(ROUND_MAP_LOCATION)) {
-                int index = line.LastIndexOf('(') + 1;
+                int index = line.LastIndexOf("(", StringComparison.InvariantCulture) + 1;
                 if (index <= 0) return true;
 
-                int indexEnd = line.IndexOf(')', index);
+                int indexEnd = line.IndexOf(")", index, StringComparison.InvariantCulture);
                 if (indexEnd < 0 || index >= indexEnd) return true;
 
-                int length = (line.IndexOf(')', index) - index);
+                int length = (line.IndexOf(")", index, StringComparison.InvariantCulture) - index);
 
                 string id_str = line.Substring(index, length);
                 string name = line.Substring(ROUND_MAP_LOCATION.Length, index - ROUND_MAP_LOCATION.Length - 1).Trim();
@@ -688,7 +688,7 @@ namespace ToNSaveManager
             bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL); // Killers have been revealed - 
             if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) { // Killers have been set - 
                 int index  = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
-                int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index);
+                int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index, StringComparison.InvariantCulture);
                 if (rndInd < 0) return true;
 
                 string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();

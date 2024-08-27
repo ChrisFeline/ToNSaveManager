@@ -142,8 +142,8 @@ namespace ToNSaveManager
                 const string log_start = "[changelog]: <> (START)";
                 const string log_end = "[changelog]: <> (END)";
 
-                int start = release.body.IndexOf(log_start);
-                int end = release.body.IndexOf(log_end);
+                int start = release.body.IndexOf(log_start, StringComparison.InvariantCulture);
+                int end = release.body.IndexOf(log_end, StringComparison.InvariantCulture);
                 string body = string.Empty;
 
                 if (start > -1 && end > (start + log_start.Length) && end > start)

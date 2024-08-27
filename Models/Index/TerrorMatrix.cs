@@ -41,7 +41,7 @@ namespace ToNSaveManager.Models.Index {
         }
 
         public TerrorMatrix(string roundType, params int[] indexes) {
-            int index = roundType.IndexOf(ROUND_TYPE_ALTERNATE);
+            int index = roundType.IndexOf(ROUND_TYPE_ALTERNATE, StringComparison.InvariantCulture);
             bool isAlt = index > 0;
             if (isAlt) roundType = roundType.Substring(0, index);
 

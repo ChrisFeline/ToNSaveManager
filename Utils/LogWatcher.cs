@@ -256,8 +256,8 @@
         {
             if (!line.Contains(UserAuthKeyword)) return false;
 
-            int index = line.IndexOf(UserAuthKeyword) + UserAuthKeyword.Length;
-            int length = line.IndexOf(" (", index) - index;
+            int index = line.IndexOf(UserAuthKeyword, StringComparison.InvariantCulture) + UserAuthKeyword.Length;
+            int length = line.IndexOf(" (", index, StringComparison.InvariantCulture) - index;
 
             if (index > -1 && length > 0 && index < line.Length && index + length < line.Length)
             {
@@ -277,7 +277,7 @@
         private bool ParseLocation(string line, DateTime lineDate, LogContext logContext)
         {
             if (line.Contains(InstanceKeyword)) {
-                var index = line.IndexOf(InstanceKeyword) + InstanceKeywordLength;
+                var index = line.IndexOf(InstanceKeyword, StringComparison.InvariantCulture) + InstanceKeywordLength;
                 if (index >= line.Length) return false;
 
                 var instanceId = line.Substring(index).Trim('\n', '\r');
@@ -288,7 +288,7 @@
 
             if (line.Contains(LocationKeyword)) {
 
-                var index = line.IndexOf(LocationKeyword) + LocationKeyword.Length;
+                var index = line.IndexOf(LocationKeyword, StringComparison.InvariantCulture) + LocationKeyword.Length;
                 if (index >= line.Length) return false;
 
                 var worldName = line.Substring(index).Trim('\n', '\r');
@@ -311,7 +311,7 @@
 
             if (line.Contains(UserJoinKeyword))
             {
-                index = line.IndexOf(UserJoinKeyword) + UserJoinKeyword.Length;
+                index = line.IndexOf(UserJoinKeyword, StringComparison.InvariantCulture) + UserJoinKeyword.Length;
                 displayName = line.Substring(index + 1).Trim();
 
                 logContext.Join(displayName);
@@ -320,7 +320,7 @@
 
             if (line.Contains(UserLeaveKeyword))
             {
-                index = line.IndexOf(UserLeaveKeyword) + UserLeaveKeyword.Length;
+                index = line.IndexOf(UserLeaveKeyword, StringComparison.InvariantCulture) + UserLeaveKeyword.Length;
                 displayName = line.Substring(index + 1).Trim();
 
                 logContext.Leave(displayName);
