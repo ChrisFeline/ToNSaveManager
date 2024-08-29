@@ -15,9 +15,15 @@ namespace ToNSaveManager.Utils
     internal static class LilOSC {
         static UdpClient? UdpClient;
         const string ParamRoundType = "ToN_RoundType";
+
         const string ParamTerror1 = "ToN_Terror1";
         const string ParamTerror2 = "ToN_Terror2";
         const string ParamTerror3 = "ToN_Terror3";
+
+        const string ParamTPhase1 = "ToN_TPhase1";
+        const string ParamTPhase2 = "ToN_TPhase2";
+        const string ParamTPhase3 = "ToN_TPhase3";
+
         const string ParamOptedIn = "ToN_OptedIn";
         const string ParamSaboteur = "ToN_Saboteur";
         const string ParamMap = "ToN_Map";
@@ -33,6 +39,9 @@ namespace ToNSaveManager.Utils
         static int LastTerror1 = -1;
         static int LastTerror2 = -1;
         static int LastTerror3 = -1;
+        static int LastTPhase1 = -1;
+        static int LastTPhase2 = -1;
+        static int LastTPhase3 = -1;
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
         static int LastMapID = -1;
@@ -62,15 +71,6 @@ namespace ToNSaveManager.Utils
         }
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-#if DEBUG
-            if (terrorMatrix.TerrorCount > 0) {
-                Debug.WriteLine("----------------------------------");
-                Debug.WriteLine("Terror Matrix: " + terrorMatrix);
-                Debug.WriteLine("Terror Names: " + string.Join(", ", terrorMatrix.Terrors.Select(t => ToNIndex.Instance.GetTerror(t).ToString())));
-                Debug.WriteLine("----------------------------------");
-            }
-#endif
-
             TMatrix = terrorMatrix;
             IsDirty = true;
         }
@@ -99,9 +99,9 @@ namespace ToNSaveManager.Utils
                 ToNIndex.TerrorInfo info2 = TMatrix.Terror2;
                 ToNIndex.TerrorInfo info3 = TMatrix.Terror3;
 
-                int value1 = info1.Index;
-                int value2 = info2.Index;
-                int value3 = info3.Index;
+                int value1 = info1.Index, phase1 = info1.Phase;
+                int value2 = info2.Index, phase2 = info2.Phase;
+                int value3 = info3.Index, phase3 = info3.Phase;
 
                 switch (TMatrix.RoundType) {
                     case ToNRoundType.Fog_Alternate:
@@ -161,6 +161,10 @@ namespace ToNSaveManager.Utils
                 if (LastTerror1 != value1 || force) SendParam(ParamTerror1, LastTerror1 = value1);
                 if (LastTerror2 != value2 || force) SendParam(ParamTerror2, LastTerror2 = value2);
                 if (LastTerror3 != value3 || force) SendParam(ParamTerror3, LastTerror3 = value3);
+
+                if (LastTPhase1 != phase1 || force) SendParam(ParamTPhase1, LastTPhase1 = phase1);
+                if (LastTPhase2 != phase2 || force) SendParam(ParamTPhase2, LastTPhase2 = phase2);
+                if (LastTPhase3 != phase3 || force) SendParam(ParamTPhase3, LastTPhase3 = phase3);
 
                 // Encounters
                 for (int i = 0; i < EncounterKeys.Length; i++) {

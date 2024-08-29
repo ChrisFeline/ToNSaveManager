@@ -530,6 +530,7 @@ namespace ToNSaveManager
 
         const string ROUND_RESULT_KEY = "rResult";
         const string ROUND_KILLERS_KEY = "rKillers";
+        const string ROUND_PHASE_KEY = "rPhase";
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
 
@@ -645,7 +646,7 @@ namespace ToNSaveManager
                 if (context.IsRecent) LilOSC.SetMap(map);
 
                 if (map.Id == 68) { // RUN | The Meatball Man
-                    TerrorMatrix terrorMatrix = new TerrorMatrix("RUN", 0, 0, 0);
+                    TerrorMatrix terrorMatrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);
                     context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
                 }
@@ -726,21 +727,28 @@ namespace ToNSaveManager
             }
 
             if (context.HasKey(ROUND_KILLERS_KEY)) {
+                TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+
                 for (int i = 0; i < EncounterList.Length; i++) {
                     ToNIndex.Terror encounter = EncounterList[i];
                     if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
-
-                    TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
 
                     if (encounter.Id == 4) { // GIGABYTES
                         Debug.WriteLine("Correcting Round Type to GIGABYTE.");
                         matrix.RoundType = ToNRoundType.GIGABYTE;
                         matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
                         matrix.TerrorCount = 1;
+                        matrix.HasPhase = false;
                     } else {
                         matrix.AddEncounter(encounter.Id);
                     }
 
+                    context.Set(ROUND_KILLERS_KEY, matrix);
+                    if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                    return true;
+                }
+
+                if (matrix.HasPhase && matrix.PhaseCheck(line)) {
                     context.Set(ROUND_KILLERS_KEY, matrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
                     return true;
@@ -858,7 +866,7 @@ namespace ToNSaveManager
 
                     if (killers.Terrors.Length > 0) {
                         if (Settings.Get.SaveRoundNote)
-                            entry.Note = string.Join(", ", killers.Terrors.Select(ToNIndex.Instance.GetTerror));
+                            entry.Note = string.Join(", ", killers.Terrors.Select(t => t.Name));
                     }
 
                     context.Rem(ROUND_KILLERS_KEY);

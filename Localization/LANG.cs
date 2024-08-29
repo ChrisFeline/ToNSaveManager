@@ -42,7 +42,7 @@ namespace ToNSaveManager.Localization {
             }
 
 #if DEBUG
-            if (!key.EndsWith(".TT")) Debug.WriteLine($"Invalid language key '{key}'");
+            // if (!key.EndsWith(".TT")) Debug.WriteLine($"Invalid language key '{key}'");
 #endif
             return null;
         }

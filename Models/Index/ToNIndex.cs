@@ -159,16 +159,21 @@ namespace ToNSaveManager.Models.Index {
         #endregion
 
         #region Model Classes
-        public class Terror : EntryBase
-        {
+        public class Terror : EntryBase {
             public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = byte.MaxValue };
             public static readonly Terror Zero = new Terror() { IsEmpty = true, Id = 0 };
 
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("k", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? Keyword { get; set; }
+            [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public PhaseIndex[]? Phases { get; set; }
 
             public override string ToString() => Name;
+
+            public struct PhaseIndex {
+                [JsonProperty("n")] public string Name;
+                [JsonProperty("k")] public string Keyword;
+            }
         }
 
         public class Map : EntryBase
@@ -196,12 +201,18 @@ namespace ToNSaveManager.Models.Index {
             public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue };
 
             [JsonProperty("i")] public int Index;
-            [JsonProperty("g")] public TerrorGroup Group;
+            [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group;
+            [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Phase;
 
-            public TerrorInfo(int index, TerrorGroup group)
+            [JsonIgnore] private Terror? m_Value { get; set; }
+            [JsonIgnore] public Terror Value { get => m_Value ?? (m_Value = Instance.GetTerror(this)); }
+            [JsonIgnore] public string Name => !Value.IsEmpty && Phase > 0 && Value.Phases != null ? Value.Phases[Phase - 1].Name : Value.Name;
+
+            public TerrorInfo(int index, TerrorGroup group, int phase = 0)
             {
                 Index = index;
                 Group = group;
+                Phase = phase;
             }
 
             public override string ToString() {
