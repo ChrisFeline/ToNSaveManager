@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 
 namespace ToNSaveManager.Models.Index {
@@ -36,8 +32,8 @@ namespace ToNSaveManager.Models.Index {
         [JsonProperty("s")] public Dictionary<int, Terror> Specials { get; private set; } = new();
         [JsonProperty("e")] public Dictionary<int, Terror> Events { get; private set; } = new();
 
-        [JsonProperty("er")] public Dictionary<int, int[]> EightPRedirect { get; private set; } = new();
-        [JsonProperty("ep")] public Dictionary<int, Terror> EightPages { get; private set; } = new();
+        [JsonProperty("r")] public Dictionary<int, int[]> EightPRedirect { get; private set; } = new();
+        [JsonProperty("p")] public Dictionary<int, Terror> EightPages { get; private set; } = new();
 
         [JsonProperty("u")] public Dictionary<int, Terror> Unbound { get; private set; } = new();
 
