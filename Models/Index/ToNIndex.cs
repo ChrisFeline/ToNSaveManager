@@ -171,8 +171,8 @@ namespace ToNSaveManager.Models.Index {
             public override string ToString() => Name;
 
             public struct PhaseIndex {
-                [JsonProperty("n")] public string Name;
-                [JsonProperty("k")] public string Keyword;
+                [JsonProperty("n")] public string Name { get; set; }
+                [JsonProperty("k")] public string Keyword { get; set; }
             }
         }
 
