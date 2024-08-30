@@ -533,6 +533,7 @@ namespace ToNSaveManager
         const string ROUND_PHASE_KEY = "rPhase";
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
+        const string ROUND_DEATH_KEYWORD = "You died.";
 
         const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
@@ -609,8 +610,6 @@ namespace ToNSaveManager
                 }
 
                 if (context.IsRecent) {
-                    Debug.WriteLine("RECENT");
-
                     LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
                     LilOSC.SetMap();
                     LilOSC.SetOptInStatus(isOptedIn);
@@ -751,6 +750,11 @@ namespace ToNSaveManager
                 if (matrix.HasPhase && matrix.PhaseCheck(line)) {
                     context.Set(ROUND_KILLERS_KEY, matrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                    return true;
+                }
+
+                if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
+                    if (context.IsRecent) StatsWindow.SetRoundActive(false);
                     return true;
                 }
             }
