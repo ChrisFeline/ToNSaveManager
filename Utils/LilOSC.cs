@@ -47,7 +47,7 @@ namespace ToNSaveManager.Utils
         static int LastMapID = -1;
         static Color LastTerrorColor = Color.Black;
 
-        static int[] EncounterKeys = ToNIndex.Instance.Encounters.Keys.ToArray();
+        static int[] EncounterKeys = ToNIndex.Instance.Encounters.Keys.Where(k => k > -1).ToArray();
         static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
 
         static bool IsOptedIn = false;

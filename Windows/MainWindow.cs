@@ -732,12 +732,18 @@ namespace ToNSaveManager
                     ToNIndex.Terror encounter = EncounterList[i];
                     if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
 
-                    if (encounter.Id == 4) { // GIGABYTES
-                        Logger.Debug("Correcting Round Type to GIGABYTE.");
-                        matrix.RoundType = ToNRoundType.GIGABYTE;
-                        matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
-                        matrix.TerrorCount = 1;
-                        matrix.HasPhase = false;
+                    if (encounter.Id < 0) { // GIGABYTES
+                        switch (encounter.Id) {
+                            case -1:
+                                Logger.Debug("Correcting Round Type to GIGABYTE.");
+                                matrix.RoundType = ToNRoundType.GIGABYTE;
+                                matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
+                                matrix.TerrorCount = 1;
+                                matrix.HasPhase = false;
+                                break;
+
+                            default: break;
+                        }
                     } else {
                         matrix.AddEncounter(encounter.Id);
                     }
