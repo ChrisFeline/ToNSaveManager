@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing.Text;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
@@ -44,6 +45,9 @@ namespace ToNSaveManager
         static void Main(string[] args)
         {
             Arguments = args;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             LANG.Initialize();
 
             UpdateWindow.RunPostUpdateCheck(args);
