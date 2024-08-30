@@ -1,6 +1,7 @@
 ﻿# Latest Changelog
 
 ## Additions
+- Updated for new ToN Update. Yes, it's time! Create a new instance!
 - Added stats window. Here you can track stats like rounds won/lost, killer stuns, etc...
 - Added chatbox stats display. (Only shown on Intermissions)
 	- You can display your stats in the chatbox, but the chatbox will be hidden on purpose when participating on a round. Chatbox will be displayed again after death or end of round.
@@ -9,15 +10,6 @@
 - Added more keyboard navigation. (Suggested by YoBro)
 - Save code will now display the Map where you survived.
 - Added German localization (Provided by @sageyx2002)
-### OSC Changes
-* Please open README.md to see more OSC specifications.
-- Added an OSC emulator window that allows you to emulate and test ToN encounters without actually being in the world. This should help avatar creators test their parameters and animations.
-- Added parameters for the HUD terror color, allowing you to colorize your avatar with HSV.
-- Eight Pages is now fully supported.
-- Round Type is sent after Terror id's.
-- Supports alternates on Fog rounds.
-- Added parameters for special encounters.
-- Added parameters for some terror phases. (Faker & Bliss)
 
 ## Fixes & Improvements
 - App now runs on Invariant Culture. This fixes the app not being able to parse in some countries.
@@ -26,3 +18,15 @@
 - Fixed save code delete warning message being the same as log history delete message.
 - Rename & Import context menu buttons are disabled on entries that are not custom collections or favorites.
 - Fixed clipboard clearing it's content after closing the app.
+
+### OSC Changes
+* Please open README.md to see more OSC specifications.
+- Added an OSC emulator window that allows you to emulate and test ToN encounters without actually being in the world. This should help avatar creators test their parameters and animations.
+	- To open the emulator, launch the app with --emulator as a console argument.
+- Added parameters for the HUD terror color, allowing you to colorize your avatar with HSV.
+- Eight Pages is now fully supported.
+- Round Type is sent after Terror id's.
+- Supports alternates on Fog rounds.
+- Added parameters for special encounters.
+- Added parameters for some terror phases. (Faker & Bliss)
+- RUN round type is now properly detected.
