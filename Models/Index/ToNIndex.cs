@@ -163,6 +163,7 @@ namespace ToNSaveManager.Models.Index {
             public static readonly Terror Empty = new Terror() { IsEmpty = true, Id = byte.MaxValue };
             public static readonly Terror Zero = new Terror() { IsEmpty = true, Id = 0 };
 
+            [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? InternalName { get; set; } // Possible name attached to Enrage states.
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("k", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? Keyword { get; set; }
