@@ -39,7 +39,7 @@ namespace ToNSaveManager
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e) {
-            Logger.Debug("Main Window form is closing.");
+            Logger.Debug("Main Window is closing.");
             WinSettings.Get.LastWindowWidth = this.Width;
             WinSettings.Get.LastWindowHeight = this.Height;
             WinSettings.Get.LastWindowSplit = splitContainer1.SplitterDistance;
@@ -427,7 +427,7 @@ namespace ToNSaveManager
 
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
             using (Process.Start(psInfo)) {
-                Logger.Debug("Opening external link: " + url);
+                Logger.Info("Opening external link: " + url);
             }
         }
         #endregion

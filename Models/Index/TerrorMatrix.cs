@@ -30,7 +30,7 @@ namespace ToNSaveManager.Models.Index {
                     for (int j = 0; j < terror.Phases.Length; j++) {
                         if (line.StartsWith(terror.Phases[j].Keyword)) {
                             Terrors[i].Phase = j + 1;
-                            Logger.Debug($"Terror {terror} changed to phase {j+1}.");
+                            Logger.Log($"Terror {terror} changed to phase {j+1}.");
                             return true;
                         }
                     }

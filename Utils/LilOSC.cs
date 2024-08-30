@@ -302,9 +302,7 @@ namespace ToNSaveManager.Utils
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
 
-#if DEBUG
             Logger.Debug("Sending Param: " + name + " = " + value);
-#endif
         }
 
         private static void SendParam(string name, float value) {
@@ -312,9 +310,7 @@ namespace ToNSaveManager.Utils
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
 
-#if DEBUG
             Logger.Debug("Sending Param: " + name + " = " + value);
-#endif
         }
 
         private static void SendParam(string name, bool value) {
@@ -322,9 +318,7 @@ namespace ToNSaveManager.Utils
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
 
-#if DEBUG
             Logger.Debug("Sending Param: " + name + " = " + value);
-#endif
         }
 
         private static void SendChatbox(string message, bool direct = true, bool complete = false) {

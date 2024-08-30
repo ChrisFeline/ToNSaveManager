@@ -154,7 +154,7 @@ namespace ToNSaveManager.Models
 
         public void CopyToClipboard()
         {
-            Logger.Debug("COPYING TO CLIPBOARD");
+            Logger.Log("COPYING TO CLIPBOARD: " + this);
             // Windows 11 please... :[
             // Clipboard.Clear();
             // Clipboard.SetText(Content);

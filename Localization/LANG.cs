@@ -94,27 +94,23 @@ namespace ToNSaveManager.Localization {
         }
 
         internal static void Select(string key) {
-            Logger.Debug("Selecting language key: " + key);
+            Logger.Info("Selecting language key: " + key);
             SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
             IsRightToLeft = SelectedLang.ContainsKey("RIGHT_TO_LEFT") && SelectedLang["RIGHT_TO_LEFT"] == "YES";
         }
 
         internal static string FindLanguageKey() {
-#if DEBUG // Only print on Debug, not on release.
-            Logger.Debug("Finding Language Key...");
-            CultureInfo ci = CultureInfo.InstalledUICulture;
-
-            Logger.Debug("Default Language Info:");
-            Logger.Debug(string.Format("* Name: {0}", ci.Name));
-            Logger.Debug(string.Format("* Display Name: {0}", ci.DisplayName));
-            Logger.Debug(string.Format("* English Name: {0}", ci.EnglishName));
-            Logger.Debug(string.Format("* 2-letter ISO Name: {0}", ci.TwoLetterISOLanguageName));
-            Logger.Debug(string.Format("* 3-letter ISO Name: {0}", ci.ThreeLetterISOLanguageName));
-            Logger.Debug(string.Format("* 3-letter Win32 API Name: {0}", ci.ThreeLetterWindowsLanguageName));
-#endif
-
             var currentCulture = CultureInfo.InstalledUICulture;
+
+            Logger.Info("Current UI Language Info:");
+            Logger.Info(string.Format("* Name: {0}", currentCulture.Name));
+            Logger.Info(string.Format("* Display Name: {0}", currentCulture.DisplayName));
+            Logger.Info(string.Format("* English Name: {0}", currentCulture.EnglishName));
+            Logger.Info(string.Format("* 2-letter ISO Name: {0}", currentCulture.TwoLetterISOLanguageName));
+            Logger.Info(string.Format("* 3-letter ISO Name: {0}", currentCulture.ThreeLetterISOLanguageName));
+            Logger.Info(string.Format("* 3-letter Win32 API Name: {0}", currentCulture.ThreeLetterWindowsLanguageName));
+
             string langName = currentCulture.TwoLetterISOLanguageName;
             string fullLangName = currentCulture.Name;
 

@@ -438,13 +438,13 @@
                 InstanceExceptions.Clear();
                 InstanceLogs.Clear();
 
-                Logger.Debug("Entering Room Name: " + name);
+                Logger.Info("Entering Room Name: " + name);
             }
             public void Enter(string instanceID, bool isHomeWorld) {
                 InstanceID = instanceID;
                 IsHomeWorld = isHomeWorld;
 
-                Logger.Debug($"Instace [{isHomeWorld}] : {instanceID}");
+                Logger.Info($"Instace [{isHomeWorld}] : {instanceID}");
             }
 
             public void AddException(string exceptionLog)

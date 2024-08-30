@@ -275,7 +275,7 @@ namespace ToNSaveManager.Windows
             LANG.LangKey langKey = (LANG.LangKey)languageSelectBox.SelectedItem;
 
             if (LANG.SelectedKey != langKey.Key) {
-                Logger.Debug("Changing language to: " + langKey);
+                Logger.Log("Changing language to: " + langKey);
                 LANG.Select(langKey.Key);
                 LANG.ReloadAll();
                 Settings.Get.SelectedLanguage = langKey.Key;

@@ -150,10 +150,11 @@ namespace ToNSaveManager.Models
                 }
 
                 Destination = destination;
-                if (!File.Exists(Destination)) return new Settings();
 
-                string content = File.ReadAllText(Destination);
-                settings = JsonConvert.DeserializeObject<Settings>(content);
+                if (File.Exists(Destination)) {
+                    string content = File.ReadAllText(Destination);
+                    settings = JsonConvert.DeserializeObject<Settings>(content);
+                } else settings = null;
             }
             catch
             {
@@ -164,8 +165,10 @@ namespace ToNSaveManager.Models
                 settings = new Settings();
 
             string selectedLanguage = settings.SelectedLanguage;
+            Logger.Debug("Selected language in settings is: " + selectedLanguage);
 
             if (string.IsNullOrEmpty(selectedLanguage)) {
+                Logger.Info("Searching language key...");
                 selectedLanguage = LANG.FindLanguageKey();
             }
 

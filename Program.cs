@@ -64,19 +64,17 @@ namespace ToNSaveManager
             InitializeFont();
 
             Application.ApplicationExit += delegate {
-                Logger.Debug("Disposing on exit");
+                Logger.Log("Disposing used resources...");
                 FontCollection.Dispose();
                 DefaultFont?.Dispose();
                 ReleaseMutex();
-                Logger.Debug("Saving on exit");
+                Logger.Log("Saving before app exit...");
                 MainWindow.SaveData.Export();
                 StatsWindow.Export();
-                Logger.Debug("Leaving now :)");
+                Logger.Log("Done.");
             };
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
-
-            Logger.Debug(ProgramDirectory);
 
             if (!StartCheckForUpdate()) {
                 Application.Run(new MainWindow());
@@ -104,7 +102,7 @@ namespace ToNSaveManager
                     }
                     catch (Exception ex)
                     {
-                        Logger.Debug(ex.ToString());
+                        Logger.Error(ex.ToString());
                     }
             }
 
@@ -178,7 +176,7 @@ namespace ToNSaveManager
 
         internal static bool CreateFileBackup(string filePath)
         {
-            Logger.Debug("Creating Backup For: " + filePath);
+            Logger.Info("Creating Backup For: " + filePath);
 
             try
             {

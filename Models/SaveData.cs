@@ -233,7 +233,7 @@ namespace ToNSaveManager.Models
 
                 Destination = destination;
                 filePath = readFromLegacy ? LegacyLocation : Destination;
-                Logger.Debug("Reading from: " + filePath);
+                Logger.Log("Reading from: " + filePath);
 
                 string legacyData = Path.Combine(Path.GetDirectoryName(Destination) ?? string.Empty, LegacyFileName);
                 if (File.Exists(legacyData) && noDest)
@@ -291,7 +291,7 @@ namespace ToNSaveManager.Models
                 }
                 catch (Exception e)
                 {
-                    Logger.Debug("Could not import old file.\n\n" + e);
+                    Logger.Error("Could not import old file.\n\n" + e);
                 }
             }
 
