@@ -12,7 +12,7 @@
 - Added German localization (Provided by @sageyx2002)
 
 ## Fixes & Improvements
-- App now runs on Invariant Culture. This fixes the app not being able to parse in some countries.
+- App now runs on Invariant Culture. This fixes the app not being able to parse the logs in some countries.
 	- This means if your friends from 'Tailand' couldn't use the app, they might be able to now lol
 - Log now parses from room join every time you launch the app. This fixes some terror names not being displayed when the app is opened in the middle of a run.
 - Fixed save code delete warning message being the same as log history delete message.
