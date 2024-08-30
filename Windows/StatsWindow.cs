@@ -46,7 +46,7 @@ namespace ToNSaveManager
         internal static bool IsRoundActive;
         internal static void SetRoundActive(bool active) {
             if (IsRoundActive != active) {
-                Debug.WriteLine("Setting Round Active: " + active);
+                Logger.Debug("Setting Round Active: " + active);
 
                 IsRoundActive = active;
                 if (IsRoundActive) LilOSC.SetChatboxMessage(string.Empty);

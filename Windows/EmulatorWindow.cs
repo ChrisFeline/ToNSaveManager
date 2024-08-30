@@ -268,7 +268,7 @@ namespace ToNSaveManager.Windows
                 output = entry.Id;
             }
             indexOutput = output;
-            Debug.WriteLine($"Selected: {output} | {element.Name}");
+            Logger.Debug($"Selected: {output} | {element.Name}");
 
             UpdateSpecialCheckbox();
         }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -34,7 +35,7 @@ namespace ToNSaveManager.Localization {
 
         private static string? D(string key, params string[] args) {
 #if DEBUG
-            // if (!key.EndsWith(".TT")) Debug.WriteLine($"Missing key '{key}' in language pack '{SelectedKey}'");
+            // if (!key.EndsWith(".TT")) Logger.Debug($"Missing key '{key}' in language pack '{SelectedKey}'");
 #endif
 
             if (SelectedDefault.ContainsKey(key)) {
@@ -42,7 +43,7 @@ namespace ToNSaveManager.Localization {
             }
 
 #if DEBUG
-            if (!key.EndsWith(".TT")) Debug.WriteLine($"Invalid language key '{key}'");
+            if (!key.EndsWith(".TT")) Logger.Debug($"Invalid language key '{key}'");
 #endif
             return null;
         }
@@ -93,14 +94,27 @@ namespace ToNSaveManager.Localization {
         }
 
         internal static void Select(string key) {
-            Debug.WriteLine("Selecting language key: " + key);
+            Logger.Debug("Selecting language key: " + key);
             SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
             IsRightToLeft = SelectedLang.ContainsKey("RIGHT_TO_LEFT") && SelectedLang["RIGHT_TO_LEFT"] == "YES";
         }
 
         internal static string FindLanguageKey() {
-            var currentCulture = System.Globalization.CultureInfo.CurrentUICulture;
+#if DEBUG // Only print on Debug, not on release.
+            Logger.Debug("Finding Language Key...");
+            CultureInfo ci = CultureInfo.InstalledUICulture;
+
+            Logger.Debug("Default Language Info:");
+            Logger.Debug(string.Format("* Name: {0}", ci.Name));
+            Logger.Debug(string.Format("* Display Name: {0}", ci.DisplayName));
+            Logger.Debug(string.Format("* English Name: {0}", ci.EnglishName));
+            Logger.Debug(string.Format("* 2-letter ISO Name: {0}", ci.TwoLetterISOLanguageName));
+            Logger.Debug(string.Format("* 3-letter ISO Name: {0}", ci.ThreeLetterISOLanguageName));
+            Logger.Debug(string.Format("* 3-letter Win32 API Name: {0}", ci.ThreeLetterWindowsLanguageName));
+#endif
+
+            var currentCulture = CultureInfo.InstalledUICulture;
             string langName = currentCulture.TwoLetterISOLanguageName;
             string fullLangName = currentCulture.Name;
 
@@ -148,7 +162,7 @@ namespace ToNSaveManager.Localization {
                     LanguageData[key] = obj;
                 }
 
-                Debug.WriteLine("Added custom language with key: " + key);
+                Logger.Debug("Added custom language with key: " + key);
                 Select(key);
 
                 SettingsWindow.Instance?.FillLanguageBox();
@@ -178,12 +192,12 @@ namespace ToNSaveManager.Localization {
                                         SelectedDefaultKey = key;
                                         Select(key);
 
-                                        Debug.WriteLine("Found default language.");
+                                        Logger.Debug("Found default language.");
                                     }
 
                                     if (string.IsNullOrEmpty(firstKey)) firstKey = key;
 
-                                    Debug.WriteLine("Added language with key: " + key);
+                                    Logger.Debug("Added language with key: " + key);
                                     AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
                                 }
                             }
@@ -193,7 +207,7 @@ namespace ToNSaveManager.Localization {
             }
 
             if (string.IsNullOrEmpty(SelectedDefaultKey) && !string.IsNullOrEmpty(firstKey)) {
-                Debug.WriteLine("Default prefered language not found, using " + firstKey);
+                Logger.Debug("Default prefered language not found, using " + firstKey);
 
                 SelectedDefault = LanguageData[firstKey];
                 SelectedDefaultKey = firstKey;
@@ -212,7 +226,7 @@ namespace ToNSaveManager.Localization {
                 foreach (var pair in SelectedDefault) {
                     if (lang.Value.ContainsKey(pair.Key)) continue;
 
-                    Debug.WriteLine($"'{langKey}' Missing Key: '{pair.Key}'");
+                    Logger.Debug($"'{langKey}' Missing Key: '{pair.Key}'");
                     if (!missingKeys.ContainsKey(langKey)) missingKeys[langKey] = new Dictionary<string, string>();
                     missingKeys[langKey][pair.Key] = pair.Value;
                     hasMissingKeys = true;

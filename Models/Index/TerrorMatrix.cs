@@ -30,7 +30,7 @@ namespace ToNSaveManager.Models.Index {
                     for (int j = 0; j < terror.Phases.Length; j++) {
                         if (line.StartsWith(terror.Phases[j].Keyword)) {
                             Terrors[i].Phase = j + 1;
-                            Debug.WriteLine($"Terror {terror} changed to phase {j+1}.");
+                            Logger.Debug($"Terror {terror} changed to phase {j+1}.");
                             return true;
                         }
                     }
@@ -45,7 +45,7 @@ namespace ToNSaveManager.Models.Index {
             else Array.Resize(ref Encounter, Encounter.Length + 1);
 
             Encounter[Encounter.Length - 1] = index;
-            Debug.WriteLine("Added Encounter: " + index);
+            Logger.Debug("Added Encounter: " + index);
         }
 
         public override string ToString() {
@@ -143,7 +143,7 @@ namespace ToNSaveManager.Models.Index {
                 for (int i = 0; i < Terrors.Length; i++) {
                     ToNIndex.Terror terror = Terrors[i].Value;
                     if (!terror.IsEmpty && terror.Phases != null && terror.Phases.Length > 0) {
-                        Debug.WriteLine($"Terror at index {i} has phases ({terror.Phases.Length})");
+                        Logger.Debug($"Terror at index {i} has phases ({terror.Phases.Length})");
                         HasPhase = true;
                         break;
                     }

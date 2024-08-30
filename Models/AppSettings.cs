@@ -178,7 +178,7 @@ namespace ToNSaveManager.Models
         {
             try
             {
-                string json = JsonConvert.SerializeObject(this);
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 File.WriteAllText(Destination, json);
             }
             catch (Exception e)

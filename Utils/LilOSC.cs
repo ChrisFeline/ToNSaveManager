@@ -303,7 +303,7 @@ namespace ToNSaveManager.Utils
             SendBuffer(temp_buffer, encodedLength);
 
 #if DEBUG
-            Debug.WriteLine("Sending Param: " + name + " = " + value);
+            Logger.Debug("Sending Param: " + name + " = " + value);
 #endif
         }
 
@@ -313,7 +313,7 @@ namespace ToNSaveManager.Utils
             SendBuffer(temp_buffer, encodedLength);
 
 #if DEBUG
-            Debug.WriteLine("Sending Param: " + name + " = " + value);
+            Logger.Debug("Sending Param: " + name + " = " + value);
 #endif
         }
 
@@ -323,7 +323,7 @@ namespace ToNSaveManager.Utils
             SendBuffer(temp_buffer, encodedLength);
 
 #if DEBUG
-            Debug.WriteLine("Sending Param: " + name + " = " + value);
+            Logger.Debug("Sending Param: " + name + " = " + value);
 #endif
         }
 

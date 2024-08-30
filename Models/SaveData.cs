@@ -212,7 +212,7 @@ namespace ToNSaveManager.Models
                 if (!File.Exists(DefaultLocation) && (File.Exists(LegacyLocation) || File.Exists(LegacyLocation = LegacyLocationOld)))
                 {
                     readFromLegacy = true;
-                    Debug.WriteLine("Read from legacy...");
+                    Logger.Debug("Read from legacy...");
                 }
 
                 destination = DefaultLocation;
@@ -233,7 +233,7 @@ namespace ToNSaveManager.Models
 
                 Destination = destination;
                 filePath = readFromLegacy ? LegacyLocation : Destination;
-                Debug.WriteLine("Reading from: " + filePath);
+                Logger.Debug("Reading from: " + filePath);
 
                 string legacyData = Path.Combine(Path.GetDirectoryName(Destination) ?? string.Empty, LegacyFileName);
                 if (File.Exists(legacyData) && noDest)
@@ -291,7 +291,7 @@ namespace ToNSaveManager.Models
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Could not import old file.\n\n" + e);
+                    Logger.Debug("Could not import old file.\n\n" + e);
                 }
             }
 
@@ -330,7 +330,7 @@ namespace ToNSaveManager.Models
 
             if (data.Objectives.Count > 0)
             {
-                Debug.WriteLine("Importing old objectives...");
+                Logger.Debug("Importing old objectives...");
 
                 LegacyObjective[] defaultObjectives = GetLegacyObjectives();
                 for (i = 0; i < defaultObjectives.Length; i++)

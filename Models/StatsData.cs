@@ -13,7 +13,7 @@ namespace ToNSaveManager.Models {
         public static string Destination {
             get => m_Destination;
             set {
-                Debug.WriteLine("Setting destination: " + value);
+                Logger.Debug("Setting destination: " + value);
                 m_Destination = Path.Combine(value, "Stats.json");
             }
         }
@@ -29,7 +29,7 @@ namespace ToNSaveManager.Models {
         public int Survivals { get; set; } = 0;
 
         public void AddRound(bool survived) {
-            Debug.WriteLine("Adding +1 round stat, survived: " + survived);
+            Logger.Debug("Adding +1 round stat, survived: " + survived);
 
             if (survived) Survivals++;
             else Deaths++;
@@ -40,7 +40,7 @@ namespace ToNSaveManager.Models {
         public int Stuns { get; set; } = 0;
         public int GlobalStuns { get; set; } = 0;
         public void AddStun(bool isLocal) {
-            Debug.WriteLine("Adding +1 stun, isLocal: " + isLocal);
+            Logger.Debug("Adding +1 stun, isLocal: " + isLocal);
 
             if (isLocal) Stuns++;
             else GlobalStuns++;
@@ -50,7 +50,7 @@ namespace ToNSaveManager.Models {
 
         public int DamageTaken { get; set; } = 0;
         public void AddDamage(int damage) {
-            Debug.WriteLine($"Adding +{damage} damage.");
+            Logger.Debug($"Adding +{damage} damage.");
 
             DamageTaken += damage;
 
@@ -58,7 +58,7 @@ namespace ToNSaveManager.Models {
         }
 
         public void Clear() {
-            Debug.WriteLine("Clearing lobby stats");
+            Logger.Debug("Clearing lobby stats");
 
             Deaths = 0;
             Survivals = 0;

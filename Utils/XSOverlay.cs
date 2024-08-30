@@ -78,7 +78,7 @@ namespace ToNSaveManager.Utils
                 BroadcastSocket.SendTo(message.ToByteArray(), EndPoint);
             } catch (Exception ex)
             {
-                Debug.WriteLine("[XSOverlay] Exception:\n" + ex);
+                Logger.Debug("[XSOverlay] Exception:\n" + ex);
             }
         }
         public void Send(string title)

@@ -127,7 +127,7 @@
                 {
                     if (!m_LogContextMap.Values.Any(v => v.DateKey == key))
                     {
-                        // Debug.WriteLine("Removing unnecessary key: " + key);
+                        // Logger.Debug("Removing unnecessary key: " + key);
                         SetParsedPos(key, -1, true);
                     }
                 }
@@ -438,13 +438,13 @@
                 InstanceExceptions.Clear();
                 InstanceLogs.Clear();
 
-                Debug.WriteLine("Entering Room Name: " + name);
+                Logger.Debug("Entering Room Name: " + name);
             }
             public void Enter(string instanceID, bool isHomeWorld) {
                 InstanceID = instanceID;
                 IsHomeWorld = isHomeWorld;
 
-                Debug.WriteLine($"Instace [{isHomeWorld}] : {instanceID}");
+                Logger.Debug($"Instace [{isHomeWorld}] : {instanceID}");
             }
 
             public void AddException(string exceptionLog)

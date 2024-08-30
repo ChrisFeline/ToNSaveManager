@@ -39,7 +39,7 @@ namespace ToNSaveManager
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e) {
-            Debug.WriteLine("Main Window form is closing.");
+            Logger.Debug("Main Window form is closing.");
             WinSettings.Get.LastWindowWidth = this.Width;
             WinSettings.Get.LastWindowHeight = this.Height;
             WinSettings.Get.LastWindowSplit = splitContainer1.SplitterDistance;
@@ -427,7 +427,7 @@ namespace ToNSaveManager
 
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };
             using (Process.Start(psInfo)) {
-                Debug.WriteLine("Opening external link: " + url);
+                Logger.Debug("Opening external link: " + url);
             }
         }
         #endregion
@@ -616,7 +616,7 @@ namespace ToNSaveManager
                     StatsWindow.SetRoundActive(false);
                 }
 
-                Debug.WriteLine("Opted In: " + isOptedIn);
+                Logger.Debug("Opted In: " + isOptedIn);
                 return true;
             } else {
                 isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
@@ -656,7 +656,7 @@ namespace ToNSaveManager
                 string id_str = line.Substring(ROUND_MAP_SWAPPED.Length).Trim();
                 if (int.TryParse(id_str, out int mapIndex)) {
                     ToNIndex.Map map = ToNIndex.Instance.GetMap(mapIndex);
-                    Debug.WriteLine($"Map swapped to: {map} ({mapIndex})");
+                    Logger.Debug($"Map swapped to: {map} ({mapIndex})");
                     if (context.IsRecent) LilOSC.SetMap(map);
                 }
 
@@ -733,7 +733,7 @@ namespace ToNSaveManager
                     if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
 
                     if (encounter.Id == 4) { // GIGABYTES
-                        Debug.WriteLine("Correcting Round Type to GIGABYTE.");
+                        Logger.Debug("Correcting Round Type to GIGABYTE.");
                         matrix.RoundType = ToNRoundType.GIGABYTE;
                         matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
                         matrix.TerrorCount = 1;
