@@ -199,7 +199,7 @@ namespace ToNSaveManager.Models.Index {
 
         public struct TerrorInfo
         {
-            public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue };
+            public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue, IsEmpty = true };
 
             [JsonProperty("i")] public int Index;
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group;
@@ -208,6 +208,7 @@ namespace ToNSaveManager.Models.Index {
             [JsonIgnore] private Terror? m_Value { get; set; }
             [JsonIgnore] public Terror Value { get => m_Value ?? (m_Value = Instance.GetTerror(this)); }
             [JsonIgnore] public string Name => !Value.IsEmpty && Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Value.Phases.Length <= Phase ? Value.Phases[Phase - 1].Name : Value.Name;
+            [JsonIgnore] public bool IsEmpty { get; private set; }
 
             public TerrorInfo(int index, TerrorGroup group, int phase = 0)
             {

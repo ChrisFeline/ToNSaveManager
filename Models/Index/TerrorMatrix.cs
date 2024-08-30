@@ -18,6 +18,12 @@ namespace ToNSaveManager.Models.Index {
         public ToNRoundType RoundType;
         public bool IsSaboteur;
 
+        public int Length => Math.Min(TerrorCount, Terrors.Length);
+        public ToNIndex.TerrorInfo this[int i] {
+            get => Terrors[i];
+            set => Terrors[i] = value;
+        }
+
         public ToNIndex.TerrorInfo Terror1 => Terrors != null && Terrors.Length > 0 ? Terrors[0] : ToNIndex.TerrorInfo.Empty;
         public ToNIndex.TerrorInfo Terror2 => Terrors != null && Terrors.Length > 1 ? Terrors[1] : ToNIndex.TerrorInfo.Empty;
         public ToNIndex.TerrorInfo Terror3 => Terrors != null && Terrors.Length > 2 ? Terrors[2] : ToNIndex.TerrorInfo.Empty;
