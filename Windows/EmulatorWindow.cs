@@ -16,18 +16,14 @@ namespace ToNSaveManager.Windows
         #region Sub Classes
         internal class ToNOperation {
             public ToNRoundType RoundType = ToNRoundType.Classic;
-            public int TerrorIndex = -1;
-            public int TerrorIndex2 = -1;
-            public int TerrorIndex3 = -1;
-            public int MapIndex = -1;
+            public ToNIndex.Terror? TerrorIndex;
+            public ToNIndex.Terror? TerrorIndex2;
+            public ToNIndex.Terror? TerrorIndex3;
+            public ToNIndex.Map? MapIndex;
             public bool IsSaboteur = false; // Only on sabotage
 
             public bool IsHidden => RoundType == ToNRoundType.Eight_Pages ||
                 RoundType == ToNRoundType.Fog || RoundType == ToNRoundType.Fog_Alternate;
-
-            public override string ToString() {
-                return $"M:{MapIndex} | T:{TerrorIndex} | {RoundType} | {IsSaboteur}";
-            }
         }
 
         internal class RoundTypeProxy {
@@ -149,10 +145,20 @@ namespace ToNSaveManager.Windows
         }
 
         private void UpdateSpecialCheckbox() {
-            checkHHInvader.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 47;
-            checkWildYetBloodthirsty.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 106;
-            checkGlorbo.Visible = Operation.RoundType == ToNRoundType.Punished && Operation.TerrorIndex == 61;
-            checkAtrached.Visible = Operation.RoundType == ToNRoundType.Classic && Operation.TerrorIndex == 40;
+            checkSpecial.Visible = HasValidEncounter(Operation.TerrorIndex) || HasValidEncounter(Operation.TerrorIndex2) || HasValidEncounter(Operation.TerrorIndex3);
+            if (checkSpecial.Visible) {
+                checkSpecial.Text = LastEncounter.Name;
+            } else checkSpecial.Checked = false;
+        }
+
+        private Terror.Encounter LastEncounter;
+        private bool HasValidEncounter(Terror? terror) {
+            if (terror != null && terror.Encounters != null && terror.Encounters.Length > 0 && (terror.Encounters[0].RoundType == ToNRoundType.Unknown || terror.Encounters[0].RoundType == Operation.RoundType)) {
+                LastEncounter = terror.Encounters[0];
+                return true;
+            }
+
+            return false;
         }
 
         private void SetMonsterDataSource(Terror[]? source) {
@@ -257,36 +263,31 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void SetFromCombo<T>(ComboBox element, out int indexOutput) where T : IEntry {
+        private void SetFromCombo<T>(ComboBox element, ref T? indexOutput) where T : IEntry {
             int index = element.SelectedIndex;
             object? selectedItem = element.SelectedItem;
-            int output;
-            if (index < 0 || selectedItem == null) {
-                output = -1;
-            } else {
-                T entry = (T)selectedItem;
-                output = entry.Id;
-            }
-            indexOutput = output;
-            Logger.Debug($"Selected: {output} | {element.Name}");
+            if (index > -1 && selectedItem != null) {
+                indexOutput = (T)selectedItem;
+            } else indexOutput = default;
+            Logger.Debug($"Selected: {indexOutput} | {element.Name}");
 
             UpdateSpecialCheckbox();
         }
 
         private void comboMonster_SelectedIndexChanged(object sender, EventArgs e) {
-            SetFromCombo<Terror>((ComboBox)sender, out Operation.TerrorIndex);
+            SetFromCombo<Terror>((ComboBox)sender, ref Operation.TerrorIndex);
         }
 
         private void comboMonster2_SelectedIndexChanged(object sender, EventArgs e) {
-            SetFromCombo<Terror>((ComboBox)sender, out Operation.TerrorIndex2);
+            SetFromCombo<Terror>((ComboBox)sender, ref Operation.TerrorIndex2);
         }
 
         private void comboMonster3_SelectedIndexChanged(object sender, EventArgs e) {
-            SetFromCombo<Terror>((ComboBox)sender, out Operation.TerrorIndex3);
+            SetFromCombo<Terror>((ComboBox)sender, ref Operation.TerrorIndex3);
         }
 
         private void comboLocation_SelectedIndexChanged(object sender, EventArgs e) {
-            SetFromCombo<Map>((ComboBox)sender, out Operation.MapIndex);
+            SetFromCombo<Map>((ComboBox)sender, ref Operation.MapIndex);
         }
 
         private void comboMonster_DrawItem(object sender, DrawItemEventArgs e) {
@@ -402,10 +403,7 @@ namespace ToNSaveManager.Windows
             terrorMatrix.RoundType = CurrentRoundType;
 
             // TODO: Check for specials
-            if (checkHHInvader.Visible && checkHHInvader.Checked) terrorMatrix.MarkEncounter();
-            if (checkWildYetBloodthirsty.Visible && checkWildYetBloodthirsty.Checked) terrorMatrix.MarkEncounter();
-            if (checkAtrached.Visible && checkAtrached.Checked) terrorMatrix.MarkEncounter();
-            if (checkGlorbo.Visible && checkGlorbo.Checked) terrorMatrix.MarkEncounter();
+            if (checkSpecial.Visible && checkSpecial.Checked) terrorMatrix.MarkEncounter();
 
             LilOSC.SetTerrorMatrix(terrorMatrix);
         }

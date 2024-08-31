@@ -30,7 +30,11 @@ namespace ToNSaveManager.Models.Index {
 
         // For emulator only
         internal void MarkEncounter() {
-            Terrors[0].Encounter = 0;
+            for (int i = 0; i < Length; i++) {
+                ToNIndex.Terror terr = Terrors[i].Value;
+                if (terr.Encounters != null && terr.Encounters.Length > 0)
+                    Terrors[i].Encounter = 0;
+            }
         }
 
         public override string ToString() {

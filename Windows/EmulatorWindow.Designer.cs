@@ -38,10 +38,7 @@
             label2 = new Label();
             comboMonster = new ComboBox();
             panel8 = new Panel();
-            checkGlorbo = new CheckBox();
-            checkWildYetBloodthirsty = new CheckBox();
-            checkAtrached = new CheckBox();
-            checkHHInvader = new CheckBox();
+            checkSpecial = new CheckBox();
             panel4 = new Panel();
             label3 = new Label();
             comboLocation = new ComboBox();
@@ -211,67 +208,25 @@
             // panel8
             // 
             panel8.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel8.Controls.Add(checkGlorbo);
-            panel8.Controls.Add(checkWildYetBloodthirsty);
-            panel8.Controls.Add(checkAtrached);
-            panel8.Controls.Add(checkHHInvader);
+            panel8.Controls.Add(checkSpecial);
             panel8.Dock = DockStyle.Top;
             panel8.Location = new Point(0, 69);
             panel8.Name = "panel8";
             panel8.Size = new Size(314, 23);
             panel8.TabIndex = 8;
             // 
-            // checkGlorbo
+            // checkSpecial
             // 
-            checkGlorbo.AutoSize = true;
-            checkGlorbo.CheckAlign = ContentAlignment.TopRight;
-            checkGlorbo.Dock = DockStyle.Right;
-            checkGlorbo.ForeColor = Color.White;
-            checkGlorbo.Location = new Point(-150, 0);
-            checkGlorbo.Name = "checkGlorbo";
-            checkGlorbo.Size = new Size(62, 23);
-            checkGlorbo.TabIndex = 3;
-            checkGlorbo.Text = "Glorbo";
-            checkGlorbo.UseVisualStyleBackColor = true;
-            // 
-            // checkWildYetBloodthirsty
-            // 
-            checkWildYetBloodthirsty.AutoSize = true;
-            checkWildYetBloodthirsty.CheckAlign = ContentAlignment.TopRight;
-            checkWildYetBloodthirsty.Dock = DockStyle.Right;
-            checkWildYetBloodthirsty.ForeColor = Color.White;
-            checkWildYetBloodthirsty.Location = new Point(-88, 0);
-            checkWildYetBloodthirsty.Name = "checkWildYetBloodthirsty";
-            checkWildYetBloodthirsty.Size = new Size(184, 23);
-            checkWildYetBloodthirsty.TabIndex = 2;
-            checkWildYetBloodthirsty.Text = "Wild Yet Bloodthirsty Creature";
-            checkWildYetBloodthirsty.UseVisualStyleBackColor = true;
-            // 
-            // checkAtrached
-            // 
-            checkAtrached.AutoSize = true;
-            checkAtrached.CheckAlign = ContentAlignment.TopRight;
-            checkAtrached.Dock = DockStyle.Right;
-            checkAtrached.ForeColor = Color.White;
-            checkAtrached.Location = new Point(96, 0);
-            checkAtrached.Name = "checkAtrached";
-            checkAtrached.Size = new Size(74, 23);
-            checkAtrached.TabIndex = 1;
-            checkAtrached.Text = "Atrached";
-            checkAtrached.UseVisualStyleBackColor = true;
-            // 
-            // checkHHInvader
-            // 
-            checkHHInvader.AutoSize = true;
-            checkHHInvader.CheckAlign = ContentAlignment.TopRight;
-            checkHHInvader.Dock = DockStyle.Right;
-            checkHHInvader.ForeColor = Color.White;
-            checkHHInvader.Location = new Point(170, 0);
-            checkHHInvader.Name = "checkHHInvader";
-            checkHHInvader.Size = new Size(144, 23);
-            checkHHInvader.TabIndex = 0;
-            checkHHInvader.Text = "Hungry Home Invader";
-            checkHHInvader.UseVisualStyleBackColor = true;
+            checkSpecial.AutoSize = true;
+            checkSpecial.CheckAlign = ContentAlignment.TopRight;
+            checkSpecial.Dock = DockStyle.Right;
+            checkSpecial.ForeColor = Color.White;
+            checkSpecial.Location = new Point(138, 0);
+            checkSpecial.Name = "checkSpecial";
+            checkSpecial.Size = new Size(176, 23);
+            checkSpecial.TabIndex = 0;
+            checkSpecial.Text = "Special Encounter CheckBox";
+            checkSpecial.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -498,9 +453,6 @@
         private Panel panel11;
         private Panel panel10;
         private CheckBox checkBoxIsKiller;
-        private CheckBox checkHHInvader;
-        private CheckBox checkAtrached;
-        private CheckBox checkWildYetBloodthirsty;
-        private CheckBox checkGlorbo;
+        private CheckBox checkSpecial;
     }
 }
