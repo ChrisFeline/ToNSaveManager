@@ -35,6 +35,9 @@ namespace ToNSaveManager.Utils
 
         internal static bool IsDirty = false;
 
+        internal static bool WriteTerror { get; private set; } = false;
+        internal static bool WriteMap { get; private set; } = false;
+
         static int LastRoundType = -1;
         static int LastTerror1 = -1;
         static int LastTerror2 = -1;
@@ -47,7 +50,25 @@ namespace ToNSaveManager.Utils
         static int LastMapID = -1;
         static Color LastTerrorColor = Color.Black;
 
-        static int[] EncounterKeys = ToNIndex.Instance.Encounters.Keys.Where(k => k > -1).ToArray();
+        static string[]? m_EncounterKeys { get; set; }
+        static string[] EncounterKeys {
+            get {
+                if (m_EncounterKeys == null) {
+                    var keys = new List<string>();
+
+                    foreach (var item in ToNIndex.Instance.AllTerrors.Where(t => t.Encounters != null && t.Encounters.Length > 0)) {
+#pragma warning disable CS8604 // Possible null reference argument.
+                        keys.AddRange(item.Encounters.Select(e => e.Suffix));
+#pragma warning restore CS8604 // Possible null reference argument.
+                    }
+
+                    m_EncounterKeys = keys.ToArray();
+                }
+
+                return m_EncounterKeys;
+            }
+        }
+
         static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
 
         static bool IsOptedIn = false;
@@ -73,11 +94,13 @@ namespace ToNSaveManager.Utils
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             TMatrix = terrorMatrix;
             IsDirty = true;
+            WriteTerror = true;
         }
 
         internal static void SetMap(ToNIndex.Map? map = null) {
             RMap = map == null || map.IsEmpty ? EmptyMap : map;
             IsDirty = true;
+            WriteMap = true;
         }
 
         internal static void SetOptInStatus(bool optedIn) {
@@ -168,9 +191,19 @@ namespace ToNSaveManager.Utils
 
                 // Encounters
                 for (int i = 0; i < EncounterKeys.Length; i++) {
-                    bool value0 = TMatrix.Encounter != null && Array.IndexOf(TMatrix.Encounter, i) > -1;
+                    string key = EncounterKeys[i];
+                    bool value0 = false;
+
+                    for (int j = 0; j < TMatrix.Length; j++) {
+                        var info = TMatrix[j];
+                        if (info.Encounter > -1 && info.Value.Encounters != null &&
+                            info.Value.Encounters.Length > 0 && info.Value.Encounters[info.Encounter].Suffix == key) {
+                            value0 = true;
+                        }
+                    }
+
                     if (force || !LastEncounters.ContainsKey(i) || LastEncounters[i] != value0) {
-                        SendParam(ParamEncounter + i, LastEncounters[i] = value0);
+                        SendParam(ParamEncounter + key, LastEncounters[i] = value0);
                     }
                 }
 
@@ -187,6 +220,31 @@ namespace ToNSaveManager.Utils
                     SendChatbox(ChatboxMessage);
                     if (ChatboxClear) ChatboxClear = false;
                 }
+            }
+
+            // Write to file test
+            if (WriteTerror || force) {
+                WriteTerror = false;
+                StringBuilder sb = new StringBuilder();
+                
+                for (int i = 0; i < TMatrix.Length; i++) {
+                    if (sb.Length > 0)
+                        sb.Append(" & ");
+
+                    sb.Append(TMatrix[i].Name);
+                }
+
+                if (sb.Length == 0) sb.Append("???");
+
+                Logger.Debug("Writing terror names to text file: " + sb.ToString());
+                File.WriteAllText("osc_terror_names.txt", sb.ToString());
+            }
+
+            if (WriteMap || force) {
+                WriteMap = false;
+                string name = "on " + (RMap.IsEmpty ? "???" : RMap.Name + " by " + RMap.Creator);
+                Logger.Debug("Writing map name to text file: " + name);
+                File.WriteAllText("osc_map_name.txt", name);
             }
         }
 

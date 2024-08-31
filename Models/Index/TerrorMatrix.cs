@@ -11,12 +11,12 @@ namespace ToNSaveManager.Models.Index {
         internal static TerrorMatrix Empty = new TerrorMatrix();
 
         public ToNIndex.TerrorInfo[] Terrors;
-        public int[]? Encounter;
         public int TerrorCount;
 
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
         public bool IsSaboteur;
+        public int MapID = -1;
 
         public int Length => Math.Min(TerrorCount, Terrors.Length);
         public ToNIndex.TerrorInfo this[int i] {
@@ -28,30 +28,9 @@ namespace ToNSaveManager.Models.Index {
         public ToNIndex.TerrorInfo Terror2 => Terrors != null && Terrors.Length > 1 ? Terrors[1] : ToNIndex.TerrorInfo.Empty;
         public ToNIndex.TerrorInfo Terror3 => Terrors != null && Terrors.Length > 2 ? Terrors[2] : ToNIndex.TerrorInfo.Empty;
 
-        public bool HasPhase = false;
-        public bool PhaseCheck(string line) {
-            for (int i = 0; i < Terrors.Length; i++) {
-                ToNIndex.Terror terror = Terrors[i].Value;
-                if (!terror.IsEmpty && terror.Phases != null && terror.Phases.Length > 0) {
-                    for (int j = 0; j < terror.Phases.Length; j++) {
-                        if (line.StartsWith(terror.Phases[j].Keyword)) {
-                            Terrors[i].Phase = j + 1;
-                            Logger.Log($"Terror {terror} changed to phase {j+1}.");
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public void AddEncounter(int index) {
-            if (Encounter == null) Encounter = new int[1];
-            else Array.Resize(ref Encounter, Encounter.Length + 1);
-
-            Encounter[Encounter.Length - 1] = index;
-            Logger.Debug("Added Encounter: " + index);
+        // For emulator only
+        internal void MarkEncounter() {
+            Terrors[0].Encounter = 0;
         }
 
         public override string ToString() {
@@ -143,17 +122,6 @@ namespace ToNSaveManager.Models.Index {
                     Terrors = [];
                     TerrorCount = -1;
                     break;
-            }
-
-            if (TerrorCount > 0) {
-                for (int i = 0; i < Terrors.Length; i++) {
-                    ToNIndex.Terror terror = Terrors[i].Value;
-                    if (!terror.IsEmpty && terror.Phases != null && terror.Phases.Length > 0) {
-                        Logger.Debug($"Terror at index {i} has phases ({terror.Phases.Length})");
-                        HasPhase = true;
-                        break;
-                    }
-                }
             }
         }
 

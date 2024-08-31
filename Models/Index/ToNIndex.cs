@@ -37,9 +37,28 @@ namespace ToNSaveManager.Models.Index {
 
         [JsonProperty("u")] public Dictionary<int, Terror> Unbound { get; private set; } = new();
 
-        [JsonProperty("c")] public Dictionary<int, Terror> Encounters { get; private set; } = new();
-
         [JsonProperty("i")] public Dictionary<int, Item> Items { get; private set; } = new();
+
+        [JsonIgnore] private List<Terror>? m_AllTerrors { get; set; }
+        [JsonIgnore]
+        public List<Terror> AllTerrors {
+            get {
+                if (m_AllTerrors == null) {
+                    // Javascript.NET ??? tf?
+                    m_AllTerrors = [
+                        .. Terrors.Values,
+                        .. Alternates.Values,
+                        .. Moons.Values,
+                        .. Specials.Values,
+                        .. Events.Values,
+                        .. EightPages.Values,
+                        .. Unbound.Values,
+                    ];
+                }
+
+                return m_AllTerrors;
+            }
+        }
         #endregion
 
         #region Index Access Methods
@@ -71,7 +90,6 @@ namespace ToNSaveManager.Models.Index {
                 case TerrorGroup.Moons: table = Moons; break;
                 case TerrorGroup.Specials: table = Specials; break;
                 case TerrorGroup.Events: table = Events; break;
-                case TerrorGroup.Encounter: table = Encounters; break;
             }
             return table.ContainsKey(terrorIndex) ? table[terrorIndex] : Terror.Empty;
         }
@@ -122,7 +140,6 @@ namespace ToNSaveManager.Models.Index {
             Moons,      // 4
             Specials,   // 5
             Events,     // 6
-            Encounter   // 7
         }
         #endregion
 
@@ -166,14 +183,21 @@ namespace ToNSaveManager.Models.Index {
             [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? InternalName { get; set; } // Possible name attached to Enrage states.
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
-            [JsonProperty("k", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? Keyword { get; set; }
             [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public PhaseIndex[]? Phases { get; set; }
+            [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public Encounter[]? Encounters { get; set; }
 
             public override string ToString() => Name;
 
             public struct PhaseIndex {
                 [JsonProperty("n")] public string Name { get; set; }
                 [JsonProperty("k")] public string Keyword { get; set; }
+            }
+
+            public struct Encounter {
+                [JsonProperty("n")] public string Name { get; set; }
+                [JsonProperty("s")] public string Suffix { get; set; } // for osc, for example: HHI
+                [JsonProperty("k")] public string Keyword { get; set; }
+                [JsonProperty("r")] public ToNRoundType RoundType { get; set; }
             }
         }
 
@@ -201,13 +225,23 @@ namespace ToNSaveManager.Models.Index {
         {
             public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue, IsEmpty = true };
 
-            [JsonProperty("i")] public int Index;
-            [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group;
-            [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Phase;
+            [JsonProperty("i")] public int Index { get; set; }
+            [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
+            [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Phase { get; set; }
+            [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Encounter { get; set; } = -1;
 
             [JsonIgnore] private Terror? m_Value { get; set; }
             [JsonIgnore] public Terror Value { get => m_Value ?? (m_Value = Instance.GetTerror(this)); }
-            [JsonIgnore] public string Name => !Value.IsEmpty && Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Value.Phases.Length <= Phase ? Value.Phases[Phase - 1].Name : Value.Name;
+            [JsonIgnore] public string Name {
+                get {
+                    if (Value.IsEmpty) return "???";
+                    if (Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Phase <= Value.Phases.Length) return Value.Phases[Phase - 1].Name;
+                    if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length)
+                        return Value.Encounters[Encounter].Name;
+
+                    return Value.Name;
+                }
+            }
             [JsonIgnore] public bool IsEmpty { get; private set; }
 
             public TerrorInfo(int index, TerrorGroup group, int phase = 0)

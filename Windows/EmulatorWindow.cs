@@ -401,11 +401,11 @@ namespace ToNSaveManager.Windows
             terrorMatrix.IsSaboteur = CurrentIsKiller;
             terrorMatrix.RoundType = CurrentRoundType;
 
-            // Check for specials
-            if (checkHHInvader.Visible && checkHHInvader.Checked) terrorMatrix.AddEncounter(checkHHInvader.TabIndex);
-            if (checkWildYetBloodthirsty.Visible && checkWildYetBloodthirsty.Checked) terrorMatrix.AddEncounter(checkWildYetBloodthirsty.TabIndex);
-            if (checkAtrached.Visible && checkAtrached.Checked) terrorMatrix.AddEncounter(checkAtrached.TabIndex);
-            if (checkGlorbo.Visible && checkGlorbo.Checked) terrorMatrix.AddEncounter(checkGlorbo.TabIndex);
+            // TODO: Check for specials
+            if (checkHHInvader.Visible && checkHHInvader.Checked) terrorMatrix.MarkEncounter();
+            if (checkWildYetBloodthirsty.Visible && checkWildYetBloodthirsty.Checked) terrorMatrix.MarkEncounter();
+            if (checkAtrached.Visible && checkAtrached.Checked) terrorMatrix.MarkEncounter();
+            if (checkGlorbo.Visible && checkGlorbo.Checked) terrorMatrix.MarkEncounter();
 
             LilOSC.SetTerrorMatrix(terrorMatrix);
         }

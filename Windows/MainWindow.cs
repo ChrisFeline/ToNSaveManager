@@ -534,6 +534,7 @@ namespace ToNSaveManager
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
         const string ROUND_DEATH_KEYWORD = "You died.";
+        const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
 
         const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
@@ -547,9 +548,6 @@ namespace ToNSaveManager
         const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
         const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
-
-        // Encounters
-        static ToNIndex.Terror[] EncounterList = ToNIndex.Instance.Encounters.Values.ToArray();
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
@@ -705,6 +703,7 @@ namespace ToNSaveManager
 
                 TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
                 terrorMatrix.IsSaboteur = context.Get<bool>(ROUND_IS_SABO_KEY);
+                if (context.HasKey(ROUND_MAP_KEY)) terrorMatrix.MapID = context.Get<ToNIndex.Map>(ROUND_MAP_KEY)?.Id ?? -1;
 
                 context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                 context.Rem(ROUND_IS_SABO_KEY);
@@ -728,35 +727,51 @@ namespace ToNSaveManager
             if (context.HasKey(ROUND_KILLERS_KEY)) {
                 TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
 
-                for (int i = 0; i < EncounterList.Length; i++) {
-                    ToNIndex.Terror encounter = EncounterList[i];
-                    if (encounter.Keyword == null || !line.StartsWith(encounter.Keyword)) continue;
-
-                    if (encounter.Id < 0) { // GIGABYTES
-                        switch (encounter.Id) {
-                            case -1:
-                                Logger.Debug("Correcting Round Type to GIGABYTE.");
-                                matrix.RoundType = ToNRoundType.GIGABYTE;
-                                matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
-                                matrix.TerrorCount = 1;
-                                matrix.HasPhase = false;
-                                break;
-
-                            default: break;
-                        }
-                    } else {
-                        matrix.AddEncounter(encounter.Id);
-                    }
+                if (matrix.RoundType == ToNRoundType.Classic && matrix.MapID == 2 && line.StartsWith(ROUND_TEROR_GIGABYTE)) {
+                    Logger.Debug("Correcting Round Type to GIGABYTE.");
+                    matrix.RoundType = ToNRoundType.GIGABYTE;
+                    matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
+                    matrix.TerrorCount = 1;
 
                     context.Set(ROUND_KILLERS_KEY, matrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
                     return true;
                 }
 
-                if (matrix.HasPhase && matrix.PhaseCheck(line)) {
-                    context.Set(ROUND_KILLERS_KEY, matrix);
-                    if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
-                    return true;
+                for (int i = 0; i < matrix.Length; i++) {
+                    int j;
+                    var info = matrix[i];
+                    if (info.IsEmpty || info.Value.IsEmpty) continue;
+
+                    ToNIndex.Terror terror = info.Value;
+                    if (terror.Phases != null && terror.Phases.Length > 0) {
+                        for (j = 0; j < terror.Phases.Length; j++) {
+                            if (line.StartsWith(terror.Phases[j].Keyword)) {
+                                info.Phase = j + 1;
+                                matrix[i] = info;
+
+                                Logger.Log($"Terror {terror} changed to phase {j + 1}.");
+                                context.Set(ROUND_KILLERS_KEY, matrix);
+                                if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                                return true;
+                            }
+                        }
+                    }
+
+                    if (terror.Encounters != null && terror.Encounters.Length > 0) {
+                        for (j = 0; j < terror.Encounters.Length; j++) {
+                            ToNIndex.Terror.Encounter encounter = terror.Encounters[j];
+                            if ((encounter.RoundType == ToNRoundType.Unknown || matrix.RoundType == encounter.RoundType) && line.StartsWith(encounter.Keyword)) {
+                                info.Encounter = j;
+                                matrix[i] = info;
+
+                                Logger.Log($"Terror {terror} changed to encounter {j}.");
+                                context.Set(ROUND_KILLERS_KEY, matrix);
+                                if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                                return true;
+                            }
+                        }
+                    }
                 }
 
                 if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
