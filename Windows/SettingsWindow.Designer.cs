@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
-            groupBoxGeneral = new GroupBox();
             checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
@@ -37,10 +36,8 @@
             checkAutoCopy = new CheckBox();
             checkSkipParsedLogs = new CheckBox();
             checkOSCEnabled = new CheckBox();
-            groupBoxNotifications = new GroupBox();
             checkPlayAudio = new CheckBox();
             checkXSOverlay = new CheckBox();
-            groupBoxTime = new GroupBox();
             checkShowDate = new CheckBox();
             checkInvertMD = new CheckBox();
             checkShowSeconds = new CheckBox();
@@ -52,50 +49,32 @@
             ctxItemPickFolder = new ToolStripMenuItem();
             ctxItemResetToDefault = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
-            groupBoxStyle = new GroupBox();
             checkColorObjectives = new CheckBox();
             languageSelectBox = new ComboBox();
             panel1 = new Panel();
-            groupBoxOSC = new GroupBox();
-            checkOSCSendColor = new CheckBox();
             checkSendChatbox = new CheckBox();
-            groupBoxGeneral.SuspendLayout();
-            groupBoxNotifications.SuspendLayout();
-            groupBoxTime.SuspendLayout();
+            checkOSCSendColor = new CheckBox();
+            panel2 = new Panel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            labelGroupGeneral = new Label();
+            labelGroupOSC = new Label();
+            labelGroupNotifications = new Label();
+            labelGroupFormat = new Label();
+            labelGroupStyle = new Label();
             ctxData.SuspendLayout();
-            groupBoxStyle.SuspendLayout();
             panel1.SuspendLayout();
-            groupBoxOSC.SuspendLayout();
+            panel2.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // groupBoxGeneral
-            // 
-            groupBoxGeneral.AutoSize = true;
-            groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxGeneral.Controls.Add(checkDiscordBackup);
-            groupBoxGeneral.Controls.Add(checkShowWinLose);
-            groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
-            groupBoxGeneral.Controls.Add(checkSaveTerrors);
-            groupBoxGeneral.Controls.Add(checkPlayerNames);
-            groupBoxGeneral.Controls.Add(checkAutoCopy);
-            groupBoxGeneral.Controls.Add(checkSkipParsedLogs);
-            groupBoxGeneral.Dock = DockStyle.Top;
-            groupBoxGeneral.ForeColor = Color.White;
-            groupBoxGeneral.Location = new Point(8, 31);
-            groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(338, 155);
-            groupBoxGeneral.TabIndex = 0;
-            groupBoxGeneral.TabStop = false;
-            groupBoxGeneral.Text = "General";
             // 
             // checkDiscordBackup
             // 
             checkDiscordBackup.AutoSize = true;
-            checkDiscordBackup.Dock = DockStyle.Top;
-            checkDiscordBackup.Location = new Point(3, 133);
+            checkDiscordBackup.Location = new Point(3, 142);
+            checkDiscordBackup.Margin = new Padding(3, 1, 3, 1);
             checkDiscordBackup.Name = "checkDiscordBackup";
-            checkDiscordBackup.Padding = new Padding(3, 0, 3, 0);
-            checkDiscordBackup.Size = new Size(332, 19);
+            checkDiscordBackup.Padding = new Padding(20, 0, 3, 0);
+            checkDiscordBackup.Size = new Size(222, 19);
             checkDiscordBackup.TabIndex = 6;
             checkDiscordBackup.Tag = "DiscordWebhookEnabled|Automatically saves your new codes to a Discord channel using a webhook integration.";
             checkDiscordBackup.Text = "Auto Discord Backup (Webhook)";
@@ -104,12 +83,12 @@
             // checkShowWinLose
             // 
             checkShowWinLose.AutoSize = true;
-            checkShowWinLose.Dock = DockStyle.Top;
             checkShowWinLose.ForeColor = Color.PowderBlue;
-            checkShowWinLose.Location = new Point(3, 114);
+            checkShowWinLose.Location = new Point(3, 100);
+            checkShowWinLose.Margin = new Padding(3, 1, 3, 1);
             checkShowWinLose.Name = "checkShowWinLose";
-            checkShowWinLose.Padding = new Padding(21, 0, 3, 0);
-            checkShowWinLose.Size = new Size(332, 19);
+            checkShowWinLose.Padding = new Padding(50, 0, 3, 0);
+            checkShowWinLose.Size = new Size(187, 19);
             checkShowWinLose.TabIndex = 5;
             checkShowWinLose.Tag = "ShowWinLose|Entries will show a [R], [W] or [D] tag based on the source that triggered the save.";
             checkShowWinLose.Text = "Show [R][W][D] Tags";
@@ -118,12 +97,12 @@
             // checkSaveTerrorsNote
             // 
             checkSaveTerrorsNote.AutoSize = true;
-            checkSaveTerrorsNote.Dock = DockStyle.Top;
             checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
-            checkSaveTerrorsNote.Location = new Point(3, 95);
+            checkSaveTerrorsNote.Location = new Point(3, 121);
+            checkSaveTerrorsNote.Margin = new Padding(3, 1, 3, 1);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
-            checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
-            checkSaveTerrorsNote.Size = new Size(332, 19);
+            checkSaveTerrorsNote.Padding = new Padding(50, 0, 3, 0);
+            checkSaveTerrorsNote.Size = new Size(178, 19);
             checkSaveTerrorsNote.TabIndex = 3;
             checkSaveTerrorsNote.Tag = "SaveRoundNote|Automatically set survived terror names as note.";
             checkSaveTerrorsNote.Text = "Terror Name Notes";
@@ -132,11 +111,11 @@
             // checkSaveTerrors
             // 
             checkSaveTerrors.AutoSize = true;
-            checkSaveTerrors.Dock = DockStyle.Top;
-            checkSaveTerrors.Location = new Point(3, 76);
+            checkSaveTerrors.Location = new Point(3, 79);
+            checkSaveTerrors.Margin = new Padding(3, 1, 3, 1);
             checkSaveTerrors.Name = "checkSaveTerrors";
-            checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
-            checkSaveTerrors.Size = new Size(332, 19);
+            checkSaveTerrors.Padding = new Padding(20, 0, 3, 0);
+            checkSaveTerrors.Size = new Size(135, 19);
             checkSaveTerrors.TabIndex = 2;
             checkSaveTerrors.Tag = "SaveRoundInfo|Save codes will display the last round type and terror names.";
             checkSaveTerrors.Text = "Save Round Info";
@@ -145,11 +124,11 @@
             // checkPlayerNames
             // 
             checkPlayerNames.AutoSize = true;
-            checkPlayerNames.Dock = DockStyle.Top;
-            checkPlayerNames.Location = new Point(3, 57);
+            checkPlayerNames.Location = new Point(3, 58);
+            checkPlayerNames.Margin = new Padding(3, 1, 3, 1);
             checkPlayerNames.Name = "checkPlayerNames";
-            checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
-            checkPlayerNames.Size = new Size(332, 19);
+            checkPlayerNames.Padding = new Padding(20, 0, 3, 0);
+            checkPlayerNames.Size = new Size(161, 19);
             checkPlayerNames.TabIndex = 1;
             checkPlayerNames.Tag = "SaveNames|Save codes will show players in the instance at the time of saving.";
             checkPlayerNames.Text = "Collect Player Names";
@@ -158,11 +137,11 @@
             // checkAutoCopy
             // 
             checkAutoCopy.AutoSize = true;
-            checkAutoCopy.Dock = DockStyle.Top;
-            checkAutoCopy.Location = new Point(3, 38);
+            checkAutoCopy.Location = new Point(3, 37);
+            checkAutoCopy.Margin = new Padding(3, 1, 3, 1);
             checkAutoCopy.Name = "checkAutoCopy";
-            checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
-            checkAutoCopy.Size = new Size(332, 19);
+            checkAutoCopy.Padding = new Padding(20, 0, 3, 0);
+            checkAutoCopy.Size = new Size(161, 19);
             checkAutoCopy.TabIndex = 0;
             checkAutoCopy.Tag = "AutoCopy|Automatically copy new save codes to clipboard.";
             checkAutoCopy.Text = "Auto Clipboard Copy";
@@ -171,12 +150,12 @@
             // checkSkipParsedLogs
             // 
             checkSkipParsedLogs.AutoSize = true;
-            checkSkipParsedLogs.Dock = DockStyle.Top;
-            checkSkipParsedLogs.Location = new Point(3, 19);
+            checkSkipParsedLogs.Location = new Point(3, 16);
+            checkSkipParsedLogs.Margin = new Padding(3, 1, 3, 1);
             checkSkipParsedLogs.Name = "checkSkipParsedLogs";
-            checkSkipParsedLogs.Padding = new Padding(3, 0, 3, 0);
+            checkSkipParsedLogs.Padding = new Padding(20, 0, 3, 0);
             checkSkipParsedLogs.RightToLeft = RightToLeft.No;
-            checkSkipParsedLogs.Size = new Size(332, 19);
+            checkSkipParsedLogs.Size = new Size(151, 19);
             checkSkipParsedLogs.TabIndex = 4;
             checkSkipParsedLogs.Tag = "SkipParsedLogs|Skip old parsed log files that were already processed and saved.\\nOnly disable this if you accidentally deleted a save code.";
             checkSkipParsedLogs.Text = "Skip Parsed Logs (!)";
@@ -185,41 +164,26 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Dock = DockStyle.Top;
-            checkOSCEnabled.Location = new Point(3, 19);
+            checkOSCEnabled.Location = new Point(3, 193);
+            checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
-            checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
-            checkOSCEnabled.Size = new Size(332, 19);
+            checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
+            checkOSCEnabled.Size = new Size(163, 19);
             checkOSCEnabled.TabIndex = 7;
             checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
             checkOSCEnabled.Text = "Send OSC Parameters";
             checkOSCEnabled.UseVisualStyleBackColor = true;
             checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
-            // groupBoxNotifications
-            // 
-            groupBoxNotifications.AutoSize = true;
-            groupBoxNotifications.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxNotifications.Controls.Add(checkPlayAudio);
-            groupBoxNotifications.Controls.Add(checkXSOverlay);
-            groupBoxNotifications.Dock = DockStyle.Top;
-            groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 265);
-            groupBoxNotifications.Name = "groupBoxNotifications";
-            groupBoxNotifications.Size = new Size(338, 60);
-            groupBoxNotifications.TabIndex = 2;
-            groupBoxNotifications.TabStop = false;
-            groupBoxNotifications.Text = "Notifications";
-            // 
             // checkPlayAudio
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Dock = DockStyle.Top;
-            checkPlayAudio.Location = new Point(3, 38);
+            checkPlayAudio.Location = new Point(3, 307);
+            checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
-            checkPlayAudio.Padding = new Padding(3, 0, 3, 0);
-            checkPlayAudio.Size = new Size(332, 19);
+            checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
+            checkPlayAudio.Size = new Size(180, 19);
             checkPlayAudio.TabIndex = 1;
             checkPlayAudio.Tag = "PlayAudio|Double click to select custom audio file.\\nRight click to reset back to 'default.wav'";
             checkPlayAudio.Text = "Play Sound (default.wav)";
@@ -230,41 +194,24 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Dock = DockStyle.Top;
-            checkXSOverlay.Location = new Point(3, 19);
+            checkXSOverlay.Location = new Point(3, 286);
+            checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
-            checkXSOverlay.Padding = new Padding(3, 0, 3, 0);
-            checkXSOverlay.Size = new Size(332, 19);
+            checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
+            checkXSOverlay.Size = new Size(140, 19);
             checkXSOverlay.TabIndex = 0;
             checkXSOverlay.Tag = "XSOverlay|XSOverlay popup notifications when saving.";
             checkXSOverlay.Text = "XSOverlay Popup";
             checkXSOverlay.UseVisualStyleBackColor = true;
             // 
-            // groupBoxTime
-            // 
-            groupBoxTime.AutoSize = true;
-            groupBoxTime.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxTime.Controls.Add(checkShowDate);
-            groupBoxTime.Controls.Add(checkInvertMD);
-            groupBoxTime.Controls.Add(checkShowSeconds);
-            groupBoxTime.Controls.Add(check24Hour);
-            groupBoxTime.Dock = DockStyle.Top;
-            groupBoxTime.ForeColor = Color.White;
-            groupBoxTime.Location = new Point(8, 325);
-            groupBoxTime.Name = "groupBoxTime";
-            groupBoxTime.Size = new Size(338, 98);
-            groupBoxTime.TabIndex = 3;
-            groupBoxTime.TabStop = false;
-            groupBoxTime.Text = "Time Formatting";
-            // 
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Dock = DockStyle.Top;
-            checkShowDate.Location = new Point(3, 76);
+            checkShowDate.Location = new Point(3, 421);
+            checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
-            checkShowDate.Padding = new Padding(3, 0, 3, 0);
-            checkShowDate.Size = new Size(332, 19);
+            checkShowDate.Padding = new Padding(20, 0, 3, 0);
+            checkShowDate.Size = new Size(136, 19);
             checkShowDate.TabIndex = 3;
             checkShowDate.Tag = "ShowDate|Entries on the right panel will display a full date.";
             checkShowDate.Text = "Right Panel Date";
@@ -273,11 +220,11 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Dock = DockStyle.Top;
-            checkInvertMD.Location = new Point(3, 57);
+            checkInvertMD.Location = new Point(3, 379);
+            checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
-            checkInvertMD.Padding = new Padding(3, 0, 3, 0);
-            checkInvertMD.Size = new Size(332, 19);
+            checkInvertMD.Padding = new Padding(20, 0, 3, 0);
+            checkInvertMD.Size = new Size(143, 19);
             checkInvertMD.TabIndex = 2;
             checkInvertMD.Tag = "InvertMD";
             checkInvertMD.Text = "Invert Month/Day";
@@ -286,11 +233,11 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Dock = DockStyle.Top;
-            checkShowSeconds.Location = new Point(3, 38);
+            checkShowSeconds.Location = new Point(3, 400);
+            checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
-            checkShowSeconds.Padding = new Padding(3, 0, 3, 0);
-            checkShowSeconds.Size = new Size(332, 19);
+            checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
+            checkShowSeconds.Size = new Size(125, 19);
             checkShowSeconds.TabIndex = 1;
             checkShowSeconds.Tag = "ShowSeconds";
             checkShowSeconds.Text = "Show Seconds";
@@ -299,11 +246,11 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Dock = DockStyle.Top;
-            check24Hour.Location = new Point(3, 19);
+            check24Hour.Location = new Point(3, 358);
+            check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
-            check24Hour.Padding = new Padding(3, 0, 3, 0);
-            check24Hour.Size = new Size(332, 19);
+            check24Hour.Padding = new Padding(20, 0, 3, 0);
+            check24Hour.Size = new Size(120, 19);
             check24Hour.TabIndex = 0;
             check24Hour.Tag = "Use24Hour";
             check24Hour.Text = "24 Hour Time";
@@ -372,28 +319,14 @@
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 100;
             // 
-            // groupBoxStyle
-            // 
-            groupBoxStyle.AutoSize = true;
-            groupBoxStyle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxStyle.Controls.Add(checkColorObjectives);
-            groupBoxStyle.Dock = DockStyle.Top;
-            groupBoxStyle.ForeColor = Color.White;
-            groupBoxStyle.Location = new Point(8, 423);
-            groupBoxStyle.Name = "groupBoxStyle";
-            groupBoxStyle.Size = new Size(338, 41);
-            groupBoxStyle.TabIndex = 6;
-            groupBoxStyle.TabStop = false;
-            groupBoxStyle.Text = "Style";
-            // 
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Dock = DockStyle.Top;
-            checkColorObjectives.Location = new Point(3, 19);
+            checkColorObjectives.Location = new Point(3, 472);
+            checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
-            checkColorObjectives.Padding = new Padding(3, 0, 3, 0);
-            checkColorObjectives.Size = new Size(332, 19);
+            checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
+            checkColorObjectives.Size = new Size(150, 19);
             checkColorObjectives.TabIndex = 0;
             checkColorObjectives.Tag = "ColorfulObjectives|Items in the 'Objectives' window will show colors that correspond to those of the items in the game.";
             checkColorObjectives.Text = "Colorful Objectives";
@@ -418,118 +351,178 @@
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.Controls.Add(btnCheckForUpdates);
             panel1.Controls.Add(btnOpenData);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(8, 464);
+            panel1.Location = new Point(8, 575);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(0, 4, 0, 0);
             panel1.Size = new Size(338, 28);
             panel1.TabIndex = 8;
             // 
-            // groupBoxOSC
-            // 
-            groupBoxOSC.AutoSize = true;
-            groupBoxOSC.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxOSC.Controls.Add(checkSendChatbox);
-            groupBoxOSC.Controls.Add(checkOSCSendColor);
-            groupBoxOSC.Controls.Add(checkOSCEnabled);
-            groupBoxOSC.Dock = DockStyle.Top;
-            groupBoxOSC.ForeColor = Color.White;
-            groupBoxOSC.Location = new Point(8, 186);
-            groupBoxOSC.Name = "groupBoxOSC";
-            groupBoxOSC.Size = new Size(338, 79);
-            groupBoxOSC.TabIndex = 7;
-            groupBoxOSC.TabStop = false;
-            groupBoxOSC.Text = "OSC";
-            // 
-            // checkOSCSendColor
-            // 
-            checkOSCSendColor.AutoSize = true;
-            checkOSCSendColor.Dock = DockStyle.Top;
-            checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 38);
-            checkOSCSendColor.Name = "checkOSCSendColor";
-            checkOSCSendColor.Padding = new Padding(21, 0, 3, 0);
-            checkOSCSendColor.Size = new Size(332, 19);
-            checkOSCSendColor.TabIndex = 9;
-            checkOSCSendColor.Tag = "OSCSendColor|Sends the current Terror color as HSV parameters.";
-            checkOSCSendColor.Text = "Send Terror Color (HSV)";
-            checkOSCSendColor.UseVisualStyleBackColor = true;
-            // 
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
-            checkSendChatbox.Dock = DockStyle.Top;
-            checkSendChatbox.Location = new Point(3, 57);
+            checkSendChatbox.Location = new Point(3, 235);
+            checkSendChatbox.Margin = new Padding(3, 1, 3, 1);
             checkSendChatbox.Name = "checkSendChatbox";
-            checkSendChatbox.Padding = new Padding(3, 0, 3, 0);
-            checkSendChatbox.Size = new Size(332, 19);
+            checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
+            checkSendChatbox.Size = new Size(172, 19);
             checkSendChatbox.TabIndex = 8;
             checkSendChatbox.Tag = "OSCSendChatbox|Sends ToN information to the VRChat chatbox.\\nRight click to customize the message template.";
             checkSendChatbox.Text = "Send Chatbox Message";
             checkSendChatbox.UseVisualStyleBackColor = true;
             checkSendChatbox.MouseDown += checkSendChatbox_MouseDown;
             // 
+            // checkOSCSendColor
+            // 
+            checkOSCSendColor.AutoSize = true;
+            checkOSCSendColor.ForeColor = Color.PowderBlue;
+            checkOSCSendColor.Location = new Point(3, 214);
+            checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
+            checkOSCSendColor.Name = "checkOSCSendColor";
+            checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
+            checkOSCSendColor.Size = new Size(203, 19);
+            checkOSCSendColor.TabIndex = 9;
+            checkOSCSendColor.Tag = "OSCSendColor|Sends the current Terror color as HSV parameters.";
+            checkOSCSendColor.Text = "Send Terror Color (HSV)";
+            checkOSCSendColor.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.AutoScroll = true;
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(flowLayoutPanel1);
+            panel2.Location = new Point(8, 37);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(3);
+            panel2.Size = new Size(338, 536);
+            panel2.TabIndex = 1;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(labelGroupGeneral);
+            flowLayoutPanel1.Controls.Add(checkSkipParsedLogs);
+            flowLayoutPanel1.Controls.Add(checkAutoCopy);
+            flowLayoutPanel1.Controls.Add(checkPlayerNames);
+            flowLayoutPanel1.Controls.Add(checkSaveTerrors);
+            flowLayoutPanel1.Controls.Add(checkShowWinLose);
+            flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
+            flowLayoutPanel1.Controls.Add(checkDiscordBackup);
+            flowLayoutPanel1.Controls.Add(labelGroupOSC);
+            flowLayoutPanel1.Controls.Add(checkOSCEnabled);
+            flowLayoutPanel1.Controls.Add(checkOSCSendColor);
+            flowLayoutPanel1.Controls.Add(checkSendChatbox);
+            flowLayoutPanel1.Controls.Add(labelGroupNotifications);
+            flowLayoutPanel1.Controls.Add(checkXSOverlay);
+            flowLayoutPanel1.Controls.Add(checkPlayAudio);
+            flowLayoutPanel1.Controls.Add(labelGroupFormat);
+            flowLayoutPanel1.Controls.Add(check24Hour);
+            flowLayoutPanel1.Controls.Add(checkInvertMD);
+            flowLayoutPanel1.Controls.Add(checkShowSeconds);
+            flowLayoutPanel1.Controls.Add(checkShowDate);
+            flowLayoutPanel1.Controls.Add(labelGroupStyle);
+            flowLayoutPanel1.Controls.Add(checkColorObjectives);
+            flowLayoutPanel1.Dock = DockStyle.Top;
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(3, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(330, 492);
+            flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.WrapContents = false;
+            // 
+            // labelGroupGeneral
+            // 
+            labelGroupGeneral.AutoSize = true;
+            labelGroupGeneral.Location = new Point(3, 0);
+            labelGroupGeneral.Name = "labelGroupGeneral";
+            labelGroupGeneral.Size = new Size(47, 15);
+            labelGroupGeneral.TabIndex = 10;
+            labelGroupGeneral.Text = "General";
+            // 
+            // labelGroupOSC
+            // 
+            labelGroupOSC.AutoSize = true;
+            labelGroupOSC.Location = new Point(3, 177);
+            labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
+            labelGroupOSC.Name = "labelGroupOSC";
+            labelGroupOSC.Size = new Size(30, 15);
+            labelGroupOSC.TabIndex = 11;
+            labelGroupOSC.Text = "OSC";
+            // 
+            // labelGroupNotifications
+            // 
+            labelGroupNotifications.AutoSize = true;
+            labelGroupNotifications.Location = new Point(3, 270);
+            labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
+            labelGroupNotifications.Name = "labelGroupNotifications";
+            labelGroupNotifications.Size = new Size(75, 15);
+            labelGroupNotifications.TabIndex = 12;
+            labelGroupNotifications.Text = "Notifications";
+            // 
+            // labelGroupFormat
+            // 
+            labelGroupFormat.AutoSize = true;
+            labelGroupFormat.Location = new Point(3, 342);
+            labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
+            labelGroupFormat.Name = "labelGroupFormat";
+            labelGroupFormat.Size = new Size(74, 15);
+            labelGroupFormat.TabIndex = 13;
+            labelGroupFormat.Text = "Time Format";
+            // 
+            // labelGroupStyle
+            // 
+            labelGroupStyle.AutoSize = true;
+            labelGroupStyle.Location = new Point(3, 456);
+            labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
+            labelGroupStyle.Name = "labelGroupStyle";
+            labelGroupStyle.Size = new Size(32, 15);
+            labelGroupStyle.TabIndex = 14;
+            labelGroupStyle.Text = "Style";
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(354, 499);
+            ClientSize = new Size(354, 614);
+            Controls.Add(panel2);
             Controls.Add(panel1);
-            Controls.Add(groupBoxStyle);
-            Controls.Add(groupBoxTime);
-            Controls.Add(groupBoxNotifications);
-            Controls.Add(groupBoxOSC);
-            Controls.Add(groupBoxGeneral);
             Controls.Add(languageSelectBox);
             ForeColor = Color.White;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
-            MinimumSize = new Size(370, 10);
+            MinimumSize = new Size(200, 200);
             Name = "SettingsWindow";
             Padding = new Padding(8);
             ShowIcon = false;
             ShowInTaskbar = false;
-            SizeGripStyle = SizeGripStyle.Hide;
             Text = "Settings";
             FormClosed += SettingsWindow_FormClosed;
             Load += SettingsWindow_Load;
-            groupBoxGeneral.ResumeLayout(false);
-            groupBoxGeneral.PerformLayout();
-            groupBoxNotifications.ResumeLayout(false);
-            groupBoxNotifications.PerformLayout();
-            groupBoxTime.ResumeLayout(false);
-            groupBoxTime.PerformLayout();
             ctxData.ResumeLayout(false);
-            groupBoxStyle.ResumeLayout(false);
-            groupBoxStyle.PerformLayout();
             panel1.ResumeLayout(false);
-            groupBoxOSC.ResumeLayout(false);
-            groupBoxOSC.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private GroupBox groupBoxGeneral;
         private CheckBox checkAutoCopy;
         private CheckBox checkPlayerNames;
         private Button btnCheckForUpdates;
-        private GroupBox groupBoxNotifications;
         private CheckBox checkPlayAudio;
         private CheckBox checkXSOverlay;
-        private GroupBox groupBoxTime;
         private CheckBox checkInvertMD;
         private CheckBox checkShowSeconds;
         private CheckBox check24Hour;
         private Button btnOpenData;
         private ToolTip toolTip;
-        private GroupBox groupBoxStyle;
         private CheckBox checkColorObjectives;
         private CheckBox checkSaveTerrorsNote;
         private CheckBox checkSaveTerrors;
@@ -544,8 +537,14 @@
         private CheckBox checkOSCEnabled;
         private ComboBox languageSelectBox;
         private Panel panel1;
-        private GroupBox groupBoxOSC;
         private CheckBox checkSendChatbox;
         private CheckBox checkOSCSendColor;
+        private Panel panel2;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Label labelGroupGeneral;
+        private Label labelGroupOSC;
+        private Label labelGroupNotifications;
+        private Label labelGroupFormat;
+        private Label labelGroupStyle;
     }
 }

@@ -49,11 +49,11 @@ namespace ToNSaveManager.Windows
                 if (pair.Key == "SETTINGS.PLAYAUDIO") PostAudioLocationSet();
             }
 
-            LANG.C(groupBoxGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
-            LANG.C(groupBoxNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
-            LANG.C(groupBoxTime, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
-            LANG.C(groupBoxStyle, "SETTINGS.GROUP.STYLE", toolTip);
-            LANG.C(groupBoxOSC, "SETTINGS.GROUP.OSC", toolTip);
+            LANG.C(labelGroupGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
+            LANG.C(labelGroupNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
+            LANG.C(labelGroupFormat, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
+            LANG.C(labelGroupStyle, "SETTINGS.GROUP.STYLE", toolTip);
+            LANG.C(labelGroupOSC, "SETTINGS.GROUP.OSC", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -330,6 +330,9 @@ namespace ToNSaveManager.Windows
                 switch (c) {
                     case GroupBox g:
                         BindControlsRecursive(g.Controls);
+                        break;
+                    case Panel p:
+                        BindControlsRecursive(p.Controls);
                         break;
                     case CheckBox b:
                         if (!string.IsNullOrEmpty(tag)) {
