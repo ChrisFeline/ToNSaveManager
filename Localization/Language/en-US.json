@@ -94,6 +94,9 @@
 	"SETTINGS.DISCORDWEBHOOK.LABEL_NOTE": "**Note**: `{0}`",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_MAP": "**Map**: `{0}`",
 
+	"SETTINGS.ROUNDINFOTOFILE": "Round Info To File",
+	"SETTINGS.ROUNDINFOTOFILE.TT": "Write round information to a file. (Such as terror name, map name, round type, etc.)\nThese files can be used in streaming tools like OBS to give your viewers more information about your current pain and suffering.",
+
 
 	"SETTINGS.GROUP.OSC": "OSC",
 	"SETTINGS.OSCENABLED": "Send OSC Parameters",

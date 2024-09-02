@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
@@ -61,6 +62,7 @@
             labelGroupNotifications = new Label();
             labelGroupFormat = new Label();
             labelGroupStyle = new Label();
+            checkBox1 = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -164,7 +166,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 265);
+            checkOSCEnabled.Location = new Point(3, 286);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -179,7 +181,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 193);
+            checkPlayAudio.Location = new Point(3, 214);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
@@ -194,7 +196,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 214);
+            checkXSOverlay.Location = new Point(3, 235);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -207,7 +209,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 421);
+            checkShowDate.Location = new Point(3, 442);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -220,7 +222,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 379);
+            checkInvertMD.Location = new Point(3, 400);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -233,7 +235,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 400);
+            checkShowSeconds.Location = new Point(3, 421);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -246,7 +248,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 358);
+            check24Hour.Location = new Point(3, 379);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -322,7 +324,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 472);
+            checkColorObjectives.Location = new Point(3, 493);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -363,7 +365,7 @@
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
-            checkSendChatbox.Location = new Point(3, 307);
+            checkSendChatbox.Location = new Point(3, 328);
             checkSendChatbox.Margin = new Padding(3, 1, 3, 1);
             checkSendChatbox.Name = "checkSendChatbox";
             checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
@@ -378,7 +380,7 @@
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 286);
+            checkOSCSendColor.Location = new Point(3, 307);
             checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
@@ -412,6 +414,7 @@
             flowLayoutPanel1.Controls.Add(checkShowWinLose);
             flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
+            flowLayoutPanel1.Controls.Add(checkBox1);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
             flowLayoutPanel1.Controls.Add(checkPlayAudio);
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
@@ -430,7 +433,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(330, 492);
+            flowLayoutPanel1.Size = new Size(330, 513);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -446,7 +449,7 @@
             // labelGroupOSC
             // 
             labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 249);
+            labelGroupOSC.Location = new Point(3, 270);
             labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
             labelGroupOSC.Name = "labelGroupOSC";
             labelGroupOSC.Size = new Size(30, 15);
@@ -456,7 +459,7 @@
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
-            labelGroupNotifications.Location = new Point(3, 177);
+            labelGroupNotifications.Location = new Point(3, 198);
             labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
             labelGroupNotifications.Name = "labelGroupNotifications";
             labelGroupNotifications.Size = new Size(75, 15);
@@ -466,7 +469,7 @@
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 342);
+            labelGroupFormat.Location = new Point(3, 363);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -476,12 +479,25 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 456);
+            labelGroupStyle.Location = new Point(3, 477);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
             labelGroupStyle.TabIndex = 14;
             labelGroupStyle.Text = "Style";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(3, 163);
+            checkBox1.Margin = new Padding(3, 1, 3, 1);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Padding = new Padding(20, 0, 3, 0);
+            checkBox1.Size = new Size(143, 19);
+            checkBox1.TabIndex = 15;
+            checkBox1.Tag = resources.GetString("checkBox1.Tag");
+            checkBox1.Text = "Round Info to File";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
             // SettingsWindow
             // 
@@ -546,5 +562,6 @@
         private Label labelGroupNotifications;
         private Label labelGroupFormat;
         private Label labelGroupStyle;
+        private CheckBox checkBox1;
     }
 }
