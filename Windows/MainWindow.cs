@@ -422,7 +422,8 @@ namespace ToNSaveManager
             StatsWindow.Open(this);
         }
 
-        internal static void OpenExternalLink(string url) {
+        internal static void OpenExternalLink(string? url) {
+            Logger.Debug("Opening: " + url);
             if (string.IsNullOrEmpty(url)) return;
 
             ProcessStartInfo psInfo = new ProcessStartInfo { FileName = url, UseShellExecute = true };

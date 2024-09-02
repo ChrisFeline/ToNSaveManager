@@ -4,11 +4,13 @@ namespace ToNSaveManager.Models.Stats {
     public class RoundInfoTemplate {
         public string FileName { get; set; }
 
-        [JsonIgnore] private string m_FilePath { get; set; }
+        [JsonIgnore] private string m_FilePath { get; set; } = string.Empty;
+        [JsonIgnore] private string m_FileDir { get; set; } = string.Empty;
         public string FilePath {
             get => m_FilePath;
             set {
-                m_FilePath = value;
+                m_FilePath = string.IsNullOrEmpty(value) ? string.Empty : Path.GetFullPath(value);
+                m_FileDir = string.IsNullOrEmpty(m_FilePath) ? string.Empty : Path.GetDirectoryName(m_FilePath) ?? string.Empty;
                 FileName = Path.GetFileName(m_FilePath);
             }
         }
@@ -45,9 +47,12 @@ namespace ToNSaveManager.Models.Stats {
         }
 
         [JsonIgnore] public bool IsModified => m_TemplateKeys.Any(StatsData.IsModified);
+        [JsonIgnore] public bool HasKeys => m_TemplateKeys.Length > 0;
 
-        public void WriteToFile() {
-            if (!IsModified) return;
+        public void WriteToFile(bool force = false) {
+            if (!IsModified && !force) return;
+
+            if (!Directory.Exists(m_FileDir)) Directory.CreateDirectory(m_FileDir);
 
             string content = StatsWindow.ReplaceTemplate(Template);
             File.WriteAllText(FilePath, content);

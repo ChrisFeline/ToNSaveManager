@@ -1,10 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Security.Policy;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.Discord;
+using Windows.ApplicationModel.Contacts;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
@@ -54,6 +57,9 @@ namespace ToNSaveManager.Windows
             LANG.C(labelGroupFormat, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
             LANG.C(labelGroupStyle, "SETTINGS.GROUP.STYLE", toolTip);
             LANG.C(labelGroupOSC, "SETTINGS.GROUP.OSC", toolTip);
+
+            LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
+            LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -109,11 +115,139 @@ namespace ToNSaveManager.Windows
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
-            checkOSCEnabled_CheckedChanged(null, new EventArgs());
+            checkOSCEnabled_CheckedChanged(null, EventArgs.Empty);
             checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
             checkOSCSendColor.CheckedChanged += CheckOSCSendColor_CheckedChanged;
 
+            // OBS
+            checkRoundToFile.CheckedChanged += CheckRoundToFile_CheckedChanged;
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+
             FillLanguageBox();
+        }
+
+        private void RoundInfoTemplate_Control_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
+            RoundInfoTemplate? template = (RoundInfoTemplate?)((LinkLabel?)sender)?.DataContext;
+            if (template == null) return;
+
+            if (e.Button == MouseButtons.Right) RoundInfoTemplate_OnDelete(template);
+            else if (e.Button == MouseButtons.Middle) MainWindow.OpenExternalLink(Path.GetDirectoryName(template.FilePath));
+            else RoundInfoTemplate_OnEdit(template);
+        }
+        private void RoundInfoTemplate_OnDelete(RoundInfoTemplate template) {
+            DialogResult dRes = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE", template.FileName) ?? $"Are you sure you want to delete this template file?\nFile Name: {template.FileName}", LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE", template.FileName) ?? $"Deleting Template: {template.FileName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (dRes == DialogResult.OK) {
+                int index = Array.IndexOf(Settings.Get.RoundInfoTemplates, template);
+                if (index < 0) return;
+
+                var templates = new RoundInfoTemplate[Settings.Get.RoundInfoTemplates.Length - 1];
+                for (int i = 0, j = 0; i < Settings.Get.RoundInfoTemplates.Length; i++) {
+                    if (i == index) continue;
+
+                    templates[j] = Settings.Get.RoundInfoTemplates[i];
+                    j++;
+                }
+                Settings.Get.RoundInfoTemplates = templates;
+                Settings.Export();
+
+                CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+            }
+        }
+        private void RoundInfoTemplate_OnEdit(RoundInfoTemplate template) {
+            string value = template.Template;
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.ROUNDINFOTOFILE_EDIT.TITLE", template.FileName) ?? $"Editing: {template.FileName}", this, true, false, true);
+            if (show.Accept) {
+                if (string.IsNullOrWhiteSpace(show.Text)) {
+                    DialogResult dRes = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE", template.FileName) ?? $"Are you sure you want to delete this template file?\nFile Name: {template.FileName}", LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE", template.FileName) ?? $"Deleting Template: {template.FileName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (dRes == DialogResult.OK) RoundInfoTemplate_OnDelete(template);
+                } else {
+                    template.Template = show.Text;
+                    Settings.Export();
+                }
+            }
+
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+        }
+        private void CheckRoundToFile_CheckedChanged(object? sender, EventArgs e) {
+            int length = Settings.Get.RoundInfoTemplates.Length;
+            int count = flowRoundInfoFiles.Controls.Count;
+            int max = Math.Max(length, count);
+            for (int i = 0; i < max; i++) {
+                LinkLabel control;
+                if (i < count) {
+                    control = (LinkLabel)flowRoundInfoFiles.Controls[i];
+                } else {
+                    control = new LinkLabel() {
+                        VisitedLinkColor = Color.Gainsboro,
+                        ActiveLinkColor = Color.White,
+                        LinkColor = Color.Gainsboro,
+                        AutoSize = true,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                        UseMnemonic = false,
+                        Margin = new Padding(0, 0, 5, 3),
+                        LinkBehavior = LinkBehavior.HoverUnderline
+                    };
+                    control.LinkClicked += RoundInfoTemplate_Control_LinkClicked;
+                    control.BorderStyle = BorderStyle.FixedSingle;
+
+                    flowRoundInfoFiles.Controls.Add(control);
+                }
+
+                if (i < length) {
+                    RoundInfoTemplate template = Settings.Get.RoundInfoTemplates[i];
+
+                    if (control.Visible = checkRoundToFile.Checked && i < length) {
+                        control.DataContext = template;
+                        control.Text = template.FileName;
+                        toolTip.SetToolTip(control, template.FilePath);
+                    }
+                } else control.Visible = false;
+            }
+
+            linkAddInfoFile.Visible = checkRoundToFile.Checked;
+            flowRoundInfoFilePanel.BorderStyle = checkRoundToFile.Checked ? BorderStyle.FixedSingle : BorderStyle.None;
+
+            flowRoundInfoFilePanel.Update();
+        }
+
+        private void linkAddInfoFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            EditResult show = EditWindow.Show(string.Empty, LANG.S("SETTINGS.ROUNDINFOTOFILE_ADD.TITLE") ?? "Create New Template", this, false, true);
+            if (!show.Accept || string.IsNullOrEmpty(show.Text)) return;
+
+            string template = show.Text;
+            string filePath = string.Empty;
+
+            using (SaveFileDialog saveFileDialog = new() { FileName = "ton_new_template.txt", Title = "Save Template File", Filter = "Text File|*.txt" }) {
+                filePath = saveFileDialog.ShowDialog() == DialogResult.OK ? saveFileDialog.FileName : string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            if (Settings.Get.RoundInfoTemplates.Any(t => t.FilePath == filePath)) {
+                _ = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_FILE_EXISTS.MESSAGE", Path.GetFileName(filePath)), string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Logger.Debug("Selected File Path: " + filePath);
+
+            // Add to settings file
+            RoundInfoTemplate infoTemplate = new RoundInfoTemplate(filePath, template);
+            if (!infoTemplate.HasKeys) {
+                _ = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_NOKEYS.MESSAGE", Path.GetFileName(filePath)), string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            RoundInfoTemplate[] temp = new RoundInfoTemplate[Settings.Get.RoundInfoTemplates.Length + 1];
+            int index = temp.Length - 1;
+            temp[index] = infoTemplate;
+            Array.Copy(Settings.Get.RoundInfoTemplates, temp, index);
+            Settings.Get.RoundInfoTemplates = temp;
+            Settings.Export();
+
+            infoTemplate.WriteToFile(true);
+            Logger.Debug("Added new template: " + infoTemplate.FilePath);
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
         }
 
         private void CheckOSCSendColor_CheckedChanged(object? sender, EventArgs e) {
@@ -181,25 +315,20 @@ namespace ToNSaveManager.Windows
             CancelNext = false;
         }
 
-        private void checkSendChatbox_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button != MouseButtons.Right) return;
+        private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
+            if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
+            else LilOSC.SetChatboxMessage(string.Empty);
+        }
 
+        private void linkEditChatbox_Click(object sender, EventArgs e) {
             string template = Settings.Get.OSCMessageTemplate.Template;
-            template = template.Replace("\n", "\\n");
-
-            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this);
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true);
             if (edit.Accept) {
-                template = edit.Text.Replace("\\n", "\n");
-                Settings.Get.OSCMessageTemplate.Template = string.IsNullOrEmpty(template) ? Settings.Default.OSCMessageTemplate.Template : template;
+                Settings.Get.OSCMessageTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageTemplate.Template : edit.Text;
                 Settings.Export();
 
                 StatsWindow.UpdateChatboxContent();
             }
-        }
-
-        private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
-            if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
-            else LilOSC.SetChatboxMessage(string.Empty);
         }
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {

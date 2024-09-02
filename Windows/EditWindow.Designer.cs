@@ -26,8 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             textBox1 = new TextBox();
             button1 = new Button();
             button2 = new Button();
@@ -40,8 +39,9 @@
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(12, 12);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(402, 22);
+            textBox1.Size = new Size(402, 23);
             textBox1.TabIndex = 0;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // button1
             // 

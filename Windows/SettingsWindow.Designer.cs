@@ -58,15 +58,22 @@
             panel2 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
             labelGroupGeneral = new Label();
-            labelGroupOSC = new Label();
+            flowRoundInfoFilePanel = new FlowLayoutPanel();
+            checkRoundToFile = new CheckBox();
+            flowRoundInfoFiles = new FlowLayoutPanel();
+            linkAddInfoFile = new LinkLabel();
             labelGroupNotifications = new Label();
+            labelGroupOSC = new Label();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
             labelGroupStyle = new Label();
-            checkBox1 = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            flowRoundInfoFilePanel.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // checkDiscordBackup
@@ -166,7 +173,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 286);
+            checkOSCEnabled.Location = new Point(3, 303);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -181,7 +188,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 214);
+            checkPlayAudio.Location = new Point(3, 231);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
@@ -196,7 +203,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 235);
+            checkXSOverlay.Location = new Point(3, 252);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -209,7 +216,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 442);
+            checkShowDate.Location = new Point(3, 459);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -222,7 +229,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 400);
+            checkInvertMD.Location = new Point(3, 417);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -235,7 +242,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 421);
+            checkShowSeconds.Location = new Point(3, 438);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -248,7 +255,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 379);
+            check24Hour.Location = new Point(3, 396);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -266,7 +273,7 @@
             btnCheckForUpdates.ForeColor = Color.White;
             btnCheckForUpdates.Location = new Point(0, 4);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
-            btnCheckForUpdates.Size = new Size(279, 24);
+            btnCheckForUpdates.Size = new Size(510, 24);
             btnCheckForUpdates.TabIndex = 4;
             btnCheckForUpdates.Text = "Check For Updates";
             btnCheckForUpdates.UseVisualStyleBackColor = true;
@@ -279,7 +286,7 @@
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(285, 4);
+            btnOpenData.Location = new Point(516, 4);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -324,7 +331,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 493);
+            checkColorObjectives.Location = new Point(3, 510);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -344,7 +351,7 @@
             languageSelectBox.FormattingEnabled = true;
             languageSelectBox.Location = new Point(8, 8);
             languageSelectBox.Name = "languageSelectBox";
-            languageSelectBox.Size = new Size(338, 23);
+            languageSelectBox.Size = new Size(569, 23);
             languageSelectBox.TabIndex = 7;
             languageSelectBox.TabStop = false;
             languageSelectBox.SelectedIndexChanged += languageSelectBox_SelectedIndexChanged;
@@ -359,14 +366,14 @@
             panel1.Location = new Point(8, 575);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(0, 4, 0, 0);
-            panel1.Size = new Size(338, 28);
+            panel1.Size = new Size(569, 28);
             panel1.TabIndex = 8;
             // 
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
-            checkSendChatbox.Location = new Point(3, 328);
-            checkSendChatbox.Margin = new Padding(3, 1, 3, 1);
+            checkSendChatbox.Location = new Point(0, 0);
+            checkSendChatbox.Margin = new Padding(0);
             checkSendChatbox.Name = "checkSendChatbox";
             checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
             checkSendChatbox.Size = new Size(172, 19);
@@ -374,13 +381,12 @@
             checkSendChatbox.Tag = "OSCSendChatbox|Sends ToN information to the VRChat chatbox.\\nRight click to customize the message template.";
             checkSendChatbox.Text = "Send Chatbox Message";
             checkSendChatbox.UseVisualStyleBackColor = true;
-            checkSendChatbox.MouseDown += checkSendChatbox_MouseDown;
             // 
             // checkOSCSendColor
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 307);
+            checkOSCSendColor.Location = new Point(3, 324);
             checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
@@ -399,7 +405,7 @@
             panel2.Location = new Point(8, 37);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(3);
-            panel2.Size = new Size(338, 536);
+            panel2.Size = new Size(569, 536);
             panel2.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -414,14 +420,14 @@
             flowLayoutPanel1.Controls.Add(checkShowWinLose);
             flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
-            flowLayoutPanel1.Controls.Add(checkBox1);
+            flowLayoutPanel1.Controls.Add(flowRoundInfoFilePanel);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
             flowLayoutPanel1.Controls.Add(checkPlayAudio);
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
             flowLayoutPanel1.Controls.Add(checkOSCSendColor);
-            flowLayoutPanel1.Controls.Add(checkSendChatbox);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
             flowLayoutPanel1.Controls.Add(check24Hour);
             flowLayoutPanel1.Controls.Add(checkInvertMD);
@@ -433,7 +439,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(330, 513);
+            flowLayoutPanel1.Size = new Size(561, 530);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -446,30 +452,119 @@
             labelGroupGeneral.TabIndex = 10;
             labelGroupGeneral.Text = "General";
             // 
-            // labelGroupOSC
+            // flowRoundInfoFilePanel
             // 
-            labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 270);
-            labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
-            labelGroupOSC.Name = "labelGroupOSC";
-            labelGroupOSC.Size = new Size(30, 15);
-            labelGroupOSC.TabIndex = 11;
-            labelGroupOSC.Text = "OSC";
+            flowRoundInfoFilePanel.AutoSize = true;
+            flowRoundInfoFilePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowRoundInfoFilePanel.BorderStyle = BorderStyle.FixedSingle;
+            flowRoundInfoFilePanel.Controls.Add(checkRoundToFile);
+            flowRoundInfoFilePanel.Controls.Add(flowRoundInfoFiles);
+            flowRoundInfoFilePanel.Controls.Add(linkAddInfoFile);
+            flowRoundInfoFilePanel.FlowDirection = FlowDirection.TopDown;
+            flowRoundInfoFilePanel.Location = new Point(3, 163);
+            flowRoundInfoFilePanel.Margin = new Padding(3, 1, 3, 1);
+            flowRoundInfoFilePanel.Name = "flowRoundInfoFilePanel";
+            flowRoundInfoFilePanel.Size = new Size(145, 36);
+            flowRoundInfoFilePanel.TabIndex = 17;
+            flowRoundInfoFilePanel.WrapContents = false;
+            // 
+            // checkRoundToFile
+            // 
+            checkRoundToFile.AutoSize = true;
+            checkRoundToFile.Location = new Point(0, 0);
+            checkRoundToFile.Margin = new Padding(0);
+            checkRoundToFile.Name = "checkRoundToFile";
+            checkRoundToFile.Padding = new Padding(20, 0, 3, 0);
+            checkRoundToFile.Size = new Size(143, 19);
+            checkRoundToFile.TabIndex = 15;
+            checkRoundToFile.Tag = resources.GetString("checkRoundToFile.Tag");
+            checkRoundToFile.Text = "Round Info to File";
+            checkRoundToFile.UseVisualStyleBackColor = true;
+            // 
+            // flowRoundInfoFiles
+            // 
+            flowRoundInfoFiles.AutoSize = true;
+            flowRoundInfoFiles.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowRoundInfoFiles.FlowDirection = FlowDirection.TopDown;
+            flowRoundInfoFiles.Location = new Point(50, 19);
+            flowRoundInfoFiles.Margin = new Padding(50, 0, 0, 0);
+            flowRoundInfoFiles.Name = "flowRoundInfoFiles";
+            flowRoundInfoFiles.Size = new Size(0, 0);
+            flowRoundInfoFiles.TabIndex = 17;
+            flowRoundInfoFiles.WrapContents = false;
+            // 
+            // linkAddInfoFile
+            // 
+            linkAddInfoFile.ActiveLinkColor = Color.White;
+            linkAddInfoFile.AutoSize = true;
+            linkAddInfoFile.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkAddInfoFile.LinkColor = Color.Gray;
+            linkAddInfoFile.Location = new Point(0, 19);
+            linkAddInfoFile.Margin = new Padding(0);
+            linkAddInfoFile.Name = "linkAddInfoFile";
+            linkAddInfoFile.Padding = new Padding(50, 0, 0, 0);
+            linkAddInfoFile.Size = new Size(108, 15);
+            linkAddInfoFile.TabIndex = 16;
+            linkAddInfoFile.TabStop = true;
+            linkAddInfoFile.Text = "(Add File)";
+            linkAddInfoFile.TextAlign = ContentAlignment.MiddleLeft;
+            linkAddInfoFile.VisitedLinkColor = Color.Gray;
+            linkAddInfoFile.LinkClicked += linkAddInfoFile_LinkClicked;
             // 
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
-            labelGroupNotifications.Location = new Point(3, 198);
+            labelGroupNotifications.Location = new Point(3, 215);
             labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
             labelGroupNotifications.Name = "labelGroupNotifications";
             labelGroupNotifications.Size = new Size(75, 15);
             labelGroupNotifications.TabIndex = 12;
             labelGroupNotifications.Text = "Notifications";
             // 
+            // labelGroupOSC
+            // 
+            labelGroupOSC.AutoSize = true;
+            labelGroupOSC.Location = new Point(3, 287);
+            labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
+            labelGroupOSC.Name = "labelGroupOSC";
+            labelGroupOSC.Size = new Size(30, 15);
+            labelGroupOSC.TabIndex = 11;
+            labelGroupOSC.Text = "OSC";
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel2.Controls.Add(checkSendChatbox);
+            flowLayoutPanel2.Controls.Add(linkEditChatbox);
+            flowLayoutPanel2.Location = new Point(3, 345);
+            flowLayoutPanel2.Margin = new Padding(3, 1, 3, 1);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(207, 19);
+            flowLayoutPanel2.TabIndex = 16;
+            flowLayoutPanel2.WrapContents = false;
+            // 
+            // linkEditChatbox
+            // 
+            linkEditChatbox.ActiveLinkColor = Color.White;
+            linkEditChatbox.AutoSize = true;
+            linkEditChatbox.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditChatbox.LinkColor = Color.Gray;
+            linkEditChatbox.Location = new Point(172, 0);
+            linkEditChatbox.Margin = new Padding(0);
+            linkEditChatbox.Name = "linkEditChatbox";
+            linkEditChatbox.Size = new Size(35, 15);
+            linkEditChatbox.TabIndex = 11;
+            linkEditChatbox.TabStop = true;
+            linkEditChatbox.Text = "(Edit)";
+            linkEditChatbox.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditChatbox.VisitedLinkColor = Color.Gray;
+            linkEditChatbox.Click += linkEditChatbox_Click;
+            // 
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 363);
+            labelGroupFormat.Location = new Point(3, 380);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -479,32 +574,19 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 477);
+            labelGroupStyle.Location = new Point(3, 494);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
             labelGroupStyle.TabIndex = 14;
             labelGroupStyle.Text = "Style";
             // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(3, 163);
-            checkBox1.Margin = new Padding(3, 1, 3, 1);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Padding = new Padding(20, 0, 3, 0);
-            checkBox1.Size = new Size(143, 19);
-            checkBox1.TabIndex = 15;
-            checkBox1.Tag = resources.GetString("checkBox1.Tag");
-            checkBox1.Text = "Round Info to File";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(354, 614);
+            ClientSize = new Size(585, 614);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(languageSelectBox);
@@ -525,6 +607,10 @@
             panel2.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            flowRoundInfoFilePanel.ResumeLayout(false);
+            flowRoundInfoFilePanel.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -562,6 +648,11 @@
         private Label labelGroupNotifications;
         private Label labelGroupFormat;
         private Label labelGroupStyle;
-        private CheckBox checkBox1;
+        private CheckBox checkRoundToFile;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private LinkLabel linkEditChatbox;
+        private FlowLayoutPanel flowRoundInfoFilePanel;
+        private LinkLabel linkAddInfoFile;
+        private FlowLayoutPanel flowRoundInfoFiles;
     }
 }

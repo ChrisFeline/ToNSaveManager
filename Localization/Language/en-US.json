@@ -3,6 +3,7 @@
 	"DISPLAY_NAME": "English",
 
 	"EDIT.SAVE": "Save",
+	"EDIT.DELETE": "Delete",
 	"EDIT.OK": "OK",
 	"EDIT.CANCEL": "Cancel",
 
@@ -96,15 +97,24 @@
 
 	"SETTINGS.ROUNDINFOTOFILE": "Round Info To File",
 	"SETTINGS.ROUNDINFOTOFILE.TT": "Write round information to a file. (Such as terror name, map name, round type, etc.)\nThese files can be used in streaming tools like OBS to give your viewers more information about your current pain and suffering.",
-
+	"SETTINGS.ROUNDINFOTOFILE_ADD": "(Create New Template File)",
+	"SETTINGS.ROUNDINFOTOFILE_ADD.TT": "Create a new file entry and define a template for the content.",
+	"SETTINGS.ROUNDINFOTOFILE_EDIT.TITLE": "Editing: {0}",
+	"SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE": "Deleting Template: {0}",
+	"SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE": "Are you sure you want to delete this template file?\nFile Name: {0}",
+	"SETTINGS.ROUNDINFOTOFILE_ADD.TITLE": "Create New Template",
+	"SETTINGS.ROUNDINFOTOFILE_FILE_EXISTS.MESSAGE": "The file {0} is already registered in another template entry.",
+	"SETTINGS.ROUNDINFOTOFILE_NOKEYS.MESSAGE": "This template does not contain any Stats key.\n\nYou can open the Stats window and right click on the stats you would like to copy.",
 
 	"SETTINGS.GROUP.OSC": "OSC",
 	"SETTINGS.OSCENABLED": "Send OSC Parameters",
 	"SETTINGS.OSCENABLED.TT": "Sends avatar parameters to VRChat using OSC.\nRight click this entry to open documentation about parameter names and types.",
 	"SETTINGS.OSCSENDCHATBOX": "Send Chatbox Message",
-	"SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nRight click this toggle to customize the message template.",
+	"SETTINGS.OSCSENDCHATBOX.TT": "Sends ToN information to the VRChat Chatbox.\nCustomize the message template.",
 	"SETTINGS.OSCSENDCHATBOX.TITLE": "Set Chatbox Message Template",
-	"SETTINGS.OSCSENDCOLOR": "Send Terror Color (HSV)",
+	"SETTINGS.OSCSENDCHATBOX_EDIT": "(Edit)",
+	"SETTINGS.OSCSENDCHATBOX_EDIT.TT": "Customize the message template to be displayed in the chatbox.",
+	"SETTINGS.OSCSENDCOLOR": "Send Terror Color",
 	"SETTINGS.OSCSENDCOLOR.TT": "Sends the current Terror color represented as HSV.\nColor will be sent as 3 FLOAT parameters:\n- ToN_ColorH (Hue)\n- ToN_ColorS (Saturation)\n- ToN_ColorV (Value)",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
