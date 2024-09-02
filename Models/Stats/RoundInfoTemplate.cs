@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
+﻿using Newtonsoft.Json;
 
 namespace ToNSaveManager.Models.Stats {
     public class RoundInfoTemplate {
         public string FileName { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore] private string m_FilePath { get; set; }
+        [JsonIgnore] private string m_FilePath { get; set; }
         public string FilePath {
             get => m_FilePath;
             set {
@@ -14,8 +13,8 @@ namespace ToNSaveManager.Models.Stats {
             }
         }
 
-        [Newtonsoft.Json.JsonIgnore] private string m_Template { get; set; }
-        [Newtonsoft.Json.JsonIgnore] private string[] m_TemplateKeys { get; set; }
+        [JsonIgnore] private string m_Template { get; set; }
+        [JsonIgnore] private string[] m_TemplateKeys { get; set; }
         public string Template {
             get => m_Template;
             set {
@@ -45,7 +44,7 @@ namespace ToNSaveManager.Models.Stats {
             return FileName;
         }
 
-        public bool IsModified => m_TemplateKeys.Any(StatsData.IsModified);
+        [JsonIgnore] public bool IsModified => m_TemplateKeys.Any(StatsData.IsModified);
 
         public void WriteToFile() {
             if (!IsModified) return;
