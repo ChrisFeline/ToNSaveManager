@@ -205,8 +205,6 @@ namespace ToNSaveManager.Models.Stats
 
         public void Export()
         {
-            Logger.Debug("STATS DATA: EXPORT");
-
             try
             {
                 if (TableModified.Count > 0) TableModified.Clear();
