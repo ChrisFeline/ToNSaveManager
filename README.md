@@ -53,29 +53,30 @@
 <details><summary>Parameter Names & Types</summary><p>
 <pre>
 <b>Parameter Name</b> | <b>Type</b>  |
----------------|-------|--------------------------
-ToN_RoundType  | INT   | The current round type.
-ToN_Map        | INT   | The current map of this round.
-ToN_OptedIn    | BOOL  | Is the player opted-in at the lobby
-ToN_Saboteur   | BOOL  | Is the player currently the Saboteur
----------------|-------|--------------------------
-ToN_Terror1    | INT   | The current terror index.
-ToN_Terror2    | INT   | The second terror index. (Bloodbath & Midnight)
-ToN_Terror3    | INT   | The third terror index. (Bloodbath & Alternate on Midnight)
----------------|-------|--------------------------
-ToN_TPhase1    | INT   | The current terror phase.
-ToN_TPhase2    | INT   | The second terror phase. (Bloodbath)
-ToN_TPhase3    | INT   | The third terror phase. (Bloodbath & Midnight)
----------------|-------|--------------------------
-ToN_Encounter0 | BOOL  | Hungry Home Invader (Stop raiding my refrigerator)
-ToN_Encounter1 | BOOL  | Atrached
-ToN_Encounter2 | BOOL  | Wild Yet Bloodthirsty Creature
-ToN_Encounter3 | BOOL  | Glorbo
----------------|-------|--------------------------
-ToN_ColorH     | FLOAT | HUD Terror Color (HUE)
-ToN_ColorS     | FLOAT | HUD Terror Color (Saturation)
-ToN_ColorV     | FLOAT | HUD Terror Color (Value)
----------------|-------|--------------------------
+-----------------|-------|--------------------------
+ToN_RoundType    | INT   | The current round type.
+ToN_Map          | INT   | The current map of this round.
+ToN_OptedIn      | BOOL  | Is the player opted-in at the lobby
+ToN_Saboteur     | BOOL  | Is the player currently the Saboteur
+-----------------|-------|--------------------------
+ToN_Terror1      | INT   | The current terror index.
+ToN_Terror2      | INT   | The second terror index. (Bloodbath & Midnight)
+ToN_Terror3      | INT   | The third terror index. (Bloodbath & Alternate on Midnight)
+-----------------|-------|--------------------------
+ToN_TPhase1      | INT   | The current terror phase.
+ToN_TPhase2      | INT   | The second terror phase. (Bloodbath)
+ToN_TPhase3      | INT   | The third terror phase. (Bloodbath & Midnight)
+-----------------|-------|--------------------------
+ToN_EncounterHHI | BOOL  | Hungry Home Invader (Stop raiding my refrigerator)
+ToN_EncounterATR | BOOL  | Atrached
+ToN_EncounterWYB | BOOL  | Wild Yet Bloodthirsty Creature
+ToN_EncounterGLO | BOOL  | Glorbo
+ToN_EncounterEPF | BOOL  | Shadow Evil Purple Foxy
+-----------------|-------|--------------------------
+ToN_ColorH       | FLOAT | HUD Terror Color (HUE)
+ToN_ColorS       | FLOAT | HUD Terror Color (Saturation)
+ToN_ColorV       | FLOAT | HUD Terror Color (Value)
+-----------------|-------|--------------------------
 </pre>
 </p></details>
 
