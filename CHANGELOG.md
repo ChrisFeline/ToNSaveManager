@@ -18,6 +18,7 @@
 - Fixed save code delete warning message being the same as log history delete message.
 - Rename & Import context menu buttons are disabled on entries that are not custom collections or favorites.
 - Fixed clipboard clearing it's content after closing the app.
+- App should detect your native UI language properly at first launch now.
 
 ### OSC Changes
 * Please open README.md to see more OSC specifications.
@@ -29,4 +30,4 @@
 - Supports alternates on Fog rounds.
 - Added parameters for special encounters.
 - Added parameters for some terror phases. (Faker & Bliss)
-- RUN round type is now properly detected.
+- 'RUN' round type is now properly detected.
