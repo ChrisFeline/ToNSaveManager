@@ -72,7 +72,7 @@ namespace ToNSaveManager
                 ReleaseMutex();
                 Logger.Log("Saving before app exit...");
                 MainWindow.SaveData.Export();
-                StatsWindow.Export();
+                StatsWindow.WriteChanges();
                 Logger.Log("Done.");
             };
 

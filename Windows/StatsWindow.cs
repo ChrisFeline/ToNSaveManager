@@ -7,6 +7,7 @@ using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
 using Windows.ApplicationModel.Contacts;
 
@@ -25,8 +26,10 @@ namespace ToNSaveManager
         }
 
         internal static void SetDirty() => Stats.SetDirty();
-        internal static void Export() {
-            if (Stats.IsDirty) UpdateChatboxContent();
+        internal static void WriteChanges() {
+            if (Settings.Get.OSCMessageTemplate.IsModified) UpdateChatboxContent();
+            foreach (var template in Settings.Get.RoundInfoTemplates) template.WriteToFile();
+
             Stats.Export();
         }
 
@@ -46,26 +49,13 @@ namespace ToNSaveManager
             RefreshTable();
         }
 
-        static readonly StringBuilder StrBuild = new StringBuilder();
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            StrBuild.Clear();
-
-            for (int i = 0; i < terrorMatrix.Length; i++) {
-                if (StrBuild.Length > 0)
-                    StrBuild.Append(" & ");
-
-                StrBuild.Append(terrorMatrix[i].Name);
-            }
-
-            if (StrBuild.Length == 0) StrBuild.Append("???");
-
-            StatsData.RoundType = terrorMatrix.RoundType.ToString();
-            StatsData.TerrorName = StrBuild.ToString();
+            StatsData.SetTerrorMatrix(terrorMatrix);
+            RefreshTable();
         }
         internal static void SetLocation(ToNIndex.Map map) {
-            StatsData.MapName = map.IsEmpty ? "???" : map.Name;
-            StatsData.MapCreator = map.IsEmpty ? "???" : map.Creator;
-            StatsData.MapOrigin = map.IsEmpty ? "???" : map.Origin;
+            StatsData.SetLocation(map);
+            RefreshTable();
         }
 
         internal static bool IsRoundActive;
@@ -79,41 +69,9 @@ namespace ToNSaveManager
             }
         }
 
-        class PropertyInfoContainer {
-            public PropertyInfo Property;
-            public string Name => Property.Name;
+        static PropertyInfoContainer[] TableProperties => StatsData.TableProperties;
+        static Dictionary<string, PropertyInfoContainer> TableDictionary => StatsData.TableDictionary;
 
-            private MethodInfo? GetMethod { get; set; }
-            private MethodInfo? SetMethod { get; set; }
-
-            public bool CanWrite => Property.CanWrite && SetMethod != null && !SetMethod.IsPrivate;
-            public bool IsStatic => GetMethod != null && GetMethod.IsStatic;
-
-            public object? GetValue(object? instance) => Property.GetValue(instance);
-            public void SetValue(object? instance, object? value) => Property.SetValue(instance, value);
-
-            public PropertyInfoContainer (PropertyInfo property) {
-                Property = property;
-                GetMethod = property.GetGetMethod(false);
-                SetMethod = property.GetSetMethod(false);
-
-                Logger.Debug("-------------");
-                Logger.Debug("Property: " + property.Name);
-                Logger.Debug(GetMethod);
-            }
-        }
-
-        static readonly PropertyInfoContainer[] TableProperties;
-        static readonly Dictionary<string, PropertyInfoContainer> TableDictionary;
-        static StatsWindow () {
-            TableProperties = Stats.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
-                .Where(p => !p.Name.StartsWith("_")).Select(p => new PropertyInfoContainer(p)).ToArray();
-
-            TableDictionary = new ();
-            foreach (var info in TableProperties) {
-                TableDictionary.Add(info.Name.ToUpperInvariant(), info);
-            }
-        }
         public StatsWindow() {
             InitializeComponent();
         }
@@ -146,7 +104,7 @@ namespace ToNSaveManager
 
                 PropertyInfoContainer property = (PropertyInfoContainer)control.DataContext;
 
-                string key = "STATS.LABEL_" + property.Name.ToUpperInvariant();
+                string key = "STATS.LABEL_" + property.Key;
                 (string? tx, string? tt) = LANG.T(key);
 
                 if (string.IsNullOrEmpty(tx)) control.Text = property.Name;
@@ -280,12 +238,12 @@ namespace ToNSaveManager
             UpdateTable();
         }
 
-        static readonly Regex MessageTemplatePattern = new Regex(@"{\w+}", RegexOptions.Compiled);
-        const string LOBBY_PREFIX = "LOBBY";
+        internal static readonly Regex MessageTemplatePattern = new Regex(@"{\w+}", RegexOptions.Compiled);
+        internal const string LOBBY_PREFIX = "LOBBY";
 
         internal static void UpdateChatboxContent() {
-            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
-            string template = ReplaceTemplate(Settings.Get.OSCMessageTemplate);
+            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate.Template)) return;
+            string template = ReplaceTemplate(Settings.Get.OSCMessageTemplate.Template);
             LilOSC.SetChatboxMessage(template);
         }
 

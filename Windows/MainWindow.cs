@@ -562,7 +562,7 @@ namespace ToNSaveManager
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
             CopyRecent();
             Export();
-            StatsWindow.Export();
+            StatsWindow.WriteChanges();
             LilOSC.SendData();
         }
 

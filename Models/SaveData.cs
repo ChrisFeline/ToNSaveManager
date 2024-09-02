@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using ToNSaveManager.Localization;
+using ToNSaveManager.Models.Stats;
 
 namespace ToNSaveManager.Models
 {

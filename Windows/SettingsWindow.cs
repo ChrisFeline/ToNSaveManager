@@ -184,13 +184,13 @@ namespace ToNSaveManager.Windows
         private void checkSendChatbox_MouseDown(object sender, MouseEventArgs e) {
             if (e.Button != MouseButtons.Right) return;
 
-            string template = Settings.Get.OSCMessageTemplate;
+            string template = Settings.Get.OSCMessageTemplate.Template;
             template = template.Replace("\n", "\\n");
 
             EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this);
             if (edit.Accept) {
                 template = edit.Text.Replace("\\n", "\n");
-                Settings.Get.OSCMessageTemplate = string.IsNullOrEmpty(template) ? Settings.Default.OSCMessageTemplate : template;
+                Settings.Get.OSCMessageTemplate.Template = string.IsNullOrEmpty(template) ? Settings.Default.OSCMessageTemplate.Template : template;
                 Settings.Export();
 
                 StatsWindow.UpdateChatboxContent();
