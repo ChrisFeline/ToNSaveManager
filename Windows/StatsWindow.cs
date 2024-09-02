@@ -14,7 +14,8 @@ using Windows.ApplicationModel.Contacts;
 namespace ToNSaveManager
 {
     public partial class StatsWindow : Form {
-        internal readonly static StatsData Stats = StatsData.Import();
+        private static StatsData? m_Stats { get; set; }
+        internal static StatsData Stats => m_Stats ?? (m_Stats = StatsData.Import());
         internal readonly static StatsData Lobby = new StatsData();
         internal static StatsWindow? Instance { get; private set; }
         internal static void RefreshTable() => Instance?.UpdateTable();
@@ -27,7 +28,7 @@ namespace ToNSaveManager
 
         internal static void SetDirty() => Stats.SetDirty();
         internal static void WriteChanges() {
-            if (Settings.Get.OSCMessageTemplate.IsModified) {
+            if (Settings.Get.OSCMessageInfoTemplate.IsModified) {
                 Logger.Debug("Detected chatbox content change.");
                 UpdateChatboxContent();
             }
@@ -248,8 +249,8 @@ namespace ToNSaveManager
         internal const string LOBBY_PREFIX = "LOBBY";
 
         internal static void UpdateChatboxContent() {
-            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate.Template)) return;
-            string template = ReplaceTemplate(Settings.Get.OSCMessageTemplate.Template);
+            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
+            string template = ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
             LilOSC.SetChatboxMessage(template);
         }
 

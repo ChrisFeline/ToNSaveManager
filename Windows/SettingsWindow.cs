@@ -321,10 +321,10 @@ namespace ToNSaveManager.Windows
         }
 
         private void linkEditChatbox_Click(object sender, EventArgs e) {
-            string template = Settings.Get.OSCMessageTemplate.Template;
+            string template = Settings.Get.OSCMessageInfoTemplate.Template;
             EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true);
             if (edit.Accept) {
-                Settings.Get.OSCMessageTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageTemplate.Template : edit.Text;
+                Settings.Get.OSCMessageInfoTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageInfoTemplate.Template : edit.Text;
                 Settings.Export();
 
                 StatsWindow.UpdateChatboxContent();

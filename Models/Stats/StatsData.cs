@@ -189,8 +189,9 @@ namespace ToNSaveManager.Models.Stats
                     statsData = JsonConvert.DeserializeObject<StatsData>(content);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Error(ex);
                 statsData = null;
             }
 
@@ -204,6 +205,8 @@ namespace ToNSaveManager.Models.Stats
 
         public void Export()
         {
+            Logger.Debug("STATS DATA: EXPORT");
+
             try
             {
                 if (TableModified.Count > 0) TableModified.Clear();

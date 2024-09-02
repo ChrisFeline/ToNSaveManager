@@ -104,7 +104,7 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
-        public RoundInfoTemplate OSCMessageTemplate { get; set; } =
+        public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
             new RoundInfoTemplate(string.Empty, "- Lobby Stats -\nStuns by Me: {LobbyStuns}\nStuns by Players: {LobbyGlobalStuns}");
 
         /// <summary>
