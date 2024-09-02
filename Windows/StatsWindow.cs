@@ -27,8 +27,14 @@ namespace ToNSaveManager
 
         internal static void SetDirty() => Stats.SetDirty();
         internal static void WriteChanges() {
-            if (Settings.Get.OSCMessageTemplate.IsModified) UpdateChatboxContent();
-            foreach (var template in Settings.Get.RoundInfoTemplates) template.WriteToFile();
+            if (Settings.Get.OSCMessageTemplate.IsModified) {
+                Logger.Debug("Detected chatbox content change.");
+                UpdateChatboxContent();
+            }
+
+            if (Settings.Get.RoundInfoToFile) {
+                foreach (var template in Settings.Get.RoundInfoTemplates) template.WriteToFile();
+            }
 
             Stats.Export();
         }

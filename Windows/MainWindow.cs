@@ -554,7 +554,7 @@ namespace ToNSaveManager
             LogContext context = e.Context;
             string line = e.Content.Substring(34);
 
-            if (HandleSaveCode(line, timestamp, context) ||
+            if (HandleSaveCode(line, timestamp, context)    ||
                 HandleTerrorIndex(line, timestamp, context) ||
                 HandleStatCollection(line, timestamp, context)) { }
         }

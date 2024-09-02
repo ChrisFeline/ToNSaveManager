@@ -164,7 +164,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 193);
+            checkOSCEnabled.Location = new Point(3, 265);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -179,7 +179,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 307);
+            checkPlayAudio.Location = new Point(3, 193);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
@@ -194,7 +194,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 286);
+            checkXSOverlay.Location = new Point(3, 214);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -363,7 +363,7 @@
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
-            checkSendChatbox.Location = new Point(3, 235);
+            checkSendChatbox.Location = new Point(3, 307);
             checkSendChatbox.Margin = new Padding(3, 1, 3, 1);
             checkSendChatbox.Name = "checkSendChatbox";
             checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
@@ -378,7 +378,7 @@
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 214);
+            checkOSCSendColor.Location = new Point(3, 286);
             checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
@@ -412,13 +412,13 @@
             flowLayoutPanel1.Controls.Add(checkShowWinLose);
             flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
+            flowLayoutPanel1.Controls.Add(labelGroupNotifications);
+            flowLayoutPanel1.Controls.Add(checkPlayAudio);
+            flowLayoutPanel1.Controls.Add(checkXSOverlay);
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
             flowLayoutPanel1.Controls.Add(checkOSCSendColor);
             flowLayoutPanel1.Controls.Add(checkSendChatbox);
-            flowLayoutPanel1.Controls.Add(labelGroupNotifications);
-            flowLayoutPanel1.Controls.Add(checkXSOverlay);
-            flowLayoutPanel1.Controls.Add(checkPlayAudio);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
             flowLayoutPanel1.Controls.Add(check24Hour);
             flowLayoutPanel1.Controls.Add(checkInvertMD);
@@ -446,7 +446,7 @@
             // labelGroupOSC
             // 
             labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 177);
+            labelGroupOSC.Location = new Point(3, 249);
             labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
             labelGroupOSC.Name = "labelGroupOSC";
             labelGroupOSC.Size = new Size(30, 15);
@@ -456,7 +456,7 @@
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
-            labelGroupNotifications.Location = new Point(3, 270);
+            labelGroupNotifications.Location = new Point(3, 177);
             labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
             labelGroupNotifications.Name = "labelGroupNotifications";
             labelGroupNotifications.Size = new Size(75, 15);
