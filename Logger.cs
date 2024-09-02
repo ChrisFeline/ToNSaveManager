@@ -34,12 +34,18 @@ namespace ToNSaveManager {
                 LogFileWriter.Flush();
             }
         }
+        internal static void Log(object? message, LogType logType = LogType.Log) => Log(message + string.Empty, logType);
 
         [Conditional("DEBUG")] // Debug builds only
         internal static void Debug(string message) => Log(message, LogType.Debug);
+        [Conditional("DEBUG")] // Debug builds only
+        internal static void Debug(object? message) => Log(message, LogType.Debug);
 
-        internal static void Warning(string message) => Log(message, LogType.Warning);
+        internal static void Warning(string message) => Log(message, LogType.Warning); 
+        internal static void Warning(object? message) => Log(message, LogType.Warning);
         internal static void Info(string message) => Log(message, LogType.Info);
+        internal static void Info(object? message) => Log(message, LogType.Info);
         internal static void Error(string message) => Log(message, LogType.Error);
+        internal static void Error(object? message) => Log(message, LogType.Error);
     }
 }

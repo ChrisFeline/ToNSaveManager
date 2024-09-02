@@ -94,12 +94,18 @@ namespace ToNSaveManager.Utils
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             TMatrix = terrorMatrix;
             IsDirty = true;
+
+            // Reusing LilOSC.SetTerrorMatrix method because it is already properly handled everywhere.
+            StatsWindow.SetTerrorMatrix(terrorMatrix);
             WriteTerror = true;
         }
 
         internal static void SetMap(ToNIndex.Map? map = null) {
             RMap = map == null || map.IsEmpty ? EmptyMap : map;
             IsDirty = true;
+
+            // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
+            StatsWindow.SetLocation(RMap);
             WriteMap = true;
         }
 

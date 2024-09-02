@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils;
 using Windows.ApplicationModel.Contacts;
 
@@ -43,6 +46,28 @@ namespace ToNSaveManager
             RefreshTable();
         }
 
+        static readonly StringBuilder StrBuild = new StringBuilder();
+        internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
+            StrBuild.Clear();
+
+            for (int i = 0; i < terrorMatrix.Length; i++) {
+                if (StrBuild.Length > 0)
+                    StrBuild.Append(" & ");
+
+                StrBuild.Append(terrorMatrix[i].Name);
+            }
+
+            if (StrBuild.Length == 0) StrBuild.Append("???");
+
+            StatsData.RoundType = terrorMatrix.RoundType.ToString();
+            StatsData.TerrorName = StrBuild.ToString();
+        }
+        internal static void SetLocation(ToNIndex.Map map) {
+            StatsData.MapName = map.IsEmpty ? "???" : map.Name;
+            StatsData.MapCreator = map.IsEmpty ? "???" : map.Creator;
+            StatsData.MapOrigin = map.IsEmpty ? "???" : map.Origin;
+        }
+
         internal static bool IsRoundActive;
         internal static void SetRoundActive(bool active) {
             if (IsRoundActive != active) {
@@ -54,14 +79,38 @@ namespace ToNSaveManager
             }
         }
 
-        static readonly PropertyInfo[] TableProperties;
-        static readonly Dictionary<string, PropertyInfo> TableDictionary;
-        static StatsWindow () {
-            TableProperties = Stats.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => !p.Name.StartsWith("_")).ToArray();
+        class PropertyInfoContainer {
+            public PropertyInfo Property;
+            public string Name => Property.Name;
 
-            TableDictionary = new Dictionary<string, PropertyInfo>();
-            foreach (PropertyInfo info in TableProperties) {
+            private MethodInfo? GetMethod { get; set; }
+            private MethodInfo? SetMethod { get; set; }
+
+            public bool CanWrite => Property.CanWrite && SetMethod != null && !SetMethod.IsPrivate;
+            public bool IsStatic => GetMethod != null && GetMethod.IsStatic;
+
+            public object? GetValue(object? instance) => Property.GetValue(instance);
+            public void SetValue(object? instance, object? value) => Property.SetValue(instance, value);
+
+            public PropertyInfoContainer (PropertyInfo property) {
+                Property = property;
+                GetMethod = property.GetGetMethod(false);
+                SetMethod = property.GetSetMethod(false);
+
+                Logger.Debug("-------------");
+                Logger.Debug("Property: " + property.Name);
+                Logger.Debug(GetMethod);
+            }
+        }
+
+        static readonly PropertyInfoContainer[] TableProperties;
+        static readonly Dictionary<string, PropertyInfoContainer> TableDictionary;
+        static StatsWindow () {
+            TableProperties = Stats.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
+                .Where(p => !p.Name.StartsWith("_")).Select(p => new PropertyInfoContainer(p)).ToArray();
+
+            TableDictionary = new ();
+            foreach (var info in TableProperties) {
                 TableDictionary.Add(info.Name.ToUpperInvariant(), info);
             }
         }
@@ -95,7 +144,7 @@ namespace ToNSaveManager
                 Control? control = statsTable.GetControlFromPosition(0, i);
                 if (control == null || control.DataContext == null) continue;
 
-                PropertyInfo property = (PropertyInfo)control.DataContext;
+                PropertyInfoContainer property = (PropertyInfoContainer)control.DataContext;
 
                 string key = "STATS.LABEL_" + property.Name.ToUpperInvariant();
                 (string? tx, string? tt) = LANG.T(key);
@@ -105,20 +154,25 @@ namespace ToNSaveManager
 
                 if (string.IsNullOrEmpty(tt)) tt = string.Empty;
                 else tt += "\n\n";
-                tt += LANG.S("STATS.CHATBOX_KEY_TOTAL", '{' + property.Name + '}') + '\n' +
-                      LANG.S("STATS.CHATBOX_KEY_LOBBY", "{Lobby" + property.Name + '}');
+
+                if (property.IsStatic) {
+                    tt += LANG.S("STATS.TEMPLATE_KEY_GLOBAL", '{' + property.Name + '}');
+                } else {
+                    tt += LANG.S("STATS.TEMPLATE_KEY_TOTAL", '{' + property.Name + '}') + '\n' +
+                          LANG.S("STATS.TEMPLATE_KEY_LOBBY", "{Lobby" + property.Name + '}');
+                }
 
                 toolTip.SetToolTip(control, tt);
             }
 
             LANG.C(ctxTypeInValue, "STATS.CTX_TYPE_IN_VALUE");
-            LANG.C(ctxCopyStatName, "STATS.CTX_COPY_CHATBOX_KEY");
+            LANG.C(ctxCopyStatName, "STATS.CTX_COPY_TEMPLATE_KEY");
 
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
         internal void UpdateTable() {
-            PropertyInfo property;
+            PropertyInfoContainer property;
 
             if (TableProperties.Length != statsTable.RowCount) {
                 statsTable.RowCount = TableProperties.Length;
@@ -131,7 +185,8 @@ namespace ToNSaveManager
                         Control control = new Label() {
                             Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
                             TextAlign = ContentAlignment.BottomLeft,
-                            Anchor = AnchorStyles.Left | AnchorStyles.Right
+                            Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                            UseMnemonic = false
                         };
                         control.DataContext = property;
                         control.Tag = control.Text;
@@ -158,14 +213,14 @@ namespace ToNSaveManager
             }
         }
 
-        PropertyInfo? ContextField;
+        PropertyInfoContainer? ContextField;
         private void Control_MouseClick(object? sender, MouseEventArgs e) {
             if (e.Button != MouseButtons.Right || sender == null) return;
 
             Control control = (Control)sender;
 
             if (control != null) {
-                ContextField = (PropertyInfo?)control.DataContext;
+                ContextField = (PropertyInfoContainer?)control.DataContext;
                 ctxTypeInValue.Enabled = !ShowLobbyStats && ContextField != null && ContextField.CanWrite;
                 contextMenu.Show(control, e.Location);
             }
@@ -188,11 +243,11 @@ namespace ToNSaveManager
             if (ContextField == null) return;
 
             string content = ContextField.Name;
-            if (ShowLobbyStats) content = "Lobby" + content;
+            if (ShowLobbyStats && !ContextField.IsStatic) content = "Lobby" + content;
             content = '{' + content + '}';
 
             Clipboard.SetDataObject(content, false, 4, 200);
-            MessageBox.Show(LANG.S("STATS.CTX_COPY_CHATBOX_KEY.MESSAGE", content) ?? ("Copied to clipboard: " + content));
+            MessageBox.Show(LANG.S("STATS.CTX_COPY_TEMPLATE_KEY.MESSAGE", content) ?? ("Copied to clipboard: " + content));
         }
 
         private void StatsWindow_Load(object sender, EventArgs e) {
@@ -230,8 +285,12 @@ namespace ToNSaveManager
 
         internal static void UpdateChatboxContent() {
             if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageTemplate)) return;
-            string template = MessageTemplatePattern.Replace(Settings.Get.OSCMessageTemplate, UpdateChatboxEvaluator);
+            string template = ReplaceTemplate(Settings.Get.OSCMessageTemplate);
             LilOSC.SetChatboxMessage(template);
+        }
+
+        internal static string ReplaceTemplate(string template) {
+            return MessageTemplatePattern.Replace(template, UpdateChatboxEvaluator);
         }
 
         static string UpdateChatboxEvaluator(Match m) {

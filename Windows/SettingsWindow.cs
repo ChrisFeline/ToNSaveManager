@@ -69,10 +69,23 @@ namespace ToNSaveManager.Windows
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
+        private static Font? GroupLabelFont { get; set; }
         // Subscribe to events on load
         private void SettingsWindow_Load(object sender, EventArgs e) {
             BindControlsRecursive(Controls);
             LocalizeContent();
+
+            // Clone font for group labels
+            if (GroupLabelFont == null) {
+                GroupLabelFont = new Font(labelGroupGeneral.Font.FontFamily, 12, FontStyle.Bold);
+            }
+
+            // Check font size for group labels
+            labelGroupGeneral.Font = GroupLabelFont;
+            labelGroupNotifications.Font = GroupLabelFont;
+            labelGroupFormat.Font = GroupLabelFont;
+            labelGroupStyle.Font = GroupLabelFont;
+            labelGroupOSC.Font = GroupLabelFont;
 
             // Custom audio handling
             PostAudioLocationSet();

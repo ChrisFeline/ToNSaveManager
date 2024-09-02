@@ -114,6 +114,13 @@ namespace ToNSaveManager.Models
         /// </summary>
         public int OSCMessageInterval { get; set; } = 5;
 
+        #region OBS Features
+        /// <summary>
+        /// Should write files to 
+        /// </summary>
+        public bool WriteRoundInfoToFile { get; set; }
+        #endregion
+
         /// <summary>
         /// Stores a github release tag if the player clicks no when asking for update.
         /// </summary>

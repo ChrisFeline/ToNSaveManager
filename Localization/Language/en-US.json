@@ -192,12 +192,25 @@
 	"STATS.LABEL_GLOBALSTUNS.TT": "Amount of times you and other players have stunned a Terror.",
 	"STATS.LABEL_DAMAGETAKEN": "Damage Taken",
 	"STATS.LABEL_DAMAGETAKEN.TT": "Total damage taken.",
-	"STATS.CHATBOX_KEY_TOTAL": "Total Chatbox Key: {0}",
-	"STATS.CHATBOX_KEY_LOBBY": "Lobby Chatbox Key: {0}",
+
+	"STATS.LABEL_TERRORNAME": "Terror Name",
+	"STATS.LABEL_TERRORNAME.TT": "Displays the Monster's name that is currently active on the round.",
+	"STATS.LABEL_ROUNDTYPE": "Round Type",
+	"STATS.LABEL_ROUNDTYPE.TT": "Name of the current round type.",
+	"STATS.LABEL_MAPNAME": "Map Name",
+	"STATS.LABEL_MAPNAME.TT": "Name of the Map this round is currently taking place on.",
+	"STATS.LABEL_MAPCREATOR": "Map Creator",
+	"STATS.LABEL_MAPCREATOR.TT": "Name of the map creator.",
+	"STATS.LABEL_MAPORIGIN": "Map Origin",
+	"STATS.LABEL_MAPORIGIN.TT": "Displays where this map originates from.",
+
+	"STATS.TEMPLATE_KEY_GLOBAL": "Global Template Key: {0}",
+	"STATS.TEMPLATE_KEY_TOTAL": "Total Template Key: {0}",
+	"STATS.TEMPLATE_KEY_LOBBY": "Lobby Template Key: {0}",
 	"STATS.CTX_TYPE_IN_VALUE": "Type In Value",
 	"STATS.CTX_TYPE_IN_VALUE.TT": "You can type your own custom values to match the stats displayed on the ToN map.",
 	"STATS.CTX_TYPE_IN_VALUE.TITLE": "Type in custom value",
-	"STATS.CTX_COPY_CHATBOX_KEY": "Copy Chatbox Key",
-	"STATS.CTX_COPY_CHATBOX_KEY.TT": "Copy the chatbox key for this stat.\nThis can be used in the OSC Chatbox Template under Settings.",
-	"STATS.CTX_COPY_CHATBOX_KEY.MESSAGE": "Copied to clipboard: {0}"
+	"STATS.CTX_COPY_TEMPLATE_KEY": "Copy Template Key",
+	"STATS.CTX_COPY_TEMPLATE_KEY.TT": "Copy the template key for this stat.\nThis can be used in the OSC Chatbox Template under Settings.",
+	"STATS.CTX_COPY_TEMPLATE_KEY.MESSAGE": "Copied to clipboard: {0}"
 }

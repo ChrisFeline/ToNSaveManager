@@ -10,7 +10,7 @@ using ToNSaveManager.Localization;
 namespace ToNSaveManager.Models {
     internal class StatsData {
         private static string m_Destination = "Stats.json";
-        public static string Destination {
+        internal static string Destination {
             get => m_Destination;
             set {
                 Logger.Log("Setting destination: " + value);
@@ -50,6 +50,12 @@ namespace ToNSaveManager.Models {
 
             SetDirty();
         }
+
+        public static string TerrorName { get; internal set; } = "???";
+        public static string RoundType  { get; internal set; } = "???";
+        public static string MapName    { get; internal set; } = "???";
+        public static string MapCreator { get; internal set; } = "???";
+        public static string MapOrigin  { get; internal set; } = "???";
 
         public void Clear() {
             Logger.Debug("Clearing lobby stats");

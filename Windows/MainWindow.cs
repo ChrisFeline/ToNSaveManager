@@ -270,7 +270,7 @@ namespace ToNSaveManager
             string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
 
             int maxWidth = e.Bounds.Width;
-            TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
 
             e.DrawFocusRectangle();
         }
