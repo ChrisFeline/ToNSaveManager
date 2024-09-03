@@ -125,8 +125,10 @@ namespace ToNSaveManager.Models
                     sb.Append(TextTerrors);
                     for (int i = 0; i < TD.Length; i++) {
                         var t = TD[i];
-                        sb.AppendLine();
-                        sb.Append("- " + t.Name);
+                        if (!t.IsEmpty) {
+                            sb.AppendLine();
+                            sb.Append("- " + t.Name);
+                        }
                     }
                 } else if (RTerrors != null && RTerrors.Length > 0) {
                     sb.AppendLine(TextTerrors);

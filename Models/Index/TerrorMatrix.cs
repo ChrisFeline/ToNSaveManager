@@ -12,6 +12,24 @@ namespace ToNSaveManager.Models.Index {
 
         public ToNIndex.TerrorInfo[] Terrors;
         public int TerrorCount;
+        public int StartIndex;
+        public int ActualCount => TerrorCount - StartIndex;
+
+        static readonly StringBuilder StrBuild = new StringBuilder();
+        public string GetTerrorNames(string splitter = " & ") {
+            StrBuild.Clear();
+
+            for (int i = StartIndex; i < Length; i++) {
+                if (StrBuild.Length > 0)
+                    StrBuild.Append(" & ");
+
+                StrBuild.Append(Terrors[i].Name);
+            }
+
+            if (StrBuild.Length == 0) StrBuild.Append("???");
+            return StrBuild.ToString();
+        }
+        public ToNIndex.TerrorInfo[] GetTerrors() => Terrors.Where(t => t.IsEmpty).ToArray();
 
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
@@ -30,7 +48,7 @@ namespace ToNSaveManager.Models.Index {
 
         // For emulator only
         internal void MarkEncounter() {
-            for (int i = 0; i < Length; i++) {
+            for (int i = StartIndex; i < Length; i++) {
                 ToNIndex.Terror terr = Terrors[i].Value;
                 if (terr.Encounters != null && terr.Encounters.Length > 0)
                     Terrors[i].Encounter = 0;
@@ -88,6 +106,10 @@ namespace ToNSaveManager.Models.Index {
                         if (ind < 0) (indexes[0], indexes[2]) = (indexes[2], indexes[0]);
                         else if (ind > 1) (indexes[2], indexes[1]) = (indexes[1], indexes[2]);
                         TerrorCount = 2;
+                    } else if (RoundType == ToNRoundType.Midnight && indexes[2] == 19) { // Handle Monarch
+                        TerrorCount = 3;
+                        StartIndex = 2;
+                        indexes[0] = indexes[1] = 255;
                     } else {
                         TerrorCount = 3;
                     }
@@ -126,6 +148,11 @@ namespace ToNSaveManager.Models.Index {
                     Terrors = [];
                     TerrorCount = -1;
                     break;
+            }
+
+            // Append round type to terror entries, this makes variants work
+            for (int i = 0; i < Terrors.Length; i++) {
+                Terrors[i].RoundType = RoundType;
             }
         }
 

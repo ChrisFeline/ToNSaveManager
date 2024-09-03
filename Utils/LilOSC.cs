@@ -155,8 +155,8 @@ namespace ToNSaveManager.Utils
                         Color color3 = ToNIndex.Instance.GetTerror(info3).Color;
 
                         Color c;
-                        int R = 0, G = 0, B = 0;
-                        for (int i = 0; i < TMatrix.TerrorCount; i++) {
+                        int R = 0, G = 0, B = 0, L = 0;
+                        for (int i = TMatrix.StartIndex; i < TMatrix.TerrorCount; i++) {
                             if (i > 2) break;
 
                             switch (i) {
@@ -169,9 +169,10 @@ namespace ToNSaveManager.Utils
                             R += c.R;
                             G += c.G;
                             B += c.B;
+                            L++;
                         }
 
-                        terrorColor = Color.FromArgb(R / TMatrix.TerrorCount, G / TMatrix.TerrorCount, B / TMatrix.TerrorCount);
+                        terrorColor = Color.FromArgb(R / L, G / L, B / L);
                     } else terrorColor = Color.White;
 
                     if (LastTerrorColor != terrorColor || force) {
@@ -195,7 +196,7 @@ namespace ToNSaveManager.Utils
                     string key = EncounterKeys[i];
                     bool value0 = false;
 
-                    for (int j = 0; j < TMatrix.Length; j++) {
+                    for (int j = TMatrix.StartIndex; j < TMatrix.Length; j++) {
                         var info = TMatrix[j];
                         if (info.Encounter > -1 && info.Value.Encounters != null &&
                             info.Value.Encounters.Length > 0 && info.Value.Encounters[info.Encounter].Suffix == key) {

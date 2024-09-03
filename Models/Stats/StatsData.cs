@@ -83,23 +83,11 @@ namespace ToNSaveManager.Models.Stats
                 TableModified.Add(key);
         }
 
-        static readonly StringBuilder StrBuild = new StringBuilder();
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            StrBuild.Clear();
-
-            for (int i = 0; i < terrorMatrix.Length; i++) {
-                if (StrBuild.Length > 0)
-                    StrBuild.Append(" & ");
-
-                StrBuild.Append(terrorMatrix[i].Name);
-            }
-
-            if (StrBuild.Length == 0) StrBuild.Append("???");
-
             RoundType = terrorMatrix.RoundType.ToString();
             MarkModified(nameof(RoundType));
 
-            TerrorName = StrBuild.ToString();
+            TerrorName = terrorMatrix.GetTerrorNames();
             MarkModified(nameof(TerrorName));
         }
         internal static void SetLocation(ToNIndex.Map map) {

@@ -739,7 +739,7 @@ namespace ToNSaveManager
                     return true;
                 }
 
-                for (int i = 0; i < matrix.Length; i++) {
+                for (int i = matrix.StartIndex; i < matrix.Length; i++) {
                     int j;
                     var info = matrix[i];
                     if (info.IsEmpty || info.Value.IsEmpty) continue;
@@ -892,7 +892,7 @@ namespace ToNSaveManager
 
                     if (killers.Terrors.Length > 0) {
                         if (Settings.Get.SaveRoundNote)
-                            entry.Note = string.Join(", ", killers.Terrors.Select(t => t.Name));
+                            entry.Note = killers.GetTerrorNames();
                     }
 
                     context.Rem(ROUND_KILLERS_KEY);

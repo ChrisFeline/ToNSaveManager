@@ -185,6 +185,7 @@ namespace ToNSaveManager.Models.Index {
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public PhaseIndex[]? Phases { get; set; }
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public Encounter[]? Encounters { get; set; }
+            [JsonProperty("v", DefaultValueHandling = DefaultValueHandling.Ignore)] public Dictionary<ToNRoundType, string>? Variants { get; set; }
 
             public override string ToString() => Name;
 
@@ -226,6 +227,7 @@ namespace ToNSaveManager.Models.Index {
             public static readonly TerrorInfo Empty = new TerrorInfo() { Group = TerrorGroup.Terrors, Index = byte.MaxValue, IsEmpty = true };
 
             [JsonProperty("i")] public int Index { get; set; }
+            [JsonProperty("r", DefaultValueHandling = DefaultValueHandling.Ignore)] public ToNRoundType RoundType { get; set; }
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Phase { get; set; }
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Encounter { get; set; } = -1;
@@ -235,9 +237,9 @@ namespace ToNSaveManager.Models.Index {
             [JsonIgnore] public string Name {
                 get {
                     if (Value.IsEmpty) return "???";
-                    if (Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Phase <= Value.Phases.Length) return Value.Phases[Phase - 1].Name;
-                    if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length)
-                        return Value.Encounters[Encounter].Name;
+                    else if (Value.Variants != null && Value.Variants.ContainsKey(RoundType)) return Value.Variants[RoundType];
+                    else if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length) return Value.Encounters[Encounter].Name;
+                    else if (Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Phase <= Value.Phases.Length) return Value.Phases[Phase - 1].Name;
 
                     return Value.Name;
                 }
@@ -249,6 +251,7 @@ namespace ToNSaveManager.Models.Index {
                 Index = index;
                 Group = group;
                 Phase = phase;
+                IsEmpty = index == byte.MaxValue;
             }
 
             public override string ToString() {
