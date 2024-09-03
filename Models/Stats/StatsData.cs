@@ -123,14 +123,26 @@ namespace ToNSaveManager.Models.Stats
 
         public int Stuns { get; set; } = 0;
         public int GlobalStuns { get; set; } = 0;
-        public void AddStun(bool isLocal)
+        public void AddStun(bool isLocal, bool isLobby = false)
         {
+            Logger.Debug("Adding stun | IsLocal: " + isLocal);
+
             if (isLocal) {
                 Stuns++;
                 MarkModified(nameof(Stuns));
+
+                if (isLobby) {
+                    RoundStuns++;
+                    MarkModified(nameof(RoundStuns));
+                }
             } else {
                 GlobalStuns++;
                 MarkModified(nameof(GlobalStuns));
+
+                if (isLobby) {
+                    RoundGlobalStuns++;
+                    MarkModified(nameof(RoundGlobalStuns));
+                }
             }
 
             SetDirty();
@@ -145,6 +157,9 @@ namespace ToNSaveManager.Models.Stats
             SetDirty();
         }
 
+        public static int RoundStuns { get; internal set; } = 0;
+        public static int RoundGlobalStuns { get; internal set; } = 0;
+
         public static string TerrorName { get; internal set; } = "???";
         public static string RoundType { get; internal set; } = "???";
         public static string MapName { get; internal set; } = "???";
@@ -155,13 +170,33 @@ namespace ToNSaveManager.Models.Stats
         {
             Logger.Debug("Clearing lobby stats");
 
-            Deaths = 0;
-            Survivals = 0;
-
-            Stuns = 0;
-            GlobalStuns = 0;
-
+            Deaths = -1;
+            Survivals = -1;
+            Stuns = -1;
+            GlobalStuns = -1;
             DamageTaken = 0;
+            // Mark modified
+            AddRound(false);
+            AddRound(true);
+            AddStun(false);
+            AddStun(true);
+            AddDamage(0);
+
+            ClearRound();
+        }
+
+        public static void ClearRound() {
+            Logger.Debug("Clearing round stuns.");
+
+            if (RoundStuns != 0) {
+                RoundStuns = 0;
+                MarkModified(nameof(RoundStuns));
+            }
+
+            if (RoundGlobalStuns != 0) {
+                RoundGlobalStuns = 0;
+                MarkModified(nameof(RoundGlobalStuns));
+            }
         }
         #endregion
 

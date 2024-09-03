@@ -47,7 +47,7 @@ namespace ToNSaveManager
         }
         internal static void AddStun(bool isLocal) {
             if (MainWindow.Started) Stats.AddStun(isLocal);
-            Lobby.AddStun(isLocal);
+            Lobby.AddStun(isLocal, true);
             RefreshTable();
         }
         internal static void AddDamage(int damage) {
