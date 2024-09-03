@@ -58,7 +58,7 @@ namespace ToNSaveManager.Windows
         internal static Map[] Maps8P;
 
         internal static Dictionary<ToNRoundType, int> RoundTypeToMapID = new Dictionary<ToNRoundType, int>() {
-            { ToNRoundType.RUN,        Database.Maps.Count - 1},
+            { ToNRoundType.RUN,       254},
             { ToNRoundType.Cold_Night, 37},
             { ToNRoundType.GIGABYTE,    2},
             { ToNRoundType.Twilight,   67},
