@@ -116,6 +116,11 @@
 	"SETTINGS.OSCSENDCHATBOX_EDIT.TT": "Customize the message template to be displayed in the chatbox.",
 	"SETTINGS.OSCSENDCOLOR": "Send Terror Color",
 	"SETTINGS.OSCSENDCOLOR.TT": "Sends the current Terror color represented as HSV.\nColor will be sent as 3 FLOAT parameters:\n- ToN_ColorH (Hue)\n- ToN_ColorS (Saturation)\n- ToN_ColorV (Value)",
+	"SETTINGS.OSCDAMAGEDEVENT": "Send Damage Event",
+	"SETTINGS.OSCDAMAGEDEVENT.TT": "Sends a damage event to an INT parameter, the number represents the damage value received.\nThe value will be sent to a parameter named 'ToN_Damaged' then it will reset to 0 after the interval.\nIf the player dies, damage value will be 255 for maximum pain.",
+	"SETTINGS.OSCDAMAGEDEVENT_EDIT": "(Set Interval)",
+	"SETTINGS.OSCDAMAGEDEVENT_EDIT.TT": "Sets the interval (in milliseconds) between sending the damage event and resetting it back to zero.",
+	"SETTINGS.OSCDAMAGEDEVENT.TITLE": "Set Damage Interval",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 

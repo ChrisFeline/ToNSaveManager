@@ -60,6 +60,7 @@ namespace ToNSaveManager.Windows
 
             LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
             LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
+            LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -320,7 +321,7 @@ namespace ToNSaveManager.Windows
             else LilOSC.SetChatboxMessage(string.Empty);
         }
 
-        private void linkEditChatbox_Click(object sender, EventArgs e) {
+        private void linkEditChatbox_Click(object sender, LinkLabelLinkClickedEventArgs e) {
             string template = Settings.Get.OSCMessageInfoTemplate.Template;
             EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true);
             if (edit.Accept) {
@@ -328,6 +329,17 @@ namespace ToNSaveManager.Windows
                 Settings.Export();
 
                 StatsWindow.UpdateChatboxContent();
+            }
+        }
+
+        private void linkSetDamageInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            int original = Settings.Get.OSCDamagedInterval;
+            string value = original.ToString();
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDAMAGEDEVENT.TITLE") ?? "Set Damage Interval", this);
+
+            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                Settings.Get.OSCDamagedInterval = result;
+                Settings.Export();
             }
         }
 
@@ -380,7 +392,8 @@ namespace ToNSaveManager.Windows
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
             if (checkOSCEnabled.Checked && sender != null) LilOSC.SendData(true);
-            checkOSCSendColor.ForeColor = checkOSCEnabled.Checked ? Color.White : Color.Gray;
+            checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
+                checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 
         private void checkOSCEnabled_MouseUp(object sender, MouseEventArgs e) {
@@ -493,5 +506,6 @@ namespace ToNSaveManager.Windows
             checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
         #endregion
+
     }
 }

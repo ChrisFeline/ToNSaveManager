@@ -5,10 +5,9 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using ToNSaveManager.Models;
-using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
 using ToNSaveManager.Models.Index;
 using System.Numerics;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Utils
 {
@@ -32,6 +31,8 @@ namespace ToNSaveManager.Utils
         const string ParamTerrorColorH = "ToN_ColorH";
         const string ParamTerrorColorS = "ToN_ColorS";
         const string ParamTerrorColorV = "ToN_ColorV";
+
+        const string ParamDamaged = "ToN_Damaged";
 
         internal static bool IsDirty = false;
 
@@ -102,6 +103,34 @@ namespace ToNSaveManager.Utils
 
             // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
             StatsWindow.SetLocation(RMap);
+        }
+
+        private static Timer? DamageTimer;
+        private static int LastDamage = 0;
+
+        internal static void SetDamage(int damage) {
+            if (!MainWindow.Started || !Settings.Get.OSCDamagedEvent || !Settings.Get.OSCEnabled) return;
+
+            if (DamageTimer == null) {
+                DamageTimer = new Timer();
+                DamageTimer.Tick += DamageTimer_Tick;
+                DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
+            }
+
+            if (LastDamage != damage) {
+                DamageTimer.Stop();
+                DamageTimer.Start();
+
+                LastDamage = damage;
+                SendParam(ParamDamaged, damage); // change param to a const
+            }
+        }
+
+        private static void DamageTimer_Tick(object? sender, EventArgs e) {
+            DamageTimer?.Stop();
+
+            LastDamage = 0;
+            SendParam(ParamDamaged, LastDamage);
         }
 
         internal static void SetOptInStatus(bool optedIn) {

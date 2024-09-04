@@ -97,6 +97,15 @@ namespace ToNSaveManager.Models
         public bool OSCSendColor { get; set; }
 
         /// <summary>
+        /// Sends damage as an INT via OSC
+        /// </summary>
+        public bool OSCDamagedEvent { get; set; }
+        /// <summary>
+        /// Interval between damage events.
+        /// </summary>
+        public int OSCDamagedInterval { get; set; } = 200;
+
+        /// <summary>
         /// Enables OSC chatbox messages.
         /// </summary>
         public bool OSCSendChatbox { get; set; } = false;

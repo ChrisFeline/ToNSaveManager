@@ -53,6 +53,7 @@ namespace ToNSaveManager
         internal static void AddDamage(int damage) {
             if (MainWindow.Started) Stats.AddDamage(damage);
             Lobby.AddDamage(damage);
+            LilOSC.SetDamage(damage);
             RefreshTable();
         }
 

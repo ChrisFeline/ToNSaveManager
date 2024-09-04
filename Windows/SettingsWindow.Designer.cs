@@ -64,6 +64,9 @@
             linkAddInfoFile = new LinkLabel();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            checkOSCSendDamage = new CheckBox();
+            linkSetDamageInterval = new LinkLabel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
@@ -73,6 +76,7 @@
             panel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowRoundInfoFilePanel.SuspendLayout();
+            flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -216,7 +220,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 459);
+            checkShowDate.Location = new Point(3, 480);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -229,7 +233,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 417);
+            checkInvertMD.Location = new Point(3, 438);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -242,7 +246,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 438);
+            checkShowSeconds.Location = new Point(3, 459);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -255,7 +259,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 396);
+            check24Hour.Location = new Point(3, 417);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -331,7 +335,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 510);
+            checkColorObjectives.Location = new Point(3, 531);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -427,6 +431,7 @@
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
             flowLayoutPanel1.Controls.Add(checkOSCSendColor);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel3);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
             flowLayoutPanel1.Controls.Add(check24Hour);
@@ -439,7 +444,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(561, 530);
+            flowLayoutPanel1.Size = new Size(544, 551);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -531,14 +536,58 @@
             labelGroupOSC.TabIndex = 11;
             labelGroupOSC.Text = "OSC";
             // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.AutoSize = true;
+            flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
+            flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
+            flowLayoutPanel3.Location = new Point(3, 345);
+            flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(286, 19);
+            flowLayoutPanel3.TabIndex = 18;
+            flowLayoutPanel3.WrapContents = false;
+            // 
+            // checkOSCSendDamage
+            // 
+            checkOSCSendDamage.AutoSize = true;
+            checkOSCSendDamage.ForeColor = Color.PowderBlue;
+            checkOSCSendDamage.Location = new Point(0, 0);
+            checkOSCSendDamage.Margin = new Padding(0);
+            checkOSCSendDamage.Name = "checkOSCSendDamage";
+            checkOSCSendDamage.Padding = new Padding(50, 0, 3, 0);
+            checkOSCSendDamage.Size = new Size(213, 19);
+            checkOSCSendDamage.TabIndex = 12;
+            checkOSCSendDamage.Tag = "OSCDamagedEvent";
+            checkOSCSendDamage.Text = "Send Damage Event (INT)";
+            checkOSCSendDamage.UseVisualStyleBackColor = true;
+            // 
+            // linkSetDamageInterval
+            // 
+            linkSetDamageInterval.ActiveLinkColor = Color.White;
+            linkSetDamageInterval.AutoSize = true;
+            linkSetDamageInterval.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSetDamageInterval.LinkColor = Color.Gray;
+            linkSetDamageInterval.Location = new Point(213, 0);
+            linkSetDamageInterval.Margin = new Padding(0);
+            linkSetDamageInterval.Name = "linkSetDamageInterval";
+            linkSetDamageInterval.Size = new Size(73, 15);
+            linkSetDamageInterval.TabIndex = 11;
+            linkSetDamageInterval.TabStop = true;
+            linkSetDamageInterval.Text = "(Set Interval)";
+            linkSetDamageInterval.TextAlign = ContentAlignment.MiddleLeft;
+            linkSetDamageInterval.VisitedLinkColor = Color.Gray;
+            linkSetDamageInterval.LinkClicked += linkSetDamageInterval_LinkClicked;
+            // 
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.AutoSize = true;
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(checkSendChatbox);
             flowLayoutPanel2.Controls.Add(linkEditChatbox);
-            flowLayoutPanel2.Location = new Point(3, 345);
-            flowLayoutPanel2.Margin = new Padding(3, 1, 3, 1);
+            flowLayoutPanel2.Location = new Point(0, 366);
+            flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new Size(207, 19);
             flowLayoutPanel2.TabIndex = 16;
@@ -559,12 +608,12 @@
             linkEditChatbox.Text = "(Edit)";
             linkEditChatbox.TextAlign = ContentAlignment.MiddleLeft;
             linkEditChatbox.VisitedLinkColor = Color.Gray;
-            linkEditChatbox.Click += linkEditChatbox_Click;
+            linkEditChatbox.LinkClicked += linkEditChatbox_Click;
             // 
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 380);
+            labelGroupFormat.Location = new Point(3, 401);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -574,7 +623,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 494);
+            labelGroupStyle.Location = new Point(3, 515);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -609,6 +658,8 @@
             flowLayoutPanel1.PerformLayout();
             flowRoundInfoFilePanel.ResumeLayout(false);
             flowRoundInfoFilePanel.PerformLayout();
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
@@ -654,5 +705,8 @@
         private FlowLayoutPanel flowRoundInfoFilePanel;
         private LinkLabel linkAddInfoFile;
         private FlowLayoutPanel flowRoundInfoFiles;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private CheckBox checkOSCSendDamage;
+        private LinkLabel linkSetDamageInterval;
     }
 }

@@ -780,7 +780,10 @@ namespace ToNSaveManager
                 }
 
                 if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
-                    if (context.IsRecent) StatsWindow.SetRoundActive(false);
+                    if (context.IsRecent) {
+                        StatsWindow.SetRoundActive(false);
+                        LilOSC.SetDamage(byte.MaxValue);
+                    }
                     return true;
                 }
             }
