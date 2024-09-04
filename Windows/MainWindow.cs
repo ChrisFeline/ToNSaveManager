@@ -642,10 +642,7 @@ namespace ToNSaveManager
                     map = ToNIndex.Instance.GetMap(mapIndex);
 
                 context.Set(ROUND_MAP_KEY, map);
-                if (context.IsRecent) {
-                    LilOSC.SetMap(map);
-                    StatsData.ClearRound();
-                }
+                if (context.IsRecent) LilOSC.SetMap(map);
 
                 if (map.Id == 68) { // RUN | The Meatball Man
                     TerrorMatrix terrorMatrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);

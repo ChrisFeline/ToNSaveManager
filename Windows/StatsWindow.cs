@@ -72,8 +72,10 @@ namespace ToNSaveManager
                 Logger.Debug("Setting Round Active: " + active);
 
                 IsRoundActive = active;
-                if (IsRoundActive) LilOSC.SetChatboxMessage(string.Empty);
-                else UpdateChatboxContent();
+                if (IsRoundActive) {
+                    LilOSC.SetChatboxMessage(string.Empty);
+                    StatsData.ClearRound();
+                } else UpdateChatboxContent();
             }
         }
 
