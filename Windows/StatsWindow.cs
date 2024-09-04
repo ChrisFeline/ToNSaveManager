@@ -18,7 +18,8 @@ namespace ToNSaveManager
         internal static void RefreshTable() => Instance?.UpdateTable();
 
         internal static void ClearLobby() {
-            // Lobby.Clear();
+            ToNStats.ClearLobby();
+            ToNStats.ClearRound();
             RefreshTable();
             UpdateChatboxContent();
         }

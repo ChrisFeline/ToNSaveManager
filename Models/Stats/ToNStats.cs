@@ -146,7 +146,10 @@ namespace ToNSaveManager.Models.Stats {
             Set(KEY_MAP_ORIGIN, map.IsEmpty ? "???" : map.Origin);
         }
 
-        static readonly string[] LobbyClearKeys = [ KEY_LOBBY_SURVIVALS, KEY_LOBBY_DEATHS, KEY_LOBBY_STUNS, KEY_LOBBY_STUNS_ALL, KEY_LOBBY_DAMAGE ];
+        static readonly string[] LobbyClearKeys = [
+            KEY_LOBBY_SURVIVALS, KEY_LOBBY_DEATHS, KEY_LOBBY_STUNS, KEY_LOBBY_STUNS_ALL, KEY_LOBBY_DAMAGE,
+            KEY_LOBBY_TOP_STUNS, KEY_LOBBY_TOP_STUNS_ALL
+        ];
         public static void ClearLobby() => Reset(LobbyClearKeys);
 
         static readonly string[] ClearRoundKeys = [ KEY_ROUND_STUNS, KEY_ROUND_STUNS_ALL ];
