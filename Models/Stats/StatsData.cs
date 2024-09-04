@@ -52,6 +52,7 @@ namespace ToNSaveManager.Models.Stats
         }
 
         [JsonIgnore] internal bool IsDirty = false;
+        [JsonIgnore] internal bool IsLobby = false;
         internal void SetDirty()
         {
             IsDirty = true;
@@ -123,7 +124,24 @@ namespace ToNSaveManager.Models.Stats
 
         public int Stuns { get; set; } = 0;
         public int GlobalStuns { get; set; } = 0;
-        public void AddStun(bool isLocal, bool isLobby = false)
+        public int TopStuns { get; set; } = 0;
+        public int TopGlobalStuns { get; set; } = 0;
+        public void SetTopStuns(bool isLocal, int stuns) {
+            if (isLocal) {
+                if (stuns > TopStuns) {
+                    TopStuns = stuns;
+                    MarkModified(nameof(TopStuns));
+                    SetDirty();
+                }
+            } else {
+                if (stuns > TopGlobalStuns) {
+                    TopGlobalStuns = stuns;
+                    MarkModified(nameof(TopGlobalStuns));
+                    SetDirty();
+                }
+            }
+        }
+        public void AddStun(bool isLocal)
         {
             Logger.Debug("Adding stun | IsLocal: " + isLocal);
 
@@ -131,17 +149,19 @@ namespace ToNSaveManager.Models.Stats
                 Stuns++;
                 MarkModified(nameof(Stuns));
 
-                if (isLobby) {
+                if (IsLobby) {
                     RoundStuns++;
                     MarkModified(nameof(RoundStuns));
+                    SetTopStuns(isLocal, RoundStuns);
                 }
             } else {
                 GlobalStuns++;
                 MarkModified(nameof(GlobalStuns));
 
-                if (isLobby) {
+                if (IsLobby) {
                     RoundGlobalStuns++;
                     MarkModified(nameof(RoundGlobalStuns));
+                    SetTopStuns(isLocal, RoundGlobalStuns);
                 }
             }
 
@@ -174,7 +194,13 @@ namespace ToNSaveManager.Models.Stats
             Survivals = -1;
             Stuns = -1;
             GlobalStuns = -1;
+            TopStuns = -1;
+            TopGlobalStuns = -1;
             DamageTaken = 0;
+
+            RoundStuns = -1;
+            RoundGlobalStuns = -1;
+
             // Mark modified
             AddRound(false);
             AddRound(true);

@@ -16,7 +16,7 @@ namespace ToNSaveManager
     public partial class StatsWindow : Form {
         private static StatsData? m_Stats { get; set; }
         internal static StatsData Stats => m_Stats ?? (m_Stats = StatsData.Import());
-        internal readonly static StatsData Lobby = new StatsData();
+        internal readonly static StatsData Lobby = new StatsData() { IsLobby = true };
         internal static StatsWindow? Instance { get; private set; }
         internal static void RefreshTable() => Instance?.UpdateTable();
 
@@ -46,8 +46,9 @@ namespace ToNSaveManager
             RefreshTable();
         }
         internal static void AddStun(bool isLocal) {
+            Lobby.AddStun(isLocal);
             if (MainWindow.Started) Stats.AddStun(isLocal);
-            Lobby.AddStun(isLocal, true);
+            else Stats.SetTopStuns(isLocal, isLocal ? Lobby.TopStuns : Lobby.TopGlobalStuns);
             RefreshTable();
         }
         internal static void AddDamage(int damage) {
