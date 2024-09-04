@@ -3,6 +3,24 @@ using System.Diagnostics;
 using System.Text;
 
 namespace ToNSaveManager {
+    internal class LoggerSource {
+        private string Prefix;
+
+        internal LoggerSource(string prefix) {
+            Prefix = $"[{prefix}] ";
+        }
+
+        internal void Print(object? message) => Logger.Log(Prefix + message, Logger.LogType.Log);
+        [Conditional("DEBUG")] internal void Debug(string? message) => Logger.Debug(Prefix + message);
+        [Conditional("DEBUG")] internal void Debug(object? message) => Logger.Debug(Prefix + message);
+        internal void Warning(string? message) => Logger.Warning(Prefix + message);
+        internal void Warning(object? message) => Logger.Warning(Prefix + message);
+        internal void Info(string? message) => Logger.Info(Prefix + message);
+        internal void Info(object? message) => Logger.Info(Prefix + message);
+        internal void Error(string? message) => Logger.Error(Prefix + message);
+        internal void Error(object? message) => Logger.Error(Prefix + message);
+    }
+
     internal static class Logger {
         private static readonly StringBuilder SharedStringBuilder = new StringBuilder();
 
@@ -19,14 +37,14 @@ namespace ToNSaveManager {
             LogFileWriter = new StreamWriter("output.log", append: false);
         }
 
-        internal static void Log(string message, LogType logType = LogType.Log) {
+        internal static void Log(string? message, LogType logType = LogType.Log) {
             lock (SharedStringBuilder) {
                 SharedStringBuilder.Clear();
                 var now = DateTime.Now;
                 SharedStringBuilder.Append(now.ToString("yyyy.MM.dd HH:mm:ss "));
                 SharedStringBuilder.Append(logType.ToString().ToUpperInvariant().PadRight(10));
                 SharedStringBuilder.Append(" -  ");
-                SharedStringBuilder.Append(message);
+                SharedStringBuilder.Append(message ?? string.Empty);
 
                 // Console.WriteLine(SharedStringBuilder.ToString());
                 System.Diagnostics.Debug.WriteLine(SharedStringBuilder.ToString());
@@ -37,15 +55,15 @@ namespace ToNSaveManager {
         internal static void Log(object? message, LogType logType = LogType.Log) => Log(message + string.Empty, logType);
 
         [Conditional("DEBUG")] // Debug builds only
-        internal static void Debug(string message) => Log(message, LogType.Debug);
+        internal static void Debug(string? message) => Log(message, LogType.Debug);
         [Conditional("DEBUG")] // Debug builds only
         internal static void Debug(object? message) => Log(message, LogType.Debug);
 
-        internal static void Warning(string message) => Log(message, LogType.Warning); 
+        internal static void Warning(string? message) => Log(message, LogType.Warning); 
         internal static void Warning(object? message) => Log(message, LogType.Warning);
-        internal static void Info(string message) => Log(message, LogType.Info);
+        internal static void Info(string? message) => Log(message, LogType.Info);
         internal static void Info(object? message) => Log(message, LogType.Info);
-        internal static void Error(string message) => Log(message, LogType.Error);
+        internal static void Error(string? message) => Log(message, LogType.Error);
         internal static void Error(object? message) => Log(message, LogType.Error);
     }
 }

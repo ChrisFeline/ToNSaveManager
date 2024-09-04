@@ -14,19 +14,15 @@ using Windows.ApplicationModel.Contacts;
 namespace ToNSaveManager
 {
     public partial class StatsWindow : Form {
-        private static StatsData? m_Stats { get; set; }
-        internal static StatsData Stats => m_Stats ?? (m_Stats = StatsData.Import());
-        internal readonly static StatsData Lobby = new StatsData() { IsLobby = true };
         internal static StatsWindow? Instance { get; private set; }
         internal static void RefreshTable() => Instance?.UpdateTable();
 
         internal static void ClearLobby() {
-            Lobby.Clear();
+            // Lobby.Clear();
             RefreshTable();
             UpdateChatboxContent();
         }
 
-        internal static void SetDirty() => Stats.SetDirty();
         internal static void WriteChanges() {
             if (Settings.Get.OSCMessageInfoTemplate.IsModified) {
                 Logger.Debug("Detected chatbox content change.");
@@ -37,33 +33,29 @@ namespace ToNSaveManager
                 foreach (var template in Settings.Get.RoundInfoTemplates) template.WriteToFile();
             }
 
-            Stats.Export();
+            ToNStats.Export(false);
         }
 
         internal static void AddRound(bool survived) {
-            if (MainWindow.Started) Stats.AddRound(survived);
-            Lobby.AddRound(survived);
+            ToNStats.AddRound(survived, MainWindow.Started);
             RefreshTable();
         }
         internal static void AddStun(bool isLocal) {
-            Lobby.AddStun(isLocal);
-            if (MainWindow.Started) Stats.AddStun(isLocal);
-            else Stats.SetTopStuns(isLocal, isLocal ? Lobby.TopStuns : Lobby.TopGlobalStuns);
+            ToNStats.AddStun(isLocal, MainWindow.Started);
             RefreshTable();
         }
         internal static void AddDamage(int damage) {
-            if (MainWindow.Started) Stats.AddDamage(damage);
-            Lobby.AddDamage(damage);
+            ToNStats.AddDamage(damage, MainWindow.Started);
             LilOSC.SetDamage(damage);
             RefreshTable();
         }
 
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            StatsData.SetTerrorMatrix(terrorMatrix);
+            ToNStats.AddTerrors(terrorMatrix);
             RefreshTable();
         }
         internal static void SetLocation(ToNIndex.Map map) {
-            StatsData.SetLocation(map);
+            ToNStats.AddLocation(map);
             RefreshTable();
         }
 
@@ -75,19 +67,18 @@ namespace ToNSaveManager
                 IsRoundActive = active;
                 if (IsRoundActive) {
                     LilOSC.SetChatboxMessage(string.Empty);
-                    StatsData.ClearRound();
+                    ToNStats.ClearRound();
+                    RefreshTable();
                 } else UpdateChatboxContent();
             }
         }
 
-        static PropertyInfoContainer[] TableProperties => StatsData.TableProperties;
-        static Dictionary<string, PropertyInfoContainer> TableDictionary => StatsData.TableDictionary;
+        static StatPropertyContainer[] TableProperties => ToNStats.PropertyValues;
+        static Dictionary<string, StatPropertyContainer> TableDictionary => ToNStats.PropertyDictionary;
 
         public StatsWindow() {
             InitializeComponent();
         }
-
-        bool ShowLobbyStats;
 
         public static void Open(Form parent) {
             if (Instance == null || Instance.IsDisposed) Instance = new StatsWindow();
@@ -113,23 +104,26 @@ namespace ToNSaveManager
                 Control? control = statsTable.GetControlFromPosition(0, i);
                 if (control == null || control.DataContext == null) continue;
 
-                PropertyInfoContainer property = (PropertyInfoContainer)control.DataContext;
+                StatPropertyContainer property = (StatPropertyContainer)control.DataContext;
 
-                string key = "STATS.LABEL_" + property.Key;
+                string key = "STATS.LABEL_" + property.KeyUpper;
                 (string? tx, string? tt) = LANG.T(key);
 
-                if (string.IsNullOrEmpty(tx)) control.Text = property.Name;
+                if (string.IsNullOrEmpty(tx)) control.Text = property.Key;
                 else control.Text = tx;
 
                 if (string.IsNullOrEmpty(tt)) tt = string.Empty;
                 else tt += "\n\n";
 
+                /*
                 if (property.IsStatic) {
                     tt += LANG.S("STATS.TEMPLATE_KEY_GLOBAL", '{' + property.Name + '}');
                 } else {
                     tt += LANG.S("STATS.TEMPLATE_KEY_TOTAL", '{' + property.Name + '}') + '\n' +
                           LANG.S("STATS.TEMPLATE_KEY_LOBBY", "{Lobby" + property.Name + '}');
                 }
+                */
+                tt += LANG.S("STATS.TEMPLATE_KEY_TOTAL", '{' + property.Key + '}');
 
                 toolTip.SetToolTip(control, tt);
             }
@@ -141,7 +135,7 @@ namespace ToNSaveManager
         }
 
         internal void UpdateTable() {
-            PropertyInfoContainer property;
+            StatPropertyContainer property;
 
             if (TableProperties.Length != statsTable.RowCount) {
                 statsTable.RowCount = TableProperties.Length;
@@ -172,25 +166,19 @@ namespace ToNSaveManager
                 Control? control = statsTable.GetControlFromPosition(1, i);
                 if (control == null) continue;
 
-                control.Text = property.GetValue(ShowLobbyStats ? Lobby : Stats)?.ToString();
-            }
-
-            if (ShowLobbyStats) {
-                LANG.C(btnSwitch, "STATS.SHOW_TOTAL", toolTip, "Show Total Stats");
-            } else {
-                LANG.C(btnSwitch, "STATS.SHOW_LOBBY", toolTip, "Show Lobby Stats");
+                control.Text = property.GetValue()?.ToString();
             }
         }
 
-        PropertyInfoContainer? ContextField;
+        StatPropertyContainer? ContextField;
         private void Control_MouseClick(object? sender, MouseEventArgs e) {
             if (e.Button != MouseButtons.Right || sender == null) return;
 
             Control control = (Control)sender;
 
             if (control != null) {
-                ContextField = (PropertyInfoContainer?)control.DataContext;
-                ctxTypeInValue.Enabled = !ShowLobbyStats && ContextField != null && ContextField.CanWrite;
+                ContextField = (StatPropertyContainer?)control.DataContext;
+                ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
                 contextMenu.Show(control, e.Location);
             }
         }
@@ -198,12 +186,11 @@ namespace ToNSaveManager
         private void ctxTypeInValue_Click(object sender, EventArgs e) {
             if (ContextField == null) return;
 
-            string value = ContextField.GetValue(Stats)?.ToString() ?? "";
+            string value = ContextField.GetValue()?.ToString() ?? "";
             EditResult show = EditWindow.Show(value, LANG.S("STATS.CTX_TYPE_IN_VALUE.TITLE") ?? "Type in custom value", this);
 
             if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result)) {
-                ContextField.SetValue(Stats, result);
-                Stats.SetDirty();
+                ToNStats.Set(ContextField.Key, result);
                 UpdateTable();
             }
         }
@@ -211,10 +198,7 @@ namespace ToNSaveManager
         private void ctxCopyStatName_Click(object sender, EventArgs e) {
             if (ContextField == null) return;
 
-            string content = ContextField.Name;
-            if (ShowLobbyStats && !ContextField.IsStatic) content = "Lobby" + content;
-            content = '{' + content + '}';
-
+            string content = '{' + ContextField.Key + '}';
             Clipboard.SetDataObject(content, false, 4, 200);
             MessageBox.Show(LANG.S("STATS.CTX_COPY_TEMPLATE_KEY.MESSAGE", content) ?? ("Copied to clipboard: " + content));
         }
@@ -244,11 +228,6 @@ namespace ToNSaveManager
             return text;
         }
 
-        private void btnSwitch_Click(object sender, EventArgs e) {
-            ShowLobbyStats = !ShowLobbyStats;
-            UpdateTable();
-        }
-
         internal static readonly Regex MessageTemplatePattern = new Regex(@"{\w+}", RegexOptions.Compiled);
         internal const string LOBBY_PREFIX = "LOBBY";
 
@@ -265,11 +244,7 @@ namespace ToNSaveManager
         static string UpdateChatboxEvaluator(Match m) {
             string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
 
-            bool isLobby = key.StartsWith(LOBBY_PREFIX, StringComparison.OrdinalIgnoreCase);
-            if (isLobby) key = key.Substring(LOBBY_PREFIX.Length);
-
-            if (!string.IsNullOrEmpty(key) && TableDictionary.ContainsKey(key))
-                return TableDictionary[key].GetValue(isLobby ? Lobby : Stats)?.ToString() ?? m.Value;
+            if (!string.IsNullOrEmpty(key)) return ToNStats.Get(key)?.ToString() ?? m.Value;
 
             return m.Value;
         }

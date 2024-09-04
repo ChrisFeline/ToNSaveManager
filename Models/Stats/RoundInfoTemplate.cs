@@ -23,11 +23,8 @@ namespace ToNSaveManager.Models.Stats {
                 m_Template = value;
 
                 m_TemplateKeys = StatsWindow.MessageTemplatePattern.Matches(value).Select(m => {
-                    string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
-                    bool isLobby = key.StartsWith(StatsWindow.LOBBY_PREFIX, StringComparison.OrdinalIgnoreCase);
-                    if (isLobby) key = key.Substring(StatsWindow.LOBBY_PREFIX.Length);
-                    return key;
-                }).Where(k => !string.IsNullOrEmpty(k) && StatsData.TableDictionary.ContainsKey(k)).ToArray();
+                    return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+                }).Where(k => !string.IsNullOrEmpty(k) && ToNStats.HasKey(k)).ToArray();
 
                 Logger.Debug("Template Keys: " + string.Join(", ", m_TemplateKeys));
             }
@@ -46,7 +43,7 @@ namespace ToNSaveManager.Models.Stats {
             return FileName;
         }
 
-        [JsonIgnore] public bool IsModified => m_TemplateKeys.Any(StatsData.IsModified);
+        [JsonIgnore] public bool IsModified => m_TemplateKeys.Any(ToNStats.IsModified);
         [JsonIgnore] public bool HasKeys => m_TemplateKeys.Length > 0;
 
         public void WriteToFile(bool force = false) {

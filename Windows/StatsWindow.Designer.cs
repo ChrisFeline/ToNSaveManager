@@ -33,7 +33,6 @@
             contextMenu = new ContextMenuStrip(components);
             ctxTypeInValue = new ToolStripMenuItem();
             ctxCopyStatName = new ToolStripMenuItem();
-            btnSwitch = new Button();
             contextMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,7 +46,7 @@
             statsTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             statsTable.Dock = DockStyle.Top;
             statsTable.ForeColor = Color.White;
-            statsTable.Location = new Point(4, 28);
+            statsTable.Location = new Point(4, 4);
             statsTable.Margin = new Padding(3, 10, 3, 3);
             statsTable.Name = "statsTable";
             statsTable.RowCount = 1;
@@ -76,22 +75,6 @@
             ctxCopyStatName.Text = "Copy stat name";
             ctxCopyStatName.Click += ctxCopyStatName_Click;
             // 
-            // btnSwitch
-            // 
-            btnSwitch.BackColor = Color.FromArgb(46, 52, 64);
-            btnSwitch.Dock = DockStyle.Top;
-            btnSwitch.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
-            btnSwitch.FlatStyle = FlatStyle.Flat;
-            btnSwitch.ForeColor = Color.White;
-            btnSwitch.Location = new Point(4, 4);
-            btnSwitch.Name = "btnSwitch";
-            btnSwitch.Size = new Size(316, 24);
-            btnSwitch.TabIndex = 6;
-            btnSwitch.TabStop = false;
-            btnSwitch.Text = "Show Lobby Stats";
-            btnSwitch.UseVisualStyleBackColor = false;
-            btnSwitch.Click += btnSwitch_Click;
-            // 
             // StatsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -101,7 +84,6 @@
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(324, 120);
             Controls.Add(statsTable);
-            Controls.Add(btnSwitch);
             MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(340, 0);
@@ -123,7 +105,6 @@
         private TableLayoutPanel statsTable;
         private ContextMenuStrip contextMenu;
         private ToolStripMenuItem ctxTypeInValue;
-        private Button btnSwitch;
         private ToolStripMenuItem ctxCopyStatName;
     }
 }
