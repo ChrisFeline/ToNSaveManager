@@ -37,7 +37,9 @@ namespace ToNSaveManager.Models.Index {
         Eight_Pages, // 105 // Replace 8 with Eight
         // Events
         GIGABYTE,    // 106 // April Fools
-        Cold_Night   // 107 // Winterfest
+        Cold_Night,  // 107 // Winterfest
+
+        Custom = 999, // What is Beyond up to now?
     }
 
     public enum ToNRoundResult {

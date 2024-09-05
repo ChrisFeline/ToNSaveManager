@@ -193,6 +193,9 @@ namespace ToNSaveManager.Models.Index {
             "Ghost"       , "ゴースト",
 
             "Double Trouble", "ダブル・トラブル",
+
+            // Beyond's favorite
+            "Custom"      , "カスタム",
         };
 
         static string GetEngRoundType(string roundType, bool alternate) {
@@ -240,6 +243,8 @@ namespace ToNSaveManager.Models.Index {
             { ToNRoundType.Unbound,             0xF17944 },
             { ToNRoundType.Ghost,               0xC3F7FF },
             { ToNRoundType.Ghost_Alternate,     0xC3F7FF },
+
+            { ToNRoundType.Custom,              0x2672FF },
         };
     }
 }

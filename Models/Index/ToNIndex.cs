@@ -187,6 +187,8 @@ namespace ToNSaveManager.Models.Index {
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public Encounter[]? Encounters { get; set; }
             [JsonProperty("v", DefaultValueHandling = DefaultValueHandling.Ignore)] public Dictionary<ToNRoundType, string>? Variants { get; set; }
 
+            [JsonIgnore] public string? AssetID => $"icon_{(int)Group}_{Id}";
+
             public override string ToString() => Name;
 
             public struct PhaseIndex {
@@ -244,6 +246,17 @@ namespace ToNSaveManager.Models.Index {
                     return Value.Name;
                 }
             }
+
+            [JsonIgnore] public string? AssetID {
+                get {
+                    if (Value.IsEmpty) return null; // replace for something
+                    else if (Value.Variants != null && Value.Variants.ContainsKey(RoundType)) return Value.AssetID + "_v" + (int)RoundType;
+                    else if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length) return Value.AssetID + "_e" + Encounter;
+
+                    return Value.AssetID;
+                }
+            }
+
             [JsonIgnore] public bool IsEmpty { get; private set; }
 
             public TerrorInfo(int index, TerrorGroup group, int phase = 0)

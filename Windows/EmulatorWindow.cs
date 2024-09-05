@@ -381,7 +381,7 @@ namespace ToNSaveManager.Windows
 
             LilOSC.SetOptInStatus(true);
             LilOSC.SetMap(selectedMap);
-            LilOSC.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = CurrentIsKiller });
+            LilOSC.SetTerrorMatrix(new TerrorMatrix() { RoundType = CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType, IsSaboteur = CurrentIsKiller });
         }
 
         private void OnRoundSetKillers(bool reveal = true) {
@@ -401,6 +401,12 @@ namespace ToNSaveManager.Windows
             TerrorMatrix terrorMatrix = new TerrorMatrix(CurrentRoundType.ToString().Replace('_', ' ').Replace(" Alternate", " (Alternate)"), terrors);
             terrorMatrix.IsSaboteur = CurrentIsKiller;
             terrorMatrix.RoundType = CurrentRoundType;
+
+            if (CurrentRoundType == ToNRoundType.GIGABYTE) {
+                terrorMatrix.RoundType = CurrentRoundType;
+                terrorMatrix.Terrors = [ new TerrorInfo(1, TerrorGroup.Events) ];
+                terrorMatrix.TerrorCount = 1;
+            }
 
             // TODO: Check for specials
             if (checkSpecial.Visible && checkSpecial.Checked) terrorMatrix.MarkEncounter();

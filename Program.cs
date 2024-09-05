@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.Discord;
 
 namespace ToNSaveManager
 {
@@ -79,6 +80,7 @@ namespace ToNSaveManager
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             if (!StartCheckForUpdate()) {
+                DSRichPresence.Initialize();
                 Application.Run(new MainWindow());
             }
         }

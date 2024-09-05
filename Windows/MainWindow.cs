@@ -565,6 +565,7 @@ namespace ToNSaveManager
             CopyRecent();
             Export();
             StatsWindow.WriteChanges();
+            DSRichPresence.Send();
             LilOSC.SendData();
         }
 
@@ -649,6 +650,7 @@ namespace ToNSaveManager
                     context.Set(ROUND_KILLERS_KEY, terrorMatrix);
                     if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
                 }
+
                 return true;
             }
             // Handle map swap
@@ -779,6 +781,7 @@ namespace ToNSaveManager
                 if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
                     if (context.IsRecent) {
                         StatsWindow.SetRoundActive(false);
+                        DSRichPresence.SetIsAlive(false);
                         LilOSC.SetDamage(byte.MaxValue);
                     }
                     return true;

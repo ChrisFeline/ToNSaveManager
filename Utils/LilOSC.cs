@@ -8,6 +8,7 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
+using ToNSaveManager.Utils.Discord;
 
 namespace ToNSaveManager.Utils
 {
@@ -95,6 +96,7 @@ namespace ToNSaveManager.Utils
 
             // Reusing LilOSC.SetTerrorMatrix method because it is already properly handled everywhere.
             StatsWindow.SetTerrorMatrix(terrorMatrix);
+            DSRichPresence.SetTerrorMatrix(terrorMatrix);
         }
 
         internal static void SetMap(ToNIndex.Map? map = null) {
@@ -103,6 +105,7 @@ namespace ToNSaveManager.Utils
 
             // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
             StatsWindow.SetLocation(RMap);
+            DSRichPresence.SetLocation(RMap);
         }
 
         private static Timer? DamageTimer;
