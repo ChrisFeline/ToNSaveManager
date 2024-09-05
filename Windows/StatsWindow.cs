@@ -116,15 +116,7 @@ namespace ToNSaveManager
                 if (string.IsNullOrEmpty(tt)) tt = string.Empty;
                 else tt += "\n\n";
 
-                /*
-                if (property.IsStatic) {
-                    tt += LANG.S("STATS.TEMPLATE_KEY_GLOBAL", '{' + property.Name + '}');
-                } else {
-                    tt += LANG.S("STATS.TEMPLATE_KEY_TOTAL", '{' + property.Name + '}') + '\n' +
-                          LANG.S("STATS.TEMPLATE_KEY_LOBBY", "{Lobby" + property.Name + '}');
-                }
-                */
-                tt += LANG.S("STATS.TEMPLATE_KEY_TOTAL", '{' + property.Key + '}');
+                tt += LANG.S("STATS.TEMPLATE_KEY", '{' + property.Key + '}');
 
                 toolTip.SetToolTip(control, tt);
             }

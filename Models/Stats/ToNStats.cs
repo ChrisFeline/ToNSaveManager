@@ -217,7 +217,7 @@ namespace ToNSaveManager.Models.Stats {
                 }
             }
 
-            PropertyKeys = PropertyDictionary.Keys.ToArray();
+            PropertyKeys = PropertyDictionary.Keys.Select(k => '{' + k + '}').ToArray();
             PropertyValues = PropertyDictionary.Values.ToArray();
         }
         #endregion
