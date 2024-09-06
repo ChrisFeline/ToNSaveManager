@@ -34,6 +34,11 @@ namespace ToNSaveManager.Models
         public bool DiscordWebhookEnabled { get; set; }
 
         /// <summary>
+        /// Enables Discord rich presence for Terrors of Nowhere.
+        /// </summary>
+        public bool DiscordRichPresence { get; set; }
+
+        /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
         public bool AutoCopy { get; set; }

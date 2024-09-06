@@ -2,6 +2,7 @@
 using DiscordRPC.Logging;
 using DiscordRPC.Message;
 using Microsoft.VisualBasic.Logging;
+using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 
 namespace ToNSaveManager.Utils.Discord {
@@ -30,7 +31,7 @@ namespace ToNSaveManager.Utils.Discord {
         }
         static string ImageKey {
             get => Presence.Assets.LargeImageKey;
-            set => Presence.Assets.LargeImageKey = value;
+            set => Presence.Assets.LargeImageKey = AssetRedirects.ContainsKey(value) ? AssetRedirects[value] : value;
         }
         static string? ImageText {
             get => Presence.Assets.LargeImageText;
@@ -145,12 +146,11 @@ namespace ToNSaveManager.Utils.Discord {
             return "icon_254_0";
         }
 
-
         internal static void SetDirty() {
             IsDirty = true;
         }
         internal static void Send() {
-            if (IsDirty) {
+            if (IsDirty && Client != null && Client.IsInitialized && Client.CurrentUser != null) {
                 IsDirty = false;
 
                 string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + " on" : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
@@ -162,9 +162,7 @@ namespace ToNSaveManager.Utils.Discord {
 
                 if (!string.IsNullOrEmpty(CustomAssetID_0) && ImageKey == "icon_255_0") {
                     ImageKey = CustomAssetID_0;
-                    ImageText = string.Format(SpecialSnowflake.Intermission ?? "{0} is waiting for a new round.", Client?.CurrentUser.DisplayName);
-
-                    Log.Debug("HELLO: " + ImageKey);
+                    ImageText = string.Format(SpecialSnowflake.Intermission ?? "{0} is waiting for a new round.", Client.CurrentUser.DisplayName);
                 }
 
                 if ((CurrentMatrix.Length == 0 && !CurrentMap.IsEmpty)
@@ -193,27 +191,44 @@ namespace ToNSaveManager.Utils.Discord {
                     if (!string.IsNullOrEmpty(CustomAssetID_1)) {
                         if (CurrentMatrix.Length > 0) {
                             ImageKey = CustomAssetID_1;
-                            ImageText = string.Format(SpecialSnowflake.Killer ?? "{0} is on a rampage with {1}", Client?.CurrentUser.DisplayName, ImageText);
+                            ImageText = string.Format(SpecialSnowflake.Killer ?? "{0} is on a rampage with {1}", Client.CurrentUser.DisplayName, ImageText);
                         } else {
                             ImageKey = CustomAssetID_0 ?? CustomAssetID_1;
-                            ImageText = string.Format(SpecialSnowflake.Sabotage ?? "{0} is being posessed.", Client?.CurrentUser.DisplayName);
+                            ImageText = string.Format(SpecialSnowflake.Sabotage ?? "{0} is being posessed.", Client.CurrentUser.DisplayName);
                         }
                     }
                 }
 
-                Client?.SetPresence(Presence);
+                Client.SetPresence(Presence);
             }
         }
 
         internal static void Initialize() {
-            Client = new DiscordRpcClient("1281246143224746035");
+            if (!Settings.Get.DiscordRichPresence) return;
 
-            Client.OnReady += Client_OnReady;
-            Client.OnPresenceUpdate += Client_OnPresenceUpdate;
+            if (Client == null || Client.IsDisposed) {
+                Client = new DiscordRpcClient("1281246143224746035");
+                Client.OnReady += Client_OnReady;
+                Client.OnPresenceUpdate += Client_OnPresenceUpdate;
+            }
 
-            Client.Initialize();
+            if (!Client.IsInitialized) {
+                Log.Debug("Initializing");
 
-            SetDirty();
+                Client.Initialize();
+                SetDirty();
+            }
+        }
+        internal static void Deinitialize() {
+            if (Client != null) {
+                Log.Debug("Stopping");
+
+                Client.ClearPresence();
+                Client.OnReady -= Client_OnReady;
+                Client.OnPresenceUpdate -= Client_OnPresenceUpdate;
+                Client.Dispose();
+                Client = null;
+            }
         }
 
         private static void Client_OnPresenceUpdate(object sender, PresenceMessage e) {
@@ -240,5 +255,16 @@ namespace ToNSaveManager.Utils.Discord {
 
             SetDirty();
         }
+
+        static Dictionary<string, string> AssetRedirects => new Dictionary<string, string>() {
+            { "icon_0_47_e0",  "https://i.imgur.com/iBXJYMa.gif" }, // HHI
+            { "icon_0_83",     "https://i.imgur.com/MErskLH.gif" }, // Lain
+            { "icon_1_28",     "https://i.imgur.com/dkib59R.gif" }, // Roblander
+            { "icon_1_28_v50", "https://i.imgur.com/R0DwhQ1.gif" }, // Roblander Midnight
+            { "icon_1_10", "https://i.imgur.com/y6mPG7p.gif" }, // zm64
+            { "icon_m_10", "https://i.imgur.com/p0HG7Xc.gif" }, // zm64 midnight
+            { "icon_1_3", "https://i.imgur.com/U6wGpqV.gif" }, // parhelion
+            { "icon_m_3", "https://i.imgur.com/NwEWIyn.gif" }, // Parhelion Midnight
+        };
     }
 }

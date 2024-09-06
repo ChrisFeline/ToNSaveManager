@@ -113,6 +113,7 @@ namespace ToNSaveManager.Windows
 
             // Discord Backups
             checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+            checkDiscordPresence.CheckedChanged += CheckDiscordBackup_CheckedChanged;
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
@@ -276,30 +277,35 @@ namespace ToNSaveManager.Windows
         }
 
         private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e) {
-            if (checkDiscordBackup.Checked) {
-                string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
-                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, LANG.S("SETTINGS.DISCORDWEBHOOK.TITLE") ?? "Discord Webhook URL", this);
-                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
-                    url = edit.Text.Trim();
+            if (sender == checkDiscordBackup) {
+                if (checkDiscordBackup.Checked) {
+                    string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
+                    EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, LANG.S("SETTINGS.DISCORDWEBHOOK.TITLE") ?? "Discord Webhook URL", this);
+                    if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
+                        url = edit.Text.Trim();
 
-                    if (!string.IsNullOrWhiteSpace(url)) {
-                        bool valid = DSWebHook.ValidateURL(url);
+                        if (!string.IsNullOrWhiteSpace(url)) {
+                            bool valid = DSWebHook.ValidateURL(url);
 
-                        if (valid) {
-                            Settings.Get.DiscordWebhookURL = url;
-                            Settings.Export();
+                            if (valid) {
+                                Settings.Get.DiscordWebhookURL = url;
+                                Settings.Export();
+                            } else {
+                                MessageBox.Show(LANG.S("SETTINGS.DISCORDWEBHOOKINVALID") ?? "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", LANG.S("SETTINGS.DISCORDWEBHOOKINVALID.TITLE") ?? "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         } else {
-                            MessageBox.Show(LANG.S("SETTINGS.DISCORDWEBHOOKINVALID") ?? "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", LANG.S("SETTINGS.DISCORDWEBHOOKINVALID.TITLE") ?? "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Settings.Get.DiscordWebhookURL = null;
                         }
-                    } else {
-                        Settings.Get.DiscordWebhookURL = null;
                     }
+
+                    if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
                 }
 
-                if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
+                MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
+            } else { // Is the rich presence one
+                if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
+                else DSRichPresence.Deinitialize();
             }
-
-            MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e) {
