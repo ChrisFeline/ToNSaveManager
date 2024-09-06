@@ -59,6 +59,10 @@
 	"MAIN.ENTRY_PLAYERS": "Players in room:",
 	"MAIN.ENTRY_MAP": "Map:",
 
+	"SAVE.TAG_R": "🔄",
+	"SAVE.TAG_W": "🏆",
+	"SAVE.TAG_D": "🔌",
+
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
 	"SETTINGS.OPEN_DATA_BTN": "Data",
 	"SETTINGS.OPEN_DATA_BTN.TT": "Open save data folder.",
@@ -78,9 +82,10 @@
 	"SETTINGS.SAVEROUNDINFO.TT": "Save codes will display the last round type and terror names.",
 	"SETTINGS.SAVEROUNDNOTE": "Terror Name Notes",
 	"SETTINGS.SAVEROUNDNOTE.TT": "Automatically set survived terror names as note.",
-	"SETTINGS.SHOWWINLOSE": "Show [R][W][D] Tags",
-	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a [R], [W] or [D] tag based on the source that triggered the save.",
+	"SETTINGS.SHOWWINLOSE": "Show Save Symbols",
+	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a tag based on the source that triggered the save.\n$$SAVE.TAG_R$$ Respawned.\n$$SAVE.TAG_W$$ Survived.\n$$SAVE.TAG_D$$ Disconnected.",
 
+	"SETTINGS.GROUP.DISCORD": "Discord Integration",
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Automatically saves your new codes to a Discord channel using a webhook integration.",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "Discord Webhook URL",
@@ -94,6 +99,9 @@
 	"SETTINGS.DISCORDWEBHOOK.LABEL_COUNT": "**Player Count**: `{0}`",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_NOTE": "**Note**: `{0}`",
 	"SETTINGS.DISCORDWEBHOOK.LABEL_MAP": "**Map**: `{0}`",
+
+	"SETTINGS.DISCORDRICHPRESENCE": "Enable Rich Presence",
+	"SETTINGS.DISCORDRICHPRESENCE.TT": "Show your friends on Discord that you are playing Terrors of Nowhere using Discord's Rich Presence activity.",
 
 	"SETTINGS.ROUNDINFOTOFILE": "Round Info To File",
 	"SETTINGS.ROUNDINFOTOFILE.TT": "Write round information to a file. (Such as terror name, map name, round type, etc.)\nThese files can be used in streaming tools like OBS to give your viewers more information about your current pain and suffering.",

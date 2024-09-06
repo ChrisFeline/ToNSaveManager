@@ -62,7 +62,7 @@
             checkRoundToFile = new CheckBox();
             flowRoundInfoFiles = new FlowLayoutPanel();
             linkAddInfoFile = new LinkLabel();
-            label1 = new Label();
+            labelGroupDiscord = new Label();
             checkDiscordPresence = new CheckBox();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
@@ -103,10 +103,10 @@
             checkShowWinLose.Margin = new Padding(3, 1, 3, 1);
             checkShowWinLose.Name = "checkShowWinLose";
             checkShowWinLose.Padding = new Padding(50, 0, 3, 0);
-            checkShowWinLose.Size = new Size(187, 19);
+            checkShowWinLose.Size = new Size(183, 19);
             checkShowWinLose.TabIndex = 5;
             checkShowWinLose.Tag = "ShowWinLose|Entries will show a [R], [W] or [D] tag based on the source that triggered the save.";
-            checkShowWinLose.Text = "Show [R][W][D] Tags";
+            checkShowWinLose.Text = "Show Save Symbols";
             checkShowWinLose.UseVisualStyleBackColor = true;
             // 
             // checkSaveTerrorsNote
@@ -426,7 +426,7 @@
             flowLayoutPanel1.Controls.Add(checkShowWinLose);
             flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
             flowLayoutPanel1.Controls.Add(flowRoundInfoFilePanel);
-            flowLayoutPanel1.Controls.Add(label1);
+            flowLayoutPanel1.Controls.Add(labelGroupDiscord);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
             flowLayoutPanel1.Controls.Add(checkDiscordPresence);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
@@ -520,19 +520,20 @@
             linkAddInfoFile.VisitedLinkColor = Color.Gray;
             linkAddInfoFile.LinkClicked += linkAddInfoFile_LinkClicked;
             // 
-            // label1
+            // labelGroupDiscord
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 194);
-            label1.Margin = new Padding(3, 15, 3, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(94, 15);
-            label1.TabIndex = 19;
-            label1.Text = "Discord Features";
+            labelGroupDiscord.AutoSize = true;
+            labelGroupDiscord.Location = new Point(3, 194);
+            labelGroupDiscord.Margin = new Padding(3, 15, 3, 0);
+            labelGroupDiscord.Name = "labelGroupDiscord";
+            labelGroupDiscord.Size = new Size(94, 15);
+            labelGroupDiscord.TabIndex = 19;
+            labelGroupDiscord.Text = "Discord Features";
             // 
             // checkDiscordPresence
             // 
             checkDiscordPresence.AutoSize = true;
+            checkDiscordPresence.Enabled = false;
             checkDiscordPresence.Location = new Point(3, 231);
             checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
             checkDiscordPresence.Name = "checkDiscordPresence";
@@ -735,7 +736,7 @@
         private FlowLayoutPanel flowLayoutPanel3;
         private CheckBox checkOSCSendDamage;
         private LinkLabel linkSetDamageInterval;
-        private Label label1;
+        private Label labelGroupDiscord;
         private CheckBox checkDiscordPresence;
     }
 }

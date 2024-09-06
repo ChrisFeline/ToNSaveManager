@@ -37,12 +37,20 @@ namespace ToNSaveManager.Models
         static string TextPlayers = "Players in room:";
         static string TextMap = "Map:";
 
+        static string TextTagR = "🔄";
+        static string TextTagW = "🏆";
+        static string TextTagD = "🔌";
+
         internal static void LocalizeContent() {
             TextNote = LANG.S("MAIN.ENTRY_NOTE") ?? "Note:";
             TextRound = LANG.S("MAIN.ENTRY_ROUND") ?? "Round Type:";
             TextTerrors = LANG.S("MAIN.ENTRY_TERRORS") ?? "Terrors in round:";
             TextPlayers = LANG.S("MAIN.ENTRY_PLAYERS") ?? "Players in room:";
             TextMap = LANG.S("MAIN.ENTRY_MAP") ?? "Map:";
+
+            TextTagR = LANG.S("SAVE.TAG_R") ?? "🔄";
+            TextTagW = LANG.S("SAVE.TAG_W") ?? "🏆";
+            TextTagD = LANG.S("SAVE.TAG_D") ?? "🔌";
         }
 
         public string Note = string.Empty;
@@ -81,11 +89,14 @@ namespace ToNSaveManager.Models
             const string separator = " | ";
             StringBuilder sb = new StringBuilder();
 
-            if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose)
-            {
-                sb.Append('[');
-                sb.Append(RResult);
-                sb.Append("] ");
+            if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose) {
+                switch (RResult) {
+                    case ToNRoundResult.R: sb.Append(TextTagR); break;
+                    case ToNRoundResult.W: sb.Append(TextTagW); break;
+                    case ToNRoundResult.D: sb.Append(TextTagD); break;
+                }
+
+                sb.Append(" | ");
             }
 
             sb.Append(Timestamp.ToString(EntryDate.GetDateFormat(true)));

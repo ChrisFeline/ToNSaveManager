@@ -53,6 +53,7 @@ namespace ToNSaveManager.Windows
             }
 
             LANG.C(labelGroupGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
+            LANG.C(labelGroupDiscord, "SETTINGS.GROUP.DISCORD", toolTip);
             LANG.C(labelGroupNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
             LANG.C(labelGroupFormat, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
             LANG.C(labelGroupStyle, "SETTINGS.GROUP.STYLE", toolTip);
@@ -87,8 +88,11 @@ namespace ToNSaveManager.Windows
                 GroupLabelFont = new Font(labelGroupGeneral.Font.FontFamily, 12, FontStyle.Bold);
             }
 
+            Logger.Debug("FONT: " + labelGroupGeneral.Font.FontFamily.Name);
+
             // Check font size for group labels
             labelGroupGeneral.Font = GroupLabelFont;
+            labelGroupDiscord.Font = GroupLabelFont;
             labelGroupNotifications.Font = GroupLabelFont;
             labelGroupFormat.Font = GroupLabelFont;
             labelGroupStyle.Font = GroupLabelFont;
