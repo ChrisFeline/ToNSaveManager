@@ -224,6 +224,7 @@ namespace ToNSaveManager.Windows
                     case ToNRoundType.Solstice:
                     case ToNRoundType.Mystic_Moon:
                     case ToNRoundType.Blood_Moon:
+                    case ToNRoundType.Custom:
                         SetMonsterDataSource(null);
                         SetLocationDataSource(Maps);
                         break;
@@ -385,6 +386,8 @@ namespace ToNSaveManager.Windows
         }
 
         private void OnRoundSetKillers(bool reveal = true) {
+            if (CurrentRoundType == ToNRoundType.Custom) return;
+
             int[] terrors = new int[TerrorComboBoxes.Length];
             for (int i = 0; i < TerrorComboBoxes.Length; i++) {
                 if (reveal) {

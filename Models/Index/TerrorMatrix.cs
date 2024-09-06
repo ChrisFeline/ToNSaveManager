@@ -144,9 +144,10 @@ namespace ToNSaveManager.Models.Index {
                     TerrorCount = 1;
                     break;
 
+                case ToNRoundType.Custom:
                 default:
                     Terrors = [];
-                    TerrorCount = -1;
+                    TerrorCount = 0;
                     break;
             }
 

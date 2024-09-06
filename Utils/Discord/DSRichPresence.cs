@@ -55,7 +55,7 @@ namespace ToNSaveManager.Utils.Discord {
             if (CurrentMatrix.Length == 0 && terrorMatrix.Length > 0) IsAlive = true;
             CurrentMatrix = terrorMatrix;
             SetRoundType(terrorMatrix.RoundType);
-            Refresh();
+            SetDirty();
         }
 
         static ToNIndex.Map CurrentMap = ToNIndex.Map.Empty;
@@ -64,7 +64,7 @@ namespace ToNSaveManager.Utils.Discord {
                 Timestamp = DateTime.UtcNow;
             }
             CurrentMap = map;
-            Refresh();
+            SetDirty();
         }
 
         static ToNRoundType CurrentRoundType = ToNRoundType.Unknown;
@@ -73,7 +73,7 @@ namespace ToNSaveManager.Utils.Discord {
             if (CurrentRoundType != roundType) {
                 CurrentRoundTypeAssetID = GetRoundAssetID(roundType);
                 CurrentRoundType = roundType;
-                Refresh();
+                SetDirty();
             }
         }
 
@@ -81,7 +81,7 @@ namespace ToNSaveManager.Utils.Discord {
         internal static void SetOptedIn(bool optedIn) {
             if (IsOptedIn != optedIn) {
                 IsOptedIn = optedIn;
-                Refresh();
+                SetDirty();
             }
         }
 
@@ -89,7 +89,7 @@ namespace ToNSaveManager.Utils.Discord {
         internal static void SetIsAlive(bool isAlive) {
             if (IsAlive != isAlive) {
                 IsAlive = isAlive;
-                Refresh();
+                SetDirty();
             }
         }
 
@@ -123,6 +123,9 @@ namespace ToNSaveManager.Utils.Discord {
 
             { ToNRoundType.RUN, 104},          // 104
             { ToNRoundType.Cold_Night, 107},   // 107 // Winterfest
+
+            // Beyond doing things or something
+            { ToNRoundType.Custom, 11 }
         };
         internal static string GetRoundAssetID(ToNRoundType roundType) {
             if (RoundTypeToAssetID.TryGetValue(roundType, out int value)) {
@@ -145,32 +148,38 @@ namespace ToNSaveManager.Utils.Discord {
         }
 
 
-        internal static void Refresh() {
+        internal static void SetDirty() {
             IsDirty = true;
-            string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + " on" : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
-            string state = CurrentMatrix.Length > 0 && CurrentMap.IsEmpty ? "Somewhere" : (CurrentMap.IsEmpty ? "Overseer's Court" : CurrentMap.Name);
-
-            bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
-            ImageKey = CurrentMatrix.Length > 0 ? ((CurrentMatrix.Length > 1 ? CurrentMatrix.Terror3 : CurrentMatrix.Terror1).AssetID ?? (isHidden ? "icon_254_1" : "icon_254_0")) : (CurrentMap.IsEmpty ? "icon_255_0" : "icon_254_0");
-            ImageText = CurrentMatrix.Length > 0 ? CurrentMatrix.GetTerrorNames() : (CurrentMap.IsEmpty ? "Overseer" : "???");
-
-            if ((CurrentMatrix.Length == 0 && !CurrentMap.IsEmpty)
-                || CurrentRoundType == ToNRoundType.Unbound
-                || CurrentRoundType == ToNRoundType.Bloodbath
-                || CurrentRoundType == ToNRoundType.Double_Trouble) {
-                ImageKey = CurrentRoundTypeAssetID; // placeholder
-                if (CurrentMatrix.Length == 0) ImageText = $"Starting a {CurrentRoundType.ToString()} round...";
-            }
-
-            DetailsText = details;
-            StateText = state;
-
-            IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
-            IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
         }
         internal static void Send() {
             if (IsDirty) {
                 IsDirty = false;
+
+                string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + " on" : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
+                string state = CurrentMatrix.Length > 0 && CurrentMap.IsEmpty ? "Somewhere" : (CurrentMap.IsEmpty ? "Overseer's Court" : CurrentMap.Name);
+
+                bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
+                ImageKey = CurrentMatrix.Length > 0 ? ((CurrentMatrix.Length > 1 ? CurrentMatrix.Terror3 : CurrentMatrix.Terror1).AssetID ?? (isHidden ? "icon_254_1" : "icon_254_0")) : (CurrentMap.IsEmpty ? "icon_255_0" : "icon_254_0");
+                ImageText = CurrentMatrix.Length > 0 ? CurrentMatrix.GetTerrorNames() : (CurrentMap.IsEmpty ? "Overseer" : "???");
+
+                if ((CurrentMatrix.Length == 0 && !CurrentMap.IsEmpty)
+                    || CurrentRoundType == ToNRoundType.Unbound
+                    || CurrentRoundType == ToNRoundType.Bloodbath
+                    || CurrentRoundType == ToNRoundType.Double_Trouble
+                    || CurrentRoundType == ToNRoundType.Custom) {
+                    ImageKey = CurrentRoundTypeAssetID; // placeholder
+
+                    if (CurrentRoundType == ToNRoundType.Custom) {
+                        ImageText = "What is Beyond up to now?";
+                        details = "Custom";
+                    } else if (CurrentMatrix.Length == 0) ImageText = $"Starting a {CurrentRoundType.ToString()} round...";
+                }
+
+                DetailsText = details;
+                StateText = state;
+
+                IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
+                IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
 
                 Client?.SetPresence(Presence);
             }
@@ -184,7 +193,7 @@ namespace ToNSaveManager.Utils.Discord {
 
             Client.Initialize();
 
-            Refresh();
+            SetDirty();
         }
 
         private static void Client_OnPresenceUpdate(object sender, PresenceMessage e) {
