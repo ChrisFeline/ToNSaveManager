@@ -287,9 +287,9 @@ namespace ToNSaveManager.Models.Index {
         }
 
         public struct SpecialSnowflake {
-            public string? Intermission; // Player is waiting on intermission
-            public string? Sabotage; // Player got killer
-            public string? Killer;   // Player is killer
+            public string? Intermission { get; set; } // Player is waiting on intermission
+            public string? Sabotage { get; set; } // Player got killer
+            public string? Killer { get; set; } // Player is killer
         }
         #endregion
     }
