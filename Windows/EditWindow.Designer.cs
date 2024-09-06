@@ -27,6 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditWindow));
             textBox1 = new TextBox();
             button1 = new Button();
             button2 = new Button();
@@ -84,10 +85,10 @@
             Controls.Add(textBox1);
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "EditWindow";
-            ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Note Editor";
             Shown += EditWindow_Shown;

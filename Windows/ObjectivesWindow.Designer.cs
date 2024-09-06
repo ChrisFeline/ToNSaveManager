@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ObjectivesWindow));
             listBox1 = new ListBox();
             toolTip = new ToolTip(components);
             SuspendLayout();
@@ -61,10 +62,10 @@
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(262, 331);
             Controls.Add(listBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ObjectivesWindow";
-            ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "ToN Objectives";

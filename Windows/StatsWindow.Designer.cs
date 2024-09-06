@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatsWindow));
             toolTip = new ToolTip(components);
             statsTable = new TableLayoutPanel();
             contextMenu = new ContextMenuStrip(components);
@@ -84,12 +85,12 @@
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(324, 120);
             Controls.Add(statsTable);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(340, 0);
             Name = "StatsWindow";
             Padding = new Padding(4);
-            ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "ToN Stats Tracker";

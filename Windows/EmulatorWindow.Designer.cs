@@ -26,6 +26,7 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmulatorWindow));
             comboRoundType = new ComboBox();
             panel1 = new Panel();
             label1 = new Label();
@@ -405,10 +406,11 @@
             ClientSize = new Size(334, 340);
             Controls.Add(panel5);
             Controls.Add(mainPanel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             MinimumSize = new Size(350, 100);
             Name = "EmulatorWindow";
             Padding = new Padding(10);
-            ShowIcon = false;
             Text = "ToN Parameter Emulator";
             Load += Form1_Load;
             panel1.ResumeLayout(false);

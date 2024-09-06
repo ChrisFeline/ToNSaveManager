@@ -640,12 +640,12 @@
             Controls.Add(panel1);
             Controls.Add(languageSelectBox);
             ForeColor = Color.White;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(200, 200);
             Name = "SettingsWindow";
             Padding = new Padding(8);
-            ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Settings";
             FormClosed += SettingsWindow_FormClosed;
