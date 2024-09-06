@@ -24,6 +24,8 @@ namespace ToNSaveManager.Models.Index {
 #endif
 
         #region Properties & Fields
+        [JsonProperty("x")] public Dictionary<ulong, SpecialSnowflake> SpecialSnowflakes = new();
+
         [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
         [JsonProperty("t")] public Dictionary<int, Terror> Terrors { get; private set; } = new();
         [JsonProperty("a")] public Dictionary<int, Terror> Alternates { get; private set; } = new();
@@ -252,6 +254,7 @@ namespace ToNSaveManager.Models.Index {
                     if (Value.IsEmpty) return null; // replace for something
                     else if (Value.Variants != null && Value.Variants.ContainsKey(RoundType)) return Value.AssetID + "_v" + (int)RoundType;
                     else if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length) return Value.AssetID + "_e" + Encounter;
+                    else if (RoundType == ToNRoundType.Midnight && Value.Group == TerrorGroup.Alternates) return "icon_m_" + Value.Id;
 
                     return Value.AssetID;
                 }
@@ -270,6 +273,12 @@ namespace ToNSaveManager.Models.Index {
             public override string ToString() {
                 return Index.ToString();
             }
+        }
+
+        public struct SpecialSnowflake {
+            public string? Intermission; // Player is waiting on intermission
+            public string? Sabotage; // Player got killer
+            public string? Killer;   // Player is killer
         }
         #endregion
     }
