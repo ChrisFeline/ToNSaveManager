@@ -99,24 +99,36 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Double_Trouble:
                 case ToNRoundType.EX:
                 case ToNRoundType.Midnight:
+                    int lvl = 1;
+
                     if (RoundType == ToNRoundType.EX) {
+                        lvl = 3;
                         TerrorCount = 1;
+                        Array.Resize(ref indexes, TerrorCount);
                     } else if (RoundType == ToNRoundType.Double_Trouble) {
-                        int ind = Array.IndexOf(indexes, indexes[0], 1);
-                        if (ind < 0) (indexes[0], indexes[2]) = (indexes[2], indexes[0]);
-                        else if (ind > 1) (indexes[2], indexes[1]) = (indexes[1], indexes[2]);
+                        lvl = 2;
                         TerrorCount = 2;
-                    } else if (RoundType == ToNRoundType.Midnight && indexes[2] == 19) { // Handle Monarch
+                        if (indexes[0] == indexes[1]) (indexes[1], indexes[2]) = (indexes[2], indexes[1]);
+                        else if (indexes[1] == indexes[2]) (indexes[0], indexes[1]) = (indexes[1], indexes[0]);
+                        Array.Resize(ref indexes, TerrorCount);
+                    } else if (RoundType == ToNRoundType.Midnight) { // Handle Monarch
                         TerrorCount = 3;
-                        StartIndex = 2;
-                        indexes[0] = indexes[1] = 255;
+                        if (indexes[2] == 19) {
+                            StartIndex = 2;
+                            indexes[0] = indexes[1] = 255;
+                        } else if (indexes[0] == indexes[1]) {
+                            lvl = 2;
+                            StartIndex = 1;
+                        }
                     } else {
                         TerrorCount = 3;
                     }
 
                     Terrors = new ToNIndex.TerrorInfo[indexes.Length];
                     for (int i = 0; i < Terrors.Length; i++) {
-                        Terrors[i] = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
+                        ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
+                        if (i == StartIndex && lvl > 1) info.Level = lvl;
+                        Terrors[i] = info;
                     }
                     break;
 

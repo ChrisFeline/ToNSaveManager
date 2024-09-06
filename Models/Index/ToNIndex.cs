@@ -235,17 +235,28 @@ namespace ToNSaveManager.Models.Index {
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Phase { get; set; }
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Encounter { get; set; } = -1;
+            [JsonProperty("l", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Level { get; set; } = 1;
 
             [JsonIgnore] private Terror? m_Value { get; set; }
             [JsonIgnore] public Terror Value { get => m_Value ?? (m_Value = Instance.GetTerror(this)); }
             [JsonIgnore] public string Name {
                 get {
-                    if (Value.IsEmpty) return "???";
-                    else if (Value.Variants != null && Value.Variants.ContainsKey(RoundType)) return Value.Variants[RoundType];
-                    else if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length) return Value.Encounters[Encounter].Name;
-                    else if (Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Phase <= Value.Phases.Length) return Value.Phases[Phase - 1].Name;
+                    string name = "???";
 
-                    return Value.Name;
+                    if (Value.IsEmpty)
+                        return name;
+                    else if (Value.Variants != null && Value.Variants.ContainsKey(RoundType))
+                        name = Value.Variants[RoundType];
+                    else if (Encounter > -1 && Value.Encounters != null && Value.Encounters.Length > 0 && Encounter < Value.Encounters.Length)
+                        name = Value.Encounters[Encounter].Name;
+                    else if (Phase > 0 && Value.Phases != null && Value.Phases.Length > 0 && Phase <= Value.Phases.Length)
+                        name = Value.Phases[Phase - 1].Name;
+                    else
+                        name = Value.Name;
+
+                    if (Level > 1) name += $" (LVL {Level})";
+
+                    return name;
                 }
             }
 

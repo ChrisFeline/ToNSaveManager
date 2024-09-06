@@ -401,6 +401,11 @@ namespace ToNSaveManager.Windows
                 } else terrors[i] = byte.MaxValue;
             }
 
+            if (CurrentRoundType == ToNRoundType.Bloodbath) {
+                if (terrors.All(v => v == terrors[0])) CurrentRoundType = ToNRoundType.EX;
+                else if (terrors.Length != terrors.Distinct().Count()) CurrentRoundType = ToNRoundType.Double_Trouble;
+            }
+
             TerrorMatrix terrorMatrix = new TerrorMatrix(CurrentRoundType.ToString().Replace('_', ' ').Replace(" Alternate", " (Alternate)"), terrors);
             terrorMatrix.IsSaboteur = CurrentIsKiller;
             terrorMatrix.RoundType = CurrentRoundType;
