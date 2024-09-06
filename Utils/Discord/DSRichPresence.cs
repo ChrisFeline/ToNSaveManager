@@ -181,6 +181,11 @@ namespace ToNSaveManager.Utils.Discord {
                 IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
                 IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
 
+                if (CurrentMatrix.IsSaboteur) {
+                    IconKey = "status_killer";
+                    IconText = "Killer";
+                }
+
                 Client?.SetPresence(Presence);
             }
         }
@@ -202,7 +207,7 @@ namespace ToNSaveManager.Utils.Discord {
 
         private static void Client_OnReady(object sender, ReadyMessage e) {
             Log.Debug("Received Ready from user: " + e.User.Username);
-            Send();
+            SetDirty();
         }
     }
 }
