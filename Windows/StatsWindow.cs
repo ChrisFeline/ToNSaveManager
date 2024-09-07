@@ -55,8 +55,16 @@ namespace ToNSaveManager
             ToNStats.AddTerrors(terrorMatrix);
             RefreshTable();
         }
-        internal static void SetLocation(ToNIndex.Map map) {
-            ToNStats.AddLocation(map);
+        internal static void SetLocation(ToNIndex.Map map, bool killersSet) {
+            ToNStats.AddLocation(map, killersSet);
+            RefreshTable();
+        }
+        internal static void SetIsKiller(bool isKiller) {
+            ToNStats.AddIsAlive(isKiller);
+            RefreshTable();
+        }
+        internal static void SetPageCount(int pages) {
+            ToNStats.AddPageCount(pages);
             RefreshTable();
         }
 
@@ -64,6 +72,9 @@ namespace ToNSaveManager
         internal static void SetActiveInRound(bool active) {
             if (IsRoundActive != active) {
                 Logger.Debug("Setting Round Active: " + active);
+
+                ToNStats.AddIsAlive(active);
+                RefreshTable();
 
                 IsRoundActive = active;
                 if (IsRoundActive) {

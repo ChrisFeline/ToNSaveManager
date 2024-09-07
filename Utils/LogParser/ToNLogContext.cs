@@ -13,7 +13,7 @@ namespace ToNSaveManager.Utils.LogParser
 
         public bool IsAlive { get; private set; }
 
-        public bool IsSaboteour { get; set; }
+        public bool IsSaboteour { get; private set; }
         public bool IsOptedIn { get; private set; }
         public TerrorMatrix Terrors = TerrorMatrix.Empty;
         public ToNIndex.Map Location = ToNIndex.Map.Empty;
@@ -21,12 +21,22 @@ namespace ToNSaveManager.Utils.LogParser
 
         public override void Exit() {
             base.Exit();
+            OnAwake();
+        }
 
+        public override void OnAwake() {
             ClearSummary();
             SetOptedIn(false);
             SetTerrorMatrix(TerrorMatrix.Empty);
             SetLocation(ToNIndex.Map.Empty);
-            SetRoundResult(ToNRoundResult.D);
+            SetRoundResult(IsLeavingRoom ? ToNRoundResult.D : ToNRoundResult.R);
+        }
+
+        public void SetIsKiller(bool isKiller) {
+            if (IsSaboteour == isKiller) return;
+
+            IsSaboteour = isKiller;
+            if (IsRecent) StatsWindow.SetIsKiller(isKiller);
         }
 
         public void SetIsAlive(bool alive) {

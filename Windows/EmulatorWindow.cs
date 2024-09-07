@@ -31,7 +31,7 @@ namespace ToNSaveManager.Windows
             public ToNRoundType Value;
 
             public RoundTypeProxy(ToNRoundType roundType) {
-                DisplayName = roundType == ToNRoundType.Unknown ? "Random" : roundType.ToString();
+                DisplayName = roundType == ToNRoundType.Intermission ? "Random" : roundType.ToString();
                 Value = roundType;
             }
 
@@ -153,7 +153,7 @@ namespace ToNSaveManager.Windows
 
         private Terror.Encounter LastEncounter;
         private bool HasValidEncounter(Terror? terror) {
-            if (terror != null && terror.Encounters != null && terror.Encounters.Length > 0 && (terror.Encounters[0].RoundType == ToNRoundType.Unknown || terror.Encounters[0].RoundType == Operation.RoundType)) {
+            if (terror != null && terror.Encounters != null && terror.Encounters.Length > 0 && (terror.Encounters[0].RoundType == ToNRoundType.Intermission || terror.Encounters[0].RoundType == Operation.RoundType)) {
                 LastEncounter = terror.Encounters[0];
                 return true;
             }
@@ -213,7 +213,7 @@ namespace ToNSaveManager.Windows
                         break;
 
                     // These have map pools
-                    case ToNRoundType.Unknown: // Dont do anything
+                    case ToNRoundType.Intermission: // Dont do anything
                     case ToNRoundType.RUN:
                     case ToNRoundType.Cold_Night:
                     case ToNRoundType.GIGABYTE:

@@ -61,10 +61,14 @@ namespace ToNSaveManager.Utils.LogParser {
         }
         */
 
-        public static T CreateContext<T>(string fileName) where T : LogContext {
+        public virtual void OnAwake() { }
+
+        public static T CreateContext<T>(string fileName, bool isRecent) where T : LogContext {
             T context = Activator.CreateInstance<T>();
             context.FileName = fileName;
             context.DateKey = fileName.Substring(11, 19);
+            context.IsRecent = isRecent;
+            context.OnAwake();
             return context;
         }
 
@@ -87,7 +91,7 @@ namespace ToNSaveManager.Utils.LogParser {
         /// <summary>
         /// Called when user joins a new room.
         /// </summary>
-        public void Enter(string name, DateTime date) {
+        public virtual void Enter(string name, DateTime date) {
             RoomName = name;
             RoomDate = date;
             Players.Clear();

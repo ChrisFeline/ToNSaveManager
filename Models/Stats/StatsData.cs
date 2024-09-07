@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ToNSaveManager.Localization;
-using ToNSaveManager.Models.Index;
 
 namespace ToNSaveManager.Models.Stats
 {
@@ -25,6 +24,12 @@ namespace ToNSaveManager.Models.Stats
         public string MapName { get; internal set; } = "???";
         public string MapCreator { get; internal set; } = "???";
         public string MapOrigin { get; internal set; } = "???";
+
+        public bool IsAlive { get; internal set; } = false;
+        public bool IsKiller { get; internal set; } = false;
+
+        public int RoundInt { get; internal set; } = 0;
+        public int PageCount { get; internal set; } = 0;
     }
 
     internal class StatsLobby : StatsData { }

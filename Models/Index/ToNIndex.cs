@@ -208,7 +208,7 @@ namespace ToNSaveManager.Models.Index {
 
         public class Map : EntryBase
         {
-            public static readonly Map Empty = new Map() { IsEmpty = true, Id = byte.MaxValue };
+            public static readonly Map Empty = new Map() { IsEmpty = true, Id = byte.MaxValue, Name = "Overseer's Court" };
 
             [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Creator = string.Empty;
             [JsonProperty("o", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Origin = string.Empty;

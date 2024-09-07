@@ -13,6 +13,7 @@ namespace ToNSaveManager.Models.Stats {
         public PropertyInfo Source;
         public PropertyInfoContainer Property;
         public string Name => Property.Name;
+        public Type PropertyType => Property.PropertyType;
         public string KeyUpper;
 
         private StatsBase? m_StatsBase;
@@ -131,19 +132,31 @@ namespace ToNSaveManager.Models.Stats {
 
         // Round only stuff
         const string KEY_ROUND_TYPE = nameof(StatsRound.RoundType);
+        const string KEY_ROUND_INT = nameof(StatsRound.RoundInt);
         const string KEY_TERROR_NAME = nameof(StatsRound.TerrorName);
         public static void AddTerrors(TerrorMatrix terrorMatrix) {
             Set(KEY_ROUND_TYPE, terrorMatrix.RoundType.ToString());
-            Set(KEY_TERROR_NAME, terrorMatrix.GetTerrorNames());
+            Set(KEY_ROUND_INT, (int)terrorMatrix.RoundType);
+            Set(KEY_TERROR_NAME, terrorMatrix.Length > 0 ? terrorMatrix.GetTerrorNames() : (terrorMatrix.MapID < 0 ? "Overseer" : "???"));
         }
+
+        const string KEY_IS_ALIVE = nameof(StatsRound.IsAlive);
+        const string KEY_IS_KILLER = nameof(StatsRound.IsKiller);
+        public static void AddIsAlive(bool value) => Set(KEY_IS_ALIVE, value);
+        public static void AddIsKiller(bool value) => Set(KEY_IS_KILLER, value);
 
         const string KEY_MAP_NAME = nameof(StatsRound.MapName);
         const string KEY_MAP_CREATOR = nameof(StatsRound.MapCreator);
         const string KEY_MAP_ORIGIN = nameof(StatsRound.MapOrigin);
-        public static void AddLocation(ToNIndex.Map map) {
-            Set(KEY_MAP_NAME, map.IsEmpty ? "???" : map.Name);
-            Set(KEY_MAP_CREATOR, map.IsEmpty ? "???" : map.Creator);
-            Set(KEY_MAP_ORIGIN, map.IsEmpty ? "???" : map.Origin);
+        public static void AddLocation(ToNIndex.Map map, bool killersSet) {
+            Set(KEY_MAP_NAME, map.IsEmpty && killersSet ? "Somewhere" : map.Name);
+            Set(KEY_MAP_CREATOR, map.Creator);
+            Set(KEY_MAP_ORIGIN, map.Origin);
+        }
+
+        const string KEY_PAGE_COUNT = nameof(StatsRound.PageCount);
+        public static void AddPageCount(int pages) {
+            Set(KEY_PAGE_COUNT, pages);
         }
 
         static readonly string[] LobbyClearKeys = [
@@ -168,6 +181,7 @@ namespace ToNSaveManager.Models.Stats {
 
         public static T? Get<T>(string key) => PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value) ? value.GetValue<T>() : default;
         public static object? Get(string key) => PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value) ? value.GetValue() : default;
+        public static Type? GetType(string key) => PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value) ? value.PropertyType : null;
 
         public static void Set<T>(string key, T? val) {
             if (PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value)) {

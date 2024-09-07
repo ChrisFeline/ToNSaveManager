@@ -16,6 +16,7 @@ namespace ToNSaveManager.Models.Stats {
 
         public bool CanWrite => Property.CanWrite && SetMethod != null && !SetMethod.IsPrivate;
         public bool IsStatic => GetMethod != null && GetMethod.IsStatic;
+        public Type PropertyType => Property.PropertyType;
 
         public object? GetValue(object? instance) => Property.GetValue(instance);
         public void SetValue(object? instance, object? value) => Property.SetValue(instance, value);

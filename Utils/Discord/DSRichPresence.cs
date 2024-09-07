@@ -76,7 +76,7 @@ namespace ToNSaveManager.Utils.Discord {
             }
         }
 
-        static ToNRoundType CurrentRoundType = ToNRoundType.Unknown;
+        static ToNRoundType CurrentRoundType = ToNRoundType.Intermission;
         static string CurrentRoundTypeAssetID = "icon_254_0";
         static void SetRoundType(ToNRoundType roundType) {
             if (CurrentRoundType != roundType) {
@@ -105,7 +105,7 @@ namespace ToNSaveManager.Utils.Discord {
         }
 
         static readonly Dictionary<ToNRoundType, int> RoundTypeToAssetID = new Dictionary<ToNRoundType, int>() {
-            { ToNRoundType.Unknown, 0 },
+            { ToNRoundType.Intermission, 0 },
             { ToNRoundType.Classic, 0 },
             { ToNRoundType.Fog, 4 },
             { ToNRoundType.Punished, 5 },        //  3
@@ -163,12 +163,14 @@ namespace ToNSaveManager.Utils.Discord {
             if (IsDirty && Client != null && Client.IsInitialized && Client.CurrentUser != null) {
                 IsDirty = false;
 
-                string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
-                string state = CurrentMatrix.Length > 0 && CurrentMap.IsEmpty ? "Somewhere" : (CurrentMap.IsEmpty ? "Overseer's Court" : CurrentMap.Name);
+                //string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
+                string details = Settings.Get.DiscordTemplateDetails.GetString();
+                string state = Settings.Get.DiscordTemplateState.GetString();
+                ImageText = Settings.Get.DiscordTemplateImage.GetString();
+                // ImageText = CurrentMatrix.Length > 0 ? CurrentMatrix.GetTerrorNames() : (CurrentMap.IsEmpty ? "Overseer" : "???");
 
                 bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
                 ImageKey = CurrentMatrix.Length > 0 ? ((CurrentMatrix.Length > 1 ? CurrentMatrix.Terror3 : CurrentMatrix.Terror1).AssetID ?? (isHidden ? "icon_254_1" : "icon_254_0")) : (CurrentMap.IsEmpty ? "icon_255_0" : "icon_254_0");
-                ImageText = CurrentMatrix.Length > 0 ? CurrentMatrix.GetTerrorNames() : (CurrentMap.IsEmpty ? "Overseer" : "???");
 
                 if (!string.IsNullOrEmpty(CustomAssetID_0) && ImageKey == "icon_255_0") {
                     ImageKey = CustomAssetID_0;
@@ -192,7 +194,8 @@ namespace ToNSaveManager.Utils.Discord {
                 StateText = state;
 
                 IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
-                IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
+                IconText = CurrentMatrix.Length > 0 ? Settings.Get.DiscordTemplateIcon.GetString() : null;
+                //IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
 
                 if (CurrentMatrix.IsSaboteur) {
                     IconKey = "status_killer";
@@ -254,14 +257,13 @@ namespace ToNSaveManager.Utils.Discord {
             ulong userId = e.User.ID;
             Log.Debug("Received Ready from user: " + userId);
 
-            if (ToNIndex.Instance.SpecialSnowflakes.ContainsKey(userId)) {
+            if (false && ToNIndex.Instance.SpecialSnowflakes.ContainsKey(userId)) {
                 SpecialSnowflake = ToNIndex.Instance.SpecialSnowflakes[userId];
 
                 Log.Debug("Hello my special snowflake: " + userId);
                 CustomAssetID_0 = $"icon_p_{userId}_0";
                 CustomAssetID_1 = $"icon_p_{userId}_1";
             }
-
 
             SetDirty();
         }

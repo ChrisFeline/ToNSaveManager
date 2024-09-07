@@ -63,7 +63,7 @@ namespace ToNSaveManager.Models.Index {
 
         public TerrorMatrix() {
             RoundTypeRaw = string.Empty;
-            RoundType = ToNRoundType.Unknown;
+            RoundType = ToNRoundType.Intermission;
             Terrors = []; // what is this? JavaScript?
         }
 
@@ -228,14 +228,14 @@ namespace ToNSaveManager.Models.Index {
 
         static ToNRoundType GetRoundType(string raw) {
             raw = raw.Replace(' ', '_').Replace("8", "Eight");
-            return Enum.TryParse(typeof(ToNRoundType), raw, out object? result) && result != null ? (ToNRoundType)result : ToNRoundType.Unknown;
+            return Enum.TryParse(typeof(ToNRoundType), raw, out object? result) && result != null ? (ToNRoundType)result : ToNRoundType.Intermission;
         }
 
         internal static uint GetRoundColorFromType(ToNRoundType RoundType) => RoundTypeColors.ContainsKey(RoundType) ? RoundTypeColors[RoundType] : 16721714;
 
         internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
         {
-            { ToNRoundType.Unknown,             16721714 },
+            { ToNRoundType.Intermission,             16721714 },
             { ToNRoundType.Classic,             0xFFFFFF },
             { ToNRoundType.Fog,                 0x808486 },
             { ToNRoundType.Fog_Alternate,       0x808486 },

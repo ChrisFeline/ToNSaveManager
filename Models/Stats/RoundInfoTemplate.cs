@@ -51,10 +51,14 @@ namespace ToNSaveManager.Models.Stats {
 
             if (!Directory.Exists(m_FileDir)) Directory.CreateDirectory(m_FileDir);
 
-            string content = TemplateManager.ReplaceTemplate(Template);
+            string content = GetString();
             File.WriteAllText(FilePath, content);
 
             Logger.Debug($"Write File ({FileName}): {content}");
+        }
+
+        public string GetString() {
+            return TemplateManager.ReplaceTemplate(Template);
         }
     }
 }

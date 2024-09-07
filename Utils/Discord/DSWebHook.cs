@@ -103,7 +103,7 @@ namespace ToNSaveManager.Utils.Discord
                             EmbedData.Description += string.Format(LABEL_PLAYER, entry.Parent.DisplayName);
                         }
 
-                        if (entry.RT != ToNRoundType.Unknown)
+                        if (entry.RT != ToNRoundType.Intermission)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
                             EmbedData.Description += string.Format(LABEL_ROUND, entry.RT);

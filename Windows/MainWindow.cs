@@ -566,8 +566,8 @@ namespace ToNSaveManager
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
             CopyRecent();
             Export();
-            StatsWindow.WriteChanges();
             DSRichPresence.Send();
+            StatsWindow.WriteChanges();
             LilOSC.SendData();
         }
 
@@ -629,12 +629,14 @@ namespace ToNSaveManager
                 context.SetLocation(map);
 
                 TerrorMatrix matrix;
-                if (map.Id == 68) {
+
+                if (map.Id == 254) {
                     matrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);
                 } else {
                     matrix = new TerrorMatrix(line.Substring(index + length + ROUND_MAP_RTYPE.Length).Trim());
                 }
 
+                matrix.MapID = map.Id;
                 context.SetTerrorMatrix(matrix);
 
                 return true;
@@ -654,7 +656,7 @@ namespace ToNSaveManager
 
             // REVISIT THIS LATER PLEASE
             if (line.StartsWith(ROUND_IS_SABO)) {
-                context.IsSaboteour = true;
+                context.SetIsKiller(true);
                 context.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = true });
                 return true;
             }
@@ -692,7 +694,7 @@ namespace ToNSaveManager
 
                     if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
 
-                    context.IsSaboteour = false;
+                    context.SetIsKiller(false);
                     context.SetTerrorMatrix(TerrorMatrix.Empty);
                     context.SetLocation(ToNIndex.Map.Empty);
                     return true;
@@ -717,7 +719,7 @@ namespace ToNSaveManager
                 }
 
                 if (matrix.RoundType == ToNRoundType.Eight_Pages && line.StartsWith(ROUND_PAGE_FOUND)) {
-                    char pageChar = line[ROUND_PAGE_FOUND.Length + 1];
+                    char pageChar = line[ROUND_PAGE_FOUND.Length];
                     if (int.TryParse(pageChar.ToString(), out int pages)) LilOSC.SetPageCount(pages);
                     return true;
                 }
@@ -744,7 +746,7 @@ namespace ToNSaveManager
                     if (terror.Encounters != null && terror.Encounters.Length > 0) {
                         for (j = 0; j < terror.Encounters.Length; j++) {
                             ToNIndex.Terror.Encounter encounter = terror.Encounters[j];
-                            if ((encounter.RoundType == ToNRoundType.Unknown || matrix.RoundType == encounter.RoundType) && line.StartsWith(encounter.Keyword)) {
+                            if ((encounter.RoundType == ToNRoundType.Intermission || matrix.RoundType == encounter.RoundType) && line.StartsWith(encounter.Keyword)) {
                                 info.Encounter = j;
                                 matrix[i] = info;
 

@@ -75,9 +75,7 @@ namespace ToNSaveManager.Utils
 
         static bool IsOptedIn = false;
         public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
-
-        static readonly ToNIndex.Map EmptyMap = new ToNIndex.Map() { IsEmpty = true, Id = byte.MaxValue, Name = "Empty" };
-        public static ToNIndex.Map RMap = EmptyMap;
+        public static ToNIndex.Map RMap = ToNIndex.Map.Empty;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -103,11 +101,11 @@ namespace ToNSaveManager.Utils
         }
 
         internal static void SetMap(ToNIndex.Map? map = null) {
-            RMap = map == null || map.IsEmpty ? EmptyMap : map;
+            RMap = map == null ? ToNIndex.Map.Empty : map;
             IsDirty = true;
 
             // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
-            StatsWindow.SetLocation(RMap);
+            StatsWindow.SetLocation(RMap, !TMatrix.IsEmpty);
             DSRichPresence.SetLocation(RMap);
         }
 
@@ -117,7 +115,7 @@ namespace ToNSaveManager.Utils
             IsDirty = true;
 
             Logger.Debug("Setting page cout: " + pages);
-
+            StatsWindow.SetPageCount(pages);
             DSRichPresence.SetPageCount(pages);
         }
 

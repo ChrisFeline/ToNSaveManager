@@ -37,6 +37,10 @@ namespace ToNSaveManager.Models
         /// Enables Discord rich presence for Terrors of Nowhere.
         /// </summary>
         public bool DiscordRichPresence { get; set; }
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate(string.Empty, "{MapName}");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate(string.Empty, "({RoundInt}?{RoundType}:{RoundType} ({RoundInt}==105?({PageCount}/8):on))");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate(string.Empty, "{TerrorName}");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate(string.Empty, "({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
 
         /// <summary>
         /// Automatically copy newly detected save codes as you play.

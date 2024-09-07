@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToNSaveManager.Models.Index {
     public enum ToNRoundType {
-        Unknown = 0,
+        Intermission = 0,
 
         // Normal
         Classic,         //  1
