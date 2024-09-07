@@ -72,9 +72,15 @@ namespace ToNSaveManager.Models.Index {
             bool isAlt = index > 0;
             if (isAlt) roundType = roundType.Substring(0, index);
 
-            Terrors = new ToNIndex.TerrorInfo[indexes.Length];
             RoundTypeRaw = GetEngRoundType(roundType, isAlt);
             RoundType = GetRoundType(RoundTypeRaw);
+
+            if (indexes.Length == 0) {
+                Terrors = [];
+                return;
+            }
+
+            Terrors = new ToNIndex.TerrorInfo[indexes.Length];
 
             switch (RoundType) {
                 // first index only

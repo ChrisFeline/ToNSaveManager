@@ -549,6 +549,7 @@ namespace ToNSaveManager
 
         const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
+        const string ROUND_MAP_RTYPE = " and the round type is ";
         const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
@@ -625,11 +626,15 @@ namespace ToNSaveManager
                     map = ToNIndex.Instance.GetMap(mapIndex);
 
                 context.SetLocation(map);
-                if (context.IsRecent) LilOSC.SetMap(map);
 
-                if (map.Id == 68) { // RUN | The Meatball Man
-                    context.SetTerrorMatrix(new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue));
+                TerrorMatrix matrix;
+                if (map.Id == 68) {
+                    matrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);
+                } else {
+                    matrix = new TerrorMatrix(line.Substring(index + length + ROUND_MAP_RTYPE.Length).Trim());
                 }
+
+                context.SetTerrorMatrix(matrix);
 
                 return true;
             }
