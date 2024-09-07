@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
-using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.LogParser;
 
 namespace ToNSaveManager
 {
@@ -17,7 +17,7 @@ namespace ToNSaveManager
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
-        internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
+        internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher<ToNLogContext>.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
         internal static void ReleaseMutex()

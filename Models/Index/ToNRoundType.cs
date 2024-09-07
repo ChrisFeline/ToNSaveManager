@@ -46,5 +46,6 @@ namespace ToNSaveManager.Models.Index {
         R, // Respawn
         W, // Win
         D, // Leaving
+        L, // Lost < This one never happens, but it will be there for legacy purposes
     }
 }

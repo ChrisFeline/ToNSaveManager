@@ -1,4 +1,4 @@
-﻿namespace ToNSaveManager.Utils
+﻿namespace ToNSaveManager.Utils.LogParser
 {
     using System;
     using System.Collections.Generic;
@@ -12,15 +12,15 @@
     using Timer = System.Windows.Forms.Timer;
 
     // Based on: https://github.com/vrcx-team/VRCX/blob/634f465927bfaef51bc04e67cf1659170953fac9/LogWatcher.cs
-    public class LogWatcher
+    public class LogWatcher<T> where T : LogContext
     {
         public class OnLineArgs : EventArgs
         {
             public DateTime Timestamp { get; private set; }
             public string Content { get; private set; }
-            public LogContext Context { get; private set; }
+            public T Context { get; private set; }
 
-            public OnLineArgs(string content, DateTime timestamp, LogContext context)
+            public OnLineArgs(string content, DateTime timestamp, T context)
             {
                 Content = content;
                 Timestamp = timestamp;
@@ -32,7 +32,7 @@
         public event EventHandler<EventArgs>? OnTick;
 
         private DirectoryInfo m_LogDirectoryInfo;
-        private readonly Dictionary<string, LogContext> m_LogContextMap = new Dictionary<string, LogContext>();
+        private readonly Dictionary<string, T> m_LogContextMap = new Dictionary<string, T>();
 
         internal static string GetVRChatDataLocation() =>
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
@@ -88,13 +88,14 @@
                         continue;
                     }
 
-                    LogContext? logContext;
+                    T? logContext;
                     if (!m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
                     {
-                        logContext = new LogContext(fileInfo.Name);
+                        logContext = LogContext.CreateContext<T>(fileInfo.Name);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
 
-                        if (firstRun) {
+                        if (firstRun)
+                        {
                             logContext.Position = GetParsedPos(logContext.DateKey);
                             logContext.RoomReadPos = logContext.Position;
                         }
@@ -137,9 +138,9 @@
                 OnTick.Invoke(this, EventArgs.Empty);
         }
 
-        public LogContext? GetEarliestContext()
+        public T? GetEarliestContext()
         {
-            LogContext? context = null;
+            T? context = null;
             foreach (var pair in m_LogContextMap)
             {
                 if (context == null || pair.Value.RoomDate > context.RoomDate)
@@ -158,7 +159,8 @@
         readonly static FieldInfo byteLenField = typeof(StreamReader).GetField("_byteLen", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         readonly static FieldInfo charBufferField = typeof(StreamReader).GetField("_charBuffer", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
-        static long GetReaderPosition(StreamReader reader) {
+        static long GetReaderPosition(StreamReader reader)
+        {
             // shift position back from BaseStream.Position by the number of bytes read
             // into internal buffer.
             int byteLen = (int)byteLenField.GetValue(reader);
@@ -167,7 +169,8 @@
             // if we have consumed chars from the buffer we need to calculate how many
             // bytes they represent in the current encoding and add that to the position.
             int charPos = (int)charPosField.GetValue(reader);
-            if (charPos > 0) {
+            if (charPos > 0)
+            {
                 char[] charBuffer = (char[])charBufferField.GetValue(reader);
                 var encoding = reader.CurrentEncoding;
                 var bytesConsumed = encoding.GetBytes(charBuffer, 0, charPos).Length;
@@ -183,7 +186,7 @@
         /// </summary>
         /// <param name="fileInfo">The file information of the log file to parse.</param>
         /// <param name="logContext">The log context to update.</param>
-        private void ParseLog(FileInfo fileInfo, LogContext logContext, bool skip = false)
+        private void ParseLog(FileInfo fileInfo, T logContext, bool skip = false)
         {
             try
             {
@@ -230,7 +233,7 @@
             }
         }
 
-        private void HandleLine(string line, LogContext logContext)
+        private void HandleLine(string line, T logContext)
         {
             if (line.Length == 0 || line.Length <= 36 || line[31] != '-') return;
 
@@ -243,7 +246,7 @@
             if (ParseLocation(line, lineDate, logContext) ||
                 ParseDisplayName(line, lineDate, logContext) ||
                 ParsePlayerJoin(line, lineDate, logContext) ||
-                (RecordInstanceLogs && ParseUdonException(line, lineDate, logContext))) { }
+                RecordInstanceLogs && ParseUdonException(line, lineDate, logContext)) { }
 
             if (OnLine != null)
                 OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
@@ -252,7 +255,7 @@
         }
 
         const string UserAuthKeyword = "User Authenticated: ";
-        private bool ParseDisplayName(string line, DateTime lineDate, LogContext logContext)
+        private bool ParseDisplayName(string line, DateTime lineDate, T logContext)
         {
             if (!line.Contains(UserAuthKeyword)) return false;
 
@@ -263,7 +266,8 @@
             {
                 string displayName = line.Substring(index, length);
                 logContext.DisplayName = displayName.Trim();
-            } else
+            }
+            else
             {
                 logContext.DisplayName = "Unknown";
             }
@@ -273,10 +277,12 @@
 
         internal const string LocationKeyword = "[Behaviour] Entering Room: ";
         internal const string InstanceKeyword = "[Behaviour] Joining wrld_";
+        internal const string LeavingKeyword = "[Behaviour] OnLeftRoom";
         internal const int InstanceKeywordLength = 20;
-        private bool ParseLocation(string line, DateTime lineDate, LogContext logContext)
+        private bool ParseLocation(string line, DateTime lineDate, T logContext)
         {
-            if (line.Contains(InstanceKeyword)) {
+            if (line.Contains(InstanceKeyword))
+            {
                 var index = line.IndexOf(InstanceKeyword, StringComparison.InvariantCulture) + InstanceKeywordLength;
                 if (index >= line.Length) return false;
 
@@ -286,8 +292,8 @@
                 return true;
             }
 
-            if (line.Contains(LocationKeyword)) {
-
+            if (line.Contains(LocationKeyword))
+            {
                 var index = line.IndexOf(LocationKeyword, StringComparison.InvariantCulture) + LocationKeyword.Length;
                 if (index >= line.Length) return false;
 
@@ -299,12 +305,17 @@
                 return true;
             }
 
+            if (line.Contains(LeavingKeyword)) {
+                logContext.Exit();
+                return true;
+            }
+
             return false;
         }
 
         const string UserJoinKeyword = "[Behaviour] OnPlayerJoined";
         const string UserLeaveKeyword = "[Behaviour] OnPlayerLeft";
-        private bool ParsePlayerJoin(string line, DateTime lineDate, LogContext logContext)
+        private bool ParsePlayerJoin(string line, DateTime lineDate, T logContext)
         {
             int index;
             string displayName;
@@ -330,7 +341,7 @@
             return false;
         }
 
-        private bool ParseUdonException(string line, DateTime lineTime, LogContext logContext)
+        private bool ParseUdonException(string line, DateTime lineTime, T logContext)
         {
             const string errorMatchStr = "[UdonBehaviour] An exception occurred during Udon execution";
 
@@ -338,145 +349,6 @@
 
             logContext.AddException(line);
             return true;
-        }
-
-        public class LogContext
-        {
-            public bool IsRecent;
-
-            public long Length;
-            public long Position;
-            public long ReadPos;
-            public bool Initialized { get; private set; }
-            public void SetInit() => Initialized = true;
-
-            public readonly string FileName;
-            public readonly string DateKey;
-            public string? DisplayName;
-
-            // Recent Instance info
-            public long RoomReadPos { get; set; }
-            public string? RoomName { get; private set; }
-
-            public string? InstanceID { get; private set; }
-            public bool IsHomeWorld { get; private set; }
-
-            public DateTime RoomDate { get; private set; }
-            public readonly HashSet<string> Players;
-
-            public readonly StringBuilder InstanceExceptions; // For debugging
-            public readonly StringBuilder InstanceLogs;
-
-            // Hold temporal data in this log instance
-            private Dictionary<string, object> Data = new Dictionary<string, object>();
-            public bool TryGet<T>(string key, out T? result)
-            {
-                if (HasKey(key))
-                {
-                    result = (T?)Data[key];
-                    return true;
-                }
-
-                result = default(T);
-                return false;
-            }
-            public bool HasKey(string key) => Data.ContainsKey(key);
-            public T? Get<T>(string key)
-            {
-                return HasKey(key) ? (T)Data[key] : default(T);
-            }
-            public void Set<T>(string key, T? value)
-            {
-                if (value == null)
-                {
-                    Rem(key);
-                    return;
-                }
-
-                Data[key] = value;
-            }
-            public void Rem(string key)
-            {
-                if (HasKey(key)) Data.Remove(key);
-            }
-
-            public LogContext(string fileName)
-            {
-                FileName = fileName;
-                DateKey = FileName.Substring(11, 19);
-                Players = new HashSet<string>();
-                InstanceExceptions = new StringBuilder();
-                InstanceLogs = new StringBuilder();
-            }
-
-            /// <summary>
-            /// Called when a player leaves the room.
-            /// </summary>
-            public void Join(string displayName)
-            {
-                if (!Players.Contains(displayName))
-                    Players.Add(displayName);
-            }
-
-            /// <summary>
-            /// Called when a player joins the room.
-            /// </summary>
-            public void Leave(string displayName)
-            {
-                if (Players.Contains(displayName))
-                    Players.Remove(displayName);
-            }
-
-            /// <summary>
-            /// Called when user joins a new room.
-            /// </summary>
-            public void Enter(string name, DateTime date)
-            {
-                RoomName = name;
-                RoomDate = date;
-                Players.Clear();
-                InstanceExceptions.Clear();
-                InstanceLogs.Clear();
-
-                Logger.Info("Entering Room Name: " + name);
-            }
-            public void Enter(string instanceID, bool isHomeWorld) {
-                InstanceID = instanceID;
-                IsHomeWorld = isHomeWorld;
-
-                Logger.Info($"Instace [{isHomeWorld}] : {instanceID}");
-            }
-
-            public void AddException(string exceptionLog)
-            {
-                InstanceExceptions.AppendLine(exceptionLog);
-                InstanceExceptions.AppendLine();
-            }
-            public void AddLog(string line)
-            {
-                InstanceLogs.AppendLine(line);
-            }
-
-            /// <summary>
-            /// Get's a list of players in this room as a string.
-            /// </summary>
-            public string GetRoomString(bool lineBreak = true)
-            {
-                StringBuilder sb = new StringBuilder();
-                const string start = "- ";
-                sb.Append(start);
-                sb.AppendJoin(lineBreak ? Environment.NewLine + start : ", ", Players);
-                return sb.ToString();
-            }
-
-            public string GetRoomLogs()
-            {
-                return InstanceLogs.ToString();
-            }
-            public string GetRoomExceptions()
-            {
-                return InstanceExceptions.ToString();
-            }
         }
     }
 }

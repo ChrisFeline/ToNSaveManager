@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
-
-using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using ToNSaveManager.Utils.LogParser;
 
 namespace ToNSaveManager.Models
 {
@@ -122,7 +121,7 @@ namespace ToNSaveManager.Models
             SetDirty();
         }
 
-        public void SetLogContext(LogContext context)
+        public void SetLogContext(ToNLogContext context)
         {
             DisplayName = context.DisplayName;
             SetDirty();

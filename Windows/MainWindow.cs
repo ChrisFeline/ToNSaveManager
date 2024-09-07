@@ -5,19 +5,18 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Windows;
 
-using OnLineArgs = ToNSaveManager.Utils.LogWatcher.OnLineArgs;
-using LogContext = ToNSaveManager.Utils.LogWatcher.LogContext;
+using ToNLogContext = ToNSaveManager.Utils.LogParser.ToNLogContext;
+using OnLineArgs = ToNSaveManager.Utils.LogParser.LogWatcher<ToNSaveManager.Utils.LogParser.ToNLogContext>.OnLineArgs;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models.Index;
-using System.Xml.Linq;
-using ToNSaveManager.Models.Stats;
+using ToNSaveManager.Utils.LogParser;
 
 namespace ToNSaveManager
 {
     public partial class MainWindow : Form {
         #region Initialization
-        internal static readonly LogWatcher LogWatcher = new LogWatcher("wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd");
+        internal static readonly LogWatcher<ToNLogContext> LogWatcher = new LogWatcher<ToNLogContext>("wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd");
         // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
         internal static MainWindow? Instance;
@@ -535,6 +534,7 @@ namespace ToNSaveManager
         const string ROUND_PHASE_KEY = "rPhase";
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
+        const string ROUND_OVER_KEYWORD = "RoundOver";
         const string ROUND_DEATH_KEYWORD = "You died.";
         const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
 
@@ -553,7 +553,7 @@ namespace ToNSaveManager
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
-            LogContext context = e.Context;
+            ToNLogContext context = e.Context;
             string line = e.Content.Substring(34);
 
             if (HandleSaveCode(line, timestamp, context)    ||
@@ -569,14 +569,14 @@ namespace ToNSaveManager
             LilOSC.SendData();
         }
 
-        private bool HandleSaveCode(string line, DateTime timestamp, LogContext context) {
+        private bool HandleSaveCode(string line, DateTime timestamp, ToNLogContext context) {
             int index = line.IndexOf(SaveInitKeyword, StringComparison.InvariantCulture);
             if (index > -1) {
-                context.Set(SaveInitKey, true);
+                context.SaveCodeCreated = true;
                 return true;
             }
 
-            if (!context.Get<bool>(SaveInitKey)) return false;
+            if (!context.SaveCodeCreated) return false;
 
             index = line.IndexOf(SaveStartKeyword, StringComparison.InvariantCulture);
             if (index < 0) return false;
@@ -589,41 +589,23 @@ namespace ToNSaveManager
 
             string save = line.Substring(index, end);
             if (string.IsNullOrEmpty(save)) {
-                context.Set(SaveInitKey, false);
+                context.SaveCodeCreated = false;
                 return false;
             }
 
             AddLogEntry(context.DateKey, save, timestamp, context);
-            context.Set(SaveInitKey, false);
+            context.SaveCodeCreated = false;
             return true;
         }
 
-        private bool HandleTerrorIndex(string line, DateTime timestamp, LogContext context) {
+        private bool HandleTerrorIndex(string line, DateTime timestamp, ToNLogContext context) {
             // Handle participation
             bool isOptedIn = line.StartsWith(ROUND_OPTIN_KEYWORD);
             if (isOptedIn || line.StartsWith(ROUND_OPTOUT_KEYWORD)) {
-                context.Set(ROUND_PARTICIPATION_KEY, isOptedIn);
-                if (!isOptedIn) {
-                    context.Rem(ROUND_KILLERS_KEY);
-                    context.Rem(ROUND_RESULT_KEY);
-                    context.Rem(ROUND_IS_SABO_KEY);
-                    context.Rem(ROUND_MAP_KEY);
-                }
-
-                if (context.IsRecent) {
-                    LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
-                    LilOSC.SetMap();
-                    LilOSC.SetOptInStatus(isOptedIn);
-                    StatsWindow.SetRoundActive(false);
-                }
-
-                Logger.Debug("Opted In: " + isOptedIn);
+                context.SetOptedIn(isOptedIn);
+                context.SetRoundResult(ToNRoundResult.R); // Respawned
                 return true;
-            } else {
-                isOptedIn = context.Get<bool>(ROUND_PARTICIPATION_KEY);
             }
-
-            if (!isOptedIn) return false;
 
             // Handle map location
             if (line.StartsWith(ROUND_MAP_LOCATION)) {
@@ -642,17 +624,16 @@ namespace ToNSaveManager
                 if (map.IsEmpty && int.TryParse(id_str, out int mapIndex))
                     map = ToNIndex.Instance.GetMap(mapIndex);
 
-                context.Set(ROUND_MAP_KEY, map);
+                context.SetLocation(map);
                 if (context.IsRecent) LilOSC.SetMap(map);
 
                 if (map.Id == 68) { // RUN | The Meatball Man
-                    TerrorMatrix terrorMatrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);
-                    context.Set(ROUND_KILLERS_KEY, terrorMatrix);
-                    if (context.IsRecent) LilOSC.SetTerrorMatrix(terrorMatrix);
+                    context.SetTerrorMatrix(new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue));
                 }
 
                 return true;
             }
+
             // Handle map swap
             if (line.StartsWith(ROUND_MAP_SWAPPED)) {
                 string id_str = line.Substring(ROUND_MAP_SWAPPED.Length).Trim();
@@ -665,24 +646,10 @@ namespace ToNSaveManager
                 return true;
             }
 
+            // REVISIT THIS LATER PLEASE
             if (line.StartsWith(ROUND_IS_SABO)) {
-                context.Set(ROUND_IS_SABO_KEY, true);
-                if (context.IsRecent) LilOSC.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = true });
-                return true;
-            }
-
-            // Track round participation results
-            isOptedIn = line.StartsWith(ROUND_WON_KEYWORD);
-            if (isOptedIn || line.StartsWith(ROUND_LOST_KEYWORD)) {
-                context.Set(ROUND_RESULT_KEY, isOptedIn ? ToNRoundResult.W : ToNRoundResult.D);
-                context.Rem(ROUND_IS_SABO_KEY);
-
-                if (context.IsRecent) {
-                    LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
-                    LilOSC.SetMap();
-                    StatsWindow.AddRound(isOptedIn);
-                    StatsWindow.SetRoundActive(false);
-                }
+                context.IsSaboteour = true;
+                context.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = true });
                 return true;
             }
 
@@ -705,40 +672,41 @@ namespace ToNSaveManager
                     }
                 }
 
-                TerrorMatrix terrorMatrix = new TerrorMatrix(roundType, killerMatrix);
-                terrorMatrix.IsSaboteur = context.Get<bool>(ROUND_IS_SABO_KEY);
-                if (context.HasKey(ROUND_MAP_KEY)) terrorMatrix.MapID = context.Get<ToNIndex.Map>(ROUND_MAP_KEY)?.Id ?? -1;
-
-                context.Set(ROUND_KILLERS_KEY, terrorMatrix);
-                context.Rem(ROUND_IS_SABO_KEY);
-
-                if (context.IsRecent) {
-                    LilOSC.SetTerrorMatrix(terrorMatrix);
-                    StatsWindow.SetRoundActive(true);
-                }
+                context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix));
                 return true;
             }
 
-            if (context.Get<bool>(ROUND_IS_SABO_KEY) && line.StartsWith("Clearing Items // Ran Item Removal")) {
-                context.Rem(ROUND_IS_SABO_KEY);
-                if (context.IsRecent) {
-                    LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
-                    StatsWindow.SetRoundActive(false);
+            if (!context.Terrors.IsEmpty) {
+                // Track round participation results / Supports live build maybe
+                if (line.StartsWith(ROUND_OVER_KEYWORD) || line.StartsWith(ROUND_WON_KEYWORD) || line.StartsWith(ROUND_LOST_KEYWORD)) {
+                    if (context.IsOptedIn) {
+                        context.SetRoundResult(context.IsAlive ? ToNRoundResult.W : ToNRoundResult.L);
+                        context.SaveSummary();
+                    }
+
+                    if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
+
+                    context.IsSaboteour = false;
+                    context.SetTerrorMatrix(TerrorMatrix.Empty);
+                    context.SetLocation(ToNIndex.Map.Empty);
+                    return true;
                 }
-                return true;
-            }
 
-            if (context.HasKey(ROUND_KILLERS_KEY)) {
-                TerrorMatrix matrix = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
+                    context.SetRoundResult(ToNRoundResult.L);
+                    context.SetIsAlive(false);
+                    if (context.IsRecent) LilOSC.SetDamage(byte.MaxValue);
+                    return true;
+                }
 
+                TerrorMatrix matrix = context.Terrors;
                 if (matrix.RoundType == ToNRoundType.Classic && matrix.MapID == 2 && line.StartsWith(ROUND_TEROR_GIGABYTE)) {
                     Logger.Debug("Correcting Round Type to GIGABYTE.");
                     matrix.RoundType = ToNRoundType.GIGABYTE;
                     matrix.Terrors = [new(1, ToNIndex.TerrorGroup.Events)];
                     matrix.TerrorCount = 1;
 
-                    context.Set(ROUND_KILLERS_KEY, matrix);
-                    if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                    context.SetTerrorMatrix(matrix);
                     return true;
                 }
 
@@ -755,8 +723,7 @@ namespace ToNSaveManager
                                 matrix[i] = info;
 
                                 Logger.Log($"Terror {terror} changed to phase {j + 1}.");
-                                context.Set(ROUND_KILLERS_KEY, matrix);
-                                if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                                context.SetTerrorMatrix(matrix);
                                 return true;
                             }
                         }
@@ -770,21 +737,11 @@ namespace ToNSaveManager
                                 matrix[i] = info;
 
                                 Logger.Log($"Terror {terror} changed to encounter {j}.");
-                                context.Set(ROUND_KILLERS_KEY, matrix);
-                                if (context.IsRecent) LilOSC.SetTerrorMatrix(matrix);
+                                context.SetTerrorMatrix(matrix);
                                 return true;
                             }
                         }
                     }
-                }
-
-                if (line.StartsWith(ROUND_DEATH_KEYWORD)) {
-                    if (context.IsRecent) {
-                        StatsWindow.SetRoundActive(false);
-                        DSRichPresence.SetIsAlive(false);
-                        LilOSC.SetDamage(byte.MaxValue);
-                    }
-                    return true;
                 }
             }
 
@@ -794,10 +751,10 @@ namespace ToNSaveManager
         const string STAT_STUN_LANDED = " landed a stun!";
         const string STAT_STUN_TARGET = " was stunned.";
         const string STAT_HIT = "Hit - ";
-        private bool HandleStatCollection(string line, DateTime timestamp, LogContext context) {
+        private bool HandleStatCollection(string line, DateTime timestamp, ToNLogContext context) {
             if (!context.IsRecent) return false;
 
-            if (line.Contains(LogWatcher.LocationKeyword)) {
+            if (line.Contains(LogWatcher<ToNLogContext>.LocationKeyword)) {
                 StatsWindow.ClearLobby();
                 return true;
             }
@@ -865,7 +822,7 @@ namespace ToNSaveManager
 
             Export(collection, true);
         }
-        private void AddLogEntry(string dateKey, string content, DateTime timestamp, LogContext context) {
+        private void AddLogEntry(string dateKey, string content, DateTime timestamp, ToNLogContext context) {
             History? collection = SaveData[dateKey];
             if (collection == null) {
                 collection = new History(dateKey);
@@ -886,14 +843,10 @@ namespace ToNSaveManager
 
             if (Settings.Get.SaveNames) entry.Players = context.GetRoomString();
             if (Settings.Get.SaveRoundInfo) {
-                if (context.HasKey(ROUND_RESULT_KEY)) {
-                    ToNRoundResult result = context.Get<ToNRoundResult>(ROUND_RESULT_KEY);
-                    entry.RResult = result;
-                    context.Rem(ROUND_RESULT_KEY);
-                }
+                entry.RResult = context.IsLeavingRoom ? ToNRoundResult.D : context.Summary.Result;
 
-                if (context.HasKey(ROUND_KILLERS_KEY)) {
-                    TerrorMatrix killers = context.Get<TerrorMatrix>(ROUND_KILLERS_KEY);
+                if (!context.Summary.IsEmpty) {
+                    TerrorMatrix killers = context.Summary.Terrors;
                     entry.RT = killers.RoundType;
                     entry.TD = killers.Terrors;
 
@@ -902,13 +855,10 @@ namespace ToNSaveManager
                             entry.Note = killers.GetTerrorNames();
                     }
 
-                    context.Rem(ROUND_KILLERS_KEY);
-                }
-
-                if (context.HasKey(ROUND_MAP_KEY)) {
-                    var map = context.Get<ToNIndex.Map>(ROUND_MAP_KEY);
+                    var map = context.Summary.Map;
                     entry.MapID = map.IsEmpty ? -1 : map.Id;
-                    context.Rem(ROUND_MAP_KEY);
+
+                    context.ClearSummary();
                 }
             }
 

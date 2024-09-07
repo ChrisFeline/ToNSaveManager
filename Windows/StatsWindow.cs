@@ -61,7 +61,7 @@ namespace ToNSaveManager
         }
 
         internal static bool IsRoundActive;
-        internal static void SetRoundActive(bool active) {
+        internal static void SetActiveInRound(bool active) {
             if (IsRoundActive != active) {
                 Logger.Debug("Setting Round Active: " + active);
 

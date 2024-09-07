@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace ToNSaveManager.Models.Index {
     internal struct TerrorMatrix {
         const string ROUND_TYPE_ALTERNATE = " (Alternate)";
-        internal static TerrorMatrix Empty = new TerrorMatrix();
+        internal static TerrorMatrix Empty = new TerrorMatrix() { IsEmpty = true };
+
+        public bool IsEmpty { get; private set; }
 
         public ToNIndex.TerrorInfo[] Terrors;
         public int TerrorCount;
