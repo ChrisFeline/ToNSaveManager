@@ -537,6 +537,7 @@ namespace ToNSaveManager
         const string ROUND_OVER_KEYWORD = "RoundOver";
         const string ROUND_DEATH_KEYWORD = "You died.";
         const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
+        const string ROUND_PAGE_FOUND = "Page Collected - ";
 
         const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
@@ -712,6 +713,12 @@ namespace ToNSaveManager
                     matrix.TerrorCount = 1;
 
                     context.SetTerrorMatrix(matrix);
+                    return true;
+                }
+
+                if (matrix.RoundType == ToNRoundType.Eight_Pages && line.StartsWith(ROUND_PAGE_FOUND)) {
+                    char pageChar = line[ROUND_PAGE_FOUND.Length + 1];
+                    if (int.TryParse(pageChar.ToString(), out int pages)) LilOSC.SetPageCount(pages);
                     return true;
                 }
 

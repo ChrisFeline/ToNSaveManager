@@ -100,7 +100,7 @@ namespace ToNSaveManager.Utils.LogParser {
         /// <summary>
         /// Called when user is leaving room.
         /// </summary>
-        public void Exit() {
+        public virtual void Exit() {
             Logger.Info("Leaving instance...");
             IsLeavingRoom = true;
         }

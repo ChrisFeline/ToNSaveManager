@@ -19,6 +19,16 @@ namespace ToNSaveManager.Utils.LogParser
         public ToNIndex.Map Location = ToNIndex.Map.Empty;
         public ToNRoundResult Result = ToNRoundResult.R;
 
+        public override void Exit() {
+            base.Exit();
+
+            ClearSummary();
+            SetOptedIn(false);
+            SetTerrorMatrix(TerrorMatrix.Empty);
+            SetLocation(ToNIndex.Map.Empty);
+            SetRoundResult(ToNRoundResult.D);
+        }
+
         public void SetIsAlive(bool alive) {
             if (IsAlive == alive) return;
 
@@ -28,6 +38,7 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsRecent) {
                 StatsWindow.SetActiveInRound(alive);
                 DSRichPresence.SetIsAlive(alive);
+                if (IsAlive) LilOSC.SetPageCount();
             }
         }
 
