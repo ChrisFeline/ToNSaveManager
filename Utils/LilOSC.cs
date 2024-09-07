@@ -34,6 +34,7 @@ namespace ToNSaveManager.Utils
         const string ParamTerrorColorV = "ToN_ColorV";
 
         const string ParamDamaged = "ToN_Damaged";
+        const string ParamPages = "ToN_Pages";
 
         internal static bool IsDirty = false;
 
@@ -48,6 +49,8 @@ namespace ToNSaveManager.Utils
         static bool LastSaboteur = false;
         static int LastMapID = -1;
         static Color LastTerrorColor = Color.Black;
+
+        static int LastPageCount = 0;
 
         static string[]? m_EncounterKeys { get; set; }
         static string[] EncounterKeys {
@@ -106,6 +109,16 @@ namespace ToNSaveManager.Utils
             // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
             StatsWindow.SetLocation(RMap);
             DSRichPresence.SetLocation(RMap);
+        }
+
+        static int PageCount = 0;
+        internal static void SetPageCount(int pages = 0) {
+            PageCount = pages;
+            IsDirty = true;
+
+            Logger.Debug("Setting page cout: " + pages);
+
+            DSRichPresence.SetPageCount(pages);
         }
 
         private static Timer? DamageTimer;
@@ -244,6 +257,7 @@ namespace ToNSaveManager.Utils
                 if (LastRoundType != value || force) SendParam(ParamRoundType, LastRoundType = value);
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
+                if (LastPageCount != PageCount || force) SendParam(ParamPages, LastPageCount = PageCount);
             }
 
             if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {

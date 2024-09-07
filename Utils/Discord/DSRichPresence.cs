@@ -68,6 +68,14 @@ namespace ToNSaveManager.Utils.Discord {
             SetDirty();
         }
 
+        static int PageCount = 0;
+        internal static void SetPageCount(int pages = 0) {
+            if (PageCount != pages) {
+                PageCount = pages;
+                SetDirty();
+            }
+        }
+
         static ToNRoundType CurrentRoundType = ToNRoundType.Unknown;
         static string CurrentRoundTypeAssetID = "icon_254_0";
         static void SetRoundType(ToNRoundType roundType) {
@@ -153,7 +161,7 @@ namespace ToNSaveManager.Utils.Discord {
             if (IsDirty && Client != null && Client.IsInitialized && Client.CurrentUser != null) {
                 IsDirty = false;
 
-                string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + " on" : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
+                string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
                 string state = CurrentMatrix.Length > 0 && CurrentMap.IsEmpty ? "Somewhere" : (CurrentMap.IsEmpty ? "Overseer's Court" : CurrentMap.Name);
 
                 bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
