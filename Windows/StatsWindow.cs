@@ -221,25 +221,11 @@ namespace ToNSaveManager
             return text;
         }
 
-        internal static readonly Regex MessageTemplatePattern = new Regex(@"{\w+}", RegexOptions.Compiled);
-        internal const string LOBBY_PREFIX = "LOBBY";
 
         internal static void UpdateChatboxContent() {
             if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
-            string template = ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
+            string template = TemplateManager.ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
             LilOSC.SetChatboxMessage(template);
-        }
-
-        internal static string ReplaceTemplate(string template) {
-            return MessageTemplatePattern.Replace(template, UpdateChatboxEvaluator);
-        }
-
-        static string UpdateChatboxEvaluator(Match m) {
-            string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
-
-            if (!string.IsNullOrEmpty(key)) return ToNStats.Get(key)?.ToString() ?? m.Value;
-
-            return m.Value;
         }
     }
 }

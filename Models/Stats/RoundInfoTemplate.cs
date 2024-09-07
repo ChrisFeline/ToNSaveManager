@@ -22,7 +22,7 @@ namespace ToNSaveManager.Models.Stats {
             set {
                 m_Template = value;
 
-                m_TemplateKeys = StatsWindow.MessageTemplatePattern.Matches(value).Select(m => {
+                m_TemplateKeys = TemplateManager.MessageTemplatePattern.Matches(value).Select(m => {
                     return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
                 }).Where(k => !string.IsNullOrEmpty(k) && ToNStats.HasKey(k)).ToArray();
 
@@ -51,7 +51,7 @@ namespace ToNSaveManager.Models.Stats {
 
             if (!Directory.Exists(m_FileDir)) Directory.CreateDirectory(m_FileDir);
 
-            string content = StatsWindow.ReplaceTemplate(Template);
+            string content = TemplateManager.ReplaceTemplate(Template);
             File.WriteAllText(FilePath, content);
 
             Logger.Debug($"Write File ({FileName}): {content}");
