@@ -10,7 +10,8 @@ namespace ToNSaveManager {
             Prefix = $"[{prefix}] ";
         }
 
-        internal void Print(object? message) => Logger.Log(Prefix + message, Logger.LogType.Log);
+        internal void Log(object? message, LogType logType = LogType.Log) => Logger.Log(Prefix + message, logType);
+        internal void Print(object? message) => Log(message, LogType.Log);
         [Conditional("DEBUG")] internal void Debug(string? message) => Logger.Debug(Prefix + message);
         [Conditional("DEBUG")] internal void Debug(object? message) => Logger.Debug(Prefix + message);
         internal void Warning(string? message) => Logger.Warning(Prefix + message);
@@ -21,16 +22,16 @@ namespace ToNSaveManager {
         internal void Error(object? message) => Logger.Error(Prefix + message);
     }
 
+    internal enum LogType {
+        Log,
+        Debug,
+        Warning,
+        Info,
+        Error
+    }
+
     internal static class Logger {
         private static readonly StringBuilder SharedStringBuilder = new StringBuilder();
-
-        internal enum LogType {
-            Log,
-            Debug,
-            Warning,
-            Info,
-            Error
-        }
 
         private static readonly StreamWriter LogFileWriter;
         static Logger () {
@@ -53,17 +54,23 @@ namespace ToNSaveManager {
             }
         }
         internal static void Log(object? message, LogType logType = LogType.Log) => Log(message + string.Empty, logType);
+        internal static void LogFormat(string message, LogType logType = LogType.Log, params string[] args)
+            => Log(string.Format(message, args), logType);
 
         [Conditional("DEBUG")] // Debug builds only
         internal static void Debug(string? message) => Log(message, LogType.Debug);
         [Conditional("DEBUG")] // Debug builds only
         internal static void Debug(object? message) => Log(message, LogType.Debug);
 
-        internal static void Warning(string? message) => Log(message, LogType.Warning); 
+        internal static void Warning(string? message) => Log(message, LogType.Warning);
         internal static void Warning(object? message) => Log(message, LogType.Warning);
+        internal static void WarningFormat(string message, params string[] args) => LogFormat(message, LogType.Warning, args);
+
         internal static void Info(string? message) => Log(message, LogType.Info);
         internal static void Info(object? message) => Log(message, LogType.Info);
+
         internal static void Error(string? message) => Log(message, LogType.Error);
         internal static void Error(object? message) => Log(message, LogType.Error);
+        internal static void ErrorFormat(string message, params string[] args) => LogFormat(message, LogType.Error, args);
     }
 }

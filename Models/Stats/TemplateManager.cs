@@ -165,46 +165,6 @@ namespace ToNSaveManager.Models.Stats {
             }
 
             return sb.ToString();
-
-            string key = m.Groups["k"].Value;
-            if (!ToNStats.HasKey(key)) return m.Value;
-
-            object? value = ToNStats.Get(key);
-            bool isNumber = ToNStats.GetType(key) == typeof(int);
-
-            int operatorId = 0; // equals by default
-            object? other = "True";
-
-            string customOp = m.Groups["c"].Value;
-            if (!string.IsNullOrEmpty(customOp)) {
-                operatorId = Array.IndexOf(Operators, customOp);
-                if (operatorId < 0) operatorId = 0;
-
-                other = customOp.Substring(Operators[operatorId].Length);
-                if (isNumber && int.TryParse(other.ToString(), out int v)) {
-                    other = v;
-                }
-            } else if (isNumber) other = 0;
-
-            bool result = false;
-            if (isNumber) {
-                int c = ((int)(value ?? 0)).CompareTo(other);
-
-                switch (operatorId) {
-                    default:
-                    case 0: result = c == 0; break;
-                    case 1: result = c >= 0; break;
-                    case 2: result = c <= 0; break;
-                    case 3: result = c != 0; break;
-                    case 4: result = c <  0; break;
-                    case 5: result = c >  0; break;
-                }
-            } else {
-                result = string.Compare(value?.ToString(), other?.ToString()) == 0;
-                if (operatorId > 0) result = !result;
-            }
-
-            return ReplaceTemplate(m.Groups[result ? "a" : "b"].Value);
         }
 
         static string UpdateChatboxEvaluator(Match m) {
