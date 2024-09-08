@@ -275,8 +275,8 @@ namespace ToNSaveManager.Utils.Discord {
             { "icon_1_28_v50", "https://i.imgur.com/R0DwhQ1.gif" }, // Roblander Midnight
             { "icon_1_10", "https://i.imgur.com/y6mPG7p.gif" }, // zm64
             { "icon_m_10", "https://i.imgur.com/p0HG7Xc.gif" }, // zm64 midnight
-            { "icon_1_3", "https://i.imgur.com/U6wGpqV.gif" }, // parhelion
-            { "icon_m_3", "https://i.imgur.com/NwEWIyn.gif" }, // Parhelion Midnight
+            { "icon_1_3", "https://i.imgur.com/NwEWIyn.gif" }, // parhelion
+            { "icon_m_3", "https://i.imgur.com/U6wGpqV.gif" }, // Parhelion Midnight
         };
     }
 }
