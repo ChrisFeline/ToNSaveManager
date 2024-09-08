@@ -60,8 +60,10 @@ namespace ToNSaveManager.Utils.LogParser
                 LilOSC.SetOptInStatus(isOptedIn);
             }
 
-            SetIsAlive(false);
-            if (!IsOptedIn && Summary.Result != ToNRoundResult.R) ClearSummary();
+            if (!IsOptedIn) {
+                SetIsAlive(false);
+                ClearSummary();
+            }
         }
         public void SetTerrorMatrix(TerrorMatrix matrix) {
             if (Terrors.IsEmpty != matrix.IsEmpty)
