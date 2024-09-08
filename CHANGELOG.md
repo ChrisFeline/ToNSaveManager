@@ -3,6 +3,7 @@
 ## Additions
 - Updated for new ToN Update. Yes, it's time! Create a new instance!
 - Added stats window. Here you can track stats like rounds won/lost, killer stuns, etc...
+- Added Discord Rich Presence support, yes... you can show you're friends how addicted you're to the game.
 - Added chatbox stats display. (Only shown on Intermissions)
 	- You can display your stats in the chatbox, but the chatbox will be hidden on purpose when participating on a round. Chatbox will be displayed again after death or end of round.
 	- You can customize the chatbox message template.
