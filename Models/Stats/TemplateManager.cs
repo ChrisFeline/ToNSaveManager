@@ -51,13 +51,14 @@ namespace ToNSaveManager.Models.Stats {
 
             string customOp = m.Groups["c"].Value;
             if (!string.IsNullOrEmpty(customOp)) {
-                operatorId = Array.IndexOf(Operators, customOp);
+                string op = new string(customOp.TakeWhile(c => !Char.IsDigit(c)).ToArray());
+                operatorId = Array.IndexOf(Operators, op);
                 if (operatorId < 0) operatorId = 0;
 
                 other = customOp.Substring(Operators[operatorId].Length);
                 if (isNumber && int.TryParse(other.ToString(), out int v)) {
                     other = v;
-                }
+                } else if (isNumber) other = 0;
             } else if (isNumber) other = 0;
 
             bool result = false;
@@ -70,8 +71,8 @@ namespace ToNSaveManager.Models.Stats {
                     case 1: result = c >= 0; break;
                     case 2: result = c <= 0; break;
                     case 3: result = c != 0; break;
-                    case 4: result = c < 0; break;
-                    case 5: result = c > 0; break;
+                    case 4: result = c > 0; break;
+                    case 5: result = c < 0; break;
                 }
             } else {
                 result = string.Compare(value?.ToString(), other?.ToString()) == 0;
@@ -118,12 +119,6 @@ namespace ToNSaveManager.Models.Stats {
                     case SYMBOL_CLOSE:
                         depth--;
                         if (depth == 0) {
-                            Logger.Debug(m.Value);
-                            Logger.Debug("KEY IS : " + sb_key);
-                            Logger.Debug("OPT IS : " + sb_opt);
-                            Logger.Debug("VAL A  : " + sb_val_a);
-                            Logger.Debug("VAL B  : " + sb_val_b);
-
                             if (GetConditionValue(sb_key.ToString(), sb_val_a.ToString(), sb_val_b.ToString(), out string output))
                                 sb.Append(output);
 
