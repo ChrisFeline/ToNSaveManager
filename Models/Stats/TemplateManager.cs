@@ -74,6 +74,8 @@ namespace ToNSaveManager.Models.Stats {
                     case 4: result = c > 0; break;
                     case 5: result = c < 0; break;
                 }
+            } else if (string.IsNullOrEmpty(customOp)) {
+                result = !string.IsNullOrEmpty(value?.ToString());
             } else {
                 result = string.Compare(value?.ToString(), other?.ToString()) == 0;
                 if (operatorId > 0) result = !result;
