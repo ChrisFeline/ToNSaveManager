@@ -69,8 +69,11 @@ namespace ToNSaveManager.Utils.LogParser
             if (Terrors.IsEmpty != matrix.IsEmpty)
                 SetIsAlive(Terrors.IsEmpty); // Is living
 
-            Terrors = matrix;
             matrix.IsSaboteur = IsSaboteour && !matrix.IsEmpty;
+            matrix.MapID = Location.IsEmpty ? -1 : Location.Id;
+            Terrors = matrix;
+
+            Logger.Debug("Terror context set to: " + matrix);
 
             if (IsRecent) {
                 LilOSC.SetTerrorMatrix(matrix);
