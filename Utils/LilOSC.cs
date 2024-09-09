@@ -35,6 +35,7 @@ namespace ToNSaveManager.Utils
 
         const string ParamDamaged = "ToN_Damaged";
         const string ParamPages = "ToN_Pages";
+        const string ParamItemStatus = "ToN_ItemStatus";
 
         internal static bool IsDirty = false;
 
@@ -117,6 +118,17 @@ namespace ToNSaveManager.Utils
             Logger.Debug("Setting page cout: " + pages);
             StatsWindow.SetPageCount(pages);
             DSRichPresence.SetPageCount(pages);
+        }
+
+        static bool ItemStatus = true;
+        internal static void SetItemStatus(bool status) {
+            //IsDirty = true;
+
+            if (ItemStatus != status) {
+                ItemStatus = status;
+                Logger.Debug("Setting Item Status: " + status);
+                SendParam(ParamItemStatus, status);
+            }
         }
 
         private static Timer? DamageTimer;

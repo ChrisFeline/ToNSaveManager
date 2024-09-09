@@ -558,7 +558,7 @@ namespace ToNSaveManager
             ToNLogContext context = e.Context;
             string line = e.Content.Substring(34);
 
-            if (HandleSaveCode(line, timestamp, context)    ||
+            if (HandleSaveCode(line, timestamp, context) ||
                 HandleTerrorIndex(line, timestamp, context) ||
                 HandleStatCollection(line, timestamp, context)) { }
         }
@@ -664,7 +664,7 @@ namespace ToNSaveManager
             bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN); // Killers is unknown - 
             bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL); // Killers have been revealed - 
             if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) { // Killers have been set - 
-                int index  = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
+                int index = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
                 int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index, StringComparison.InvariantCulture);
                 if (rndInd < 0) return true;
 
@@ -680,6 +680,7 @@ namespace ToNSaveManager
                     }
                 }
 
+                Logger.Debug("SETTING TERROR CONTEXT");
                 context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix));
                 return true;
             }
@@ -786,6 +787,13 @@ namespace ToNSaveManager
             if (line.StartsWith(STAT_HIT)) {
                 string ammount = line.Substring(STAT_HIT.Length).Trim();
                 if (int.TryParse(ammount, out int result)) StatsWindow.AddDamage(result);
+                return true;
+            }
+
+            bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!");
+            bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!");
+            if (isActivated || isDeactivated) {
+                LilOSC.SetItemStatus(isActivated);
                 return true;
             }
 
