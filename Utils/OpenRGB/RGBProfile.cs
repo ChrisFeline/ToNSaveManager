@@ -16,8 +16,8 @@ namespace ToNSaveManager.Utils.OpenRGB {
 
         public List<RGBDevice> Entries = new List<RGBDevice>() {
             new RGBDevice() {
-                Comment = $"This section defines a device, set the name to your device name found on the generated '{GeneratedFileName}' file",
-                Name = "SteelSeries Apex 3",
+                Comment = $"This section defines a device, set the 'DeviceID' property to your device id number found on the generated '{GeneratedFileName}' file",
+                DeviceID = 1,
                 Areas = [
                     new RGBDevice.Area {
                         Comment = "Leave 'Leds' empty to colorize all the Leds on the device. - 'Dark On Start' turns the LEDs off when the round is about to start.",
@@ -33,8 +33,8 @@ namespace ToNSaveManager.Utils.OpenRGB {
                         FlashOnMidnight = true
                     },
                     new RGBDevice.Area {
-                        Comment = "Set the type to '1' if you want to choose a range of led IDs, for example if you want to select from id '0' to id '7', set the Leds property to [0,7] and Type to '1'",
-                        Type = RGBDevice.AreaType.Range,
+                        Comment = "Set the 'UseRange' property to 'true' if you want to choose a range of led IDs, for example if you want to select from id '0' to id '7', set the Leds property to [0,7]",
+                        UseRange = true,
                         Group = RGBGroupType.Terror,
                         //Leds = [ 0, 1, 2, 3, 4, 5, 6, 7 ]
                         Leds = [ 0, 7 ],
@@ -44,7 +44,7 @@ namespace ToNSaveManager.Utils.OpenRGB {
             },
             new RGBDevice() {
                 Comment = "You can define multiple devices",
-                Name = "G502 HERO Gaming Mouse",
+                DeviceID = 2,
                 Areas = [
                     new RGBDevice.Area {
                         Comment = "'Flash On Midnight' will make the LEDs blink when a midnight round is taking place.",

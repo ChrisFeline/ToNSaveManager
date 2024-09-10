@@ -5,7 +5,6 @@ using ToNSaveManager.Models.Index;
 using Newtonsoft.Json;
 using ToNSaveManager.Utils.Extensions;
 using ToNSaveManager.Models;
-using System.Drawing.Drawing2D;
 
 namespace ToNSaveManager.Utils.OpenRGB
 {
@@ -55,7 +54,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                         for (int j = 0; j < Profile.Entries.Count; j++)
                         {
                             RGBDevice entry = Profile.Entries[j];
-                            if (!device.Name.Equals(entry.Name)) continue;
+                            if (!device.Index.Equals(entry.DeviceID)) continue;
 
                             for (int a = 0; a < entry.Areas.Length; a++)
                             {
@@ -68,7 +67,7 @@ namespace ToNSaveManager.Utils.OpenRGB
 
                                     if (len == 0) {
                                         Array.Fill(colors, color);
-                                    } else if (area.Type == RGBDevice.AreaType.Range) {
+                                    } else if (area.UseRange) {
                                         len = len - 1;
                                         for (int l = 0; l < len; l += 2) {
                                             colors.FillRange(color, area.Leds[l], area.Leds[l + 1]);
@@ -113,14 +112,17 @@ namespace ToNSaveManager.Utils.OpenRGB
             if (!Client.Connected && Client.TryConnect())
             {
                 Devices = Client.GetAllControllerData();
-                Dictionary<string, Dictionary<int, string>> rgbKeys = new Dictionary<string, Dictionary<int, string>>();
+                Dictionary<string, Dictionary<int, string>> rgbKeys = new ();
 
                 Log.Debug("Found devices:");
                 foreach (var device in Devices)
                 {
-                    Log.Debug(device.Name);
+                    string nameKey = $"ID: '{device.Index}'  |  NAME: '{device.Name}'";
 
-                    Dictionary<int, string> keys = new Dictionary<int, string>();
+                    Log.Debug(" - " + nameKey);
+
+                    Dictionary<int, string> keys = new ();
+
                     var leds = device.Leds;
                     for (int i = 0; i < leds.Length; i++)
                     {
@@ -128,7 +130,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                         if (!string.IsNullOrEmpty(name)) keys[i] = name;
                     }
 
-                    rgbKeys[device.Name] = keys;
+                    rgbKeys[nameKey] = keys;
                 }
 
                 File.WriteAllText(RGBProfile.GeneratedFileName, JsonConvert.SerializeObject(rgbKeys, Formatting.Indented));
@@ -138,7 +140,7 @@ namespace ToNSaveManager.Utils.OpenRGB
             }
         }
 
-        static TerrorMatrix Terrors = TerrorMatrix.Empty;
+        internal static TerrorMatrix Terrors = TerrorMatrix.Empty;
         internal static void UpdateColorAnimation() {
             AnimTerror.SetTarget(Terrors.DisplayColor);
             AnimRound.SetTarget(Terrors.RoundColor);

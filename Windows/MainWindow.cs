@@ -11,6 +11,7 @@ using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.LogParser;
+using ToNSaveManager.Utils.OpenRGB;
 
 namespace ToNSaveManager
 {
@@ -87,6 +88,7 @@ namespace ToNSaveManager
 
             LilOSC.SendData(true);
             StatsWindow.UpdateChatboxContent();
+            OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
         }
 
         internal void LocalizeContent() {

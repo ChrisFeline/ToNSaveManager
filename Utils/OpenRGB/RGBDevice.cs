@@ -16,14 +16,14 @@ namespace ToNSaveManager.Utils.OpenRGB {
 
         public struct Area {
             [JsonProperty("//", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? Comment { get; set; }
-            public AreaType Type { get; set; }
             public RGBGroupType Group { get; set; }
             public int[] Leds { get; set; } // Empty means all of them leds :3
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)] public bool UseRange { get; set; }
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)] public bool FlashOnMidnight;
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)] public bool DarkOnStart;
         }
 
-        public string Name;
+        public int DeviceID;
         public Area[] Areas;
     }
 }
