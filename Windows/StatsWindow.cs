@@ -110,6 +110,7 @@ namespace ToNSaveManager
 
         internal void LocalizeContent() {
             LANG.C(this, "STATS.TITLE");
+
             UpdateTable();
 
             for (int i = 0; i < TableProperties.Length; i++) {

@@ -36,7 +36,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                 // Delta time
                 float elapsed = (float)(currentFrame - previousFrame).TotalSeconds;
 
-                bool isMidnight = Terrors.TerrorCount > 0 && Terrors.RoundType == ToNRoundType.Midnight;
+                bool isMidnight = Terrors.TerrorCount > 0 && (Terrors.RoundType == ToNRoundType.Midnight || Terrors.IsSaboteur);
                 bool shouldUpdate = isMidnight;
                 for (int i = 0; i < AnimGroups.Length; i++)
                 {
@@ -59,7 +59,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                             for (int a = 0; a < entry.Areas.Length; a++)
                             {
                                 RGBDevice.Area area = entry.Areas[a];
-                                bool flashMidnight = area.FlashOnMidnight && isMidnight;
+                                bool flashMidnight = (area.FlashOnMidnight && isMidnight) || (Terrors.IsSaboteur && Terrors.TerrorCount > 0);
                                 var animGroup = AnimGroups[(int)area.Group];
                                 if (animGroup.Refresh || flashMidnight) {
                                     RGBColor color = flashMidnight || (area.DarkOnStart && Terrors.TerrorCount == 0 && Terrors.RoundType != ToNRoundType.Intermission) ? animGroup.Flashy.ToRGBColor() : animGroup.Value.ToRGBColor();
@@ -144,6 +144,10 @@ namespace ToNSaveManager.Utils.OpenRGB
         internal static void UpdateColorAnimation() {
             AnimTerror.SetTarget(Terrors.DisplayColor);
             AnimRound.SetTarget(Terrors.RoundColor);
+            if (Terrors.IsSaboteur) {
+                AnimTerror.SetTarget(Color.Red);
+                AnimRound.SetTarget(Color.Red);
+            }
         }
         internal static void SetTerrorMatrix(TerrorMatrix matrix)
         {

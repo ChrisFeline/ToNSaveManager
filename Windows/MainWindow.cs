@@ -91,6 +91,18 @@ namespace ToNSaveManager
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
         }
 
+        static readonly Dictionary<ToNRoundType, string> RoundTypeNames = new Dictionary<ToNRoundType, string>();
+        internal static string GetRoundTypeName(ToNRoundType roundType) {
+            if (RoundTypeNames.Count == 0) {
+                ToNRoundType[] values = Enum.GetValues<ToNRoundType>();
+                foreach (ToNRoundType rt in values) {
+                    RoundTypeNames[rt] = LANG.S("ROUND_TYPE." + rt.ToString().ToUpperInvariant()) ?? rt.ToString();
+                }
+            }
+
+            return RoundTypeNames[roundType];
+        }
+
         internal void LocalizeContent() {
             LANG.C(btnSettings, "MAIN.SETTINGS");
             LANG.C(btnObjectives, "MAIN.OBJECTIVES");
@@ -110,6 +122,8 @@ namespace ToNSaveManager
 
             Entry.LocalizeContent();
             DSWebHook.LocalizeContent();
+
+            RoundTypeNames.Clear();
 
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }

@@ -133,7 +133,7 @@ namespace ToNSaveManager.Models
 
 #pragma warning disable CS0612 // Type or member is obsolete
                 if (!string.IsNullOrEmpty(RType)) sb.AppendLine(TextRound + " " + RType);
-                else sb.AppendLine(TextRound + " " + RT.ToString());
+                else sb.AppendLine(TextRound + " " + MainWindow.GetRoundTypeName(RT));
                 
                 if (TD != null && TD.Length > 0) {
                     sb.Append(TextTerrors);
