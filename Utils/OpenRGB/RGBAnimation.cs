@@ -15,7 +15,6 @@ namespace ToNSaveManager.Utils.OpenRGB {
         public RGBTemp Flashy => RGBTemp.Lerp(Target, Black, Progress);
 
         public float Progress;
-        public bool Flash;
 
         public bool Completed { get; private set; }
         public bool Refresh { get; private set; }

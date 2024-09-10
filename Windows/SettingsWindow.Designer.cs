@@ -73,7 +73,9 @@
             linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
             labelGroupStyle = new Label();
+            flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
+            linkOpenRGB = new LinkLabel();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -81,6 +83,7 @@
             flowRoundInfoFilePanel.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            flowLayoutPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // checkDiscordBackup
@@ -445,7 +448,7 @@
             flowLayoutPanel1.Controls.Add(checkShowDate);
             flowLayoutPanel1.Controls.Add(labelGroupStyle);
             flowLayoutPanel1.Controls.Add(checkColorObjectives);
-            flowLayoutPanel1.Controls.Add(checkOpenRGBEnabled);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel4);
             flowLayoutPanel1.Dock = DockStyle.Top;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
@@ -660,18 +663,48 @@
             labelGroupStyle.TabIndex = 14;
             labelGroupStyle.Text = "Style";
             // 
+            // flowLayoutPanel4
+            // 
+            flowLayoutPanel4.AutoSize = true;
+            flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
+            flowLayoutPanel4.Controls.Add(linkOpenRGB);
+            flowLayoutPanel4.Location = new Point(0, 603);
+            flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel4.Name = "flowLayoutPanel4";
+            flowLayoutPanel4.Size = new Size(220, 19);
+            flowLayoutPanel4.TabIndex = 21;
+            flowLayoutPanel4.WrapContents = false;
+            // 
             // checkOpenRGBEnabled
             // 
             checkOpenRGBEnabled.AutoSize = true;
-            checkOpenRGBEnabled.Location = new Point(3, 603);
-            checkOpenRGBEnabled.Margin = new Padding(3, 1, 3, 1);
+            checkOpenRGBEnabled.Location = new Point(0, 0);
+            checkOpenRGBEnabled.Margin = new Padding(0);
             checkOpenRGBEnabled.Name = "checkOpenRGBEnabled";
             checkOpenRGBEnabled.Padding = new Padding(20, 0, 3, 0);
-            checkOpenRGBEnabled.Size = new Size(161, 19);
-            checkOpenRGBEnabled.TabIndex = 21;
-            checkOpenRGBEnabled.Tag = "OpenRGBEnabled|Colorize your peripherals using Open RGB.";
-            checkOpenRGBEnabled.Text = "OpenRGB Integration";
+            checkOpenRGBEnabled.Size = new Size(145, 19);
+            checkOpenRGBEnabled.TabIndex = 8;
+            checkOpenRGBEnabled.Tag = "OpenRGBEnabled";
+            checkOpenRGBEnabled.Text = "OpenRGB Support";
             checkOpenRGBEnabled.UseVisualStyleBackColor = true;
+            // 
+            // linkOpenRGB
+            // 
+            linkOpenRGB.ActiveLinkColor = Color.White;
+            linkOpenRGB.AutoSize = true;
+            linkOpenRGB.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkOpenRGB.LinkColor = Color.PowderBlue;
+            linkOpenRGB.Location = new Point(145, 0);
+            linkOpenRGB.Margin = new Padding(0);
+            linkOpenRGB.Name = "linkOpenRGB";
+            linkOpenRGB.Size = new Size(75, 15);
+            linkOpenRGB.TabIndex = 11;
+            linkOpenRGB.TabStop = true;
+            linkOpenRGB.Text = "(Open JSON)";
+            linkOpenRGB.TextAlign = ContentAlignment.MiddleLeft;
+            linkOpenRGB.VisitedLinkColor = Color.Gray;
+            linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
             // 
             // SettingsWindow
             // 
@@ -705,6 +738,8 @@
             flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            flowLayoutPanel4.ResumeLayout(false);
+            flowLayoutPanel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -753,6 +788,8 @@
         private LinkLabel linkSetDamageInterval;
         private Label labelGroupDiscord;
         private CheckBox checkDiscordPresence;
+        private FlowLayoutPanel flowLayoutPanel4;
         private CheckBox checkOpenRGBEnabled;
+        private LinkLabel linkOpenRGB;
     }
 }
