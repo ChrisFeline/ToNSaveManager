@@ -4,6 +4,7 @@
 - Updated for new ToN Update. Yes, it's time! Create a new instance!
 - Added stats window. Here you can track stats like rounds won/lost, killer stuns, etc...
 - Added Discord Rich Presence support, yes... you can show you're friends how addicted you're to the game.
+- Added OpenRGB support, you can color your keyboard and other peripherals based on in-game events. (Like round type or terror color)
 - Added chatbox stats display. (Only shown on Intermissions)
 	- You can display your stats in the chatbox, but the chatbox will be hidden on purpose when participating on a round. Chatbox will be displayed again after death or end of round.
 	- You can customize the chatbox message template.
@@ -29,7 +30,6 @@
 	- To open the emulator, launch the app with --emulator as a console argument.
 - Added parameters for the HUD terror color, allowing you to colorize your avatar with HSV.
 - Eight Pages is now fully supported.
-- Round Type is sent after Terror id's.
 - Supports alternates on Fog rounds.
 - Added parameters for special encounters.
 - Added parameters for some terror phases. (Faker & Bliss)
