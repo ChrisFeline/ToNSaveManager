@@ -73,6 +73,7 @@
             linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
             labelGroupStyle = new Label();
+            checkOpenRGBEnabled = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -444,11 +445,12 @@
             flowLayoutPanel1.Controls.Add(checkShowDate);
             flowLayoutPanel1.Controls.Add(labelGroupStyle);
             flowLayoutPanel1.Controls.Add(checkColorObjectives);
+            flowLayoutPanel1.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel1.Dock = DockStyle.Top;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 602);
+            flowLayoutPanel1.Size = new Size(544, 623);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -658,6 +660,19 @@
             labelGroupStyle.TabIndex = 14;
             labelGroupStyle.Text = "Style";
             // 
+            // checkOpenRGBEnabled
+            // 
+            checkOpenRGBEnabled.AutoSize = true;
+            checkOpenRGBEnabled.Location = new Point(3, 603);
+            checkOpenRGBEnabled.Margin = new Padding(3, 1, 3, 1);
+            checkOpenRGBEnabled.Name = "checkOpenRGBEnabled";
+            checkOpenRGBEnabled.Padding = new Padding(20, 0, 3, 0);
+            checkOpenRGBEnabled.Size = new Size(161, 19);
+            checkOpenRGBEnabled.TabIndex = 21;
+            checkOpenRGBEnabled.Tag = "OpenRGBEnabled|Colorize your peripherals using Open RGB.";
+            checkOpenRGBEnabled.Text = "OpenRGB Integration";
+            checkOpenRGBEnabled.UseVisualStyleBackColor = true;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -738,5 +753,6 @@
         private LinkLabel linkSetDamageInterval;
         private Label labelGroupDiscord;
         private CheckBox checkDiscordPresence;
+        private CheckBox checkOpenRGBEnabled;
     }
 }

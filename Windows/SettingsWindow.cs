@@ -7,6 +7,7 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.OpenRGB;
 using Windows.ApplicationModel.Contacts;
 using Timer = System.Windows.Forms.Timer;
 
@@ -129,7 +130,16 @@ namespace ToNSaveManager.Windows
             checkRoundToFile.CheckedChanged += CheckRoundToFile_CheckedChanged;
             CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
 
+            // Open RGB
+            checkOpenRGBEnabled.CheckedChanged += CheckOpenRGBEnabled_CheckedChanged;
+            // CheckOpenRGBEnabled_CheckedChanged(null, EventArgs.Empty);
+
             FillLanguageBox();
+        }
+
+        private void CheckOpenRGBEnabled_CheckedChanged(object? sender, EventArgs e) {
+            if (checkOpenRGBEnabled.Checked) OpenRGBControl.Initialize();
+            else OpenRGBControl.DeInitialize();
         }
 
         private void RoundInfoTemplate_Control_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {

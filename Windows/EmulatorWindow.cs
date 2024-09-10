@@ -382,7 +382,7 @@ namespace ToNSaveManager.Windows
 
             LilOSC.SetOptInStatus(true);
             LilOSC.SetMap(selectedMap);
-            LilOSC.SetTerrorMatrix(new TerrorMatrix() { RoundType = CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType, IsSaboteur = CurrentIsKiller });
+            LilOSC.SetTerrorMatrix(new TerrorMatrix(CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType) { IsSaboteur = CurrentIsKiller });
         }
 
         private void OnRoundSetKillers(bool reveal = true) {

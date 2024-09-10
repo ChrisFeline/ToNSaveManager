@@ -9,6 +9,7 @@ using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.OpenRGB;
 
 namespace ToNSaveManager.Utils
 {
@@ -99,6 +100,7 @@ namespace ToNSaveManager.Utils
             // Reusing LilOSC.SetTerrorMatrix method because it is already properly handled everywhere.
             StatsWindow.SetTerrorMatrix(terrorMatrix);
             DSRichPresence.SetTerrorMatrix(terrorMatrix);
+            OpenRGBControl.SetTerrorMatrix(terrorMatrix);
         }
 
         internal static void SetMap(ToNIndex.Map? map = null) {
@@ -200,35 +202,7 @@ namespace ToNSaveManager.Utils
 
                 // Color Testing
                 if (Settings.Get.OSCSendColor) {
-                    Color terrorColor;
-                    if (TMatrix.TerrorCount > 0 &&
-                        TMatrix.RoundType != ToNRoundType.Eight_Pages &&
-                        TMatrix.RoundType != ToNRoundType.Fog &&
-                        TMatrix.RoundType != ToNRoundType.Fog_Alternate) {
-                        Color color1 = ToNIndex.Instance.GetTerror(info1).Color;
-                        Color color2 = ToNIndex.Instance.GetTerror(info2).Color;
-                        Color color3 = ToNIndex.Instance.GetTerror(info3).Color;
-
-                        Color c;
-                        int R = 0, G = 0, B = 0, L = 0;
-                        for (int i = TMatrix.StartIndex; i < TMatrix.TerrorCount; i++) {
-                            if (i > 2) break;
-
-                            switch (i) {
-                                case 0: c = color1; break;
-                                case 1: c = color2; break;
-                                case 2: c = color3; break;
-                                default: c = Color.White; break;
-                            }
-
-                            R += c.R;
-                            G += c.G;
-                            B += c.B;
-                            L++;
-                        }
-
-                        terrorColor = Color.FromArgb(R / L, G / L, B / L);
-                    } else terrorColor = Color.White;
+                    Color terrorColor = TMatrix.DisplayColor;
 
                     if (LastTerrorColor != terrorColor || force) {
                         Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);

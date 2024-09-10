@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace ToNSaveManager.Models.Index {
     internal struct TerrorMatrix {
         const string ROUND_TYPE_ALTERNATE = " (Alternate)";
-        internal static TerrorMatrix Empty = new TerrorMatrix() { IsEmpty = true };
+        internal static readonly TerrorMatrix Empty = new TerrorMatrix() { IsEmpty = true };
 
         public bool IsEmpty { get; private set; }
 
@@ -59,6 +60,10 @@ namespace ToNSaveManager.Models.Index {
 
         public override string ToString() {
             return string.Join(", ", Terrors);
+        }
+
+        public TerrorMatrix(ToNRoundType roundType) : this() {
+            RoundType = roundType;
         }
 
         public TerrorMatrix() {
@@ -177,6 +182,31 @@ namespace ToNSaveManager.Models.Index {
             }
         }
 
+        public Color DisplayColor => GetDisplayColor();
+        public Color RoundColor => (RoundType == ToNRoundType.Intermission ? Color.White : RoundTypeColors.ContainsKey(RoundType) ? Color.FromArgb((int)RoundTypeColors[RoundType]) : Color.White);
+
+        private Color GetDisplayColor() {
+            if (TerrorCount > 0 && Terrors.Length > 0 &&
+                        RoundType != ToNRoundType.Eight_Pages &&
+                        RoundType != ToNRoundType.Fog &&
+                        RoundType != ToNRoundType.Fog_Alternate) {
+                Color c = Color.White;
+                int R = 0, G = 0, B = 0, L = 0;
+                for (int i = StartIndex; i < TerrorCount; i++) {
+                    if (i > 2) break;
+
+                    c = Terrors[i].Value.Color;
+
+                    R += c.R;
+                    G += c.G;
+                    B += c.B;
+                    L++;
+                }
+
+                return Color.FromArgb(R / L, G / L, B / L);
+            } else return Color.White;
+        }
+
         // Horrible syntax, sorry
         static readonly string[] RoundTypeNames = new string[]
         {
@@ -235,7 +265,7 @@ namespace ToNSaveManager.Models.Index {
 
         internal static readonly Dictionary<ToNRoundType, uint> RoundTypeColors = new Dictionary<ToNRoundType, uint>()
         {
-            { ToNRoundType.Intermission,             16721714 },
+            { ToNRoundType.Intermission,        16721714 },
             { ToNRoundType.Classic,             0xFFFFFF },
             { ToNRoundType.Fog,                 0x808486 },
             { ToNRoundType.Fog_Alternate,       0x808486 },
@@ -247,7 +277,7 @@ namespace ToNSaveManager.Models.Index {
             { ToNRoundType.Double_Trouble,      0xF51313 },
             { ToNRoundType.EX,                  0xF51313 },
 
-            { ToNRoundType.Midnight,            0xE23232 },
+            { ToNRoundType.Midnight,            0xFF0000 },
             { ToNRoundType.Alternate,           0xF1F1F1 },
 
             { ToNRoundType.Mystic_Moon,         0xB0DEF9 },

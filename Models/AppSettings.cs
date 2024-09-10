@@ -43,6 +43,11 @@ namespace ToNSaveManager.Models
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate(string.Empty, "({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
 
         /// <summary>
+        /// Enables OpenRGB support.
+        /// </summary>
+        public bool OpenRGBEnabled { get; set; }
+
+        /// <summary>
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
         public bool AutoCopy { get; set; }

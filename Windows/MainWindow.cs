@@ -634,6 +634,8 @@ namespace ToNSaveManager
                     matrix = new TerrorMatrix("RUN", byte.MaxValue, byte.MaxValue, byte.MaxValue);
                 } else {
                     matrix = new TerrorMatrix(line.Substring(index + length + ROUND_MAP_RTYPE.Length).Trim());
+                    Logger.Debug("ROUND TYPE IS: " + matrix.RoundType);
+                    Logger.Debug("ROUND TYPE RW: " + matrix.RoundTypeRaw);
                 }
 
                 matrix.MapID = map.Id;
@@ -657,7 +659,7 @@ namespace ToNSaveManager
             // REVISIT THIS LATER PLEASE
             if (line.StartsWith(ROUND_IS_SABO)) {
                 context.SetIsKiller(true);
-                context.SetTerrorMatrix(new TerrorMatrix() { IsSaboteur = true });
+                context.SetTerrorMatrix(new TerrorMatrix(ToNRoundType.Sabotage) { IsSaboteur = true });
                 return true;
             }
 
