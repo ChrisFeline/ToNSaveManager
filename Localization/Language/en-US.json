@@ -153,6 +153,11 @@
 	"SETTINGS.COLORFULOBJECTIVES": "Colorful Objectives",
 	"SETTINGS.COLORFULOBJECTIVES.TT": "Items in the 'Objectives' window will show colors that correspond to those of the items in the game.",
 
+	"SETTINGS.OPENRGBENABLED": "OpenRGB Enabled",
+	"SETTINGS.OPENRGBENABLED.TT": "Enables OpenRGB Integration, this option lets you change the rgb colors on your devices using OpenRGB.",
+	"SETTINGS.OPENRGB_JSONFILE": "(Open JSON Setup)",
+	"SETTINGS.OPENRGB_JSONFILE.TT": "All the logic happens in the 'OpenRGB_Setup.json' file.\nEdit this file to customize your RGB layout for all the ToN color events.",
+
 	"OBJECTIVES.TITLE": "ToN Objectives",
 	"OBJECTIVES.EVENT_ITEMS_UNLOCKS": "Event Items Unlocks",
 	"OBJECTIVES.SEALED_SWORD": "Sealed Sword",

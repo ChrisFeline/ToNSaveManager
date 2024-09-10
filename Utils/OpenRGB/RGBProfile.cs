@@ -32,6 +32,14 @@ namespace ToNSaveManager.Utils.OpenRGB {
                         Leds = [ 8, 9 ],
                         FlashOnMidnight = true
                     },
+                    new RGBDevice.Area {
+                        Comment = "Set the type to '1' if you want to choose a range of led IDs, for example if you want to select from id '0' to id '7', set the Leds property to [0,7] and Type to '1'",
+                        Type = RGBDevice.AreaType.Range,
+                        Group = RGBGroupType.Terror,
+                        //Leds = [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+                        Leds = [ 0, 7 ],
+                        DarkOnStart = true
+                    },
                 ]
             },
             new RGBDevice() {

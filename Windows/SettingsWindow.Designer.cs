@@ -382,7 +382,7 @@
             // checkSendChatbox
             // 
             checkSendChatbox.AutoSize = true;
-            checkSendChatbox.Location = new Point(0, 0);
+            checkSendChatbox.Location = new Point(3, 0);
             checkSendChatbox.Margin = new Padding(0);
             checkSendChatbox.Name = "checkSendChatbox";
             checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
@@ -622,7 +622,8 @@
             flowLayoutPanel2.Location = new Point(0, 417);
             flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(207, 19);
+            flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel2.Size = new Size(210, 19);
             flowLayoutPanel2.TabIndex = 16;
             flowLayoutPanel2.WrapContents = false;
             // 
@@ -632,7 +633,7 @@
             linkEditChatbox.AutoSize = true;
             linkEditChatbox.LinkBehavior = LinkBehavior.HoverUnderline;
             linkEditChatbox.LinkColor = Color.Gray;
-            linkEditChatbox.Location = new Point(172, 0);
+            linkEditChatbox.Location = new Point(175, 0);
             linkEditChatbox.Margin = new Padding(0);
             linkEditChatbox.Name = "linkEditChatbox";
             linkEditChatbox.Size = new Size(35, 15);
@@ -672,14 +673,15 @@
             flowLayoutPanel4.Location = new Point(0, 603);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
-            flowLayoutPanel4.Size = new Size(220, 19);
+            flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel4.Size = new Size(223, 19);
             flowLayoutPanel4.TabIndex = 21;
             flowLayoutPanel4.WrapContents = false;
             // 
             // checkOpenRGBEnabled
             // 
             checkOpenRGBEnabled.AutoSize = true;
-            checkOpenRGBEnabled.Location = new Point(0, 0);
+            checkOpenRGBEnabled.Location = new Point(3, 0);
             checkOpenRGBEnabled.Margin = new Padding(0);
             checkOpenRGBEnabled.Name = "checkOpenRGBEnabled";
             checkOpenRGBEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -695,7 +697,7 @@
             linkOpenRGB.AutoSize = true;
             linkOpenRGB.LinkBehavior = LinkBehavior.HoverUnderline;
             linkOpenRGB.LinkColor = Color.PowderBlue;
-            linkOpenRGB.Location = new Point(145, 0);
+            linkOpenRGB.Location = new Point(148, 0);
             linkOpenRGB.Margin = new Padding(0);
             linkOpenRGB.Name = "linkOpenRGB";
             linkOpenRGB.Size = new Size(75, 15);

@@ -63,6 +63,7 @@ namespace ToNSaveManager.Windows
             LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
             LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
+            LANG.C(linkOpenRGB, "SETTINGS.OPENRGB_JSONFILE", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
