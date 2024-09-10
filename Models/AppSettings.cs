@@ -38,7 +38,7 @@ namespace ToNSaveManager.Models
         /// </summary>
         public bool DiscordRichPresence { get; set; }
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate(string.Empty, "{MapName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate(string.Empty, "({RoundInt}?{RoundType}:{RoundType} ({RoundInt}==105?({PageCount}/8):on))");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate(string.Empty, "({RoundInt}?{RoundType}:{RoundType} ({RoundInt}==105?({PageCount}/8):round on))");
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate(string.Empty, "{TerrorName}");
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate(string.Empty, "({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
 
@@ -128,7 +128,7 @@ namespace ToNSaveManager.Models
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
         public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
-            new RoundInfoTemplate(string.Empty, "- Lobby Stats -\nStuns by Me: {LobbyStuns}\nStuns by Players: {LobbyGlobalStuns}");
+            new RoundInfoTemplate(string.Empty, "- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n({RoundStunsAll}<1?:Current Round Stuns : {RoundStunsAll})");
 
         /// <summary>
         /// How often the message will be repeated to VRC for a consistent chatbox.
