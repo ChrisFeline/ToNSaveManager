@@ -135,7 +135,7 @@ namespace ToNSaveManager.Models.Stats {
         const string KEY_ROUND_INT = nameof(StatsRound.RoundInt);
         const string KEY_TERROR_NAME = nameof(StatsRound.TerrorName);
         public static void AddTerrors(TerrorMatrix terrorMatrix) {
-            Set(KEY_ROUND_TYPE, terrorMatrix.RoundType.ToString());
+            Set(KEY_ROUND_TYPE, MainWindow.GetRoundTypeName(terrorMatrix.RoundType));
             Set(KEY_ROUND_INT, (int)terrorMatrix.RoundType);
             Set(KEY_TERROR_NAME, terrorMatrix.Length > 0 ? terrorMatrix.GetTerrorNames() : (terrorMatrix.MapID < 0 ? "Overseer" : "???"));
         }
