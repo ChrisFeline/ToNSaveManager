@@ -23,6 +23,7 @@ namespace ToNSaveManager.Windows
         public SettingsWindow() {
             InitializeComponent();
             ClickTimer.Tick += ClickTimer_Tick;
+            languageSelectBox.FixItemHeight(true);
         }
 
         public static void Open(Form parent) {

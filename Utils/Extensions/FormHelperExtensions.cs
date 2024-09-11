@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Windows.Forms;
 using ToNSaveManager.Models;
 
 namespace ToNSaveManager.Extensions
@@ -24,6 +25,18 @@ namespace ToNSaveManager.Extensions
         {
             const string c = " ";
             listBox.ItemHeight = TextRenderer.MeasureText(c, listBox.Font).Height + 2;
+        }
+        public static void FixItemHeight(this ComboBox comboBox1, bool changeFont) {
+            const string c = " ";
+            // Get current DPI scale factor
+            // Adjust ComboBox width and height accordingly
+            if (changeFont) {
+                // comboBox1.Height = (int)(comboBox1.Height * dpiScaleFactor);
+                float dpiScaleFactor = comboBox1.DeviceDpi / 96f;
+                comboBox1.Font = new Font(comboBox1.Font.FontFamily, comboBox1.Font.Size * dpiScaleFactor);
+            } else {
+                comboBox1.ItemHeight = TextRenderer.MeasureText(c, comboBox1.Font).Height + 2;
+            }
         }
 
         /// <summary>

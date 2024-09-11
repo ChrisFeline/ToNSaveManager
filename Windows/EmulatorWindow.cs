@@ -1,7 +1,7 @@
 
 using System.Diagnostics;
 using System.Text;
-
+using ToNSaveManager.Extensions;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.LogParser;
@@ -101,6 +101,7 @@ namespace ToNSaveManager.Windows
 
         public EmulatorWindow() {
             InitializeComponent();
+            FixComboHeights();
         }
         #endregion
 
@@ -121,6 +122,14 @@ namespace ToNSaveManager.Windows
                 Math.Max(parent.Location.Y + (parent.Height - Instance.Height) / 2, 0)
             );
             Instance.Show(parent);
+        }
+
+        private void FixComboHeights() {
+            comboRoundType.FixItemHeight(true);
+            comboLocation.FixItemHeight(true);
+            comboMonster.FixItemHeight(false);
+            comboMonster2.FixItemHeight(false);
+            comboMonster3.FixItemHeight(false);
         }
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -320,7 +329,7 @@ namespace ToNSaveManager.Windows
 
         private void comboMonster_EnabledChanged(object sender, EventArgs e) {
             ComboBox comboBox = (ComboBox)sender;
-            comboBox.DrawMode = comboBox.Enabled ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
+            // comboBox.DrawMode = comboBox.Enabled ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
             // if (comboBox != comboMonster) comboBox.Visible = comboBox.Enabled;
         }
         #endregion

@@ -86,7 +86,7 @@ namespace ToNSaveManager
             Started = true;
             SetTitle(null);
 
-            LilOSC.SendData(true);
+            LilOSC.Initialize();
             StatsWindow.UpdateChatboxContent();
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
         }

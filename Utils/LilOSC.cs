@@ -40,6 +40,22 @@ namespace ToNSaveManager.Utils
         const string ParamPages = "ToN_Pages";
         const string ParamItemStatus = "ToN_ItemStatus";
 
+        static readonly string[] ParamAll = [
+            ParamRoundType, ParamTerror1, ParamTerror2, ParamTerror3, ParamTPhase1, ParamTPhase2, ParamTPhase3,
+            ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
+            ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV,
+            ParamAlive, ParamDamaged, ParamPages, ParamItemStatus
+        ];
+        const string ParameterFileName = "osc_parameters.txt";
+        internal static void Initialize() {
+            SendData(true);
+
+            try {
+                if (!Settings.Get.OSCEnabled || File.Exists(ParameterFileName)) return;
+                File.WriteAllText(ParameterFileName, string.Join(',', ParamAll));
+            } catch { }
+        }
+
         internal static bool IsDirty = false;
 
         static int LastRoundType = -1;
