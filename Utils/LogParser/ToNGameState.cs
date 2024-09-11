@@ -11,7 +11,7 @@ using ToNSaveManager.Utils.OpenRGB;
 namespace ToNSaveManager.Utils {
     internal static class ToNGameState {
         public static bool IsEmulated { get; private set; }
-        public static bool IsAlive { get; private set; }
+        public static bool IsAlive { get; private set; } = true;
         public static bool IsSaboteour { get; private set; }
         public static bool IsOptedIn { get; private set; }
         public static int PageCount { get; private set; }

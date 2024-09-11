@@ -97,6 +97,20 @@ namespace ToNSaveManager
                 ToNRoundType[] values = Enum.GetValues<ToNRoundType>();
                 foreach (ToNRoundType rt in values) {
                     RoundTypeNames[rt] = LANG.S("ROUND_TYPE." + rt.ToString().ToUpperInvariant()) ?? rt.ToString();
+#if NO_SPOILERS
+                    switch (rt) {
+                        case ToNRoundType.Double_Trouble:
+                        case ToNRoundType.EX:
+                        case ToNRoundType.Ghost:
+                        case ToNRoundType.Ghost_Alternate:
+                        case ToNRoundType.Unbound:
+                        case ToNRoundType.GIGABYTE:
+                            RoundTypeNames[rt] = "SPOILERS";
+                            break;
+                        default:
+                            break;
+                    }
+#endif
                 }
             }
 

@@ -159,7 +159,15 @@ namespace ToNSaveManager.Models.Index {
         {
             [JsonIgnore] public bool IsEmpty { get; set; }
             [JsonProperty("i")] public int Id { get; set; }
+
+#if NO_SPOILERS
+            [JsonIgnore] private string m_Name { get; set; } = string.Empty;
+            [JsonProperty("n", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Name { get => "SPOILERS"; set => m_Name = value; }
+#else
             [JsonProperty("n", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Name { get; set; } = string.Empty;
+#endif
+
+
             [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)] public Color Color { get; set; } = Color.White;
 
             [JsonIgnore] public Vector3 HSV {
@@ -175,7 +183,7 @@ namespace ToNSaveManager.Models.Index {
                 }
             }
         }
-        #endregion
+#endregion
 
         #region Model Classes
         public class Terror : EntryBase {
@@ -256,6 +264,10 @@ namespace ToNSaveManager.Models.Index {
 
                     if (Level > 1) name += $" (LVL {Level})";
 
+#if NO_SPOILERS
+                    name = "SPOILERS";
+#endif
+
                     return name;
                 }
             }
@@ -291,6 +303,6 @@ namespace ToNSaveManager.Models.Index {
             public string? Sabotage { get; set; } // Player got killer
             public string? Killer { get; set; } // Player is killer
         }
-        #endregion
+#endregion
     }
 }

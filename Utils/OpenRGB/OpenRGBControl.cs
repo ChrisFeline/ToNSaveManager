@@ -173,12 +173,14 @@ namespace ToNSaveManager.Utils.OpenRGB
         }
 
         internal static void SetIsAlive() {
-            Log.Debug("Is Alive: " + ToNGameState.IsAlive);
+            if (!ToNGameState.IsAlive) AnimAlive.Value = new RGBTemp(Color.Black);
             AnimAlive.SetTarget(ToNGameState.IsAlive ? Color.Green : Color.Red);
         }
         internal static void SetDamaged() {
-            AnimAlive.Value = new RGBTemp( Color.Red );
-            AnimAlive.SetTarget(Color.Green);
+            if (ToNGameState.IsAlive) {
+                AnimAlive.Value = new RGBTemp(Color.Red);
+                AnimAlive.SetTarget(Color.Green);
+            }
         }
     }
 }

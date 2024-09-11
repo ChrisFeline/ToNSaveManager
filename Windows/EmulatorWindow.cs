@@ -32,7 +32,7 @@ namespace ToNSaveManager.Windows
             public ToNRoundType Value;
 
             public RoundTypeProxy(ToNRoundType roundType) {
-                DisplayName = roundType == ToNRoundType.Intermission ? "Random" : roundType.ToString();
+                DisplayName = roundType == ToNRoundType.Intermission ? "Random" : MainWindow.GetRoundTypeName(roundType);
                 Value = roundType;
             }
 
@@ -367,8 +367,8 @@ namespace ToNSaveManager.Windows
                     break;
 
                 case 5: // Death
-                    ToNGameState.AddDamage(byte.MaxValue);
                     ToNGameState.SetAlive(false);
+                    ToNGameState.AddDamage(byte.MaxValue);
                     break;
 
                 default:
@@ -440,6 +440,7 @@ namespace ToNSaveManager.Windows
             if (checkSpecial.Visible && checkSpecial.Checked) terrorMatrix.MarkEncounter();
 
             ToNGameState.SetTerrorMatrix(terrorMatrix);
+            ToNGameState.SetAlive(true);
         }
 
         private void OnRoundEnd() {
