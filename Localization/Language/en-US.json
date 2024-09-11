@@ -179,7 +179,7 @@
 	"SETTINGS.COLORFULOBJECTIVES.TT": "Items in the 'Objectives' window will show colors that correspond to those of the items in the game.",
 
 	"SETTINGS.OPENRGBENABLED": "OpenRGB Enabled",
-	"SETTINGS.OPENRGBENABLED.TT": "Enables OpenRGB Integration, this option lets you change the rgb colors on your devices using OpenRGB.",
+	"SETTINGS.OPENRGBENABLED.TT": "Enables OpenRGB Integration, this option lets you change the rgb colors on your devices using OpenRGB.\nThis is a highly advanced feature and is currently not very user friendly, use it if you're familiar with JSON and OpenRGB.'",
 	"SETTINGS.OPENRGB_JSONFILE": "(Open JSON Setup)",
 	"SETTINGS.OPENRGB_JSONFILE.TT": "All the logic happens in the 'OpenRGB_Setup.json' file.\nEdit this file to customize your RGB layout for all the ToN color events.",
 
