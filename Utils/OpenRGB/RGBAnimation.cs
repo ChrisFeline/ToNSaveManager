@@ -8,11 +8,16 @@ namespace ToNSaveManager.Utils.OpenRGB {
     internal class RGBAnimation {
         static readonly RGBTemp Black = new RGBTemp(Color.Black);
 
+        public RGBGroupType Group;
+        public RGBAnimation (RGBGroupType groupType) {
+            Group = groupType;
+        }
+
         public RGBTemp Current;
         public RGBTemp Target;
 
         public RGBTemp Value;
-        public RGBTemp Flashy => RGBTemp.Lerp(Target, Black, Progress);
+        public RGBTemp Flashy => RGBTemp.Lerp(Value, Black, Progress);
 
         public float Progress;
 

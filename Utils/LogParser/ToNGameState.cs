@@ -27,8 +27,8 @@ namespace ToNSaveManager.Utils {
         public static void SetAlive(bool isAlive) {
             IsAlive = isAlive;
 
-            OpenRGBControl.SetIsAlive(isAlive);
             StatsWindow.SetActiveInRound(isAlive);
+            OpenRGBControl.SetIsAlive();
             if (IsAlive) SetPageCount(0);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
@@ -81,7 +81,7 @@ namespace ToNSaveManager.Utils {
 
         // Unified damage event
         public static void AddDamage(int damage) {
-            StatsWindow.AddDamage(damage);
+            if (!IsEmulated) StatsWindow.AddDamage(damage);
             LilOSC.SetDamage(damage);
             OpenRGBControl.SetDamaged();
         }

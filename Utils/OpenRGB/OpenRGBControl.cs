@@ -5,6 +5,7 @@ using ToNSaveManager.Models.Index;
 using Newtonsoft.Json;
 using ToNSaveManager.Utils.Extensions;
 using ToNSaveManager.Models;
+using System.Diagnostics;
 
 namespace ToNSaveManager.Utils.OpenRGB
 {
@@ -17,9 +18,9 @@ namespace ToNSaveManager.Utils.OpenRGB
 
         static RGBProfile Profile => RGBProfile.Instance;
 
-        static RGBAnimation AnimTerror = new RGBAnimation();
-        static RGBAnimation AnimRound = new RGBAnimation();
-        static RGBAnimation AnimAlive = new RGBAnimation();
+        static RGBAnimation AnimTerror = new RGBAnimation(RGBGroupType.Terror);
+        static RGBAnimation AnimRound = new RGBAnimation(RGBGroupType.Round);
+        static RGBAnimation AnimAlive = new RGBAnimation(RGBGroupType.Living);
         static readonly RGBAnimation[] AnimGroups = [AnimTerror, AnimRound, AnimAlive];
 
         static Task? UpdateTask;
@@ -51,7 +52,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                         RGBColor[] colors = device.Colors;
 
                         bool dirty = false;
-                        for (int j = 0; j < Profile.Entries.Count; j++)
+                        for (int j = 0; j < Profile.Entries.Length; j++)
                         {
                             RGBDevice entry = Profile.Entries[j];
                             if (!device.Index.Equals(entry.DeviceID)) continue;
@@ -136,6 +137,8 @@ namespace ToNSaveManager.Utils.OpenRGB
                 File.WriteAllText(RGBProfile.GeneratedFileName, JsonConvert.SerializeObject(rgbKeys, Formatting.Indented));
 
                 UpdateColorAnimation();
+                SetIsAlive();
+                // SetDamaged();
                 if (UpdateTask == null) UpdateTask = Task.Run(StartUpdateLoop);
             }
         }
@@ -169,15 +172,12 @@ namespace ToNSaveManager.Utils.OpenRGB
             UpdateColorAnimation();
         }
 
-        static bool WasAlive = false;
-        internal static void SetIsAlive(bool isAlive) {
-            if (WasAlive == isAlive) return;
-
-            WasAlive = isAlive;
-            AnimAlive.SetTarget(isAlive ? Color.Red : Color.Green);
+        internal static void SetIsAlive() {
+            Log.Debug("Is Alive: " + ToNGameState.IsAlive);
+            AnimAlive.SetTarget(ToNGameState.IsAlive ? Color.Green : Color.Red);
         }
         internal static void SetDamaged() {
-            AnimAlive.Current = new RGBTemp( Color.Red );
+            AnimAlive.Value = new RGBTemp( Color.Red );
             AnimAlive.SetTarget(Color.Green);
         }
     }

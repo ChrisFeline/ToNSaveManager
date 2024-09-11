@@ -331,6 +331,12 @@ namespace ToNSaveManager.Windows
             buttonStepKillerSet.Enabled = false;
             buttonStepReveal.Enabled = false;
             buttonStepEndRound.Enabled = false;
+            buttonDamage.Enabled = buttonDeath.Enabled = false;
+        }
+
+        private void buttonStep_Enabled(object sender, EventArgs e) {
+            Button button = (Button)sender;
+            button.ForeColor = button.Enabled ? (button.TabIndex > 3 ? Color.Red : Color.White) : Color.Gray;
         }
 
         private void buttonStep_Click(object sender, EventArgs e) {
@@ -347,12 +353,22 @@ namespace ToNSaveManager.Windows
                 case 1: // Set
                     buttonStepKillerSet.Enabled = false;
                     buttonStepReveal.Enabled = Operation.IsHidden;
+                    buttonDamage.Enabled = buttonDeath.Enabled = true;
                     OnRoundSetKillers(!buttonStepReveal.Enabled);
                     break;
 
                 case 2: // Reveal
                     buttonStepReveal.Enabled = false;
                     OnRoundSetKillers(true);
+                    break;
+
+                case 4: // Damage
+                    ToNGameState.AddDamage(Random.Shared.Next(1, 254));
+                    break;
+
+                case 5: // Death
+                    ToNGameState.AddDamage(byte.MaxValue);
+                    ToNGameState.SetAlive(false);
                     break;
 
                 default:
@@ -400,7 +416,7 @@ namespace ToNSaveManager.Windows
                         if (comboBox.SelectedIndex == 0) comboBox.SelectedIndex = Random.Shared.Next(1, comboBox.Items.Count);
                         terrors[i] = ((Terror?)comboBox.SelectedItem ?? Terror.Zero).Id;
                     } else {
-                        terrors[i] = CurrentRoundType == ToNRoundType.Double_Trouble || CurrentRoundType == ToNRoundType.EX ? terrors[i-1] : 0;
+                        terrors[i] = CurrentRoundType == ToNRoundType.Double_Trouble || CurrentRoundType == ToNRoundType.EX ? terrors[i - 1] : 0;
                     }
                 } else terrors[i] = byte.MaxValue;
             }
@@ -416,7 +432,7 @@ namespace ToNSaveManager.Windows
 
             if (CurrentRoundType == ToNRoundType.GIGABYTE) {
                 terrorMatrix.RoundType = CurrentRoundType;
-                terrorMatrix.Terrors = [ new TerrorInfo(1, TerrorGroup.Events) ];
+                terrorMatrix.Terrors = [new TerrorInfo(1, TerrorGroup.Events)];
                 terrorMatrix.TerrorCount = 1;
             }
 

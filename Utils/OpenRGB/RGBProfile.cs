@@ -21,7 +21,7 @@ namespace ToNSaveManager.Utils.OpenRGB {
         public int Port = 6742;
         public int FPS = 60;
 
-        public List<RGBDevice> Entries = new List<RGBDevice>() {
+        public RGBDevice[] Entries = [
             new RGBDevice() {
                 Comment = $"This section defines a device, set the 'DeviceID' property to your device id number found on the generated '{GeneratedFileName}' file",
                 DeviceID = 1,
@@ -61,7 +61,7 @@ namespace ToNSaveManager.Utils.OpenRGB {
                     }
                 ]
             }
-        };
+        ];
 
         internal void Export() {
             File.WriteAllText(FileName, JsonConvert.SerializeObject(this, Formatting.Indented));

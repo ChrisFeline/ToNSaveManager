@@ -133,7 +133,6 @@ namespace ToNSaveManager.Models.Stats {
                             sb_opt.Clear();
                             sb_val_a.Clear();
                             sb_val_b.Clear();
-                            Logger.Debug("APPENDING: " + output);
                             continue;
                         }
                         break;

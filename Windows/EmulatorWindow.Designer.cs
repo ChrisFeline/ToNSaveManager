@@ -47,12 +47,12 @@
             checkBoxIsKiller = new CheckBox();
             panel5 = new Panel();
             buttonStepEndRound = new Button();
-            panel2 = new Panel();
             buttonStepReveal = new Button();
-            panel11 = new Panel();
             buttonStepKillerSet = new Button();
-            panel10 = new Panel();
             buttonStepStart = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            buttonDamage = new Button();
+            buttonDeath = new Button();
             panel1.SuspendLayout();
             mainPanel.SuspendLayout();
             panel7.SuspendLayout();
@@ -61,7 +61,7 @@
             panel8.SuspendLayout();
             panel4.SuspendLayout();
             panel9.SuspendLayout();
-            panel5.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // comboRoundType
@@ -292,109 +292,126 @@
             // 
             panel5.AutoSize = true;
             panel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel5.Controls.Add(buttonStepEndRound);
-            panel5.Controls.Add(panel2);
-            panel5.Controls.Add(buttonStepReveal);
-            panel5.Controls.Add(panel11);
-            panel5.Controls.Add(buttonStepKillerSet);
-            panel5.Controls.Add(panel10);
-            panel5.Controls.Add(buttonStepStart);
             panel5.Dock = DockStyle.Top;
             panel5.Location = new Point(10, 171);
             panel5.MinimumSize = new Size(0, 10);
             panel5.Name = "panel5";
             panel5.Padding = new Padding(0, 10, 0, 0);
-            panel5.Size = new Size(314, 145);
+            panel5.Size = new Size(314, 10);
             panel5.TabIndex = 4;
             // 
             // buttonStepEndRound
             // 
+            buttonStepEndRound.AutoSize = true;
+            buttonStepEndRound.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonStepEndRound.BackColor = Color.FromArgb(46, 52, 64);
-            buttonStepEndRound.Dock = DockStyle.Top;
             buttonStepEndRound.FlatStyle = FlatStyle.Flat;
             buttonStepEndRound.ForeColor = Color.White;
-            buttonStepEndRound.Location = new Point(0, 115);
+            buttonStepEndRound.Location = new Point(128, 36);
             buttonStepEndRound.Name = "buttonStepEndRound";
-            buttonStepEndRound.Size = new Size(314, 30);
+            buttonStepEndRound.Size = new Size(77, 27);
             buttonStepEndRound.TabIndex = 3;
             buttonStepEndRound.Text = "End Round";
             buttonStepEndRound.UseVisualStyleBackColor = false;
+            buttonStepEndRound.EnabledChanged += buttonStep_Enabled;
             buttonStepEndRound.Click += buttonStep_Click;
-            // 
-            // panel2
-            // 
-            panel2.AutoSize = true;
-            panel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 110);
-            panel2.MinimumSize = new Size(0, 5);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(314, 5);
-            panel2.TabIndex = 4;
             // 
             // buttonStepReveal
             // 
+            buttonStepReveal.AutoSize = true;
+            buttonStepReveal.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonStepReveal.BackColor = Color.FromArgb(46, 52, 64);
-            buttonStepReveal.Dock = DockStyle.Top;
             buttonStepReveal.FlatStyle = FlatStyle.Flat;
+            flowLayoutPanel1.SetFlowBreak(buttonStepReveal, true);
             buttonStepReveal.ForeColor = Color.White;
-            buttonStepReveal.Location = new Point(0, 80);
+            buttonStepReveal.Location = new Point(122, 3);
             buttonStepReveal.Name = "buttonStepReveal";
-            buttonStepReveal.Size = new Size(314, 30);
+            buttonStepReveal.Size = new Size(53, 27);
             buttonStepReveal.TabIndex = 2;
             buttonStepReveal.Text = "Reveal";
             buttonStepReveal.UseVisualStyleBackColor = false;
+            buttonStepReveal.EnabledChanged += buttonStep_Enabled;
             buttonStepReveal.Click += buttonStep_Click;
-            // 
-            // panel11
-            // 
-            panel11.AutoSize = true;
-            panel11.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel11.Dock = DockStyle.Top;
-            panel11.Location = new Point(0, 75);
-            panel11.MinimumSize = new Size(0, 5);
-            panel11.Name = "panel11";
-            panel11.Size = new Size(314, 5);
-            panel11.TabIndex = 6;
             // 
             // buttonStepKillerSet
             // 
+            buttonStepKillerSet.AutoSize = true;
+            buttonStepKillerSet.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonStepKillerSet.BackColor = Color.FromArgb(46, 52, 64);
-            buttonStepKillerSet.Dock = DockStyle.Top;
             buttonStepKillerSet.FlatStyle = FlatStyle.Flat;
             buttonStepKillerSet.ForeColor = Color.White;
-            buttonStepKillerSet.Location = new Point(0, 45);
+            buttonStepKillerSet.Location = new Point(52, 3);
             buttonStepKillerSet.Name = "buttonStepKillerSet";
-            buttonStepKillerSet.Size = new Size(314, 30);
+            buttonStepKillerSet.Size = new Size(64, 27);
             buttonStepKillerSet.TabIndex = 1;
             buttonStepKillerSet.Text = "Killer Set";
             buttonStepKillerSet.UseVisualStyleBackColor = false;
+            buttonStepKillerSet.EnabledChanged += buttonStep_Enabled;
             buttonStepKillerSet.Click += buttonStep_Click;
-            // 
-            // panel10
-            // 
-            panel10.AutoSize = true;
-            panel10.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panel10.Dock = DockStyle.Top;
-            panel10.Location = new Point(0, 40);
-            panel10.MinimumSize = new Size(0, 5);
-            panel10.Name = "panel10";
-            panel10.Size = new Size(314, 5);
-            panel10.TabIndex = 5;
             // 
             // buttonStepStart
             // 
+            buttonStepStart.AutoSize = true;
+            buttonStepStart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonStepStart.BackColor = Color.FromArgb(46, 52, 64);
-            buttonStepStart.Dock = DockStyle.Top;
             buttonStepStart.FlatStyle = FlatStyle.Flat;
             buttonStepStart.ForeColor = Color.White;
-            buttonStepStart.Location = new Point(0, 10);
+            buttonStepStart.Location = new Point(3, 3);
             buttonStepStart.Name = "buttonStepStart";
-            buttonStepStart.Size = new Size(314, 30);
+            buttonStepStart.Size = new Size(43, 27);
             buttonStepStart.TabIndex = 0;
             buttonStepStart.Text = "Start";
             buttonStepStart.UseVisualStyleBackColor = false;
+            buttonStepStart.EnabledChanged += buttonStep_Enabled;
             buttonStepStart.Click += buttonStep_Click;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(buttonStepStart);
+            flowLayoutPanel1.Controls.Add(buttonStepKillerSet);
+            flowLayoutPanel1.Controls.Add(buttonStepReveal);
+            flowLayoutPanel1.Controls.Add(buttonDamage);
+            flowLayoutPanel1.Controls.Add(buttonDeath);
+            flowLayoutPanel1.Controls.Add(buttonStepEndRound);
+            flowLayoutPanel1.Dock = DockStyle.Top;
+            flowLayoutPanel1.Location = new Point(10, 181);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(314, 66);
+            flowLayoutPanel1.TabIndex = 5;
+            // 
+            // buttonDamage
+            // 
+            buttonDamage.AutoSize = true;
+            buttonDamage.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonDamage.BackColor = Color.FromArgb(46, 52, 64);
+            buttonDamage.FlatStyle = FlatStyle.Flat;
+            buttonDamage.ForeColor = Color.Red;
+            buttonDamage.Location = new Point(3, 36);
+            buttonDamage.Name = "buttonDamage";
+            buttonDamage.Size = new Size(63, 27);
+            buttonDamage.TabIndex = 4;
+            buttonDamage.Text = "Damage";
+            buttonDamage.UseVisualStyleBackColor = false;
+            buttonDamage.EnabledChanged += buttonStep_Enabled;
+            buttonDamage.Click += buttonStep_Click;
+            // 
+            // buttonDeath
+            // 
+            buttonDeath.AutoSize = true;
+            buttonDeath.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonDeath.BackColor = Color.FromArgb(46, 52, 64);
+            buttonDeath.FlatStyle = FlatStyle.Flat;
+            buttonDeath.ForeColor = Color.Red;
+            buttonDeath.Location = new Point(72, 36);
+            buttonDeath.Name = "buttonDeath";
+            buttonDeath.Size = new Size(50, 27);
+            buttonDeath.TabIndex = 5;
+            buttonDeath.Text = "Death";
+            buttonDeath.UseVisualStyleBackColor = false;
+            buttonDeath.EnabledChanged += buttonStep_Enabled;
+            buttonDeath.Click += buttonStep_Click;
             // 
             // EmulatorWindow
             // 
@@ -403,7 +420,8 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(334, 340);
+            ClientSize = new Size(334, 384);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(panel5);
             Controls.Add(mainPanel);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -423,8 +441,8 @@
             panel4.ResumeLayout(false);
             panel9.ResumeLayout(false);
             panel9.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -451,10 +469,10 @@
         private Button buttonStepKillerSet;
         private Button buttonStepReveal;
         private Button buttonStepEndRound;
-        private Panel panel2;
-        private Panel panel11;
-        private Panel panel10;
         private CheckBox checkBoxIsKiller;
         private CheckBox checkSpecial;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button buttonDamage;
+        private Button buttonDeath;
     }
 }
