@@ -149,6 +149,7 @@ namespace ToNSaveManager.Utils.OpenRGB
                 AnimRound.SetTarget(Color.Red);
             }
         }
+
         internal static void SetTerrorMatrix(TerrorMatrix matrix)
         {
             Terrors = matrix;
@@ -166,6 +167,18 @@ namespace ToNSaveManager.Utils.OpenRGB
             }
 
             UpdateColorAnimation();
+        }
+
+        static bool WasAlive = false;
+        internal static void SetIsAlive(bool isAlive) {
+            if (WasAlive == isAlive) return;
+
+            WasAlive = isAlive;
+            AnimAlive.SetTarget(isAlive ? Color.Red : Color.Green);
+        }
+        internal static void SetDamaged() {
+            AnimAlive.Current = new RGBTemp( Color.Red );
+            AnimAlive.SetTarget(Color.Green);
         }
     }
 }

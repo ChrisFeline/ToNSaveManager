@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.OpenRGB;
 
 namespace ToNSaveManager.Utils.LogParser
 {
@@ -12,7 +13,6 @@ namespace ToNSaveManager.Utils.LogParser
         public bool SaveCodeCreated { get; set; }
 
         public bool IsAlive { get; private set; }
-
         public bool IsSaboteour { get; private set; }
         public bool IsOptedIn { get; private set; }
         public TerrorMatrix Terrors = TerrorMatrix.Empty;
@@ -36,7 +36,7 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsSaboteour == isKiller) return;
 
             IsSaboteour = isKiller;
-            if (IsRecent) StatsWindow.SetIsKiller(isKiller);
+            if (IsRecent) ToNGameState.SetKiller(IsSaboteour);
         }
 
         public void SetIsAlive(bool alive) {
@@ -45,20 +45,14 @@ namespace ToNSaveManager.Utils.LogParser
             IsAlive = alive;
             Logger.Debug("SET PLAYER ALIVE: " + IsAlive);
 
-            if (IsRecent) {
-                StatsWindow.SetActiveInRound(alive);
-                DSRichPresence.SetIsAlive(alive);
-                if (IsAlive) LilOSC.SetPageCount();
-            }
+            if (IsRecent) ToNGameState.SetAlive(IsAlive);
         }
 
         public void SetOptedIn(bool isOptedIn) {
             IsOptedIn = isOptedIn;
             Logger.Debug("SET OPTED IN: " + isOptedIn);
 
-            if (IsRecent) {
-                LilOSC.SetOptInStatus(isOptedIn);
-            }
+            if (IsRecent) ToNGameState.SetOptedIn(IsOptedIn);
 
             if (!IsOptedIn) {
                 SetIsAlive(false);
@@ -75,16 +69,11 @@ namespace ToNSaveManager.Utils.LogParser
 
             Logger.Debug("Terror context set to: " + matrix);
 
-            if (IsRecent) {
-                LilOSC.SetTerrorMatrix(matrix);
-            }
+            if (IsRecent) ToNGameState.SetTerrorMatrix(matrix);
         }
         public void SetLocation(ToNIndex.Map map) {
             Location = map;
-
-            if (IsRecent) {
-                LilOSC.SetMap(map);
-            }
+            if (IsRecent) ToNGameState.SetLocation(map);
         }
         public void SetRoundResult(ToNRoundResult result) {
             Result = result;

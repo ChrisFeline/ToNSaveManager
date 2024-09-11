@@ -4,6 +4,7 @@ using System.Text;
 
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.LogParser;
 using static ToNSaveManager.Models.Index.ToNIndex;
 // using EntryBase = ToNSaveManager.Models.Index.ToNIndex.EntryBase;
 // using Terror = ToNSaveManager.Models.Index.ToNIndex.Terror;
@@ -380,9 +381,10 @@ namespace ToNSaveManager.Windows
 
             if (selectedMap.IsEmpty) throw new Exception("Failed to emulate map.");
 
-            LilOSC.SetOptInStatus(true);
-            LilOSC.SetMap(selectedMap);
-            LilOSC.SetTerrorMatrix(new TerrorMatrix(CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType) { IsSaboteur = CurrentIsKiller });
+            ToNGameState.SetEmulated(true);
+            ToNGameState.SetOptedIn(true);
+            ToNGameState.SetLocation(selectedMap);
+            ToNGameState.SetTerrorMatrix(new TerrorMatrix(CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType) { IsSaboteur = CurrentIsKiller });
         }
 
         private void OnRoundSetKillers(bool reveal = true) {
@@ -419,13 +421,14 @@ namespace ToNSaveManager.Windows
             // TODO: Check for specials
             if (checkSpecial.Visible && checkSpecial.Checked) terrorMatrix.MarkEncounter();
 
-            LilOSC.SetTerrorMatrix(terrorMatrix);
+            ToNGameState.SetTerrorMatrix(terrorMatrix);
         }
 
         private void OnRoundEnd() {
-            LilOSC.SetOptInStatus(false);
-            LilOSC.SetMap(Map.Empty);
-            LilOSC.SetTerrorMatrix(TerrorMatrix.Empty);
+            ToNGameState.SetOptedIn(false);
+            ToNGameState.SetLocation(Map.Empty);
+            ToNGameState.SetTerrorMatrix(TerrorMatrix.Empty);
+            ToNGameState.SetEmulated(false);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
+using ToNSaveManager.Utils.LogParser;
 
 namespace ToNSaveManager.Utils
 {
@@ -75,9 +76,9 @@ namespace ToNSaveManager.Utils
 
         static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
 
-        static bool IsOptedIn = false;
-        public static TerrorMatrix TMatrix = TerrorMatrix.Empty;
-        public static ToNIndex.Map RMap = ToNIndex.Map.Empty;
+        static bool IsOptedIn => ToNGameState.IsOptedIn;
+        public static TerrorMatrix TMatrix => ToNGameState.Terrors;
+        public static ToNIndex.Map RMap => ToNGameState.Location;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -93,34 +94,7 @@ namespace ToNSaveManager.Utils
             ChatboxClear = string.IsNullOrEmpty(message);
         }
 
-        internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            TMatrix = terrorMatrix;
-            IsDirty = true;
-
-            // Reusing LilOSC.SetTerrorMatrix method because it is already properly handled everywhere.
-            StatsWindow.SetTerrorMatrix(terrorMatrix);
-            DSRichPresence.SetTerrorMatrix(terrorMatrix);
-            OpenRGBControl.SetTerrorMatrix(terrorMatrix);
-        }
-
-        internal static void SetMap(ToNIndex.Map? map = null) {
-            RMap = map == null ? ToNIndex.Map.Empty : map;
-            IsDirty = true;
-
-            // Reusing LilOSC.SetMap method because it is already properly handled everywhere.
-            StatsWindow.SetLocation(RMap, !TMatrix.IsEmpty);
-            DSRichPresence.SetLocation(RMap);
-        }
-
-        static int PageCount = 0;
-        internal static void SetPageCount(int pages = 0) {
-            PageCount = pages;
-            IsDirty = true;
-
-            Logger.Debug("Setting page cout: " + pages);
-            StatsWindow.SetPageCount(pages);
-            DSRichPresence.SetPageCount(pages);
-        }
+        static int PageCount => ToNGameState.PageCount;
 
         static bool ItemStatus = true;
         internal static void SetItemStatus(bool status) {
@@ -161,8 +135,7 @@ namespace ToNSaveManager.Utils
             SendParam(ParamDamaged, LastDamage);
         }
 
-        internal static void SetOptInStatus(bool optedIn) {
-            IsOptedIn = optedIn;
+        internal static void SetDirty() {
             IsDirty = true;
         }
 

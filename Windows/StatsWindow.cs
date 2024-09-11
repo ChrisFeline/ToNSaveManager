@@ -47,7 +47,6 @@ namespace ToNSaveManager
         }
         internal static void AddDamage(int damage) {
             ToNStats.AddDamage(damage, MainWindow.Started);
-            LilOSC.SetDamage(damage);
             RefreshTable();
         }
 

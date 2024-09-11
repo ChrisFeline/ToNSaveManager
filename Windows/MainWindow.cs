@@ -666,7 +666,7 @@ namespace ToNSaveManager
                 if (int.TryParse(id_str, out int mapIndex)) {
                     ToNIndex.Map map = ToNIndex.Instance.GetMap(mapIndex);
                     Logger.Debug($"Map swapped to: {map} ({mapIndex})");
-                    if (context.IsRecent) LilOSC.SetMap(map);
+                    if (context.IsRecent) ToNGameState.SetLocation(map);
                 }
 
                 return true;
@@ -739,7 +739,7 @@ namespace ToNSaveManager
 
                 if (matrix.RoundType == ToNRoundType.Eight_Pages && line.StartsWith(ROUND_PAGE_FOUND)) {
                     char pageChar = line[ROUND_PAGE_FOUND.Length];
-                    if (int.TryParse(pageChar.ToString(), out int pages)) LilOSC.SetPageCount(pages);
+                    if (int.TryParse(pageChar.ToString(), out int pages)) ToNGameState.SetPageCount(pages);
                     return true;
                 }
 
@@ -804,7 +804,7 @@ namespace ToNSaveManager
 
             if (line.StartsWith(STAT_HIT)) {
                 string ammount = line.Substring(STAT_HIT.Length).Trim();
-                if (int.TryParse(ammount, out int result)) StatsWindow.AddDamage(result);
+                if (int.TryParse(ammount, out int result)) ToNGameState.AddDamage(result);
                 return true;
             }
 
