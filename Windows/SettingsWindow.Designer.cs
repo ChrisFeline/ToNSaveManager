@@ -696,7 +696,7 @@
             linkOpenRGB.ActiveLinkColor = Color.White;
             linkOpenRGB.AutoSize = true;
             linkOpenRGB.LinkBehavior = LinkBehavior.HoverUnderline;
-            linkOpenRGB.LinkColor = Color.PowderBlue;
+            linkOpenRGB.LinkColor = Color.Gray;
             linkOpenRGB.Location = new Point(148, 0);
             linkOpenRGB.Margin = new Padding(0);
             linkOpenRGB.Name = "linkOpenRGB";

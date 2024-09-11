@@ -133,21 +133,19 @@ namespace ToNSaveManager.Windows
 
             // Open RGB
             checkOpenRGBEnabled.CheckedChanged += CheckOpenRGBEnabled_CheckedChanged;
-            CheckOpenRGBEnabled_CheckedChanged(null, EventArgs.Empty);
+            // CheckOpenRGBEnabled_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
         }
 
         private void CheckOpenRGBEnabled_CheckedChanged(object? sender, EventArgs e) {
-            linkOpenRGB.Visible = checkOpenRGBEnabled.Checked;
             if (sender == null) return;
-
             if (checkOpenRGBEnabled.Checked) OpenRGBControl.Initialize();
             else OpenRGBControl.DeInitialize();
         }
 
         private void linkOpenRGB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            MainWindow.OpenExternalLink(RGBProfile.FileName);
+            RGBProfile.OpenFile();
         }
 
         private void RoundInfoTemplate_Control_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {

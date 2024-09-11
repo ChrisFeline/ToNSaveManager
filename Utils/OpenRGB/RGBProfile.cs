@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace ToNSaveManager.Utils.OpenRGB {
     internal class RGBProfile {
+        internal static RGBProfile Instance = Import();
+
         internal const string FileName = "OpenRGB_Setup.json";
         internal const string GeneratedFileName = "openrgb_device_keys.json";
+
+        internal static void OpenFile() {
+            if (!File.Exists(FileName)) Instance.Export();
+            MainWindow.OpenExternalLink(FileName);
+        }
 
         public string IP = "127.0.0.1";
         public int Port = 6742;

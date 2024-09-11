@@ -15,7 +15,7 @@ namespace ToNSaveManager.Utils.OpenRGB
         static OpenRgbClient? Client { get; set; }
         static Device[]? Devices { get; set; }
 
-        static readonly RGBProfile Profile = RGBProfile.Import();
+        static RGBProfile Profile => RGBProfile.Instance;
 
         static RGBAnimation AnimTerror = new RGBAnimation();
         static RGBAnimation AnimRound = new RGBAnimation();
