@@ -59,7 +59,7 @@ namespace ToNSaveManager
             RefreshTable();
         }
         internal static void SetIsKiller(bool isKiller) {
-            ToNStats.AddIsAlive(isKiller);
+            ToNStats.AddIsKiller(isKiller);
             RefreshTable();
         }
         internal static void SetPageCount(int pages) {

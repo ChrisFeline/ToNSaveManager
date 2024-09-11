@@ -17,10 +17,10 @@ namespace ToNSaveManager.Windows
         #region Sub Classes
         internal class ToNOperation {
             public ToNRoundType RoundType = ToNRoundType.Classic;
-            public ToNIndex.Terror? TerrorIndex;
-            public ToNIndex.Terror? TerrorIndex2;
-            public ToNIndex.Terror? TerrorIndex3;
-            public ToNIndex.Map? MapIndex;
+            public Terror? TerrorIndex;
+            public Terror? TerrorIndex2;
+            public Terror? TerrorIndex3;
+            public Map? MapIndex;
             public bool IsSaboteur = false; // Only on sabotage
 
             public bool IsHidden => RoundType == ToNRoundType.Eight_Pages ||
@@ -385,6 +385,8 @@ namespace ToNSaveManager.Windows
             ToNGameState.SetOptedIn(true);
             ToNGameState.SetLocation(selectedMap);
             ToNGameState.SetTerrorMatrix(new TerrorMatrix(CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType) { IsSaboteur = CurrentIsKiller });
+            ToNGameState.SetKiller(CurrentIsKiller);
+            ToNGameState.SetAlive(true);
         }
 
         private void OnRoundSetKillers(bool reveal = true) {
@@ -428,6 +430,8 @@ namespace ToNSaveManager.Windows
             ToNGameState.SetOptedIn(false);
             ToNGameState.SetLocation(Map.Empty);
             ToNGameState.SetTerrorMatrix(TerrorMatrix.Empty);
+            ToNGameState.SetKiller(false);
+            ToNGameState.SetAlive(true);
             ToNGameState.SetEmulated(false);
         }
     }

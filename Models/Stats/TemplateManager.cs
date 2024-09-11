@@ -44,7 +44,8 @@ namespace ToNSaveManager.Models.Stats {
             }
 
             object? value = ToNStats.Get(key);
-            bool isNumber = ToNStats.GetType(key) == typeof(int);
+            Type? type = ToNStats.GetType(key);
+            bool isNumber = type == typeof(int);
 
             int operatorId = 0; // equals by default
             object? other = "True";
@@ -74,7 +75,7 @@ namespace ToNSaveManager.Models.Stats {
                     case 4: result = c > 0; break;
                     case 5: result = c < 0; break;
                 }
-            } else if (string.IsNullOrEmpty(customOp)) {
+            } else if (string.IsNullOrEmpty(customOp) && type != typeof(bool)) {
                 result = !string.IsNullOrEmpty(value?.ToString());
             } else {
                 result = string.Compare(value?.ToString(), other?.ToString()) == 0;
