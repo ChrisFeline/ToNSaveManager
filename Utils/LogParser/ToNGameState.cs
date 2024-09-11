@@ -15,6 +15,8 @@ namespace ToNSaveManager.Utils {
         public static bool IsSaboteour { get; private set; }
         public static bool IsOptedIn { get; private set; }
         public static int PageCount { get; private set; }
+
+        public static ToNRoundType RoundType { get; private set; } = ToNRoundType.Intermission;
         public static TerrorMatrix Terrors { get; private set; } = TerrorMatrix.Empty;
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
 
@@ -27,8 +29,9 @@ namespace ToNSaveManager.Utils {
 
             OpenRGBControl.SetIsAlive(isAlive);
             StatsWindow.SetActiveInRound(isAlive);
-            DSRichPresence.SetIsAlive(isAlive);
             if (IsAlive) SetPageCount(0);
+            LilOSC.SetDirty();
+            DSRichPresence.SetDirty();
         }
 
         public static void SetKiller(bool isKiller) {
@@ -43,24 +46,37 @@ namespace ToNSaveManager.Utils {
 
         public static void SetTerrorMatrix(TerrorMatrix matrix) {
             Terrors = matrix;
+            SetRoundType(Terrors.RoundType);
+
             StatsWindow.SetTerrorMatrix(Terrors);
-            DSRichPresence.SetTerrorMatrix(Terrors);
             OpenRGBControl.SetTerrorMatrix(Terrors);
             LilOSC.SetDirty();
+            DSRichPresence.SetDirty();
+        }
+
+        public static void SetRoundType(ToNRoundType roundType) {
+            if (RoundType == roundType) return;
+            RoundType = roundType;
+            DSRichPresence.SetRoundType(roundType);
         }
 
         public static void SetLocation(ToNIndex.Map location) {
+            if (Location.IsEmpty != location.IsEmpty)
+                DSRichPresence.UpdateTimestamp();
+
             Location = location;
             StatsWindow.SetLocation(Location, !Terrors.IsEmpty);
-            DSRichPresence.SetLocation(Location);
             LilOSC.SetDirty();
+            DSRichPresence.SetDirty();
         }
 
         public static void SetPageCount(int pages) {
+            if (PageCount == pages) return;
+
             PageCount = pages;
             StatsWindow.SetPageCount(pages);
-            DSRichPresence.SetPageCount(pages);
             LilOSC.SetDirty();
+            DSRichPresence.SetDirty();
         }
 
         // Unified damage event

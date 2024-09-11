@@ -51,56 +51,26 @@ namespace ToNSaveManager.Utils.Discord {
         }
 
         static bool IsDirty = true;
-        static TerrorMatrix CurrentMatrix = TerrorMatrix.Empty;
-        internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
-            if (CurrentMatrix.Length == 0 && terrorMatrix.Length > 0) IsAlive = true;
-            CurrentMatrix = terrorMatrix;
-            SetRoundType(terrorMatrix.RoundType);
-            SetDirty();
-        }
 
-        static ToNIndex.Map CurrentMap = ToNIndex.Map.Empty;
-        internal static void SetLocation(ToNIndex.Map map) {
-            if (CurrentMap.IsEmpty != map.IsEmpty) {
-                Timestamp = DateTime.UtcNow;
-            }
-            CurrentMap = map;
-            SetDirty();
-        }
+        static TerrorMatrix CurrentMatrix => ToNGameState.Terrors;
+        static ToNIndex.Map CurrentMap => ToNGameState.Location;
+        static int PageCount => ToNGameState.PageCount;
+        static bool IsAlive => ToNGameState.IsAlive;
 
-        static int PageCount = 0;
-        internal static void SetPageCount(int pages = 0) {
-            if (PageCount != pages) {
-                PageCount = pages;
-                SetDirty();
-            }
+        internal static void UpdateTimestamp() {
+            Timestamp = DateTime.UtcNow;
+            SetDirty();
         }
 
         static ToNRoundType CurrentRoundType = ToNRoundType.Intermission;
         static string CurrentRoundTypeAssetID = "icon_254_0";
-        static void SetRoundType(ToNRoundType roundType) {
+        internal static void SetRoundType(ToNRoundType roundType) {
             if (CurrentRoundType != roundType) {
                 CurrentRoundTypeAssetID = GetRoundAssetID(roundType);
                 CurrentRoundType = roundType;
                 SetDirty();
 
                 Log.Debug("Setting round type: " + roundType + " | Asset id: " + CurrentRoundTypeAssetID);
-            }
-        }
-
-        static bool IsOptedIn = false;
-        internal static void SetOptedIn(bool optedIn) {
-            if (IsOptedIn != optedIn) {
-                IsOptedIn = optedIn;
-                SetDirty();
-            }
-        }
-
-        static bool IsAlive = false;
-        internal static void SetIsAlive(bool isAlive) {
-            if (IsAlive != isAlive) {
-                IsAlive = isAlive;
-                SetDirty();
             }
         }
 

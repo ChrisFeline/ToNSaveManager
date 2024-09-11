@@ -60,8 +60,11 @@ namespace ToNSaveManager.Utils.LogParser
             }
         }
         public void SetTerrorMatrix(TerrorMatrix matrix) {
-            if (Terrors.IsEmpty != matrix.IsEmpty)
+            if (Terrors.IsEmpty != matrix.IsEmpty) {
                 SetIsAlive(Terrors.IsEmpty); // Is living
+                // Live Build Fallback
+                if (Location.IsEmpty) DSRichPresence.UpdateTimestamp();
+            }
 
             matrix.IsSaboteur = IsSaboteour && !matrix.IsEmpty;
             matrix.MapID = Location.IsEmpty ? -1 : Location.Id;

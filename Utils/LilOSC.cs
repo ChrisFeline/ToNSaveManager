@@ -35,6 +35,7 @@ namespace ToNSaveManager.Utils
         const string ParamTerrorColorS = "ToN_ColorS";
         const string ParamTerrorColorV = "ToN_ColorV";
 
+        const string ParamAlive = "ToN_IsAlive";
         const string ParamDamaged = "ToN_Damaged";
         const string ParamPages = "ToN_Pages";
         const string ParamItemStatus = "ToN_ItemStatus";
@@ -50,6 +51,7 @@ namespace ToNSaveManager.Utils
         static int LastTPhase3 = -1;
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
+        static bool LastAlive = true;
         static int LastMapID = -1;
         static Color LastTerrorColor = Color.Black;
 
@@ -77,8 +79,10 @@ namespace ToNSaveManager.Utils
         static Dictionary<int, bool> LastEncounters = new Dictionary<int, bool>();
 
         static bool IsOptedIn => ToNGameState.IsOptedIn;
-        public static TerrorMatrix TMatrix => ToNGameState.Terrors;
-        public static ToNIndex.Map RMap => ToNGameState.Location;
+        static TerrorMatrix TMatrix => ToNGameState.Terrors;
+        static ToNIndex.Map RMap => ToNGameState.Location;
+        static int PageCount => ToNGameState.PageCount;
+        static bool IsAlive => ToNGameState.IsAlive;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -94,7 +98,6 @@ namespace ToNSaveManager.Utils
             ChatboxClear = string.IsNullOrEmpty(message);
         }
 
-        static int PageCount => ToNGameState.PageCount;
 
         static bool ItemStatus = true;
         internal static void SetItemStatus(bool status) {
@@ -215,6 +218,7 @@ namespace ToNSaveManager.Utils
 
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
                 if (LastPageCount != PageCount || force) SendParam(ParamPages, LastPageCount = PageCount);
+                if (LastAlive != IsAlive || force) SendParam(ParamAlive, LastAlive = IsAlive);
             }
 
             if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
@@ -239,6 +243,7 @@ namespace ToNSaveManager.Utils
             return new Vector3(hue, sat, val);
         }
 
+        #region Encoding & Buffers
         static readonly byte[] temp_buffer = new byte[2048];
 
         private static void EncodeInto(byte[] data, ref int offset, string path, int value) {
@@ -369,5 +374,6 @@ namespace ToNSaveManager.Utils
             if (UdpClient == null) UdpClient = new UdpClient();
             UdpClient.Send(buffer, encodedLength, (ipAddress ?? IPAddress.Loopback).ToString(), port);
         }
+        #endregion
     }
 }
