@@ -3,13 +3,13 @@ using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
-using Windows.ApplicationModel.Contacts;
 
 namespace ToNSaveManager
 {
@@ -85,10 +85,13 @@ namespace ToNSaveManager
         }
 
         static StatPropertyContainer[] TableProperties => ToNStats.PropertyValues;
+        static string[,]? DisplayNames;
+
         static Dictionary<string, StatPropertyContainer> TableDictionary => ToNStats.PropertyDictionary;
 
         public StatsWindow() {
             InitializeComponent();
+            listBox1.FixItemHeight();
         }
 
         public static void Open(Form parent) {
@@ -112,24 +115,24 @@ namespace ToNSaveManager
 
             UpdateTable();
 
-            for (int i = 0; i < TableProperties.Length; i++) {
-                Control? control = statsTable.GetControlFromPosition(0, i);
-                if (control == null || control.DataContext == null) continue;
+            // string key = "STATS.LABEL_" + property.KeyUpper;
+            // strring tt += LANG.S("STATS.TEMPLATE_KEY", '{' + property.Key + '}');
 
-                StatPropertyContainer property = (StatPropertyContainer)control.DataContext;
+            if (DisplayNames == null) DisplayNames = new string[TableProperties.Length, 2];
+
+            for (int i = 0; i < TableProperties.Length; i++) {
+                var property = TableProperties[i];
 
                 string key = "STATS.LABEL_" + property.KeyUpper;
                 (string? tx, string? tt) = LANG.T(key);
 
-                if (string.IsNullOrEmpty(tx)) control.Text = property.Key;
-                else control.Text = tx;
+                DisplayNames[i, 0] = string.IsNullOrEmpty(tx) ? property.Key : tx;
 
                 if (string.IsNullOrEmpty(tt)) tt = string.Empty;
                 else tt += "\n\n";
-
                 tt += LANG.S("STATS.TEMPLATE_KEY", '{' + property.Key + '}');
 
-                toolTip.SetToolTip(control, tt);
+                DisplayNames[i, 1] = tt;
             }
 
             LANG.C(ctxTypeInValue, "STATS.CTX_TYPE_IN_VALUE");
@@ -139,53 +142,11 @@ namespace ToNSaveManager
         }
 
         internal void UpdateTable() {
-            StatPropertyContainer property;
-
-            if (TableProperties.Length != statsTable.RowCount) {
-                statsTable.RowCount = TableProperties.Length;
-
-                for (int i = 0; i < TableProperties.Length; i++) {
-                    property = TableProperties[i];
-
-                    for (int j = 0; j < statsTable.ColumnCount; j++) {
-                        statsTable.RowStyles.Add(new RowStyle(SizeType.AutoSize, 20F));
-                        Control control = new Label() {
-                            Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
-                            TextAlign = ContentAlignment.BottomLeft,
-                            Anchor = AnchorStyles.Left | AnchorStyles.Right,
-                            UseMnemonic = false
-                        };
-                        control.DataContext = property;
-                        control.Tag = control.Text;
-                        statsTable.Controls.Add(control, j, i);
-
-                        control.MouseClick += Control_MouseClick;
-                    }
-                }
-            }
-
-            for (int i = 0; i < TableProperties.Length; i++) {
-                property = TableProperties[i];
-
-                Control? control = statsTable.GetControlFromPosition(1, i);
-                if (control == null) continue;
-
-                control.Text = property.GetValue()?.ToString();
-            }
+            listBox1.Refresh();
+            // listBox1.Update();
         }
 
         StatPropertyContainer? ContextField;
-        private void Control_MouseClick(object? sender, MouseEventArgs e) {
-            if (e.Button != MouseButtons.Right || sender == null) return;
-
-            Control control = (Control)sender;
-
-            if (control != null) {
-                ContextField = (StatPropertyContainer?)control.DataContext;
-                ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
-                contextMenu.Show(control, e.Location);
-            }
-        }
 
         private void ctxTypeInValue_Click(object sender, EventArgs e) {
             if (ContextField == null) return;
@@ -208,6 +169,7 @@ namespace ToNSaveManager
         }
 
         private void StatsWindow_Load(object sender, EventArgs e) {
+            listBox1.DataSource = TableProperties;
             LocalizeContent();
             UpdateTable();
         }
@@ -217,6 +179,7 @@ namespace ToNSaveManager
             Update();
         }
 
+        /*
         public static string NormalizeLabelText(string text) {
             for (int i = 0; i < text.Length; i++) {
                 if (i > 0 && char.IsUpper(text[i])) {
@@ -231,12 +194,65 @@ namespace ToNSaveManager
 
             return text;
         }
-
+        */
 
         internal static void UpdateChatboxContent() {
             if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
             string template = TemplateManager.ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
             LilOSC.SetChatboxMessage(template);
+        }
+
+        private void listBoxEntries_DrawItem(object sender, DrawItemEventArgs e) {
+            if (e.Index < 0)
+                return;
+
+            e.DrawBackground();
+
+            ListBox listBox = (ListBox)sender;
+
+            var item = (StatPropertyContainer)listBox.Items[e.Index];
+            string itemText = DisplayNames == null ? item.Key : DisplayNames[e.Index, 0];
+
+            int maxWidth = e.Bounds.Width;
+            TextRenderer.DrawText(e.Graphics, itemText, listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+            TextRenderer.DrawText(e.Graphics, item.Value?.ToString() ?? "NULL", listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+
+            e.DrawFocusRectangle();
+        }
+
+        // Tooltips
+        int PreviousTooltipIndex = -1;
+        private void listBoxEntries_MouseMove(object sender, MouseEventArgs e) {
+            // Get the index of the item under the mouse pointer
+            int index = listBox1.IndexFromPoint(e.Location);
+
+            if (PreviousTooltipIndex != index) {
+                PreviousTooltipIndex = index;
+
+                if (index < 0) {
+                    toolTip.SetToolTip(listBox1, null);
+                    return;
+                }
+
+                toolTip.SetToolTip(listBox1, DisplayNames == null ? null : DisplayNames[index, 1]);
+            }
+        }
+
+        private void listBoxEntries_SelectedValueChanged(object sender, EventArgs e) {
+            if (listBox1.SelectedIndex < 0) return;
+            listBox1.SelectedIndex = -1;
+        }
+
+        private void listBoxEntries_MouseClick(object sender, MouseEventArgs e) {
+            if (e.Button != MouseButtons.Right || sender == null) return;
+
+            int index = listBox1.IndexFromPoint(e.Location);
+            Logger.Debug("INDEX: " + index);
+            if (index < 0 || index >= listBox1.Items.Count) return;
+
+            ContextField = TableProperties[index];
+            ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
+            contextMenu.Show(listBox1, e.Location);
         }
     }
 }

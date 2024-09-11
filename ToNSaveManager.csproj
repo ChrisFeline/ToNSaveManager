@@ -10,6 +10,8 @@
     <Version>1.0.0.2</Version>
     <FileVersion>1.0.0.2</FileVersion>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
   </PropertyGroup>
 
   <ItemGroup>

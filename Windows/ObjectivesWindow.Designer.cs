@@ -57,8 +57,8 @@
             // 
             // ObjectivesWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(278, 331);
             Controls.Add(listBox1);

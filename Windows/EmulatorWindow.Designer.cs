@@ -69,6 +69,7 @@
             comboRoundType.Dock = DockStyle.Right;
             comboRoundType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboRoundType.FormattingEnabled = true;
+            comboRoundType.IntegralHeight = false;
             comboRoundType.Location = new Point(134, 0);
             comboRoundType.Name = "comboRoundType";
             comboRoundType.Size = new Size(180, 23);
@@ -133,6 +134,7 @@
             comboMonster3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMonster3.ForeColor = Color.White;
             comboMonster3.FormattingEnabled = true;
+            comboMonster3.IntegralHeight = false;
             comboMonster3.Location = new Point(134, 0);
             comboMonster3.Name = "comboMonster3";
             comboMonster3.Size = new Size(180, 24);
@@ -159,6 +161,7 @@
             comboMonster2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMonster2.ForeColor = Color.White;
             comboMonster2.FormattingEnabled = true;
+            comboMonster2.IntegralHeight = false;
             comboMonster2.Location = new Point(134, 0);
             comboMonster2.Name = "comboMonster2";
             comboMonster2.Size = new Size(180, 24);
@@ -198,6 +201,7 @@
             comboMonster.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMonster.ForeColor = Color.White;
             comboMonster.FormattingEnabled = true;
+            comboMonster.IntegralHeight = false;
             comboMonster.Location = new Point(134, 0);
             comboMonster.Name = "comboMonster";
             comboMonster.Size = new Size(180, 24);
@@ -259,6 +263,7 @@
             comboLocation.DropDownStyle = ComboBoxStyle.DropDownList;
             comboLocation.ForeColor = Color.White;
             comboLocation.FormattingEnabled = true;
+            comboLocation.IntegralHeight = false;
             comboLocation.Location = new Point(134, 0);
             comboLocation.Name = "comboLocation";
             comboLocation.Size = new Size(180, 23);
@@ -415,8 +420,8 @@
             // 
             // EmulatorWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
