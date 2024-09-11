@@ -35,9 +35,8 @@ namespace ToNSaveManager.Utils.OpenRGB {
                     },
                     new RGBDevice.Area {
                         Comment = $"Each led ID number can be found on the generated file '{GeneratedFileName}'",
-                        Group = RGBGroupType.Round,
+                        Group = RGBGroupType.Living,
                         Leds = [ 8, 9 ],
-                        FlashOnMidnight = true
                     },
                     new RGBDevice.Area {
                         Comment = "Set the 'UseRange' property to 'true' if you want to choose a range of led IDs, for example if you want to select from id '0' to id '7', set the Leds property to [0,7]",
