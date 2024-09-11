@@ -46,7 +46,7 @@
             listBox1.Location = new Point(12, 12);
             listBox1.Name = "listBox1";
             listBox1.SelectionMode = SelectionMode.None;
-            listBox1.Size = new Size(238, 307);
+            listBox1.Size = new Size(254, 307);
             listBox1.TabIndex = 0;
             listBox1.TabStop = false;
             listBox1.UseTabStops = false;
@@ -60,7 +60,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(262, 331);
+            ClientSize = new Size(278, 331);
             Controls.Add(listBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;

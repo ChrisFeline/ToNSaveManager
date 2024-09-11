@@ -148,7 +148,7 @@ namespace ToNSaveManager
                     property = TableProperties[i];
 
                     for (int j = 0; j < statsTable.ColumnCount; j++) {
-                        statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+                        statsTable.RowStyles.Add(new RowStyle(SizeType.AutoSize, 20F));
                         Control control = new Label() {
                             Text = j == 0 ? NormalizeLabelText(property.Name) : "...",
                             TextAlign = ContentAlignment.BottomLeft,

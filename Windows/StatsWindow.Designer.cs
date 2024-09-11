@@ -48,12 +48,12 @@
             statsTable.Dock = DockStyle.Top;
             statsTable.ForeColor = Color.White;
             statsTable.Location = new Point(4, 4);
-            statsTable.Margin = new Padding(3, 10, 3, 3);
+            statsTable.Margin = new Padding(3, 10, 3, 10);
             statsTable.Name = "statsTable";
             statsTable.RowCount = 1;
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             statsTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            statsTable.Size = new Size(316, 22);
+            statsTable.Size = new Size(366, 22);
             statsTable.TabIndex = 0;
             // 
             // contextMenu
@@ -80,13 +80,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            AutoScroll = true;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(324, 120);
+            ClientSize = new Size(374, 233);
             Controls.Add(statsTable);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(340, 0);
             Name = "StatsWindow";

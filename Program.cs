@@ -110,8 +110,13 @@ namespace ToNSaveManager
                     }
             }
 
-            DefaultFont = new Font(FontCollection.Families[0], 8.999999f, GraphicsUnit.Point);
-            Application.SetDefaultFont(DefaultFont);
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero)) {
+                // float dpiX = graphics.DpiX;
+                float dpiY = graphics.DpiY;
+
+                DefaultFont = new Font(FontCollection.Families[0], 8.999999f * (100f / dpiY), GraphicsUnit.Point);
+                Application.SetDefaultFont(DefaultFont);
+            }
         }
 
         internal static Stream? GetEmbededResource(string name)
