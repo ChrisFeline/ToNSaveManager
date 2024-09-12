@@ -50,67 +50,9 @@
 - This window gives you a list of unlockables that you can check to track your progress. Just click on the things you already unlocked.
 
 ## OSC Documentation
-<details><summary>Parameter Names & Types</summary><p>
-<pre>
-<b>Parameter Name</b> | <b>Type</b>  |
------------------|-------|--------------------------
-ToN_RoundType    | INT   | The current round type.
-ToN_Map          | INT   | The current map of this round.
-ToN_OptedIn      | BOOL  | Is the player opted-in at the lobby
-ToN_Saboteur     | BOOL  | Is the player currently the Saboteur
------------------|-------|--------------------------
-ToN_Terror1      | INT   | The current terror index.
-ToN_Terror2      | INT   | The second terror index. (Bloodbath & Midnight)
-ToN_Terror3      | INT   | The third terror index. (Bloodbath & Alternate on Midnight)
------------------|-------|--------------------------
-ToN_TPhase1      | INT   | The current terror phase.
-ToN_TPhase2      | INT   | The second terror phase. (Bloodbath)
-ToN_TPhase3      | INT   | The third terror phase. (Bloodbath & Midnight)
------------------|-------|--------------------------
-ToN_EncounterHHI | BOOL  | Hungry Home Invader (Stop raiding my refrigerator)
-ToN_EncounterATR | BOOL  | Atrached
-ToN_EncounterWYB | BOOL  | Wild Yet Bloodthirsty Creature
-ToN_EncounterGLO | BOOL  | Glorbo
-ToN_EncounterEPF | BOOL  | Shadow Evil Purple Foxy
------------------|-------|--------------------------
-ToN_ColorH       | FLOAT | HUD Terror Color (HUE)
-ToN_ColorS       | FLOAT | HUD Terror Color (Saturation)
-ToN_ColorV       | FLOAT | HUD Terror Color (Value)
------------------|-------|--------------------------
-</pre>
-</p></details>
+[**Parameter Names & Types**](Docs/OSC/OSC_Parameters.md)
 
-<details><summary>Round Type Values</summary><p>
-<pre>
-<b>Basic</b>
- 0   =  Unknown
- 1   =  Classic
- 2   =  Fog
- 3   =  Punished
- 4   =  Sabotage
- 5   =  Cracked
- 6   =  Bloodbath
- 7   =  Double_Trouble
- 8   =  EX
- 9   =  Ghost
- 10  =  Unbound
-<br><b>Alternates</b>
- 50   =  Midnight
- 51   =  Alternate
- 52   =  Fog   (Alternate)
- 53   =  Ghost (Alternate)
-<br><b>Moons</b>
- 100  =  Mystic Moon
- 101  =  Blood Moon
- 102  =  Twilight
- 103  =  Solstice
-<br><b>Specials</b>
- 104  =  RUN
- 105  =  8 PAGES
- 106  =  GIGABYTE   (April Fools)
- 107  =  COLD NIGHT (Winterfest)
-</pre>
-</p></details>
+[**Round Type Values**](Docs/OSC/OSC_RoundType.md)
 
 <details><summary>OSC Troubleshooting</summary><p>
 If your parameters are not being received properly... try resetting the OSC config.
