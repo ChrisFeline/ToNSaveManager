@@ -9,8 +9,7 @@
 
   [View Releases](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
   [Saving Guide](https://terror.moe/save "HOW TO SAVE & LOAD FOR DUMMIES") • 
-  [How To Use](#-faq) • 
-  [Español](README.es.md)
+  [How To Use](#-faq)
 </div>
 
 <p align="center">
@@ -109,9 +108,9 @@ If your parameters are not being received properly... try resetting the OSC conf
 > NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
 > <details>
 > <summary><b>Show Discord Screenshots</b></summary>
-> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto" > </p>
-> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px" > </p>
-> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px" > </p>
+> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto"> </p>
+> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px"> </p>
+> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px"> </p>
 > </details>
 
 > ## Why is the .exe so big? >100MB
