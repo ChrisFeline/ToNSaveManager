@@ -9,12 +9,14 @@ using ToNSaveManager.Models.Index;
 
 namespace ToNSaveManager.Models.Stats {
     internal class StatPropertyContainer {
-        public string Key;
-        public PropertyInfo Source;
+        public string Key { get; private set; }
+        public PropertyInfo Source { get; private set; }
         public PropertyInfoContainer Property;
         public string Name => Property.Name;
         public Type PropertyType => Property.PropertyType;
-        public string KeyUpper;
+        public string KeyUpper { get; private set; }
+        public string KeyTemplate { get; private set; }
+        public string KeyLang { get; private set; }
 
         private StatsBase? m_StatsBase;
         public StatsBase? Instance => m_StatsBase ?? (m_StatsBase = (StatsBase?)Source.GetValue(null));
@@ -22,6 +24,8 @@ namespace ToNSaveManager.Models.Stats {
         public StatPropertyContainer(string key, PropertyInfo source, PropertyInfoContainer property) {
             Key = key;
             KeyUpper = key.ToUpperInvariant();
+            KeyTemplate = '{' + Key + '}';
+            KeyLang = "STATS.LABEL_" + KeyUpper;
             Source = source;
             Property = property;
         }
@@ -220,10 +224,11 @@ namespace ToNSaveManager.Models.Stats {
         internal static readonly Dictionary<string, StatPropertyContainer> PropertyDictionary = new Dictionary<string, StatPropertyContainer>(StringComparer.InvariantCultureIgnoreCase);
 
         internal static readonly StatPropertyContainer[] PropertyValues;
-        internal static readonly string[] PropertyKeys;
+        internal static readonly Dictionary<string, StatPropertyContainer[]> PropertyGroups = new Dictionary<string, StatPropertyContainer[]>();
 
         static ToNStats() {
             Type baseType = typeof(StatsBase);
+            List<StatPropertyContainer> keys = new List<StatPropertyContainer>();
             foreach (PropertyInfo propertyInfo in typeof(ToNStats).GetProperties(BindingFlags.Public | BindingFlags.Static).Where(t => baseType.IsAssignableFrom(t.PropertyType))) {
                 string prefix = propertyInfo.Name == "Local" ? string.Empty : propertyInfo.Name;
 
@@ -233,10 +238,13 @@ namespace ToNSaveManager.Models.Stats {
                     Log.Debug("Full Name: " + propertyInfo.PropertyType.FullName + " | " + prop.Name);
                     PropertyDictionary.Add(key, statProp);
                     MarkModified(key);
+                    keys.Add(statProp);
                 }
+
+                PropertyGroups[propertyInfo.Name] = keys.ToArray();
+                keys.Clear();
             }
 
-            PropertyKeys = PropertyDictionary.Keys.Select(k => '{' + k + '}').ToArray();
             PropertyValues = PropertyDictionary.Values.ToArray();
         }
         #endregion

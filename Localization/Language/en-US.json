@@ -270,6 +270,8 @@
 	"STATS.LABEL_LOBBYTOPSTUNSALL.TT": "Highest amount of times you and other players have stunned a Terror in a round on this lobby.",
 	"STATS.LABEL_LOBBYDAMAGETAKEN": "Lobby Damage Taken",
 	"STATS.LABEL_LOBBYDAMAGETAKEN.TT": "Total damage taken on this lobby.",
+	"STATS.LABEL_PLAYERSONLINE": "Players Online",
+	"STATS.LABEL_PLAYERSONLINE.TT": "Represents the amount of players in the instance.",
 
 	"STATS.LABEL_ROUNDSTUNS": "Round Stuns",
 	"STATS.LABEL_ROUNDSTUNS.TT": "Amount of times you have stunned a Terror in the round.",
@@ -285,6 +287,14 @@
 	"STATS.LABEL_MAPCREATOR.TT": "Name of the map creator.",
 	"STATS.LABEL_MAPORIGIN": "Map Origin",
 	"STATS.LABEL_MAPORIGIN.TT": "Displays where this map originates from.",
+	"STATS.LABEL_ISALIVE": "Is Alive",
+	"STATS.LABEL_ISALIVE.TT": "True if the player is currently alive on a round.",
+	"STATS.LABEL_ISALIVE": "Is Killer",
+	"STATS.LABEL_ISALIVE.TT": "True if the player is currently the killer on a Sabotage round.",
+	"STATS.LABEL_ROUNDINT": "Round INT",
+	"STATS.LABEL_ROUNDINT.TT": "Represents the int value of the current round type.",
+	"STATS.LABEL_PAGECOUNT": "Page Count",
+	"STATS.LABEL_ROUNDINT.TT": "The amount of pages collected during an 8 Pages round.",
 
 	"STATS.TEMPLATE_KEY": "Template Key: {0}",
 	"STATS.CTX_TYPE_IN_VALUE": "Type In Value",

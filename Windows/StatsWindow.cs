@@ -127,14 +127,13 @@ namespace ToNSaveManager
             for (int i = 0; i < TableProperties.Length; i++) {
                 var property = TableProperties[i];
 
-                string key = "STATS.LABEL_" + property.KeyUpper;
-                (string? tx, string? tt) = LANG.T(key);
+                (string? tx, string? tt) = LANG.T(property.KeyLang);
 
                 DisplayNames[i, 0] = string.IsNullOrEmpty(tx) ? property.Key : tx;
 
                 if (string.IsNullOrEmpty(tt)) tt = string.Empty;
                 else tt += "\n\n";
-                tt += LANG.S("STATS.TEMPLATE_KEY", '{' + property.Key + '}');
+                tt += LANG.S("STATS.TEMPLATE_KEY", property.KeyTemplate);
 
                 DisplayNames[i, 1] = tt;
             }

@@ -178,7 +178,7 @@ namespace ToNSaveManager.Windows
         }
         private void RoundInfoTemplate_OnEdit(RoundInfoTemplate template) {
             string value = template.Template;
-            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.ROUNDINFOTOFILE_EDIT.TITLE", template.FileName) ?? $"Editing: {template.FileName}", this, true, false, true);
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.ROUNDINFOTOFILE_EDIT.TITLE", template.FileName) ?? $"Editing: {template.FileName}", this, true, false, true, true);
             if (show.Accept) {
                 if (string.IsNullOrWhiteSpace(show.Text)) {
                     DialogResult dRes = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE", template.FileName) ?? $"Are you sure you want to delete this template file?\nFile Name: {template.FileName}", LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE", template.FileName) ?? $"Deleting Template: {template.FileName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -235,7 +235,7 @@ namespace ToNSaveManager.Windows
         }
 
         private void linkAddInfoFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            EditResult show = EditWindow.Show(string.Empty, LANG.S("SETTINGS.ROUNDINFOTOFILE_ADD.TITLE") ?? "Create New Template", this, false, true);
+            EditResult show = EditWindow.Show(string.Empty, LANG.S("SETTINGS.ROUNDINFOTOFILE_ADD.TITLE") ?? "Create New Template", this, false, true, true);
             if (!show.Accept || string.IsNullOrEmpty(show.Text)) return;
 
             string template = show.Text;
@@ -350,7 +350,7 @@ namespace ToNSaveManager.Windows
 
         private void linkEditChatbox_Click(object sender, LinkLabelLinkClickedEventArgs e) {
             string template = Settings.Get.OSCMessageInfoTemplate.Template;
-            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true);
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true, insertKeyTemplate: true);
             if (edit.Accept) {
                 Settings.Get.OSCMessageInfoTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageInfoTemplate.Template : edit.Text;
                 Settings.Export();

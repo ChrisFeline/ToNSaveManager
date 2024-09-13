@@ -27,10 +27,15 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditWindow));
             textBox1 = new TextBox();
             button1 = new Button();
             button2 = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            insertToolStripMenuItem = new ToolStripMenuItem();
+            buttonInsert = new Button();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // textBox1
@@ -51,7 +56,7 @@
             button1.ForeColor = Color.White;
             button1.Location = new Point(12, 40);
             button1.Name = "button1";
-            button1.Size = new Size(75, 23);
+            button1.Size = new Size(75, 29);
             button1.TabIndex = 1;
             button1.Text = "Save";
             button1.UseVisualStyleBackColor = true;
@@ -65,11 +70,37 @@
             button2.ForeColor = Color.White;
             button2.Location = new Point(339, 40);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(75, 29);
             button2.TabIndex = 2;
             button2.Text = "Cancel";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { insertToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(104, 26);
+            // 
+            // insertToolStripMenuItem
+            // 
+            insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            insertToolStripMenuItem.Size = new Size(103, 22);
+            insertToolStripMenuItem.Text = "Insert";
+            // 
+            // buttonInsert
+            // 
+            buttonInsert.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonInsert.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            buttonInsert.FlatStyle = FlatStyle.Flat;
+            buttonInsert.ForeColor = Color.White;
+            buttonInsert.Location = new Point(93, 40);
+            buttonInsert.Name = "buttonInsert";
+            buttonInsert.Size = new Size(240, 29);
+            buttonInsert.TabIndex = 3;
+            buttonInsert.Text = "Insert Template Key";
+            buttonInsert.UseVisualStyleBackColor = true;
+            buttonInsert.MouseClick += buttonInsert_MouseClick;
             // 
             // EditWindow
             // 
@@ -78,8 +109,9 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 52, 64);
             CancelButton = button2;
-            ClientSize = new Size(426, 71);
+            ClientSize = new Size(426, 79);
             ControlBox = false;
+            Controls.Add(buttonInsert);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(textBox1);
@@ -92,6 +124,7 @@
             ShowInTaskbar = false;
             Text = "Note Editor";
             Shown += EditWindow_Shown;
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -101,5 +134,8 @@
         private TextBox textBox1;
         private Button button1;
         private Button button2;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem insertToolStripMenuItem;
+        private Button buttonInsert;
     }
 }
