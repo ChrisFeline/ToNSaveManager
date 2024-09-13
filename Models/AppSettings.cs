@@ -143,7 +143,7 @@ namespace ToNSaveManager.Models
         public RoundInfoTemplate[] RoundInfoTemplates { get; set; } = [
             new ("ton_terror_name.txt", "{TerrorName}"),
             new ("ton_round_type.txt", "{RoundType}"),
-            new ("ton_map_name.txt", "{MapName}")
+            new ("ton_map_name.txt", "{MapName}({MapOrigin}? from {MapOrigin}:)({MapCreator}? by {MapCreator}:)")
         ];
         #endregion
 
