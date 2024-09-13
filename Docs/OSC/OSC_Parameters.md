@@ -1,12 +1,12 @@
 # General
-Parameter Name   | Type    | Description
+Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_RoundType`  | `INT`   | The current round type. See the [**Round Type Values**](OSC_RoundType.md) document for more info.
 `ToN_Map`        | `INT`   | The current map of this round.
 `ToN_OptedIn`    | `BOOL`  | Is the player opted-in at the lobby
 
 # Events
-Parameter Name   | Type    | Description
+Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_IsAlive`    | `BOOL`  | Is the player alive or not. Should be `true` on Intermission.
 `ToN_Damaged`    | `INT`  | Set to `true` for a few frames when the player takes damage. The number represents the amount of damage taken on that hit. If the player dies this number will be `255`
@@ -15,7 +15,7 @@ Parameter Name   | Type    | Description
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
 
 # Terrors
-Parameter Name   | Type    | Description
+Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_Terror1`    | `INT`   | The current terror index.
 `ToN_Terror2`    | `INT`   | The second terror index. (Bloodbath & Midnight)
@@ -25,14 +25,14 @@ Parameter Name   | Type    | Description
 `ToN_TPhase3`    | `INT`   | The third terror phase. (Bloodbath & Midnight)
 
 # Colors
-Parameter Name   | Type    | Description
+Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_ColorH`     | `FLOAT` | HUD Terror Color (HUE)
 `ToN_ColorS`     | `FLOAT` | HUD Terror Color (Saturation)
 `ToN_ColorV`     | `FLOAT` | HUD Terror Color (Value)
 
 # Encounters
-Parameter Name     | Type    | Description
+Parameter          | Type    | Description
 -------------------|---------|--------------------------
 `ToN_EncounterHHI` | `BOOL`  | Hungry Home Invader (Stop raiding my refrigerator)
 `ToN_EncounterATR` | `BOOL`  | Atrached
