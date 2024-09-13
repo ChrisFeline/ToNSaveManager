@@ -271,6 +271,7 @@ namespace ToNSaveManager.Windows
                     (roundType == ToNRoundType.Midnight ? Alternates : null));
 
                 checkBoxIsKiller.Visible = roundType == ToNRoundType.Sabotage;
+                buttonStepReveal.Text = roundType == ToNRoundType.Eight_Pages ? "Find Page 1" : "Reveal";
             }
         }
 
@@ -367,8 +368,16 @@ namespace ToNSaveManager.Windows
                     break;
 
                 case 2: // Reveal
-                    buttonStepReveal.Enabled = false;
-                    OnRoundSetKillers(true);
+                    if (Operation.RoundType == ToNRoundType.Eight_Pages) {
+                        Logger.Debug("Trying");
+                        ToNGameState.SetPageCount(ToNGameState.PageCount + 1);
+                        if (ToNGameState.PageCount == 1) OnRoundSetKillers(true);
+                        if (ToNGameState.PageCount == 8) buttonStepEndRound.PerformClick();
+                        buttonStepReveal.Text = "Find Page " + (ToNGameState.PageCount + 1);
+                    } else {
+                        buttonStepReveal.Enabled = false;
+                        OnRoundSetKillers(true);
+                    }
                     break;
 
                 case 4: // Damage
@@ -449,13 +458,12 @@ namespace ToNSaveManager.Windows
             if (checkSpecial.Visible && checkSpecial.Checked) terrorMatrix.MarkEncounter();
 
             ToNGameState.SetTerrorMatrix(terrorMatrix);
-            ToNGameState.SetAlive(true);
         }
 
         private void OnRoundEnd() {
             ToNGameState.SetOptedIn(false);
-            ToNGameState.SetLocation(Map.Empty);
             ToNGameState.SetTerrorMatrix(TerrorMatrix.Empty);
+            ToNGameState.SetLocation(Map.Empty);
             ToNGameState.SetKiller(false);
             ToNGameState.SetAlive(true);
             ToNGameState.SetEmulated(false);
