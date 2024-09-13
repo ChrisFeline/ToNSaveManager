@@ -66,6 +66,10 @@ namespace ToNSaveManager
             ToNStats.AddPageCount(pages);
             RefreshTable();
         }
+        internal static void SetPlayerCount(int playerCount) {
+            ToNStats.AddPlayerCount(playerCount);
+            RefreshTable();
+        }
 
         internal static bool IsRoundActive;
         internal static void SetActiveInRound(bool active) {

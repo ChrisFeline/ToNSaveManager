@@ -20,6 +20,13 @@ namespace ToNSaveManager.Utils {
         public static TerrorMatrix Terrors { get; private set; } = TerrorMatrix.Empty;
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
 
+        public static int PlayerCount { get; private set; }
+
+        public static void SetPlayerCount(int playerCount) {
+            PlayerCount = playerCount;
+            StatsWindow.SetPlayerCount(PlayerCount);
+        }
+
         public static void SetEmulated(bool isEmulated) {
             IsEmulated = isEmulated;
         }

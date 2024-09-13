@@ -24,6 +24,15 @@ namespace ToNSaveManager.Utils.LogParser
             OnAwake();
         }
 
+        public override void Join(string displayName) {
+            base.Join(displayName);
+            ToNGameState.SetPlayerCount(Players.Count);
+        }
+        public override void Leave(string displayName) {
+            base.Leave(displayName);
+            ToNGameState.SetPlayerCount(Players.Count);
+        }
+
         public override void OnAwake() {
             ClearSummary();
             SetOptedIn(false);

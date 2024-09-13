@@ -32,7 +32,9 @@ namespace ToNSaveManager.Models.Stats
         public int PageCount { get; internal set; } = 0;
     }
 
-    internal class StatsLobby : StatsData { }
+    internal class StatsLobby : StatsData {
+        public int PlayersOnline { get; internal set; } = 0;
+    }
 
     internal class StatsData : StatsBase {
         public int Rounds => Deaths + Survivals;

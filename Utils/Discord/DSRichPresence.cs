@@ -2,8 +2,10 @@
 using DiscordRPC.Logging;
 using DiscordRPC.Message;
 using Microsoft.VisualBasic.Logging;
+using System.Text;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ToNSaveManager.Utils.Discord {
     internal class DSRichPresence {
@@ -23,11 +25,11 @@ namespace ToNSaveManager.Utils.Discord {
         };
         static string DetailsText {
             get => Presence.Details;
-            set => Presence.Details = value;
+            set => Presence.Details = LimitByteLength(value);
         }
         static string StateText {
             get => Presence.State;
-            set => Presence.State = value;
+            set => Presence.State = LimitByteLength(value);
         }
         static string ImageKey {
             get => Presence.Assets.LargeImageKey;
@@ -35,7 +37,7 @@ namespace ToNSaveManager.Utils.Discord {
         }
         static string? ImageText {
             get => Presence.Assets.LargeImageText;
-            set => Presence.Assets.LargeImageText = value;
+            set => Presence.Assets.LargeImageText = LimitByteLength(value);
         }
         static string? IconKey {
             get => Presence.Assets.SmallImageKey;
@@ -43,7 +45,7 @@ namespace ToNSaveManager.Utils.Discord {
         }
         static string? IconText {
             get => Presence.Assets.SmallImageText;
-            set => Presence.Assets.SmallImageText = value;
+            set => Presence.Assets.SmallImageText = LimitByteLength(value);
         }
         static DateTime? Timestamp {
             get => Presence.Timestamps.Start;
@@ -248,5 +250,19 @@ namespace ToNSaveManager.Utils.Discord {
             { "icon_1_3", "https://i.imgur.com/NwEWIyn.gif" }, // parhelion
             { "icon_m_3", "https://i.imgur.com/U6wGpqV.gif" }, // Parhelion Midnight
         };
+
+        // https://github.com/vrcx-team/VRCX/blob/6825616d5fbf7fa68121ba80858f11626ea5eeb8/Dotnet/Discord.cs#L135
+        // https://stackoverflow.com/questions/1225052/best-way-to-shorten-utf8-string-based-on-byte-length
+        private static string? LimitByteLength(string? str, int maxBytesLength = 127) {
+            if (str == null) return str;
+            var bytesArr = Encoding.UTF8.GetBytes(str);
+            var bytesToRemove = 0;
+            var lastIndexInString = str.Length - 1;
+            while (bytesArr.Length - bytesToRemove > maxBytesLength) {
+                bytesToRemove += Encoding.UTF8.GetByteCount(new char[] { str[lastIndexInString] });
+                --lastIndexInString;
+            }
+            return Encoding.UTF8.GetString(bytesArr, 0, bytesArr.Length - bytesToRemove);
+        }
     }
 }

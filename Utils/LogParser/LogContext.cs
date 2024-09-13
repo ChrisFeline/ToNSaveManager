@@ -75,7 +75,7 @@ namespace ToNSaveManager.Utils.LogParser {
         /// <summary>
         /// Called when a player joins the room.
         /// </summary>
-        public void Join(string displayName) {
+        public virtual void Join(string displayName) {
             if (!Players.Contains(displayName))
                 Players.Add(displayName);
         }
@@ -83,7 +83,7 @@ namespace ToNSaveManager.Utils.LogParser {
         /// <summary>
         /// Called when a player leaves the room.
         /// </summary>
-        public void Leave(string displayName) {
+        public virtual void Leave(string displayName) {
             if (Players.Contains(displayName))
                 Players.Remove(displayName);
         }
