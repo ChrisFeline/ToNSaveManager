@@ -135,6 +135,9 @@ namespace ToNSaveManager.Windows
             checkOpenRGBEnabled.CheckedChanged += CheckOpenRGBEnabled_CheckedChanged;
             // CheckOpenRGBEnabled_CheckedChanged(null, EventArgs.Empty);
 
+            checkAutoCopy.CheckedChanged += checkAutoCopy_CheckedChanged;
+            checkAutoCopy_CheckedChanged(null, EventArgs.Empty);
+
             FillLanguageBox();
         }
 
@@ -426,6 +429,12 @@ namespace ToNSaveManager.Windows
                     PostAudioLocationSet();
                 }
             }
+        }
+
+        private void checkAutoCopy_CheckedChanged(object? sender, EventArgs e) {
+            if (checkAutoCopy.Checked && sender != null) LilOSC.SendData(true);
+            checkCopyOnOpen.ForeColor = checkCopyOnJoin.ForeColor = checkCopyOnSave.ForeColor =
+                checkAutoCopy.Checked ? Color.White : Color.Gray;
         }
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {

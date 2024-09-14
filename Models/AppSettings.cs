@@ -51,6 +51,9 @@ namespace ToNSaveManager.Models
         /// Automatically copy newly detected save codes as you play.
         /// </summary>
         public bool AutoCopy { get; set; }
+        public bool CopyOnOpen { get; set; } = true;
+        public bool CopyOnJoin { get; set; } = true;
+        public bool CopyOnSave { get; set; } = false;
 
         /// <summary>
         /// Play notification audio when a new save is detected.

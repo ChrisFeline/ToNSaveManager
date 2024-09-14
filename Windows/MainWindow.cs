@@ -597,7 +597,9 @@ namespace ToNSaveManager
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
-            CopyRecent();
+            if ((Settings.Get.CopyOnSave && Started) || (Settings.Get.CopyOnOpen && !Started))
+                CopyRecent(false);
+
             Export();
             DSRichPresence.Send();
             StatsWindow.WriteChanges();
@@ -861,8 +863,6 @@ namespace ToNSaveManager
                 Entry? first = temp?.Database.FirstOrDefault();
                 if (first != null) SetRecent(first);
             }
-
-            // CopyRecent();
         }
 
         private void AddCustomEntry(Entry entry, History? collection) {
@@ -952,8 +952,8 @@ namespace ToNSaveManager
             }
         }
 
-        private void CopyRecent() {
-            if (!Settings.Get.AutoCopy || RecentData == null || !RecentData.Fresh) return;
+        internal void CopyRecent(bool force) {
+            if (!Settings.Get.AutoCopy || RecentData == null || (!RecentData.Fresh && !force)) return;
 
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
@@ -27,6 +28,8 @@ namespace ToNSaveManager.Utils.LogParser
         public override void Enter(string name, DateTime date) {
             base.Enter(name, date);
             HasLoadedSave = false;
+
+            if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin) MainWindow.Instance?.CopyRecent(true);
         }
 
         public override void Join(string displayName) {

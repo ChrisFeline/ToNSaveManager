@@ -105,8 +105,16 @@
 	"SETTINGS.LOGUPDATERATE.TITLE": "Set Update Rate (Milliseconds)",
 	"SETTINGS.SKIPPARSEDLOGS": "Skip Parsed Logs (!)",
 	"SETTINGS.SKIPPARSEDLOGS.TT": "Skip old parsed log files that were already processed and saved.\nOnly disable this if you accidentally deleted a save code.",
+
 	"SETTINGS.AUTOCOPY": "Auto Clipboard Copy",
 	"SETTINGS.AUTOCOPY.TT": "Automatically copy new save codes to clipboard.",
+	"SETTINGS.COPYONOPEN": "Copy On Open",
+	"SETTINGS.COPYONOPEN.TT": "Automatically copy recent save code when you open this app.",
+	"SETTINGS.COPYONJOIN": "Copy On Join",
+	"SETTINGS.COPYONJOIN.TT": "Automatically copy recent save code when you join another room.",
+	"SETTINGS.COPYONSAVE": "Copy On Save",
+	"SETTINGS.COPYONSAVE.TT": "Automatically copy new saves when you play.",
+
 	"SETTINGS.SAVENAMES": "Collect Player Names",
 	"SETTINGS.SAVENAMES.TT": "Save codes will show players in the instance at the time of saving.",
 	"SETTINGS.SAVEROUNDINFO": "Save Round Info",
