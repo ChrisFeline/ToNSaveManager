@@ -28,6 +28,7 @@ namespace ToNSaveManager.Models.Stats {
             }
         }
 
+        [JsonConstructor]
         public RoundInfoTemplate(string filePath, string template) {
             m_TemplateKeys = Array.Empty<string>();
             m_FilePath = string.Empty; // Prevent nullability warning CS8618 ... :(
@@ -36,6 +37,7 @@ namespace ToNSaveManager.Models.Stats {
             FilePath = filePath;
             Template = template;
         }
+        public RoundInfoTemplate(string template) : this(string.Empty, template) { }
 
         public override string ToString() {
             return FileName;

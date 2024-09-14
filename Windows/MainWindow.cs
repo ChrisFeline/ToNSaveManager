@@ -909,9 +909,8 @@ namespace ToNSaveManager
                     entry.RT = killers.RoundType;
                     entry.TD = killers.Terrors;
 
-                    if (killers.Terrors.Length > 0) {
-                        if (Settings.Get.SaveRoundNote)
-                            entry.Note = killers.GetTerrorNames();
+                    if (Settings.Get.SaveRoundNote && !string.IsNullOrEmpty(context.Summary.Note)) {
+                        entry.Note = context.Summary.Note;
                     }
 
                     var map = context.Summary.Map;

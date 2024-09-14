@@ -94,14 +94,14 @@ namespace ToNSaveManager.Utils.LogParser
             Result = result;
         }
 
-        public RoundSummary Summary { get; private set; } = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, true);
+        public RoundSummary Summary { get; private set; } = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, null, true);
         // Triggered at end of round
         public void SaveSummary() {
-            Summary = new RoundSummary(Result, Terrors, Location);
+            Summary = new RoundSummary(Result, Terrors, Location, Settings.Get.SaveRoundNote ? Settings.Get.RoundNoteTemplate.GetString() : null);
         }
         // Triggered when consumed by the save code
         public void ClearSummary() {
-            Summary = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, true);
+            Summary = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, null, true);
         }
 
         public struct RoundSummary {
@@ -109,12 +109,14 @@ namespace ToNSaveManager.Utils.LogParser
             public TerrorMatrix Terrors;
             public ToNIndex.Map Map;
             public bool IsEmpty;
+            public string? Note;
 
-            public RoundSummary(ToNRoundResult result, TerrorMatrix terrors, ToNIndex.Map map, bool isEmpty = false) {
+            public RoundSummary(ToNRoundResult result, TerrorMatrix terrors, ToNIndex.Map map, string? note, bool isEmpty = false) {
                 Result = result;
                 Terrors = terrors;
                 Map = map;
                 IsEmpty = isEmpty;
+                Note = note;
             }
         }
     }

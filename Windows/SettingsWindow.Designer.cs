@@ -60,9 +60,11 @@
             labelGroupGeneral = new Label();
             flowLayoutPanel5 = new FlowLayoutPanel();
             linkLogUpdateRate = new LinkLabel();
-            checkCopyOnSave = new CheckBox();
             checkCopyOnOpen = new CheckBox();
             checkCopyOnJoin = new CheckBox();
+            checkCopyOnSave = new CheckBox();
+            flowLayoutPanel6 = new FlowLayoutPanel();
+            linkAutoNoteEdit = new LinkLabel();
             flowRoundInfoFilePanel = new FlowLayoutPanel();
             checkRoundToFile = new CheckBox();
             flowRoundInfoFiles = new FlowLayoutPanel();
@@ -86,6 +88,7 @@
             panel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel5.SuspendLayout();
+            flowLayoutPanel6.SuspendLayout();
             flowRoundInfoFilePanel.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -123,14 +126,14 @@
             // 
             checkSaveTerrorsNote.AutoSize = true;
             checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
-            checkSaveTerrorsNote.Location = new Point(3, 184);
-            checkSaveTerrorsNote.Margin = new Padding(3, 1, 3, 1);
+            checkSaveTerrorsNote.Location = new Point(3, 0);
+            checkSaveTerrorsNote.Margin = new Padding(0);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
             checkSaveTerrorsNote.Padding = new Padding(50, 0, 3, 0);
-            checkSaveTerrorsNote.Size = new Size(178, 19);
+            checkSaveTerrorsNote.Size = new Size(164, 19);
             checkSaveTerrorsNote.TabIndex = 3;
             checkSaveTerrorsNote.Tag = "SaveRoundNote|Automatically set survived terror names as note.";
-            checkSaveTerrorsNote.Text = "Terror Name Notes";
+            checkSaveTerrorsNote.Text = "Automatic Note";
             checkSaveTerrorsNote.UseVisualStyleBackColor = true;
             // 
             // checkSaveTerrors
@@ -437,7 +440,7 @@
             flowLayoutPanel1.Controls.Add(checkPlayerNames);
             flowLayoutPanel1.Controls.Add(checkSaveTerrors);
             flowLayoutPanel1.Controls.Add(checkShowWinLose);
-            flowLayoutPanel1.Controls.Add(checkSaveTerrorsNote);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel6);
             flowLayoutPanel1.Controls.Add(flowRoundInfoFilePanel);
             flowLayoutPanel1.Controls.Add(labelGroupDiscord);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
@@ -506,20 +509,6 @@
             linkLogUpdateRate.VisitedLinkColor = Color.Gray;
             linkLogUpdateRate.LinkClicked += linkLogUpdateRate_LinkClicked;
             // 
-            // checkCopyOnSave
-            // 
-            checkCopyOnSave.AutoSize = true;
-            checkCopyOnSave.ForeColor = Color.PowderBlue;
-            checkCopyOnSave.Location = new Point(3, 100);
-            checkCopyOnSave.Margin = new Padding(3, 1, 3, 1);
-            checkCopyOnSave.Name = "checkCopyOnSave";
-            checkCopyOnSave.Padding = new Padding(50, 0, 3, 0);
-            checkCopyOnSave.Size = new Size(153, 19);
-            checkCopyOnSave.TabIndex = 22;
-            checkCopyOnSave.Tag = "CopyOnSave";
-            checkCopyOnSave.Text = "Copy On Save";
-            checkCopyOnSave.UseVisualStyleBackColor = true;
-            // 
             // checkCopyOnOpen
             // 
             checkCopyOnOpen.AutoSize = true;
@@ -547,6 +536,51 @@
             checkCopyOnJoin.Tag = "CopyOnJoin";
             checkCopyOnJoin.Text = "Copy On Join";
             checkCopyOnJoin.UseVisualStyleBackColor = true;
+            // 
+            // checkCopyOnSave
+            // 
+            checkCopyOnSave.AutoSize = true;
+            checkCopyOnSave.ForeColor = Color.PowderBlue;
+            checkCopyOnSave.Location = new Point(3, 100);
+            checkCopyOnSave.Margin = new Padding(3, 1, 3, 1);
+            checkCopyOnSave.Name = "checkCopyOnSave";
+            checkCopyOnSave.Padding = new Padding(50, 0, 3, 0);
+            checkCopyOnSave.Size = new Size(153, 19);
+            checkCopyOnSave.TabIndex = 22;
+            checkCopyOnSave.Tag = "CopyOnSave";
+            checkCopyOnSave.Text = "Copy On Save";
+            checkCopyOnSave.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel6
+            // 
+            flowLayoutPanel6.AutoSize = true;
+            flowLayoutPanel6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel6.Controls.Add(checkSaveTerrorsNote);
+            flowLayoutPanel6.Controls.Add(linkAutoNoteEdit);
+            flowLayoutPanel6.Location = new Point(0, 184);
+            flowLayoutPanel6.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel6.Name = "flowLayoutPanel6";
+            flowLayoutPanel6.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel6.Size = new Size(202, 19);
+            flowLayoutPanel6.TabIndex = 17;
+            flowLayoutPanel6.WrapContents = false;
+            // 
+            // linkAutoNoteEdit
+            // 
+            linkAutoNoteEdit.ActiveLinkColor = Color.White;
+            linkAutoNoteEdit.AutoSize = true;
+            linkAutoNoteEdit.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkAutoNoteEdit.LinkColor = Color.Gray;
+            linkAutoNoteEdit.Location = new Point(167, 0);
+            linkAutoNoteEdit.Margin = new Padding(0);
+            linkAutoNoteEdit.Name = "linkAutoNoteEdit";
+            linkAutoNoteEdit.Size = new Size(35, 15);
+            linkAutoNoteEdit.TabIndex = 11;
+            linkAutoNoteEdit.TabStop = true;
+            linkAutoNoteEdit.Text = "(Edit)";
+            linkAutoNoteEdit.TextAlign = ContentAlignment.MiddleLeft;
+            linkAutoNoteEdit.VisitedLinkColor = Color.Gray;
+            linkAutoNoteEdit.LinkClicked += linkAutoNoteEdit_LinkClicked;
             // 
             // flowRoundInfoFilePanel
             // 
@@ -818,6 +852,8 @@
             flowLayoutPanel1.PerformLayout();
             flowLayoutPanel5.ResumeLayout(false);
             flowLayoutPanel5.PerformLayout();
+            flowLayoutPanel6.ResumeLayout(false);
+            flowLayoutPanel6.PerformLayout();
             flowRoundInfoFilePanel.ResumeLayout(false);
             flowRoundInfoFilePanel.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
@@ -882,5 +918,7 @@
         private CheckBox checkCopyOnSave;
         private CheckBox checkCopyOnOpen;
         private CheckBox checkCopyOnJoin;
+        private FlowLayoutPanel flowLayoutPanel6;
+        private LinkLabel linkAutoNoteEdit;
     }
 }

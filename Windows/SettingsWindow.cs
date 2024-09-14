@@ -66,6 +66,7 @@ namespace ToNSaveManager.Windows
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
             LANG.C(linkOpenRGB, "SETTINGS.OPENRGB_JSONFILE", toolTip);
             LANG.C(linkLogUpdateRate, "SETTINGS.LOGUPDATERATE", toolTip);
+            LANG.C(linkAutoNoteEdit, "SETTINGS.SAVEROUNDNOTE_EDIT", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -361,6 +362,15 @@ namespace ToNSaveManager.Windows
             }
         }
 
+        private void linkAutoNoteEdit_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            string template = Settings.Get.RoundNoteTemplate.Template;
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.SAVEROUNDNOTE.TITLE") ?? "Automatic Note Template", this, handleNewLine: true, insertKeyTemplate: true);
+            if (edit.Accept) {
+                Settings.Get.RoundNoteTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.RoundNoteTemplate.Template : edit.Text;
+                Settings.Export();
+            }
+        }
+
         private void linkSetDamageInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             int original = Settings.Get.OSCDamagedInterval;
             string value = original.ToString();
@@ -553,5 +563,6 @@ namespace ToNSaveManager.Windows
             checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
         #endregion
+
     }
 }

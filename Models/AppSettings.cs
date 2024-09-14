@@ -37,10 +37,10 @@ namespace ToNSaveManager.Models
         /// Enables Discord rich presence for Terrors of Nowhere.
         /// </summary>
         public bool DiscordRichPresence { get; set; }
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate(string.Empty, "🌐 {MapName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate(string.Empty, "🎮 ({RoundInt}?{RoundType}:{RoundType}({RoundInt}==105? ({PageCount}/8):))");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate(string.Empty, "{TerrorName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate(string.Empty, "({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("🌐 {MapName}");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("🎮 ({RoundInt}?{RoundType}:{RoundType}({RoundInt}==105? ({PageCount}/8):))");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate("{TerrorName}");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
 
         /// <summary>
         /// Enables OpenRGB support.
@@ -80,6 +80,8 @@ namespace ToNSaveManager.Models
         /// Automatically set a note to the save with the survived terrors.
         /// </summary>
         public bool SaveRoundNote { get; set; } = true;
+
+        [JsonIgnore] public RoundInfoTemplate RoundNoteTemplate { get; set; } = new RoundInfoTemplate("{TerrorName}");
 
         /// <summary>
         /// Skips already parsed logs to save startup performance.
@@ -136,7 +138,7 @@ namespace ToNSaveManager.Models
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
         public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
-            new RoundInfoTemplate(string.Empty, "- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n({RoundStunsAll}<1?:Current Round Stuns : {RoundStunsAll})");
+            new RoundInfoTemplate("- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n({RoundStunsAll}<1?:Current Round Stuns : {RoundStunsAll})");
 
         /// <summary>
         /// How often the message will be repeated to VRC for a consistent chatbox.
@@ -197,8 +199,9 @@ namespace ToNSaveManager.Models
                     settings = JsonConvert.DeserializeObject<Settings>(content);
                 } else settings = null;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Error("An error ocurred while trying to import your settings.\n" + ex);
                 settings = null;
             }
 
