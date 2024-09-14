@@ -36,6 +36,7 @@ namespace ToNSaveManager.Models
         static string TextTerrors = "Terrors in round:";
         static string TextPlayers = "Players in room:";
         static string TextMap = "Map:";
+        static string TextWarn = "Warning!! You forgot to load your save code.";
 
         static string TextTagR = "🔄";
         static string TextTagW = "🏆";
@@ -49,6 +50,7 @@ namespace ToNSaveManager.Models
             TextTerrors = LANG.S("MAIN.ENTRY_TERRORS") ?? "Terrors in round:";
             TextPlayers = LANG.S("MAIN.ENTRY_PLAYERS") ?? "Players in room:";
             TextMap = LANG.S("MAIN.ENTRY_MAP") ?? "Map:";
+            TextWarn = LANG.S("MAIN.ENTRY_WARNING") ?? "Warning!! You forgot to load your save code.";
 
             TextTagR = LANG.S("SAVE.TAG_R") ?? "🔄";
             TextTagW = LANG.S("SAVE.TAG_W") ?? "🏆";
@@ -122,6 +124,12 @@ namespace ToNSaveManager.Models
         public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
         {
             StringBuilder sb = new StringBuilder();
+            if (Pre) {
+                sb.Append(TextWarn);
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+
             sb.Append(Timestamp.ToString("F"));
             if (!string.IsNullOrEmpty(Note) && showNote)
             {

@@ -58,6 +58,7 @@
 	"MAIN.ENTRY_TERRORS": "Terrors in round:",
 	"MAIN.ENTRY_PLAYERS": "Players in room:",
 	"MAIN.ENTRY_MAP": "Map:",
+	"MAIN.ENTRY_WARNING": "$$SAVE.TAG_X$$ Warning!! This save was generated before you loaded your Save Code.\nIf you are not a new player, go back one save and load that instead.",
 
 	"ROUND_TYPE.INTERMISSION": "Intermission",
 	"ROUND_TYPE.CLASSIC": "Classic",
@@ -88,7 +89,7 @@
 	"SAVE.TAG_W": "🏆",
 	"SAVE.TAG_D": "🔌",
 	"SAVE.TAG_L": "💀",
-	"SAVE.TAG_X": "⚠️",
+	"SAVE.TAG_X": "❗",
 
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
 	"SETTINGS.OPEN_DATA_BTN": "Data",
@@ -113,7 +114,7 @@
 	"SETTINGS.SAVEROUNDNOTE": "Terror Name Notes",
 	"SETTINGS.SAVEROUNDNOTE.TT": "Automatically set survived terror names as note.",
 	"SETTINGS.SHOWWINLOSE": "Show Save Symbols",
-	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a tag based on the source that triggered the save.\n$$SAVE.TAG_R$$ Respawned.\n$$SAVE.TAG_W$$ Survived.\n$$SAVE.TAG_D$$ Disconnected.\n$$SAVE.TAG_L$$ Died. (Unused)",
+	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a tag based on the source that triggered the save.\n$$SAVE.TAG_R$$ Respawned.\n$$SAVE.TAG_W$$ Survived.\n$$SAVE.TAG_D$$ Disconnected.\n$$SAVE.TAG_X$$ Load Save Reminder.\n$$SAVE.TAG_L$$ Died. (Unused)",
 
 	"SETTINGS.GROUP.DISCORD": "Discord Integration",
 	"SETTINGS.DISCORDWEBHOOKENABLED": "Auto Discord Backup (Webhook)",
