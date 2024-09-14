@@ -18,6 +18,7 @@ namespace ToNSaveManager
     public partial class MainWindow : Form {
         #region Initialization
         internal static readonly LogWatcher<ToNLogContext> LogWatcher = new LogWatcher<ToNLogContext>("wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd");
+
         // internal static readonly AppSettings Settings = AppSettings.Import();
         internal static readonly SaveData SaveData = SaveData.Import();
         internal static MainWindow? Instance;
@@ -81,6 +82,7 @@ namespace ToNSaveManager
 
             LogWatcher.OnLine += LogWatcher_OnLine;
             LogWatcher.OnTick += LogWatcher_OnTick;
+            LogWatcher.Interval = Settings.Get.LogUpdateRate;
             LogWatcher.Start();
 
             Started = true;

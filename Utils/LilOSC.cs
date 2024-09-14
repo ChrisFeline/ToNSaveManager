@@ -102,15 +102,16 @@ namespace ToNSaveManager.Utils
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
-        static int ChatboxInterval;
-        static int ChatboxCountdown = 0;
 
-        internal static void SetChatboxMessage(string message, int interval = 5) {
-            ChatboxInterval = Math.Max(interval, 3);
+        static int ChatboxInterval;
+        static int ChatboxCountdown;
+
+        internal static void SetChatboxMessage(string message, int interval = 5000) {
+            ChatboxInterval = Math.Max(interval, 3000);
             if (message.Length > 144) message = message.Substring(0, 144);
             ChatboxMessage = message;
 
-            ChatboxCountdown = Math.Max(3 - (ChatboxInterval - ChatboxCountdown), 0);
+            ChatboxCountdown = Math.Max(3000 - (ChatboxInterval - ChatboxCountdown), 0);
             ChatboxClear = string.IsNullOrEmpty(message);
         }
 
@@ -238,10 +239,9 @@ namespace ToNSaveManager.Utils
             }
 
             if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
-                ChatboxCountdown--;
+                ChatboxCountdown -= MainWindow.LogWatcher.Interval;
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;
-
                     SendChatbox(ChatboxMessage);
                     if (ChatboxClear) ChatboxClear = false;
                 }

@@ -54,15 +54,19 @@
             HomeWorldID = homeWorldID;
         }
 
+        private Timer m_Timer = new Timer();
+        public int Interval {
+            get => m_Timer.Interval;
+            set => m_Timer.Interval = Math.Max(value, 10);
+        }
+
         public void Start()
         {
-            Timer timer = new Timer();
-            timer.Interval = 1000;
-            timer.Enabled = true;
+            m_Timer.Enabled = true;
 
             LogTick(null, null);
-            timer.Tick += LogTick;
-            timer.Start();
+            m_Timer.Tick += LogTick;
+            m_Timer.Start();
         }
 
         private void LogTick(object? sender, EventArgs? e)

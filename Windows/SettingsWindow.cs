@@ -65,6 +65,7 @@ namespace ToNSaveManager.Windows
             LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
             LANG.C(linkOpenRGB, "SETTINGS.OPENRGB_JSONFILE", toolTip);
+            LANG.C(linkLogUpdateRate, "SETTINGS.LOGUPDATERATE", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -368,6 +369,18 @@ namespace ToNSaveManager.Windows
             }
         }
 
+        private void linkLogUpdateRate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            int original = Settings.Get.LogUpdateRate;
+            string value = original.ToString();
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.LOGUPDATERATE.TITLE") ?? "Set Update Rate (Milliseconds)", this);
+
+            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                Settings.Get.LogUpdateRate = Math.Clamp(result, 10, 5000);
+                MainWindow.LogWatcher.Interval = Settings.Get.LogUpdateRate;
+                Settings.Export();
+            }
+        }
+
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation)) {
                 Settings.Get.AudioLocation = null;
@@ -531,6 +544,5 @@ namespace ToNSaveManager.Windows
             checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
         #endregion
-
     }
 }

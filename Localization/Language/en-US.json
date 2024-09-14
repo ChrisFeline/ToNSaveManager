@@ -98,6 +98,9 @@
 	"SETTINGS.CUSTOM_DATA_RESET_DEFAULT": "Reset to Default",
 
 	"SETTINGS.GROUP.GENERAL": "General",
+	"SETTINGS.LOGUPDATERATE": "(Set Update Rate)",
+	"SETTINGS.LOGUPDATERATE.TT": "Sets the update rate of the log parsing process. A lower interval means faster responses but higher CPU usage.",
+	"SETTINGS.LOGUPDATERATE.TITLE": "Set Update Rate (Milliseconds)",
 	"SETTINGS.SKIPPARSEDLOGS": "Skip Parsed Logs (!)",
 	"SETTINGS.SKIPPARSEDLOGS.TT": "Skip old parsed log files that were already processed and saved.\nOnly disable this if you accidentally deleted a save code.",
 	"SETTINGS.AUTOCOPY": "Auto Clipboard Copy",

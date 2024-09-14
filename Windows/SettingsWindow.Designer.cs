@@ -76,6 +76,8 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
+            flowLayoutPanel5 = new FlowLayoutPanel();
+            linkLogUpdateRate = new LinkLabel();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -84,6 +86,7 @@
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
+            flowLayoutPanel5.SuspendLayout();
             SuspendLayout();
             // 
             // checkDiscordBackup
@@ -169,8 +172,8 @@
             // checkSkipParsedLogs
             // 
             checkSkipParsedLogs.AutoSize = true;
-            checkSkipParsedLogs.Location = new Point(3, 16);
-            checkSkipParsedLogs.Margin = new Padding(3, 1, 3, 1);
+            checkSkipParsedLogs.Location = new Point(3, 0);
+            checkSkipParsedLogs.Margin = new Padding(0);
             checkSkipParsedLogs.Name = "checkSkipParsedLogs";
             checkSkipParsedLogs.Padding = new Padding(20, 0, 3, 0);
             checkSkipParsedLogs.RightToLeft = RightToLeft.No;
@@ -423,7 +426,7 @@
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(labelGroupGeneral);
-            flowLayoutPanel1.Controls.Add(checkSkipParsedLogs);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel5);
             flowLayoutPanel1.Controls.Add(checkAutoCopy);
             flowLayoutPanel1.Controls.Add(checkPlayerNames);
             flowLayoutPanel1.Controls.Add(checkSaveTerrors);
@@ -708,6 +711,37 @@
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
             // 
+            // flowLayoutPanel5
+            // 
+            flowLayoutPanel5.AutoSize = true;
+            flowLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel5.Controls.Add(checkSkipParsedLogs);
+            flowLayoutPanel5.Controls.Add(linkLogUpdateRate);
+            flowLayoutPanel5.Location = new Point(0, 16);
+            flowLayoutPanel5.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel5.Name = "flowLayoutPanel5";
+            flowLayoutPanel5.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel5.Size = new Size(252, 19);
+            flowLayoutPanel5.TabIndex = 17;
+            flowLayoutPanel5.WrapContents = false;
+            // 
+            // linkLogUpdateRate
+            // 
+            linkLogUpdateRate.ActiveLinkColor = Color.White;
+            linkLogUpdateRate.AutoSize = true;
+            linkLogUpdateRate.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkLogUpdateRate.LinkColor = Color.Gray;
+            linkLogUpdateRate.Location = new Point(154, 0);
+            linkLogUpdateRate.Margin = new Padding(0);
+            linkLogUpdateRate.Name = "linkLogUpdateRate";
+            linkLogUpdateRate.Size = new Size(98, 15);
+            linkLogUpdateRate.TabIndex = 11;
+            linkLogUpdateRate.TabStop = true;
+            linkLogUpdateRate.Text = "(Set Update Rate)";
+            linkLogUpdateRate.TextAlign = ContentAlignment.MiddleLeft;
+            linkLogUpdateRate.VisitedLinkColor = Color.Gray;
+            linkLogUpdateRate.LinkClicked += linkLogUpdateRate_LinkClicked;
+            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -742,6 +776,8 @@
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel4.ResumeLayout(false);
             flowLayoutPanel4.PerformLayout();
+            flowLayoutPanel5.ResumeLayout(false);
+            flowLayoutPanel5.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -793,5 +829,7 @@
         private FlowLayoutPanel flowLayoutPanel4;
         private CheckBox checkOpenRGBEnabled;
         private LinkLabel linkOpenRGB;
+        private FlowLayoutPanel flowLayoutPanel5;
+        private LinkLabel linkLogUpdateRate;
     }
 }

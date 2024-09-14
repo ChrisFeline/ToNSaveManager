@@ -84,6 +84,11 @@ namespace ToNSaveManager.Models
         public bool SkipParsedLogs { get; set; } = true;
 
         /// <summary>
+        /// The update rate for log parsing.
+        /// </summary>
+        public int LogUpdateRate { get; set; } = 1000;
+
+        /// <summary>
         /// Send popup notifications to XSOverlay.
         /// </summary>
         public bool XSOverlay { get; set; }
