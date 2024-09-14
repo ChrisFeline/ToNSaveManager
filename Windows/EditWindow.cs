@@ -34,6 +34,7 @@ namespace ToNSaveManager
             if (Instance.IsDisposed) Instance = new EditWindow();
 
             if (insertKeyTemplate) Instance.FillContextMenuItems();
+            Instance.buttonInsert.Visible = insertKeyTemplate;
             Instance.buttonInsert.Enabled = insertKeyTemplate;
 
             if (handleNewLine) content = content.Replace("\n", "\\n");
