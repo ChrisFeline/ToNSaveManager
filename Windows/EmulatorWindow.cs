@@ -369,7 +369,6 @@ namespace ToNSaveManager.Windows
 
                 case 2: // Reveal
                     if (Operation.RoundType == ToNRoundType.Eight_Pages) {
-                        Logger.Debug("Trying");
                         ToNGameState.SetPageCount(ToNGameState.PageCount + 1);
                         if (ToNGameState.PageCount == 1) OnRoundSetKillers(true);
                         if (ToNGameState.PageCount == 8) buttonStepEndRound.PerformClick();

@@ -25,8 +25,6 @@ namespace ToNSaveManager.Models.Stats {
                 m_TemplateKeys = TemplateManager.MessageTemplatePattern.Matches(value).Select(m => {
                     return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
                 }).Where(k => !string.IsNullOrEmpty(k) && ToNStats.HasKey(k)).ToArray();
-
-                Logger.Debug("Template Keys: " + string.Join(", ", m_TemplateKeys));
             }
         }
 

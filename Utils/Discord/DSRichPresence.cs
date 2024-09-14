@@ -71,8 +71,6 @@ namespace ToNSaveManager.Utils.Discord {
                 CurrentRoundTypeAssetID = GetRoundAssetID(roundType);
                 CurrentRoundType = roundType;
                 SetDirty();
-
-                Log.Debug("Setting round type: " + roundType + " | Asset id: " + CurrentRoundTypeAssetID);
             }
         }
 

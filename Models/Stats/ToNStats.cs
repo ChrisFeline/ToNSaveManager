@@ -184,7 +184,6 @@ namespace ToNSaveManager.Models.Stats {
         public static void MarkModified(string key) {
             if (!IsModified(key)) {
                 TableModified.Add(key);
-                Log.Debug("Marked Modified: " + key);
             }
         }
 
@@ -235,7 +234,6 @@ namespace ToNSaveManager.Models.Stats {
                 foreach (PropertyInfo prop in propertyInfo.PropertyType.GetProperties(BindingFlags.Instance | BindingFlags.Public)) {
                     string key = prop.DeclaringType != propertyInfo.PropertyType ? prefix + prop.Name : prop.Name;
                     var statProp = new StatPropertyContainer(key, propertyInfo, new PropertyInfoContainer(prop));
-                    Log.Debug("Full Name: " + propertyInfo.PropertyType.FullName + " | " + prop.Name);
                     PropertyDictionary.Add(key, statProp);
                     MarkModified(key);
                     keys.Add(statProp);

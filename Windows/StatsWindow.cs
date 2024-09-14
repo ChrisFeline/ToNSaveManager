@@ -26,7 +26,6 @@ namespace ToNSaveManager
 
         internal static void WriteChanges() {
             if (Settings.Get.OSCMessageInfoTemplate.IsModified) {
-                Logger.Debug("Detected chatbox content change.");
                 UpdateChatboxContent();
             }
 
@@ -74,8 +73,6 @@ namespace ToNSaveManager
         internal static bool IsRoundActive;
         internal static void SetActiveInRound(bool active) {
             if (IsRoundActive != active) {
-                Logger.Debug("Setting Round Active: " + active);
-
                 ToNStats.AddIsAlive(active);
                 RefreshTable();
 
@@ -252,7 +249,6 @@ namespace ToNSaveManager
             if (e.Button != MouseButtons.Right || sender == null) return;
 
             int index = listBox1.IndexFromPoint(e.Location);
-            Logger.Debug("INDEX: " + index);
             if (index < 0 || index >= listBox1.Items.Count) return;
 
             ContextField = TableProperties[index];

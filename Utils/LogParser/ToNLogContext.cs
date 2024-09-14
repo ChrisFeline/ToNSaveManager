@@ -52,14 +52,11 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsAlive == alive) return;
 
             IsAlive = alive;
-            Logger.Debug("SET PLAYER ALIVE: " + IsAlive);
-
             if (IsRecent) ToNGameState.SetAlive(IsAlive);
         }
 
         public void SetOptedIn(bool isOptedIn) {
             IsOptedIn = isOptedIn;
-            Logger.Debug("SET OPTED IN: " + isOptedIn);
 
             if (IsRecent) ToNGameState.SetOptedIn(IsOptedIn);
 
@@ -78,8 +75,6 @@ namespace ToNSaveManager.Utils.LogParser
             matrix.IsSaboteur = IsSaboteour && !matrix.IsEmpty;
             matrix.MapID = Location.IsEmpty ? -1 : Location.Id;
             Terrors = matrix;
-
-            Logger.Debug("Terror context set to: " + matrix);
 
             if (IsRecent) ToNGameState.SetTerrorMatrix(matrix);
         }

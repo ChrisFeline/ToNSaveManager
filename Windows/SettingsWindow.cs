@@ -91,8 +91,6 @@ namespace ToNSaveManager.Windows
                 GroupLabelFont = new Font(labelGroupGeneral.Font.FontFamily, 12, FontStyle.Bold);
             }
 
-            Logger.Debug("FONT: " + labelGroupGeneral.Font.FontFamily.Name);
-
             // Check font size for group labels
             labelGroupGeneral.Font = GroupLabelFont;
             labelGroupDiscord.Font = GroupLabelFont;
