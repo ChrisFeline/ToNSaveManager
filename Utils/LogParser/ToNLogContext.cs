@@ -11,6 +11,7 @@ namespace ToNSaveManager.Utils.LogParser
 {
     internal class ToNLogContext : LogContext {
         public bool SaveCodeCreated { get; set; }
+        public bool HasLoadedSave { get; set; }
 
         public bool IsAlive { get; private set; }
         public bool IsSaboteour { get; private set; }
@@ -22,6 +23,10 @@ namespace ToNSaveManager.Utils.LogParser
         public override void Exit() {
             base.Exit();
             OnAwake();
+        }
+        public override void Enter(string name, DateTime date) {
+            base.Enter(name, date);
+            HasLoadedSave = false;
         }
 
         public override void Join(string displayName) {

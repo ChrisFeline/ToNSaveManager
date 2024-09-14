@@ -41,6 +41,7 @@ namespace ToNSaveManager.Models
         static string TextTagW = "🏆";
         static string TextTagD = "🔌";
         static string TextTagL = "💀";
+        static string TextTagX = "⚠️";
 
         internal static void LocalizeContent() {
             TextNote = LANG.S("MAIN.ENTRY_NOTE") ?? "Note:";
@@ -53,6 +54,7 @@ namespace ToNSaveManager.Models
             TextTagW = LANG.S("SAVE.TAG_W") ?? "🏆";
             TextTagD = LANG.S("SAVE.TAG_D") ?? "🔌";
             TextTagL = LANG.S("SAVE.TAG_L") ?? "💀";
+            TextTagX = LANG.S("SAVE.TAG_X") ?? "⚠️";
         }
 
         public string Note = string.Empty;
@@ -78,6 +80,7 @@ namespace ToNSaveManager.Models
         [JsonIgnore] public History? Parent;
         [JsonIgnore] public bool Fresh;
         [JsonIgnore] public int Length => Content.Length;
+        [JsonIgnore] public bool Pre;
 
         public Entry(string content, DateTime timestamp)
         {
@@ -92,11 +95,14 @@ namespace ToNSaveManager.Models
             StringBuilder sb = new StringBuilder();
 
             if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose) {
-                switch (RResult) {
+                ToNRoundResult res = Pre ? ToNRoundResult.X : RResult;
+
+                switch (res) {
                     case ToNRoundResult.R: sb.Append(TextTagR); break;
                     case ToNRoundResult.W: sb.Append(TextTagW); break;
                     case ToNRoundResult.D: sb.Append(TextTagD); break;
                     case ToNRoundResult.L: sb.Append(TextTagL); break;
+                    case ToNRoundResult.X: sb.Append(TextTagX); break;
                 }
 
                 sb.Append(" | ");

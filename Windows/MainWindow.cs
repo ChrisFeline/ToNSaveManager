@@ -556,6 +556,7 @@ namespace ToNSaveManager
         const string SaveStartKeyword = "[START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "[TERRORS SAVE CODE CREATED";
+        const string SaveLoadedKeyword = "Loaded Data Successfully";
 
         const string ROUND_PARTICIPATION_KEY = "optedIn";
         const string ROUND_OPTIN_KEYWORD = "opted in";
@@ -604,6 +605,11 @@ namespace ToNSaveManager
         }
 
         private bool HandleSaveCode(string line, DateTime timestamp, ToNLogContext context) {
+            if (line.StartsWith(SaveLoadedKeyword, StringComparison.InvariantCulture)) {
+                context.HasLoadedSave = true;
+                return true;
+            }
+
             int index = line.IndexOf(SaveInitKeyword, StringComparison.InvariantCulture);
             if (index > -1) {
                 context.SaveCodeCreated = true;
@@ -913,6 +919,8 @@ namespace ToNSaveManager
 
                     context.ClearSummary();
                 }
+
+                if (!context.HasLoadedSave) entry.Pre = true;
             }
 
             if (!context.IsHomeWorld) entry.Note = "(BETA) " + entry.Note;

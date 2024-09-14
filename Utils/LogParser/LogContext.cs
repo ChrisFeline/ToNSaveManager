@@ -108,7 +108,7 @@ namespace ToNSaveManager.Utils.LogParser {
             Logger.Info("Leaving instance...");
             IsLeavingRoom = true;
         }
-        public void Enter(string instanceID, bool isHomeWorld) {
+        public virtual void Enter(string instanceID, bool isHomeWorld) {
             InstanceID = instanceID;
             IsHomeWorld = isHomeWorld;
 
