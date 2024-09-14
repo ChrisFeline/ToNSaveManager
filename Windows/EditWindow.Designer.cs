@@ -43,18 +43,19 @@
             textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox1.BackColor = Color.FromArgb(59, 66, 82);
             textBox1.ForeColor = Color.White;
-            textBox1.Location = new Point(12, 12);
+            textBox1.Location = new Point(10, 10);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(402, 23);
+            textBox1.Size = new Size(406, 23);
             textBox1.TabIndex = 0;
             textBox1.TextChanged += textBox1_TextChanged;
             // 
             // button1
             // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
-            button1.Location = new Point(12, 40);
+            button1.Location = new Point(13, 42);
             button1.Name = "button1";
             button1.Size = new Size(75, 29);
             button1.TabIndex = 1;
@@ -64,11 +65,11 @@
             // 
             // button2
             // 
-            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(339, 40);
+            button2.Location = new Point(338, 42);
             button2.Name = "button2";
             button2.Size = new Size(75, 29);
             button2.TabIndex = 2;
@@ -90,13 +91,13 @@
             // 
             // buttonInsert
             // 
-            buttonInsert.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonInsert.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonInsert.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             buttonInsert.FlatStyle = FlatStyle.Flat;
             buttonInsert.ForeColor = Color.White;
-            buttonInsert.Location = new Point(93, 40);
+            buttonInsert.Location = new Point(94, 42);
             buttonInsert.Name = "buttonInsert";
-            buttonInsert.Size = new Size(240, 29);
+            buttonInsert.Size = new Size(238, 29);
             buttonInsert.TabIndex = 3;
             buttonInsert.Text = "Insert Template Key";
             buttonInsert.UseVisualStyleBackColor = true;
@@ -107,6 +108,8 @@
             AcceptButton = button1;
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(46, 52, 64);
             CancelButton = button2;
             ClientSize = new Size(426, 79);
@@ -121,6 +124,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "EditWindow";
+            Padding = new Padding(10);
             ShowInTaskbar = false;
             Text = "Note Editor";
             Shown += EditWindow_Shown;

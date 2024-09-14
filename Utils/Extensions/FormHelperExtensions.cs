@@ -38,6 +38,10 @@ namespace ToNSaveManager.Extensions
                 comboBox1.ItemHeight = TextRenderer.MeasureText(c, comboBox1.Font).Height + 2;
             }
         }
+        public static void FixItemHeight(this TextBox textBox) {
+            float dpiScaleFactor = textBox.DeviceDpi / 96f;
+            textBox.Font = new Font(textBox.Font.FontFamily, textBox.Font.Size * dpiScaleFactor);
+        }
 
         /// <summary>
         /// Sets up children of a FlowLayoutPanel to auto-resize with the panel in the non-flow dimension.

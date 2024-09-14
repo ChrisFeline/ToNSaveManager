@@ -1,4 +1,5 @@
-﻿using ToNSaveManager.Localization;
+﻿using ToNSaveManager.Extensions;
+using ToNSaveManager.Localization;
 using ToNSaveManager.Models.Stats;
 
 namespace ToNSaveManager
@@ -25,6 +26,7 @@ namespace ToNSaveManager
 
         private EditWindow() {
             InitializeComponent();
+            textBox1.FixItemHeight();
         }
 
         public static EditResult Show(string content, string title, Form parent, bool showDelete = false, bool hideEmpty = false, bool handleNewLine = false, bool insertKeyTemplate = false) {
