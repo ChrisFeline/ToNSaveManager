@@ -69,7 +69,6 @@
             listBox1.ItemHeight = 1;
             listBox1.Location = new Point(7, 7);
             listBox1.Name = "listBox1";
-            listBox1.SelectionMode = SelectionMode.None;
             listBox1.Size = new Size(360, 219);
             listBox1.TabIndex = 0;
             listBox1.TabStop = false;

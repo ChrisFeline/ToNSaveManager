@@ -40,8 +40,8 @@
             // 
             // textBox1
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox1.BackColor = Color.FromArgb(59, 66, 82);
+            textBox1.Dock = DockStyle.Top;
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(10, 10);
             textBox1.Name = "textBox1";
@@ -51,7 +51,6 @@
             // 
             // button1
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
@@ -65,7 +64,7 @@
             // 
             // button2
             // 
-            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
@@ -91,7 +90,6 @@
             // 
             // buttonInsert
             // 
-            buttonInsert.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonInsert.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             buttonInsert.FlatStyle = FlatStyle.Flat;
             buttonInsert.ForeColor = Color.White;

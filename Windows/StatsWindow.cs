@@ -209,7 +209,9 @@ namespace ToNSaveManager
             if (e.Index < 0)
                 return;
 
-            e.DrawBackground();
+            using (Brush brush = (e.Index % 2 == 0 ? new SolidBrush(e.BackColor) : new SolidBrush(Color.FromArgb(e.BackColor.R / 2, e.BackColor.G / 2, e.BackColor.B / 2)))) {
+                e.Graphics.FillRectangle(brush, e.Bounds);
+            }
 
             ListBox listBox = (ListBox)sender;
 
