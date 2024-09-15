@@ -80,8 +80,7 @@ namespace ToNSaveManager.Models
         /// Automatically set a note to the save with the survived terrors.
         /// </summary>
         public bool SaveRoundNote { get; set; } = true;
-
-        [JsonIgnore] public RoundInfoTemplate RoundNoteTemplate { get; set; } = new RoundInfoTemplate("{TerrorName}");
+        public RoundInfoTemplate RoundNoteTemplate { get; set; } = new RoundInfoTemplate("{TerrorName}");
 
         /// <summary>
         /// Skips already parsed logs to save startup performance.
