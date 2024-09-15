@@ -123,6 +123,7 @@
 	"SETTINGS.SAVEROUNDNOTE.TT": "Automatically set a note when a save is created.",
 	"SETTINGS.SAVEROUNDNOTE_EDIT": "(Edit)",
 	"SETTINGS.SAVEROUNDNOTE_EDIT.TT": "Set a custom template for the generated note content.",
+	"SETTINGS.SAVEROUNDNOTE.TITLE": "Automatic Note Template",
 	"SETTINGS.SHOWWINLOSE": "Show Save Symbols",
 	"SETTINGS.SHOWWINLOSE.TT": "Entries will show a tag based on the source that triggered the save.\n$$SAVE.TAG_R$$ Respawned.\n$$SAVE.TAG_W$$ Survived.\n$$SAVE.TAG_D$$ Disconnected.\n$$SAVE.TAG_X$$ Load Save Reminder.\n$$SAVE.TAG_L$$ Died. (Unused)",
 
