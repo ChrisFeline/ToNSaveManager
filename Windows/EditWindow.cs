@@ -42,6 +42,7 @@ namespace ToNSaveManager
             Instance.ShowDelete = showDelete;
             Instance.HideEmpty = hideEmpty;
             Instance.Text = title;
+            Instance.Owner = null;
             Instance.Owner = parent;
             Instance.StartPosition = FormStartPosition.CenterParent;
             Instance.Content = content;
