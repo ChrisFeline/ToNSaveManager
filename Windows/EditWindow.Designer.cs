@@ -111,7 +111,6 @@
             BackColor = Color.FromArgb(46, 52, 64);
             CancelButton = button2;
             ClientSize = new Size(426, 79);
-            ControlBox = false;
             Controls.Add(buttonInsert);
             Controls.Add(button2);
             Controls.Add(button1);
