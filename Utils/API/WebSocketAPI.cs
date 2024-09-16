@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using static ToNSaveManager.Utils.API.WebSocketAPI;
 
 namespace ToNSaveManager.Utils.API {
     internal class WebSocketAPI : WebSocketBehavior {
@@ -19,25 +19,35 @@ namespace ToNSaveManager.Utils.API {
         }
 
         protected override void OnOpen() {
-            Logger.Log("On Open...");
+            Logger.Log("WebSocket client connected.");
             foreach (IEvent ev in EventBuffer.Values) {
                 Send(JsonConvert.SerializeObject(ev));
             }
         }
 
         internal static void Initialize() {
-            const string url = "ws://localhost:11398";
-            Server = new WebSocketServer(url);
-            Server.AddWebSocketService<WebSocketAPI>("/");
-            Server.Start();
+            if (Settings.Get.WebSocketEnabled && Server == null) {
+                const string url = "ws://localhost:11398";
+                Server = new WebSocketServer(url);
+                Server.AddWebSocketService<WebSocketAPI>("/");
+            }
+
+            if (Settings.Get.WebSocketEnabled && Server != null && !Server.IsListening) {
+                Logger.Debug("Starting Server...");
+                Server.Start();
+            } else if (!Settings.Get.WebSocketEnabled && Server != null && Server.IsListening) {
+                Logger.Debug("Stopping Server...");
+                Server.Stop();
+                Server.RemoveWebSocketService("/");
+                Server = null;
+            }
         }
 
         internal static void Broadcast(string data) => Server?.WebSocketServices?.Broadcast(data);
         internal static void SendObject(object data) => Broadcast(JsonConvert.SerializeObject(data));
         internal static void SendEvent<T>(T value) where T : IEvent
         {
-            // value.Command = command;
-            SendObject(value);
+            if (Settings.Get.WebSocketEnabled) SendObject(value);
         }
 
         public interface IEvent {
@@ -72,9 +82,9 @@ namespace ToNSaveManager.Utils.API {
             /// </summary>
             public byte Command { get; set; }
 
-            public string[] Names;
-            public string DisplayName;
-            public uint DisplayColor;
+            public string[] Names { get; set; }
+            public string DisplayName { get; set; }
+            public uint DisplayColor { get; set; }
         }
 
         public struct EventRoundType : IEvent {
@@ -87,10 +97,10 @@ namespace ToNSaveManager.Utils.API {
             /// </summary>
             public byte Command { get; set; }
 
-            public ToNRoundType Value;
+            public ToNRoundType Value { get; set; }
             public string Name => Value.ToString();
             public string DisplayName => MainWindow.GetRoundTypeName(Value);
-            public uint DisplayColor; // Maybe a bit innacurate
+            public uint DisplayColor { get; set; } // Maybe a bit innacurate
         }
 
         public struct EventLocation : IEvent {
@@ -98,9 +108,9 @@ namespace ToNSaveManager.Utils.API {
             public int Id => 2;
             public byte Command { get; set; }
 
-            public string Name;
-            public string Creator;
-            public string Origin;
+            public string Name { get; set; }
+            public string Creator { get; set; }
+            public string Origin { get; set; }
         }
         #endregion
 

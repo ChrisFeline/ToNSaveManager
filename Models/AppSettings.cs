@@ -172,6 +172,11 @@ namespace ToNSaveManager.Models
         public string SelectedLanguage { get; set; } = string.Empty;
 
         /// <summary>
+        /// Enable the save manager WebSocket API to receive events externally.
+        /// </summary>
+        public bool WebSocketEnabled { get; set; } = false;
+
+        /// <summary>
         /// Import a settings instance from the local json file
         /// </summary>
         /// <returns>Deserialized Settings object, or else Default Settings object.</returns>

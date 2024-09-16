@@ -83,6 +83,7 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
+            checkWebSocketServer = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -98,7 +99,7 @@
             // checkDiscordBackup
             // 
             checkDiscordBackup.AutoSize = true;
-            checkDiscordBackup.Location = new Point(3, 273);
+            checkDiscordBackup.Location = new Point(3, 294);
             checkDiscordBackup.Margin = new Padding(3, 1, 3, 1);
             checkDiscordBackup.Name = "checkDiscordBackup";
             checkDiscordBackup.Padding = new Padding(20, 0, 3, 0);
@@ -112,7 +113,7 @@
             // 
             checkShowWinLose.AutoSize = true;
             checkShowWinLose.ForeColor = Color.PowderBlue;
-            checkShowWinLose.Location = new Point(3, 163);
+            checkShowWinLose.Location = new Point(3, 184);
             checkShowWinLose.Margin = new Padding(3, 1, 3, 1);
             checkShowWinLose.Name = "checkShowWinLose";
             checkShowWinLose.Padding = new Padding(50, 0, 3, 0);
@@ -139,7 +140,7 @@
             // checkSaveTerrors
             // 
             checkSaveTerrors.AutoSize = true;
-            checkSaveTerrors.Location = new Point(3, 142);
+            checkSaveTerrors.Location = new Point(3, 163);
             checkSaveTerrors.Margin = new Padding(3, 1, 3, 1);
             checkSaveTerrors.Name = "checkSaveTerrors";
             checkSaveTerrors.Padding = new Padding(20, 0, 3, 0);
@@ -152,7 +153,7 @@
             // checkPlayerNames
             // 
             checkPlayerNames.AutoSize = true;
-            checkPlayerNames.Location = new Point(3, 121);
+            checkPlayerNames.Location = new Point(3, 142);
             checkPlayerNames.Margin = new Padding(3, 1, 3, 1);
             checkPlayerNames.Name = "checkPlayerNames";
             checkPlayerNames.Padding = new Padding(20, 0, 3, 0);
@@ -165,7 +166,7 @@
             // checkAutoCopy
             // 
             checkAutoCopy.AutoSize = true;
-            checkAutoCopy.Location = new Point(3, 37);
+            checkAutoCopy.Location = new Point(3, 58);
             checkAutoCopy.Margin = new Padding(3, 1, 3, 1);
             checkAutoCopy.Name = "checkAutoCopy";
             checkAutoCopy.Padding = new Padding(20, 0, 3, 0);
@@ -192,7 +193,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 417);
+            checkOSCEnabled.Location = new Point(3, 438);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -207,7 +208,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 345);
+            checkPlayAudio.Location = new Point(3, 366);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
@@ -222,7 +223,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 366);
+            checkXSOverlay.Location = new Point(3, 387);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -235,7 +236,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 594);
+            checkShowDate.Location = new Point(3, 615);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -248,7 +249,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 552);
+            checkInvertMD.Location = new Point(3, 573);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -261,7 +262,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 573);
+            checkShowSeconds.Location = new Point(3, 594);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -274,7 +275,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 531);
+            check24Hour.Location = new Point(3, 552);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -350,7 +351,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 645);
+            checkColorObjectives.Location = new Point(3, 666);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -405,7 +406,7 @@
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 438);
+            checkOSCSendColor.Location = new Point(3, 459);
             checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
@@ -433,6 +434,7 @@
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(labelGroupGeneral);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel5);
+            flowLayoutPanel1.Controls.Add(checkWebSocketServer);
             flowLayoutPanel1.Controls.Add(checkAutoCopy);
             flowLayoutPanel1.Controls.Add(checkCopyOnOpen);
             flowLayoutPanel1.Controls.Add(checkCopyOnJoin);
@@ -465,7 +467,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 686);
+            flowLayoutPanel1.Size = new Size(544, 707);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -513,7 +515,7 @@
             // 
             checkCopyOnOpen.AutoSize = true;
             checkCopyOnOpen.ForeColor = Color.PowderBlue;
-            checkCopyOnOpen.Location = new Point(3, 58);
+            checkCopyOnOpen.Location = new Point(3, 79);
             checkCopyOnOpen.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnOpen.Name = "checkCopyOnOpen";
             checkCopyOnOpen.Padding = new Padding(50, 0, 3, 0);
@@ -527,7 +529,7 @@
             // 
             checkCopyOnJoin.AutoSize = true;
             checkCopyOnJoin.ForeColor = Color.PowderBlue;
-            checkCopyOnJoin.Location = new Point(3, 79);
+            checkCopyOnJoin.Location = new Point(3, 100);
             checkCopyOnJoin.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnJoin.Name = "checkCopyOnJoin";
             checkCopyOnJoin.Padding = new Padding(50, 0, 3, 0);
@@ -541,7 +543,7 @@
             // 
             checkCopyOnSave.AutoSize = true;
             checkCopyOnSave.ForeColor = Color.PowderBlue;
-            checkCopyOnSave.Location = new Point(3, 100);
+            checkCopyOnSave.Location = new Point(3, 121);
             checkCopyOnSave.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnSave.Name = "checkCopyOnSave";
             checkCopyOnSave.Padding = new Padding(50, 0, 3, 0);
@@ -557,7 +559,7 @@
             flowLayoutPanel6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel6.Controls.Add(checkSaveTerrorsNote);
             flowLayoutPanel6.Controls.Add(linkAutoNoteEdit);
-            flowLayoutPanel6.Location = new Point(0, 184);
+            flowLayoutPanel6.Location = new Point(0, 205);
             flowLayoutPanel6.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel6.Name = "flowLayoutPanel6";
             flowLayoutPanel6.Padding = new Padding(3, 0, 0, 0);
@@ -591,7 +593,7 @@
             flowRoundInfoFilePanel.Controls.Add(flowRoundInfoFiles);
             flowRoundInfoFilePanel.Controls.Add(linkAddInfoFile);
             flowRoundInfoFilePanel.FlowDirection = FlowDirection.TopDown;
-            flowRoundInfoFilePanel.Location = new Point(3, 205);
+            flowRoundInfoFilePanel.Location = new Point(3, 226);
             flowRoundInfoFilePanel.Margin = new Padding(3, 1, 3, 1);
             flowRoundInfoFilePanel.Name = "flowRoundInfoFilePanel";
             flowRoundInfoFilePanel.Size = new Size(145, 36);
@@ -644,7 +646,7 @@
             // labelGroupDiscord
             // 
             labelGroupDiscord.AutoSize = true;
-            labelGroupDiscord.Location = new Point(3, 257);
+            labelGroupDiscord.Location = new Point(3, 278);
             labelGroupDiscord.Margin = new Padding(3, 15, 3, 0);
             labelGroupDiscord.Name = "labelGroupDiscord";
             labelGroupDiscord.Size = new Size(94, 15);
@@ -655,7 +657,7 @@
             // 
             checkDiscordPresence.AutoSize = true;
             checkDiscordPresence.Enabled = false;
-            checkDiscordPresence.Location = new Point(3, 294);
+            checkDiscordPresence.Location = new Point(3, 315);
             checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
             checkDiscordPresence.Name = "checkDiscordPresence";
             checkDiscordPresence.Padding = new Padding(20, 0, 3, 0);
@@ -668,7 +670,7 @@
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
-            labelGroupNotifications.Location = new Point(3, 329);
+            labelGroupNotifications.Location = new Point(3, 350);
             labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
             labelGroupNotifications.Name = "labelGroupNotifications";
             labelGroupNotifications.Size = new Size(75, 15);
@@ -678,7 +680,7 @@
             // labelGroupOSC
             // 
             labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 401);
+            labelGroupOSC.Location = new Point(3, 422);
             labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
             labelGroupOSC.Name = "labelGroupOSC";
             labelGroupOSC.Size = new Size(30, 15);
@@ -691,7 +693,7 @@
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
             flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
-            flowLayoutPanel3.Location = new Point(3, 459);
+            flowLayoutPanel3.Location = new Point(3, 480);
             flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Size = new Size(286, 19);
@@ -735,7 +737,7 @@
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(checkSendChatbox);
             flowLayoutPanel2.Controls.Add(linkEditChatbox);
-            flowLayoutPanel2.Location = new Point(0, 480);
+            flowLayoutPanel2.Location = new Point(0, 501);
             flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
@@ -763,7 +765,7 @@
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 515);
+            labelGroupFormat.Location = new Point(3, 536);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -773,7 +775,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 629);
+            labelGroupStyle.Location = new Point(3, 650);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -786,7 +788,7 @@
             flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel4.Controls.Add(linkOpenRGB);
-            flowLayoutPanel4.Location = new Point(0, 666);
+            flowLayoutPanel4.Location = new Point(0, 687);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
@@ -823,6 +825,19 @@
             linkOpenRGB.TextAlign = ContentAlignment.MiddleLeft;
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
+            // 
+            // checkWebSocketServer
+            // 
+            checkWebSocketServer.AutoSize = true;
+            checkWebSocketServer.Location = new Point(3, 37);
+            checkWebSocketServer.Margin = new Padding(3, 1, 3, 1);
+            checkWebSocketServer.Name = "checkWebSocketServer";
+            checkWebSocketServer.Padding = new Padding(20, 0, 3, 0);
+            checkWebSocketServer.Size = new Size(164, 19);
+            checkWebSocketServer.TabIndex = 25;
+            checkWebSocketServer.Tag = "WebSocketEnabled";
+            checkWebSocketServer.Text = "WebSocket API Server";
+            checkWebSocketServer.UseVisualStyleBackColor = true;
             // 
             // SettingsWindow
             // 
@@ -920,5 +935,6 @@
         private CheckBox checkCopyOnJoin;
         private FlowLayoutPanel flowLayoutPanel6;
         private LinkLabel linkAutoNoteEdit;
+        private CheckBox checkWebSocketServer;
     }
 }

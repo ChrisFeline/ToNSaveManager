@@ -106,6 +106,9 @@
 	"SETTINGS.SKIPPARSEDLOGS": "Skip Parsed Logs (!)",
 	"SETTINGS.SKIPPARSEDLOGS.TT": "Skip old parsed log files that were already processed and saved.\nOnly disable this if you accidentally deleted a save code.",
 
+	"SETTINGS.WEBSOCKETENABLED": "WebSocket API Server",
+	"SETTINGS.WEBSOCKETENABLED.TT": "Enables the WebSocket API server that will broadcast different events like Terror names, Maps, Round Type, etc...\nThis is a highly technical feature for developers to create cool web apps for purposes like advanced OBS overlays or local web interfaces.",
+
 	"SETTINGS.AUTOCOPY": "Auto Clipboard Copy",
 	"SETTINGS.AUTOCOPY.TT": "Automatically copy new save codes to clipboard.",
 	"SETTINGS.COPYONOPEN": "Copy On Open",

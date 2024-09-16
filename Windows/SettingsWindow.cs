@@ -6,6 +6,7 @@ using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
 using Windows.ApplicationModel.Contacts;
@@ -139,7 +140,13 @@ namespace ToNSaveManager.Windows
             checkAutoCopy.CheckedChanged += checkAutoCopy_CheckedChanged;
             checkAutoCopy_CheckedChanged(null, EventArgs.Empty);
 
+            checkWebSocketServer.CheckedChanged += CheckWebSocketServer_CheckedChanged;
+
             FillLanguageBox();
+        }
+
+        private void CheckWebSocketServer_CheckedChanged(object? sender, EventArgs e) {
+            WebSocketAPI.Initialize();
         }
 
         private void CheckOpenRGBEnabled_CheckedChanged(object? sender, EventArgs e) {
