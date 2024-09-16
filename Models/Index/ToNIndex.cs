@@ -192,6 +192,7 @@ namespace ToNSaveManager.Models.Index {
 
             [JsonProperty("t", DefaultValueHandling = DefaultValueHandling.Ignore)] public string? InternalName { get; set; } // Possible name attached to Enrage states.
             [JsonProperty("b", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool CantBB { get; set; } // Can't participate in bb
+            [JsonProperty("s", DefaultValueHandling = DefaultValueHandling.Ignore)] public bool Stunnable { get; set; }
             [JsonProperty("g", DefaultValueHandling = DefaultValueHandling.Ignore)] public TerrorGroup Group { get; set; }
             [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public PhaseIndex[]? Phases { get; set; }
             [JsonProperty("e", DefaultValueHandling = DefaultValueHandling.Ignore)] public Encounter[]? Encounters { get; set; }
