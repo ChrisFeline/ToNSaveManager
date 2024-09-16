@@ -182,6 +182,7 @@ namespace ToNSaveManager.Utils.Discord {
                     }
                 }
 
+                Log.Debug("IMAGE KEY: " + ImageKey);
                 Client.SetPresence(Presence);
             }
         }

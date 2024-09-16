@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.LogParser;
 
@@ -81,6 +82,7 @@ namespace ToNSaveManager
 
             if (!StartCheckForUpdate()) {
                 DSRichPresence.Initialize();
+                WebSocketAPI.Initialize();
                 Application.Run(new MainWindow());
             }
         }

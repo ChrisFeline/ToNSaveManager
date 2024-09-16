@@ -39,6 +39,9 @@ namespace ToNSaveManager.Models.Index {
         public bool IsSaboteur;
         public int MapID = -1;
 
+        public bool IsUnknown;
+        public bool IsRevealed;
+
         public int Length => Math.Min(TerrorCount, Terrors.Length);
         public ToNIndex.TerrorInfo this[int i] {
             get => Terrors[i];

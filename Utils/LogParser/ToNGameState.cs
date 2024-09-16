@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
 
@@ -34,21 +35,27 @@ namespace ToNSaveManager.Utils {
         public static void SetAlive(bool isAlive) {
             IsAlive = isAlive;
 
-            StatsWindow.SetActiveInRound(isAlive);
+            StatsWindow.SetActiveInRound(IsAlive);
             OpenRGBControl.SetIsAlive();
-            if (IsAlive) SetPageCount(0);
+            if (isAlive) SetPageCount(0);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
-        }
 
-        public static void SetKiller(bool isKiller) {
-            IsSaboteour = isKiller;
-            StatsWindow.SetIsKiller(isKiller);
+            WebSocketAPI.SendValue("ALIVE", 4, IsAlive);
         }
 
         public static void SetOptedIn(bool isOptedIn) {
             IsOptedIn = isOptedIn;
             LilOSC.SetDirty();
+
+            WebSocketAPI.SendValue("OPTED_IN", 5, IsAlive);
+        }
+
+        public static void SetKiller(bool isKiller) {
+            IsSaboteour = isKiller;
+            StatsWindow.SetIsKiller(isKiller);
+
+            WebSocketAPI.SendValue("IS_SABOTEUR", 6, IsAlive);
         }
 
         public static void SetTerrorMatrix(TerrorMatrix matrix) {
@@ -59,12 +66,16 @@ namespace ToNSaveManager.Utils {
             OpenRGBControl.SetTerrorMatrix(Terrors);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
+
+            WebSocketAPI.SendTerrorMatrix(Terrors);
         }
 
         public static void SetRoundType(ToNRoundType roundType) {
             if (RoundType == roundType) return;
             RoundType = roundType;
             DSRichPresence.SetRoundType(roundType);
+
+            WebSocketAPI.SendRoundType(roundType);
         }
 
         public static void SetLocation(ToNIndex.Map location) {
@@ -75,6 +86,8 @@ namespace ToNSaveManager.Utils {
             StatsWindow.SetLocation(Location, !Terrors.IsEmpty);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
+
+            WebSocketAPI.SendLocation(location);
         }
 
         public static void SetPageCount(int pages) {
@@ -84,6 +97,8 @@ namespace ToNSaveManager.Utils {
             StatsWindow.SetPageCount(pages);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
+
+            WebSocketAPI.SendValue("PAGE_COUNT", 7, PageCount);
         }
 
         // Unified damage event
@@ -91,6 +106,8 @@ namespace ToNSaveManager.Utils {
             if (!IsEmulated) StatsWindow.AddDamage(damage);
             LilOSC.SetDamage(damage);
             OpenRGBControl.SetDamaged();
+
+            WebSocketAPI.SendValue("DAMAGED", 8, damage);
         }
     }
 }

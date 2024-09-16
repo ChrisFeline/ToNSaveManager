@@ -12,6 +12,7 @@ using ToNSaveManager.Localization;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.OpenRGB;
+using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager
 {
@@ -604,6 +605,8 @@ namespace ToNSaveManager
             DSRichPresence.Send();
             StatsWindow.WriteChanges();
             LilOSC.SendData();
+
+            WebSocketAPI.SendEventUpdate();
         }
 
         private bool HandleSaveCode(string line, DateTime timestamp, ToNLogContext context) {
@@ -720,7 +723,7 @@ namespace ToNSaveManager
                     }
                 }
 
-                context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix));
+                context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix) { IsUnknown = isUnknown, IsRevealed = isRevealed });
                 return true;
             }
 
