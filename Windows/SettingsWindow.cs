@@ -146,6 +146,7 @@ namespace ToNSaveManager.Windows
         }
 
         private void CheckWebSocketServer_CheckedChanged(object? sender, EventArgs e) {
+            checkWebTrackerComp.Visible = checkWebSocketServer.Checked;
             WebSocketAPI.Initialize();
         }
 

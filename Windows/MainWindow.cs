@@ -595,6 +595,10 @@ namespace ToNSaveManager
             if (HandleSaveCode(line, timestamp, context) ||
                 HandleTerrorIndex(line, timestamp, context) ||
                 HandleStatCollection(line, timestamp, context)) { }
+
+            if (Settings.Get.WebSocketEnabled && Settings.Get.WebTrackerCompatibility) {
+                WebSocketAPI.OnReadLine(line);
+            }
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
@@ -939,7 +943,7 @@ namespace ToNSaveManager
                 SendXSNotification();
                 DSWebHook.Send(entry);
 
-                if (Settings.Get.WebSocketEnabled) WebSocketAPI.SendValue<string?>("SAVED", 9, null);
+                if (Settings.Get.WebSocketEnabled) WebSocketAPI.SendValue<string?>("SAVED", null);
             }
         }
 

@@ -175,6 +175,7 @@ namespace ToNSaveManager.Models
         /// Enable the save manager WebSocket API to receive events externally.
         /// </summary>
         public bool WebSocketEnabled { get; set; } = false;
+        public bool WebTrackerCompatibility { get; set; } = true;
 
         /// <summary>
         /// Import a settings instance from the local json file

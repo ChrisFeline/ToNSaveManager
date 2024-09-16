@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
@@ -20,9 +22,7 @@ namespace ToNSaveManager.Utils.API {
 
         protected override void OnOpen() {
             Logger.Log("WebSocket client connected.");
-            foreach (IEvent ev in EventBuffer.Values) {
-                Send(JsonConvert.SerializeObject(ev));
-            }
+            SendEvent(new EventConnected() { Args = EventBuffer.ToArray() });
         }
 
         internal static void Initialize() {
@@ -43,7 +43,10 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
-        internal static void Broadcast(string data) => Server?.WebSocketServices?.Broadcast(data);
+        internal static void Broadcast(string data) {
+            Logger.Debug("Broadcasting: " + data);
+            Server?.WebSocketServices?.Broadcast(data);
+        }
         internal static void SendObject(object data) => Broadcast(JsonConvert.SerializeObject(data));
         internal static void SendEvent<T>(T value) where T : IEvent
         {
@@ -52,28 +55,44 @@ namespace ToNSaveManager.Utils.API {
 
         public interface IEvent {
             string Type { get; }
-            int Id { get; }
             byte Command { get; set; }
         }
 
         #region Event Structs
+        public struct EventConnected : IEvent {
+            public string Type => "CONNECTED";
+            public byte Command { get; set; }
+
+            public IEvent[] Args { get; set; }
+        }
+
         public struct EventValue<T> : IEvent {
             public string Type { get; private set; }
-            public int Id { get; private set; }
             public byte Command { get; set; }
             public T Value { get; private set; }
 
-            public EventValue(string type, int id, T value) {
+            public EventValue(string type, T value) {
                 Type = type;
-                Id = id;
                 Value = value;
                 Command = 0;
             }
         }
 
+        public struct EventTracker : IEvent {
+            public string Type => "TRACKER";
+            [JsonIgnore] public byte Command { get; set; }
+
+            [JsonProperty("event")] public string Event { get; set; }
+            [JsonProperty("args")] public string[] Args { get; private set; }
+
+            public EventTracker(string eventName, string[] args) {
+                Event = eventName;
+                Args = args;
+            }
+        }
+
         public struct EventTerror : IEvent {
             public string Type => "TERRORS";
-            public int Id => 0;
 
             /// <summary>
             /// 0 Set -
@@ -89,7 +108,6 @@ namespace ToNSaveManager.Utils.API {
 
         public struct EventRoundType : IEvent {
             public string Type => "ROUND_TYPE";
-            public int Id => 1;
 
             /// <summary>
             /// 0 - Round Over
@@ -105,7 +123,6 @@ namespace ToNSaveManager.Utils.API {
 
         public struct EventLocation : IEvent {
             public string Type => "LOCATION";
-            public int Id => 2;
             public byte Command { get; set; }
 
             public string Name { get; set; }
@@ -115,12 +132,12 @@ namespace ToNSaveManager.Utils.API {
         #endregion
 
         #region Save Manager Events
-        private static readonly Dictionary<int, IEvent> EventBuffer = new ();
+        private static List<IEvent> EventBuffer = new();
 
         internal static Queue<IEvent> EventQueue = new Queue<IEvent>();
         private static void QueueEvent(IEvent ev) {
             EventQueue.Enqueue(ev);
-            EventBuffer[ev.Id] = ev;
+            EventBuffer.Add(ev);
         }
 
         internal static void SendEventUpdate() {
@@ -161,8 +178,57 @@ namespace ToNSaveManager.Utils.API {
             QueueEvent(eventLocation);
         }
 
-        internal static void SendValue<T>(string type, int id, T value) {
-            QueueEvent(new EventValue<T>(type, id, value));
+        internal static void SendValue<T>(string type, T value) {
+            QueueEvent(new EventValue<T>(type, value));
+        }
+        #endregion
+
+        #region Live Tracker Compatibility
+        static Dictionary<string, Regex>? RegularExpressions;
+
+        public class RegexConverter : JsonConverter<Regex> {
+            public override Regex ReadJson(JsonReader reader, Type objectType, Regex? existingValue, bool hasExistingValue, JsonSerializer serializer) {
+                var regexPattern = JToken.Load(reader).ToString();
+                return new Regex(regexPattern, RegexOptions.Compiled); // Create the Regex object
+            }
+
+            public override void WriteJson(JsonWriter writer, Regex? value, JsonSerializer serializer) {
+                writer.WriteValue(value?.ToString());
+            }
+        }
+
+        internal static void OnReadLine(string line) {
+            line = line.TrimEnd();
+
+            if (RegularExpressions == null) {
+                try {
+                    using (HttpClient client = new HttpClient()) {
+                        const string url = "https://app.tontrack.me/regex.json";
+                        string result = client.GetStringAsync(url).Result;
+
+                        RegularExpressions = JsonConvert.DeserializeObject<Dictionary<string, Regex>>(result, new RegexConverter());
+                    }
+                } catch (Exception ex) {
+                    Logger.Error("An error ocurred while trying to Fetch data from: tontrack.me\n" + ex);
+                    return;
+                }
+            }
+
+            if (RegularExpressions != null) {
+                foreach (KeyValuePair<string, Regex> pair in RegularExpressions) {
+                    Regex regex = pair.Value;
+                    if (regex.IsMatch(line)) {
+                        Match match = regex.Match(line);
+
+                        string[] array = new string[match.Groups.Count - 1];
+                        for (int i = 1; i < match.Groups.Count; i++)
+                            array[i - 1] = match.Groups[i].Value;
+
+                        QueueEvent(new EventTracker(pair.Key, array));
+                        break;
+                    }
+                }
+            }
         }
         #endregion
 

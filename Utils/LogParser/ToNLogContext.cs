@@ -11,6 +11,8 @@ using ToNSaveManager.Utils.OpenRGB;
 namespace ToNSaveManager.Utils.LogParser
 {
     internal class ToNLogContext : LogContext {
+        internal static ToNLogContext? Instance { get; private set; }
+
         public bool SaveCodeCreated { get; set; }
         public bool HasLoadedSave { get; set; }
 
@@ -47,6 +49,8 @@ namespace ToNSaveManager.Utils.LogParser
             SetTerrorMatrix(TerrorMatrix.Empty);
             SetLocation(ToNIndex.Map.Empty);
             SetRoundResult(IsLeavingRoom ? ToNRoundResult.D : ToNRoundResult.R);
+
+            if (IsRecent) Instance = this;
         }
 
         public void SetIsKiller(bool isKiller) {

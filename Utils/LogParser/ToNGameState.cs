@@ -11,6 +11,7 @@ using ToNSaveManager.Utils.OpenRGB;
 
 namespace ToNSaveManager.Utils {
     internal static class ToNGameState {
+
         public static bool IsEmulated { get; private set; }
         public static bool IsAlive { get; private set; } = true;
         public static bool IsSaboteour { get; private set; }
@@ -41,21 +42,21 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
 
-            WebSocketAPI.SendValue("ALIVE", 4, IsAlive);
+            WebSocketAPI.SendValue("ALIVE", IsAlive);
         }
 
         public static void SetOptedIn(bool isOptedIn) {
             IsOptedIn = isOptedIn;
             LilOSC.SetDirty();
 
-            WebSocketAPI.SendValue("OPTED_IN", 5, IsAlive);
+            WebSocketAPI.SendValue("OPTED_IN", IsAlive);
         }
 
         public static void SetKiller(bool isKiller) {
             IsSaboteour = isKiller;
             StatsWindow.SetIsKiller(isKiller);
 
-            WebSocketAPI.SendValue("IS_SABOTEUR", 6, IsAlive);
+            WebSocketAPI.SendValue("IS_SABOTEUR", IsAlive);
         }
 
         public static void SetTerrorMatrix(TerrorMatrix matrix) {
@@ -98,7 +99,7 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
 
-            WebSocketAPI.SendValue("PAGE_COUNT", 7, PageCount);
+            WebSocketAPI.SendValue("PAGE_COUNT", PageCount);
         }
 
         // Unified damage event
@@ -107,7 +108,7 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDamage(damage);
             OpenRGBControl.SetDamaged();
 
-            WebSocketAPI.SendValue("DAMAGED", 8, damage);
+            WebSocketAPI.SendValue("DAMAGED", damage);
         }
     }
 }
