@@ -938,6 +938,8 @@ namespace ToNSaveManager
                 PlayNotification();
                 SendXSNotification();
                 DSWebHook.Send(entry);
+
+                if (Settings.Get.WebSocketEnabled) WebSocketAPI.SendValue<string?>("SAVED", 9, null);
             }
         }
 
