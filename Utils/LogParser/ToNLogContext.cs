@@ -32,6 +32,7 @@ namespace ToNSaveManager.Utils.LogParser
             HasLoadedSave = false;
 
             if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin) MainWindow.Instance?.CopyRecent(true);
+            if (IsRecent) ToNGameState.ClearStates();
         }
 
         public override void Join(string displayName) {
@@ -44,13 +45,16 @@ namespace ToNSaveManager.Utils.LogParser
         }
 
         public override void OnAwake() {
+            if (IsRecent) {
+                Instance = this;
+                ToNGameState.ClearStates();
+            }
+
             ClearSummary();
             SetOptedIn(false);
             SetTerrorMatrix(TerrorMatrix.Empty);
             SetLocation(ToNIndex.Map.Empty);
             SetRoundResult(IsLeavingRoom ? ToNRoundResult.D : ToNRoundResult.R);
-
-            if (IsRecent) Instance = this;
         }
 
         public void SetIsKiller(bool isKiller) {

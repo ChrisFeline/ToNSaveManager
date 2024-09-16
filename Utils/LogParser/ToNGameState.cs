@@ -11,7 +11,6 @@ using ToNSaveManager.Utils.OpenRGB;
 
 namespace ToNSaveManager.Utils {
     internal static class ToNGameState {
-
         public static bool IsEmulated { get; private set; }
         public static bool IsAlive { get; private set; } = true;
         public static bool IsSaboteour { get; private set; }
@@ -23,6 +22,19 @@ namespace ToNSaveManager.Utils {
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
 
         public static int PlayerCount { get; private set; }
+
+        public static void ClearStates() {
+            WebSocketAPI.ClearBuffer();
+            SetPlayerCount(0);
+            SetEmulated(false);
+            SetAlive(false);
+            SetOptedIn(false);
+            SetKiller(false);
+            SetTerrorMatrix(TerrorMatrix.Empty);
+            SetLocation(ToNIndex.Map.Empty);
+            SetRoundType(ToNRoundType.Intermission);
+            SetPageCount(0);
+        }
 
         public static void SetPlayerCount(int playerCount) {
             PlayerCount = playerCount;

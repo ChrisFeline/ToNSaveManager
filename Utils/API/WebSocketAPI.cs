@@ -133,10 +133,13 @@ namespace ToNSaveManager.Utils.API {
 
         #region Save Manager Events
         private static List<IEvent> EventBuffer = new();
+        internal static void ClearBuffer() {
+            EventBuffer.Clear();
+        }
 
         internal static Queue<IEvent> EventQueue = new Queue<IEvent>();
         private static void QueueEvent(IEvent ev) {
-            EventQueue.Enqueue(ev);
+            if (MainWindow.Started) EventQueue.Enqueue(ev);
             EventBuffer.Add(ev);
         }
 
