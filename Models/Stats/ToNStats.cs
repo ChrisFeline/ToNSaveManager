@@ -156,12 +156,14 @@ namespace ToNSaveManager.Models.Stats {
         public static void AddIsKiller(bool value) => Set(KEY_IS_KILLER, value);
 
         const string KEY_MAP_NAME = nameof(StatsRound.MapName);
+        const string KEY_MAP_INT = nameof(StatsRound.MapInt);
         const string KEY_MAP_CREATOR = nameof(StatsRound.MapCreator);
         const string KEY_MAP_ORIGIN = nameof(StatsRound.MapOrigin);
         public static void AddLocation(ToNIndex.Map map, bool killersSet) {
             Set(KEY_MAP_NAME, map.IsEmpty && killersSet ? "Somewhere" : map.Name);
             Set(KEY_MAP_CREATOR, map.Creator);
             Set(KEY_MAP_ORIGIN, map.Origin);
+            Set(KEY_MAP_INT, map.Id);
         }
 
         const string KEY_PAGE_COUNT = nameof(StatsRound.PageCount);

@@ -29,7 +29,10 @@ namespace ToNSaveManager.Models.Stats
         public bool IsKiller { get; internal set; } = false;
 
         public int RoundInt { get; internal set; } = 0;
+        public int MapInt { get; internal set; } = 255;
+
         public int PageCount { get; internal set; } = 0;
+
     }
 
     internal class StatsLobby : StatsData {
