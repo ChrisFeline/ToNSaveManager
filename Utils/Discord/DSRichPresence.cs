@@ -134,9 +134,9 @@ namespace ToNSaveManager.Utils.Discord {
                 IsDirty = false;
 
                 //string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
-                string details = Settings.Get.DiscordTemplateDetails.GetString();
-                string state = Settings.Get.DiscordTemplateState.GetString();
-                ImageText = Settings.Get.DiscordTemplateImage.GetString();
+                string details = Settings.Get.GetDiscordTemplateDetails.GetString();
+                string state = Settings.Get.GetDiscordTemplateState.GetString();
+                ImageText = Settings.Get.GetDiscordTemplateImage.GetString();
                 // ImageText = CurrentMatrix.Length > 0 ? CurrentMatrix.GetTerrorNames() : (CurrentMap.IsEmpty ? "Overseer" : "???");
 
                 bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
@@ -164,7 +164,7 @@ namespace ToNSaveManager.Utils.Discord {
                 StateText = state;
 
                 IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
-                IconText = CurrentMatrix.Length > 0 ? Settings.Get.DiscordTemplateIcon.GetString() : null;
+                IconText = CurrentMatrix.Length > 0 ? Settings.Get.GetDiscordTemplateIcon.GetString() : null;
                 //IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
 
                 if (CurrentMatrix.IsSaboteur) {

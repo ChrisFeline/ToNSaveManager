@@ -69,6 +69,11 @@ namespace ToNSaveManager.Windows
             LANG.C(linkLogUpdateRate, "SETTINGS.LOGUPDATERATE", toolTip);
             LANG.C(linkAutoNoteEdit, "SETTINGS.SAVEROUNDNOTE_EDIT", toolTip);
 
+            LANG.C(linkEditDiscordDetails, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordState, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordImage, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
 
@@ -122,6 +127,21 @@ namespace ToNSaveManager.Windows
             // Discord Backups
             checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
             checkDiscordPresence.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+            CheckDiscordBackup_CheckedChanged(null, EventArgs.Empty);
+
+            checkDiscordCustomDetails.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomDetails, EventArgs.Empty);
+            checkDiscordCustomState.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomState, EventArgs.Empty);
+            checkDiscordCustomIcon.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomIcon, EventArgs.Empty);
+            checkDiscordCustomImageText.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomImageText, EventArgs.Empty);
+
+            linkEditDiscordDetails.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordState.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordIcon.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordImage.LinkClicked += LinkEditDiscordDetails_LinkClicked;
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
@@ -143,6 +163,35 @@ namespace ToNSaveManager.Windows
             checkWebSocketServer.CheckedChanged += CheckWebSocketServer_CheckedChanged;
 
             FillLanguageBox();
+        }
+
+        private void LinkEditDiscordDetails_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
+            RoundInfoTemplate template;
+            if (sender == linkEditDiscordDetails) template = Settings.Get.DiscordTemplateDetails;
+            else if (sender == linkEditDiscordState) template = Settings.Get.DiscordTemplateState;
+            else if (sender == linkEditDiscordImage) template = Settings.Get.DiscordTemplateImage;
+            else if (sender == linkEditDiscordIcon) template = Settings.Get.DiscordTemplateIcon;
+            else template = Settings.Get.DiscordTemplateDetails;
+
+            string value = template.Template;
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.DISCORDRICHPRESENCE_EDIT.TITLE", template.FileName) ?? $"Edit Template", this, false, false, false, true);
+            if (show.Accept) {
+                if (string.IsNullOrWhiteSpace(show.Text))
+                    template.Template = string.Empty;
+                else template.Template = show.Text;
+
+                Settings.Export();
+            }
+        }
+
+        private void CheckDiscordCustomDetails_CheckedChanged(object? sender, EventArgs e) {
+            CheckBox? checkBox = (CheckBox?)sender;
+            Control? control = checkBox?.Parent;
+            if (checkBox == null || control == null) return;
+
+            foreach (Control c in control.Controls) {
+                if (c is LinkLabel) c.Visible = checkBox.Checked;
+            }
         }
 
         private void CheckWebSocketServer_CheckedChanged(object? sender, EventArgs e) {
@@ -335,8 +384,13 @@ namespace ToNSaveManager.Windows
 
                 MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
             } else { // Is the rich presence one
-                if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
-                else DSRichPresence.Deinitialize();
+                if (sender != null) {
+                    if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
+                    else DSRichPresence.Deinitialize();
+                }
+
+                flowDiscordDetailsText.Visible = flowDiscordStateText.Visible =
+                    flowDiscordImageText.Visible = flowDiscordIconText.Visible = checkDiscordPresence.Checked;
             }
         }
 

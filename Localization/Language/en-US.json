@@ -149,6 +149,9 @@
 
 	"SETTINGS.DISCORDRICHPRESENCE": "Enable Rich Presence",
 	"SETTINGS.DISCORDRICHPRESENCE.TT": "Show your friends on Discord that you are playing Terrors of Nowhere using Discord's Rich Presence activity.",
+	"SETTINGS.DISCORDRICHPRESENCE_EDIT": "(Edit)",
+	"SETTINGS.DISCORDRICHPRESENCE_EDIT.TT": "Edit a custom template for this custom text field.",
+	"SETTINGS.DISCORDRICHPRESENCE_EDIT.TITLE": "Edit Custom Template",
 
 	"SETTINGS.ROUNDINFOTOFILE": "Round Info To File",
 	"SETTINGS.ROUNDINFOTOFILE.TT": "Write round information to a file. (Such as terror name, map name, round type, etc.)\nThese files can be used in streaming tools like OBS to give your viewers more information about your current pain and suffering.",

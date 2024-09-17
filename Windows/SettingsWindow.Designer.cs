@@ -73,6 +73,18 @@
             linkAddInfoFile = new LinkLabel();
             labelGroupDiscord = new Label();
             checkDiscordPresence = new CheckBox();
+            flowDiscordStateText = new FlowLayoutPanel();
+            checkDiscordCustomState = new CheckBox();
+            linkEditDiscordState = new LinkLabel();
+            flowDiscordDetailsText = new FlowLayoutPanel();
+            checkDiscordCustomDetails = new CheckBox();
+            linkEditDiscordDetails = new LinkLabel();
+            flowDiscordImageText = new FlowLayoutPanel();
+            checkDiscordCustomImageText = new CheckBox();
+            linkEditDiscordImage = new LinkLabel();
+            flowDiscordIconText = new FlowLayoutPanel();
+            checkDiscordCustomIcon = new CheckBox();
+            linkEditDiscordIcon = new LinkLabel();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
             flowLayoutPanel3 = new FlowLayoutPanel();
@@ -92,6 +104,10 @@
             flowLayoutPanel5.SuspendLayout();
             flowLayoutPanel6.SuspendLayout();
             flowRoundInfoFilePanel.SuspendLayout();
+            flowDiscordStateText.SuspendLayout();
+            flowDiscordDetailsText.SuspendLayout();
+            flowDiscordImageText.SuspendLayout();
+            flowDiscordIconText.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
@@ -194,7 +210,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 459);
+            checkOSCEnabled.Location = new Point(3, 543);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -209,7 +225,7 @@
             // 
             checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 387);
+            checkPlayAudio.Location = new Point(3, 471);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
@@ -224,7 +240,7 @@
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 408);
+            checkXSOverlay.Location = new Point(3, 492);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -237,7 +253,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 636);
+            checkShowDate.Location = new Point(3, 720);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -250,7 +266,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 594);
+            checkInvertMD.Location = new Point(3, 678);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -263,7 +279,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 615);
+            checkShowSeconds.Location = new Point(3, 699);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -276,7 +292,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 573);
+            check24Hour.Location = new Point(3, 657);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -352,7 +368,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 687);
+            checkColorObjectives.Location = new Point(3, 771);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -407,7 +423,7 @@
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 480);
+            checkOSCSendColor.Location = new Point(3, 564);
             checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
@@ -449,6 +465,10 @@
             flowLayoutPanel1.Controls.Add(labelGroupDiscord);
             flowLayoutPanel1.Controls.Add(checkDiscordBackup);
             flowLayoutPanel1.Controls.Add(checkDiscordPresence);
+            flowLayoutPanel1.Controls.Add(flowDiscordStateText);
+            flowLayoutPanel1.Controls.Add(flowDiscordDetailsText);
+            flowLayoutPanel1.Controls.Add(flowDiscordImageText);
+            flowLayoutPanel1.Controls.Add(flowDiscordIconText);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
             flowLayoutPanel1.Controls.Add(checkPlayAudio);
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
@@ -469,7 +489,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 728);
+            flowLayoutPanel1.Size = new Size(544, 812);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -685,7 +705,6 @@
             // checkDiscordPresence
             // 
             checkDiscordPresence.AutoSize = true;
-            checkDiscordPresence.Enabled = false;
             checkDiscordPresence.Location = new Point(3, 336);
             checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
             checkDiscordPresence.Name = "checkDiscordPresence";
@@ -696,10 +715,186 @@
             checkDiscordPresence.Text = "Enable Rich Presence";
             checkDiscordPresence.UseVisualStyleBackColor = true;
             // 
+            // flowDiscordStateText
+            // 
+            flowDiscordStateText.AutoSize = true;
+            flowDiscordStateText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordStateText.Controls.Add(checkDiscordCustomState);
+            flowDiscordStateText.Controls.Add(linkEditDiscordState);
+            flowDiscordStateText.Location = new Point(0, 357);
+            flowDiscordStateText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordStateText.Name = "flowDiscordStateText";
+            flowDiscordStateText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordStateText.Size = new Size(212, 19);
+            flowDiscordStateText.TabIndex = 18;
+            flowDiscordStateText.WrapContents = false;
+            // 
+            // checkDiscordCustomState
+            // 
+            checkDiscordCustomState.AutoSize = true;
+            checkDiscordCustomState.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomState.Location = new Point(3, 0);
+            checkDiscordCustomState.Margin = new Padding(0);
+            checkDiscordCustomState.Name = "checkDiscordCustomState";
+            checkDiscordCustomState.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomState.Size = new Size(174, 19);
+            checkDiscordCustomState.TabIndex = 3;
+            checkDiscordCustomState.Tag = "DiscordCustomState";
+            checkDiscordCustomState.Text = "Custom State Text";
+            checkDiscordCustomState.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordState
+            // 
+            linkEditDiscordState.ActiveLinkColor = Color.White;
+            linkEditDiscordState.AutoSize = true;
+            linkEditDiscordState.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordState.LinkColor = Color.Gray;
+            linkEditDiscordState.Location = new Point(177, 0);
+            linkEditDiscordState.Margin = new Padding(0);
+            linkEditDiscordState.Name = "linkEditDiscordState";
+            linkEditDiscordState.Size = new Size(35, 15);
+            linkEditDiscordState.TabIndex = 11;
+            linkEditDiscordState.TabStop = true;
+            linkEditDiscordState.Text = "(Edit)";
+            linkEditDiscordState.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordState.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordDetailsText
+            // 
+            flowDiscordDetailsText.AutoSize = true;
+            flowDiscordDetailsText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordDetailsText.Controls.Add(checkDiscordCustomDetails);
+            flowDiscordDetailsText.Controls.Add(linkEditDiscordDetails);
+            flowDiscordDetailsText.Location = new Point(0, 378);
+            flowDiscordDetailsText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordDetailsText.Name = "flowDiscordDetailsText";
+            flowDiscordDetailsText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordDetailsText.Size = new Size(221, 19);
+            flowDiscordDetailsText.TabIndex = 19;
+            flowDiscordDetailsText.WrapContents = false;
+            // 
+            // checkDiscordCustomDetails
+            // 
+            checkDiscordCustomDetails.AutoSize = true;
+            checkDiscordCustomDetails.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomDetails.Location = new Point(3, 0);
+            checkDiscordCustomDetails.Margin = new Padding(0);
+            checkDiscordCustomDetails.Name = "checkDiscordCustomDetails";
+            checkDiscordCustomDetails.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomDetails.Size = new Size(183, 19);
+            checkDiscordCustomDetails.TabIndex = 3;
+            checkDiscordCustomDetails.Tag = "DiscordCustomDetails";
+            checkDiscordCustomDetails.Text = "Custom Details Text";
+            checkDiscordCustomDetails.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordDetails
+            // 
+            linkEditDiscordDetails.ActiveLinkColor = Color.White;
+            linkEditDiscordDetails.AutoSize = true;
+            linkEditDiscordDetails.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordDetails.LinkColor = Color.Gray;
+            linkEditDiscordDetails.Location = new Point(186, 0);
+            linkEditDiscordDetails.Margin = new Padding(0);
+            linkEditDiscordDetails.Name = "linkEditDiscordDetails";
+            linkEditDiscordDetails.Size = new Size(35, 15);
+            linkEditDiscordDetails.TabIndex = 11;
+            linkEditDiscordDetails.TabStop = true;
+            linkEditDiscordDetails.Text = "(Edit)";
+            linkEditDiscordDetails.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordDetails.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordImageText
+            // 
+            flowDiscordImageText.AutoSize = true;
+            flowDiscordImageText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordImageText.Controls.Add(checkDiscordCustomImageText);
+            flowDiscordImageText.Controls.Add(linkEditDiscordImage);
+            flowDiscordImageText.Location = new Point(0, 399);
+            flowDiscordImageText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordImageText.Name = "flowDiscordImageText";
+            flowDiscordImageText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordImageText.Size = new Size(219, 19);
+            flowDiscordImageText.TabIndex = 20;
+            flowDiscordImageText.WrapContents = false;
+            // 
+            // checkDiscordCustomImageText
+            // 
+            checkDiscordCustomImageText.AutoSize = true;
+            checkDiscordCustomImageText.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomImageText.Location = new Point(3, 0);
+            checkDiscordCustomImageText.Margin = new Padding(0);
+            checkDiscordCustomImageText.Name = "checkDiscordCustomImageText";
+            checkDiscordCustomImageText.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomImageText.Size = new Size(181, 19);
+            checkDiscordCustomImageText.TabIndex = 3;
+            checkDiscordCustomImageText.Tag = "DiscordCustomImageText";
+            checkDiscordCustomImageText.Text = "Custom Image Text";
+            checkDiscordCustomImageText.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordImage
+            // 
+            linkEditDiscordImage.ActiveLinkColor = Color.White;
+            linkEditDiscordImage.AutoSize = true;
+            linkEditDiscordImage.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordImage.LinkColor = Color.Gray;
+            linkEditDiscordImage.Location = new Point(184, 0);
+            linkEditDiscordImage.Margin = new Padding(0);
+            linkEditDiscordImage.Name = "linkEditDiscordImage";
+            linkEditDiscordImage.Size = new Size(35, 15);
+            linkEditDiscordImage.TabIndex = 11;
+            linkEditDiscordImage.TabStop = true;
+            linkEditDiscordImage.Text = "(Edit)";
+            linkEditDiscordImage.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordImage.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordIconText
+            // 
+            flowDiscordIconText.AutoSize = true;
+            flowDiscordIconText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordIconText.Controls.Add(checkDiscordCustomIcon);
+            flowDiscordIconText.Controls.Add(linkEditDiscordIcon);
+            flowDiscordIconText.Location = new Point(0, 420);
+            flowDiscordIconText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordIconText.Name = "flowDiscordIconText";
+            flowDiscordIconText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordIconText.Size = new Size(209, 19);
+            flowDiscordIconText.TabIndex = 21;
+            flowDiscordIconText.WrapContents = false;
+            // 
+            // checkDiscordCustomIcon
+            // 
+            checkDiscordCustomIcon.AutoSize = true;
+            checkDiscordCustomIcon.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomIcon.Location = new Point(3, 0);
+            checkDiscordCustomIcon.Margin = new Padding(0);
+            checkDiscordCustomIcon.Name = "checkDiscordCustomIcon";
+            checkDiscordCustomIcon.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomIcon.Size = new Size(171, 19);
+            checkDiscordCustomIcon.TabIndex = 3;
+            checkDiscordCustomIcon.Tag = "DiscordCustomIconText";
+            checkDiscordCustomIcon.Text = "Custom Icon Text";
+            checkDiscordCustomIcon.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordIcon
+            // 
+            linkEditDiscordIcon.ActiveLinkColor = Color.White;
+            linkEditDiscordIcon.AutoSize = true;
+            linkEditDiscordIcon.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordIcon.LinkColor = Color.Gray;
+            linkEditDiscordIcon.Location = new Point(174, 0);
+            linkEditDiscordIcon.Margin = new Padding(0);
+            linkEditDiscordIcon.Name = "linkEditDiscordIcon";
+            linkEditDiscordIcon.Size = new Size(35, 15);
+            linkEditDiscordIcon.TabIndex = 11;
+            linkEditDiscordIcon.TabStop = true;
+            linkEditDiscordIcon.Text = "(Edit)";
+            linkEditDiscordIcon.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordIcon.VisitedLinkColor = Color.Gray;
+            // 
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
-            labelGroupNotifications.Location = new Point(3, 371);
+            labelGroupNotifications.Location = new Point(3, 455);
             labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
             labelGroupNotifications.Name = "labelGroupNotifications";
             labelGroupNotifications.Size = new Size(75, 15);
@@ -709,7 +904,7 @@
             // labelGroupOSC
             // 
             labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 443);
+            labelGroupOSC.Location = new Point(3, 527);
             labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
             labelGroupOSC.Name = "labelGroupOSC";
             labelGroupOSC.Size = new Size(30, 15);
@@ -722,7 +917,7 @@
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
             flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
-            flowLayoutPanel3.Location = new Point(3, 501);
+            flowLayoutPanel3.Location = new Point(3, 585);
             flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Size = new Size(286, 19);
@@ -766,7 +961,7 @@
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(checkSendChatbox);
             flowLayoutPanel2.Controls.Add(linkEditChatbox);
-            flowLayoutPanel2.Location = new Point(0, 522);
+            flowLayoutPanel2.Location = new Point(0, 606);
             flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
@@ -794,7 +989,7 @@
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 557);
+            labelGroupFormat.Location = new Point(3, 641);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -804,7 +999,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 671);
+            labelGroupStyle.Location = new Point(3, 755);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -817,7 +1012,7 @@
             flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel4.Controls.Add(linkOpenRGB);
-            flowLayoutPanel4.Location = new Point(0, 708);
+            flowLayoutPanel4.Location = new Point(0, 792);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
@@ -887,6 +1082,14 @@
             flowLayoutPanel6.PerformLayout();
             flowRoundInfoFilePanel.ResumeLayout(false);
             flowRoundInfoFilePanel.PerformLayout();
+            flowDiscordStateText.ResumeLayout(false);
+            flowDiscordStateText.PerformLayout();
+            flowDiscordDetailsText.ResumeLayout(false);
+            flowDiscordDetailsText.PerformLayout();
+            flowDiscordImageText.ResumeLayout(false);
+            flowDiscordImageText.PerformLayout();
+            flowDiscordIconText.ResumeLayout(false);
+            flowDiscordIconText.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
@@ -953,5 +1156,17 @@
         private LinkLabel linkAutoNoteEdit;
         private CheckBox checkWebSocketServer;
         private CheckBox checkWebTrackerComp;
+        private FlowLayoutPanel flowDiscordStateText;
+        private CheckBox checkDiscordCustomState;
+        private LinkLabel linkEditDiscordState;
+        private FlowLayoutPanel flowDiscordDetailsText;
+        private CheckBox checkDiscordCustomDetails;
+        private LinkLabel linkEditDiscordDetails;
+        private FlowLayoutPanel flowDiscordImageText;
+        private CheckBox checkDiscordCustomImageText;
+        private LinkLabel linkEditDiscordImage;
+        private FlowLayoutPanel flowDiscordIconText;
+        private CheckBox checkDiscordCustomIcon;
+        private LinkLabel linkEditDiscordIcon;
     }
 }
