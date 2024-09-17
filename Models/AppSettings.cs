@@ -38,7 +38,7 @@ namespace ToNSaveManager.Models
         /// </summary>
         public bool DiscordRichPresence { get; set; }
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("{MapName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("<js>RoundInt ? RoundType : RoundType + (RoundInt === 105 ? (PageCount + '/8') : '')</js>");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("<js>RoundInt === 105 ? RoundType + ' (' + (PageCount + '/8') + ')' : RoundType</js>");
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate("{TerrorName}");
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead'</js>");
 
