@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Utils.LogParser;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -22,7 +23,14 @@ namespace ToNSaveManager.Utils.API {
 
         protected override void OnOpen() {
             Logger.Log("WebSocket client connected.");
-            SendEvent(new EventConnected() { Args = EventBuffer.ToArray() });
+
+            SendEvent(new EventConnected() {
+                Args = EventBuffer.ToArray(),
+                DisplayName = ToNLogContext.Instance?.DisplayName ?? string.Empty,
+                UserID = ToNLogContext.Instance?.UserID ?? string.Empty
+            });
+            
+            SendValue("INSTANCE", ToNLogContext.Instance?.InstanceID);
         }
 
         internal static void Initialize() {
@@ -64,11 +72,14 @@ namespace ToNSaveManager.Utils.API {
             public byte Command { get; set; }
 
             public IEvent[] Args { get; set; }
+
+            public string DisplayName { get; set; }
+            public string UserID { get; set; }
         }
 
         public struct EventValue<T> : IEvent {
             public string Type { get; private set; }
-            public byte Command { get; set; }
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)] public byte Command { get; set; }
             public T Value { get; private set; }
 
             public EventValue(string type, T value) {
@@ -102,6 +113,7 @@ namespace ToNSaveManager.Utils.API {
             public byte Command { get; set; }
 
             public string[] Names { get; set; }
+            public string?[] Assets { get; set; }
             public string DisplayName { get; set; }
             public uint DisplayColor { get; set; }
         }
@@ -153,12 +165,20 @@ namespace ToNSaveManager.Utils.API {
             EventTerror eventTerror = new EventTerror();
             eventTerror.DisplayName = matrix.GetTerrorNames();
             eventTerror.DisplayColor = ColorToUInt(matrix.DisplayColor);
-            if (matrix.Terrors.Length > 0) eventTerror.Names = matrix.Terrors.Select(t => t.Name).ToArray();
+            if (matrix.Terrors.Length > 0) {
+                eventTerror.Names = new string[matrix.ActualCount];
+                eventTerror.Assets = new string[matrix.ActualCount];
+
+                for (int i = matrix.StartIndex; i < matrix.Length; i++) {
+                    eventTerror.Names[i] = matrix[i].Name;
+                    eventTerror.Assets[i] = matrix[i].AssetID;
+                }
+            }
 
             byte command;
             if (matrix.IsUnknown) command = 2;
-            if (matrix.IsRevealed) command = 1;
-            else command = 0;
+            else if (matrix.IsRevealed) command = 1;
+            else command = (byte)(matrix.IsEmpty ? 255 : (matrix.Length > 0 ? 0 : 4));
 
             eventTerror.Command = command;
             QueueEvent(eventTerror);

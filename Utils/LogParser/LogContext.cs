@@ -17,6 +17,7 @@ namespace ToNSaveManager.Utils.LogParser {
         public string FileName { get; private set; } = string.Empty;
         public string DateKey { get; private set;  } = string.Empty;
         public string? DisplayName;
+        public string? UserID;
         public bool Authenticated;
 
         // Recent Instance info

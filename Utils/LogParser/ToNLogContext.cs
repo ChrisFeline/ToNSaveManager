@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
 
@@ -33,6 +35,10 @@ namespace ToNSaveManager.Utils.LogParser
 
             if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin) MainWindow.Instance?.CopyRecent(true);
             if (IsRecent) ToNGameState.ClearStates();
+        }
+        public override void Enter(string instanceID, bool isHomeWorld) {
+            base.Enter(instanceID, isHomeWorld);
+            if (IsRecent) WebSocketAPI.SendValue("INSTANCE", instanceID);
         }
 
         public override void Join(string displayName) {

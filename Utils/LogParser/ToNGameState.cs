@@ -21,6 +21,7 @@ namespace ToNSaveManager.Utils {
         public static TerrorMatrix Terrors { get; private set; } = TerrorMatrix.Empty;
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
 
+        // Instance Information
         public static int PlayerCount { get; private set; }
 
         public static void ClearStates() {
