@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.API;
+using Jint;
 
 namespace ToNSaveManager.Models.Stats {
     internal class StatPropertyContainer {
@@ -188,6 +189,8 @@ namespace ToNSaveManager.Models.Stats {
             if (!IsModified(key)) {
                 TableModified.Add(key);
             }
+
+            JSEngine.SetValue(key, Get(key));
         }
 
         public static T? Get<T>(string key) => PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value) ? value.GetValue<T>() : default;
@@ -230,6 +233,10 @@ namespace ToNSaveManager.Models.Stats {
         internal static readonly StatPropertyContainer[] PropertyValues;
         internal static readonly Dictionary<string, StatPropertyContainer[]> PropertyGroups = new Dictionary<string, StatPropertyContainer[]>();
 
+        internal static readonly Jint.Engine JSEngine = new Jint.Engine(options => {
+            options.LimitMemory(10_000_000);
+        });
+
         static ToNStats() {
             Type baseType = typeof(StatsBase);
             List<StatPropertyContainer> keys = new List<StatPropertyContainer>();
@@ -242,6 +249,7 @@ namespace ToNSaveManager.Models.Stats {
                     PropertyDictionary.Add(key, statProp);
                     MarkModified(key);
                     keys.Add(statProp);
+                    // Register this property on the interpreter
                 }
 
                 PropertyGroups[propertyInfo.Name] = keys.ToArray();
