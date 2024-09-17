@@ -6,6 +6,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Models.Stats {
     internal class StatPropertyContainer {
@@ -200,6 +201,8 @@ namespace ToNSaveManager.Models.Stats {
                     MarkModified(key);
 
                     value.Instance?.SetDirty();
+
+                    WebSocketAPI.EventStats.Send(key, val);
                 }
             }
         }

@@ -81,7 +81,7 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
 
-            WebSocketAPI.SendTerrorMatrix(Terrors);
+            WebSocketAPI.EventTerror.Send(Terrors);
         }
 
         public static void SetRoundType(ToNRoundType roundType) {
@@ -89,7 +89,7 @@ namespace ToNSaveManager.Utils {
             RoundType = roundType;
             DSRichPresence.SetRoundType(roundType);
 
-            WebSocketAPI.SendRoundType(roundType);
+            WebSocketAPI.EventRoundType.Send(roundType);
         }
 
         public static void SetLocation(ToNIndex.Map location) {
@@ -101,7 +101,7 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
 
-            WebSocketAPI.SendLocation(location);
+            WebSocketAPI.EventLocation.Send(location);
         }
 
         public static void SetPageCount(int pages) {

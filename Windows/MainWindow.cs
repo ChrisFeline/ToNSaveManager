@@ -90,6 +90,7 @@ namespace ToNSaveManager
             SetTitle(null);
 
             LilOSC.Initialize();
+            WebSocketAPI.Initialize();
             StatsWindow.UpdateChatboxContent();
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
         }

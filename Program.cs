@@ -82,7 +82,6 @@ namespace ToNSaveManager
 
             if (!StartCheckForUpdate()) {
                 DSRichPresence.Initialize();
-                WebSocketAPI.Initialize();
                 Application.Run(new MainWindow());
             }
         }

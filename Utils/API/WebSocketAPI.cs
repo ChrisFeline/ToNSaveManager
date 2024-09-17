@@ -89,16 +89,15 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
-        public struct EventTracker : IEvent {
-            public string Type => "TRACKER";
-            [JsonIgnore] public byte Command { get; set; }
+        public struct EventStats : IEvent {
+            public string Type => "STATS";
+            public byte Command { get; set; }
 
-            [JsonProperty("event")] public string Event { get; set; }
-            [JsonProperty("args")] public string[] Args { get; private set; }
+            public string Name { get; set; }
+            public object? Value { get; set; }
 
-            public EventTracker(string eventName, string[] args) {
-                Event = eventName;
-                Args = args;
+            internal static void Send(string name, object? value) {
+                QueueEvent(new EventStats() { Name = name, Value = value });
             }
         }
 
@@ -116,6 +115,29 @@ namespace ToNSaveManager.Utils.API {
             public string?[] Assets { get; set; }
             public string DisplayName { get; set; }
             public uint DisplayColor { get; set; }
+
+            internal static void Send(TerrorMatrix matrix) {
+                EventTerror eventTerror = new EventTerror();
+                eventTerror.DisplayName = matrix.GetTerrorNames();
+                eventTerror.DisplayColor = ColorToUInt(matrix.DisplayColor);
+                if (matrix.Terrors.Length > 0) {
+                    eventTerror.Names = new string[matrix.ActualCount];
+                    eventTerror.Assets = new string[matrix.ActualCount];
+
+                    for (int i = matrix.StartIndex; i < matrix.Length; i++) {
+                        eventTerror.Names[i] = matrix[i].Name;
+                        eventTerror.Assets[i] = matrix[i].AssetID;
+                    }
+                }
+
+                byte command;
+                if (matrix.IsUnknown) command = 2;
+                else if (matrix.IsRevealed) command = 1;
+                else command = (byte)(matrix.IsEmpty ? 255 : (matrix.Length > 0 ? 0 : 4));
+
+                eventTerror.Command = command;
+                QueueEvent(eventTerror);
+            }
         }
 
         public struct EventRoundType : IEvent {
@@ -131,6 +153,14 @@ namespace ToNSaveManager.Utils.API {
             public string Name => Value.ToString();
             public string DisplayName => MainWindow.GetRoundTypeName(Value);
             public uint DisplayColor { get; set; } // Maybe a bit innacurate
+
+            internal static void Send(ToNRoundType roundType) {
+                EventRoundType eventRoundType = new EventRoundType();
+                eventRoundType.Value = roundType;
+                eventRoundType.DisplayColor = TerrorMatrix.GetRoundColorFromType(roundType);
+                eventRoundType.Command = (byte)(roundType == ToNRoundType.Intermission ? 0 : 1);
+                QueueEvent(eventRoundType);
+            }
         }
 
         public struct EventLocation : IEvent {
@@ -140,12 +170,23 @@ namespace ToNSaveManager.Utils.API {
             public string Name { get; set; }
             public string Creator { get; set; }
             public string Origin { get; set; }
+
+            internal static void Send(ToNIndex.Map map) {
+                EventLocation eventLocation = new() {
+                    Name = map.Name,
+                    Creator = map.Creator,
+                    Origin = map.Origin,
+                    Command = (byte)(map.IsEmpty ? 0 : 1)
+                };
+                QueueEvent(eventLocation);
+            }
         }
         #endregion
 
         #region Save Manager Events
         private static List<IEvent> EventBuffer = new();
         internal static void ClearBuffer() {
+            Logger.Debug("CLEARING BUFFER!!!");
             EventBuffer.Clear();
         }
 
@@ -161,52 +202,25 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
-        internal static void SendTerrorMatrix(TerrorMatrix matrix) {
-            EventTerror eventTerror = new EventTerror();
-            eventTerror.DisplayName = matrix.GetTerrorNames();
-            eventTerror.DisplayColor = ColorToUInt(matrix.DisplayColor);
-            if (matrix.Terrors.Length > 0) {
-                eventTerror.Names = new string[matrix.ActualCount];
-                eventTerror.Assets = new string[matrix.ActualCount];
-
-                for (int i = matrix.StartIndex; i < matrix.Length; i++) {
-                    eventTerror.Names[i] = matrix[i].Name;
-                    eventTerror.Assets[i] = matrix[i].AssetID;
-                }
-            }
-
-            byte command;
-            if (matrix.IsUnknown) command = 2;
-            else if (matrix.IsRevealed) command = 1;
-            else command = (byte)(matrix.IsEmpty ? 255 : (matrix.Length > 0 ? 0 : 4));
-
-            eventTerror.Command = command;
-            QueueEvent(eventTerror);
-        }
-
-        internal static void SendRoundType(ToNRoundType roundType) {
-            EventRoundType eventRoundType = new EventRoundType();
-            eventRoundType.Value = roundType;
-            eventRoundType.DisplayColor = TerrorMatrix.GetRoundColorFromType(roundType);
-            eventRoundType.Command = (byte)(roundType == ToNRoundType.Intermission ? 0 : 1);
-            QueueEvent(eventRoundType);
-        }
-
-        internal static void SendLocation(ToNIndex.Map map) {
-            EventLocation eventLocation = new EventLocation();
-            eventLocation.Name = map.Name;
-            eventLocation.Creator = map.Creator;
-            eventLocation.Origin = map.Origin;
-            eventLocation.Command = (byte)(map.IsEmpty ? 0 : 1);
-            QueueEvent(eventLocation);
-        }
-
         internal static void SendValue<T>(string type, T value) {
             QueueEvent(new EventValue<T>(type, value));
         }
         #endregion
 
         #region Live Tracker Compatibility
+        public struct EventTracker : IEvent {
+            public string Type => "TRACKER";
+            [JsonIgnore] public byte Command { get; set; }
+
+            [JsonProperty("event")] public string Event { get; set; }
+            [JsonProperty("args")] public string[] Args { get; private set; }
+
+            public EventTracker(string eventName, string[] args) {
+                Event = eventName;
+                Args = args;
+            }
+        }
+
         static Dictionary<string, Regex>? RegularExpressions;
 
         public class RegexConverter : JsonConverter<Regex> {
