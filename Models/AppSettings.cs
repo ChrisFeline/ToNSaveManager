@@ -37,10 +37,10 @@ namespace ToNSaveManager.Models
         /// Enables Discord rich presence for Terrors of Nowhere.
         /// </summary>
         public bool DiscordRichPresence { get; set; }
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("🌐 {MapName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("🎮 ({RoundInt}?{RoundType}:{RoundType}({RoundInt}==105? ({PageCount}/8):))");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("{MapName}");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("<js>RoundInt ? RoundType : RoundType + (RoundInt === 105 ? (PageCount + '/8') : '')</js>");
         [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate("{TerrorName}");
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("({IsAlive}?({IsKiller}?Killer:Alive):Dead)");
+        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead'</js>");
 
         /// <summary>
         /// Enables OpenRGB support.
@@ -136,8 +136,8 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
-        public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
-            new RoundInfoTemplate("- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n({RoundStunsAll}<1?:Current Round Stuns : {RoundStunsAll})");
+        [JsonIgnore] public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
+            new RoundInfoTemplate("- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n<js>RoundStunsAll < 1 ? '' : 'Current Round Stuns : ' + {RoundStunsAll}</js>");
 
         /// <summary>
         /// How often the message will be repeated to VRC for a consistent chatbox.
@@ -149,10 +149,10 @@ namespace ToNSaveManager.Models
         /// Enables writing round info to files using custom templates.
         /// </summary>
         public bool RoundInfoToFile { get; set; }
-        public RoundInfoTemplate[] RoundInfoTemplates { get; set; } = [
+        [JsonIgnore] public RoundInfoTemplate[] RoundInfoTemplates { get; set; } = [
             new ("ton_terror_name.txt", "{TerrorName}"),
             new ("ton_round_type.txt", "{RoundType}"),
-            new ("ton_map_name.txt", "{MapName}({MapOrigin}? from {MapOrigin}:)({MapCreator}? by {MapCreator}:)")
+            new ("ton_map_name.txt", "{MapName}<js>(MapOrigin ? 'from ' + MapOrigin : '') + (MapCreator ? 'by ' + MapCreator : '')</js>")
         ];
         #endregion
 
