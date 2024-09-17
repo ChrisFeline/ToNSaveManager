@@ -596,7 +596,7 @@ namespace ToNSaveManager
                 HandleTerrorIndex(line, timestamp, context) ||
                 HandleStatCollection(line, timestamp, context)) { }
 
-            if (Settings.Get.WebSocketEnabled && Settings.Get.WebTrackerCompatibility) {
+            if (Settings.Get.WebSocketEnabled && Settings.Get.WebTrackerCompatibility && context.IsRecent) {
                 WebSocketAPI.OnReadLine(line);
             }
         }

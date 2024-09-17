@@ -19,12 +19,24 @@ namespace ToNSaveManager.Models.Index {
         public int ActualCount => TerrorCount - StartIndex;
 
         static readonly StringBuilder StrBuild = new StringBuilder();
+        public string GetTerrorAssets(string splitter = " & ") {
+            StrBuild.Clear();
+
+            for (int i = StartIndex; i < Length; i++) {
+                if (StrBuild.Length > 0)
+                    StrBuild.Append(splitter);
+
+                StrBuild.Append(Terrors[i].AssetID);
+            }
+
+            return StrBuild.ToString();
+        }
         public string GetTerrorNames(string splitter = " & ") {
             StrBuild.Clear();
 
             for (int i = StartIndex; i < Length; i++) {
                 if (StrBuild.Length > 0)
-                    StrBuild.Append(" & ");
+                    StrBuild.Append(splitter);
 
                 StrBuild.Append(Terrors[i].Name);
             }

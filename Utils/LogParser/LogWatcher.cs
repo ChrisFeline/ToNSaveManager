@@ -102,25 +102,34 @@
                         {
                             logContext.Position = GetParsedPos(logContext.DateKey);
                             logContext.RoomReadPos = logContext.Position;
+
+                            if (!logContext.Authenticated) logContext.Position = 0;
                         }
                     }
 
+                    // authentication bottleneck :(
                     if (logContext.Length == fileInfo.Length)
                     {
                         continue;
                     }
 
-                    logContext.IsRecent = !isOlder;
-                    logContext.Length = fileInfo.Length;
                     ParseLog(fileInfo, logContext, sender == null);
 
                     if (!logContext.Initialized)
                     {
                         logContext.SetInit();
+
+                        if (logContext.Authenticated) {
+                            logContext.Position = logContext.RoomReadPos;
+                            i = i - 1;
+                            continue;
+                        }
                     }
 
-                    if (SkipParsedLogs)
+                    if (SkipParsedLogs && logContext.Authenticated)
                         SetParsedPos(logContext.DateKey, isOlder ? logContext.Position : logContext.RoomReadPos, firstRun);
+
+                    logContext.Length = fileInfo.Length;
                 }
             }
 
@@ -215,6 +224,8 @@
                                     LogBuilder.Clear();
 
                                     logContext.ReadPos = GetReaderPosition(streamReader);
+
+                                    if (logContext.Authenticated && !logContext.Initialized) break;
                                 }
 
                                 if (isNull)
@@ -276,6 +287,7 @@
                 logContext.DisplayName = "Unknown";
             }
 
+            logContext.Authenticated = true;
             return true;
         }
 
