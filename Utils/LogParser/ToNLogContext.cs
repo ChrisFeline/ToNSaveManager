@@ -38,7 +38,10 @@ namespace ToNSaveManager.Utils.LogParser
         }
         public override void Enter(string instanceID, bool isHomeWorld) {
             base.Enter(instanceID, isHomeWorld);
-            if (IsRecent) WebSocketAPI.SendValue("INSTANCE", instanceID);
+            if (IsRecent) {
+                StatsWindow.SetInstanceURL(instanceID);
+                WebSocketAPI.SendValue("INSTANCE", instanceID);
+            }
         }
 
         public override void Join(string displayName) {

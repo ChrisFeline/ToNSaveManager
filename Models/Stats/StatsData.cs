@@ -40,6 +40,7 @@ namespace ToNSaveManager.Models.Stats
         // Player data
         public string DisplayName { get; internal set; } = "Unknown";
         public string DiscordName { get; internal set; } = "Unknown";
+        public string InstanceURL { get; internal set; } = string.Empty;
     }
 
     internal class StatsData : StatsBase {

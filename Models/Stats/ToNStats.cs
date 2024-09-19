@@ -149,6 +149,10 @@ namespace ToNSaveManager.Models.Stats {
                 Set(KEY_DISCORD_NAME, displayName);
             } else Set(KEY_DISPLAY_NAME, displayName);
         }
+        const string KEY_INSTANCE_ID = nameof(StatsLobby.InstanceURL);
+        public static void SetInstanceURL(string instanceURL) {
+            Set(KEY_INSTANCE_ID, instanceURL);
+        }
 
         // Round only stuff
         const string KEY_ROUND_TYPE = nameof(StatsRound.RoundType);

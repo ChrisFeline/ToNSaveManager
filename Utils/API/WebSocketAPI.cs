@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
+using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils.LogParser;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -31,6 +32,11 @@ namespace ToNSaveManager.Utils.API {
             });
             
             SendValue("INSTANCE", ToNLogContext.Instance?.InstanceID);
+
+            // Send All Stats
+            foreach (string key in ToNStats.PropertyKeys) {
+                WebSocketAPI.EventStats.Send(key, ToNStats.Get(key));
+            }
         }
 
         internal static void Initialize() {
@@ -91,7 +97,7 @@ namespace ToNSaveManager.Utils.API {
 
         public struct EventStats : IEvent {
             public string Type => "STATS";
-            public byte Command { get; set; }
+            [JsonIgnore] public byte Command { get; set; }
 
             public string Name { get; set; }
             public object? Value { get; set; }

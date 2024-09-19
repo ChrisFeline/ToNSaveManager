@@ -25,6 +25,7 @@ namespace ToNSaveManager.Utils {
         public static int PlayerCount { get; private set; }
         public static string DisplayName { get; private set; } = "Unknown";
         public static string DiscordName { get; private set; } = "Unknown";
+        public static string InstanceURL { get; private set; } = string.Empty;
 
         public static void ClearStates() {
             WebSocketAPI.ClearBuffer();
@@ -44,6 +45,10 @@ namespace ToNSaveManager.Utils {
             else DisplayName = displayName;
 
             StatsWindow.SetDisplayName(displayName, isDiscord);
+        }
+
+        public static void SetInstanceURL(string instanceURL) {
+            StatsWindow.SetInstanceURL(instanceURL);
         }
 
         public static void SetPlayerCount(int playerCount) {

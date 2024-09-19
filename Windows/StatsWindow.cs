@@ -54,6 +54,11 @@ namespace ToNSaveManager
             RefreshTable();
         }
 
+        internal static void SetInstanceURL(string instanceURL) {
+            ToNStats.SetInstanceURL(instanceURL);
+            RefreshTable();
+        }
+
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             ToNStats.AddTerrors(terrorMatrix);
             RefreshTable();
