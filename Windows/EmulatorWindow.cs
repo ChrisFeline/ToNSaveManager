@@ -342,6 +342,7 @@ namespace ToNSaveManager.Windows
             buttonStepReveal.Enabled = false;
             buttonStepEndRound.Enabled = false;
             buttonDamage.Enabled = buttonDeath.Enabled = false;
+            buttonStepReveal.Text = CurrentRoundType == ToNRoundType.Eight_Pages ? "Find Page 1" : "Reveal";
         }
 
         private void buttonStep_Enabled(object sender, EventArgs e) {
