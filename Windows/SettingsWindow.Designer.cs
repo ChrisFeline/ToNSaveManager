@@ -85,6 +85,9 @@
             flowDiscordIconText = new FlowLayoutPanel();
             checkDiscordCustomIcon = new CheckBox();
             linkEditDiscordIcon = new LinkLabel();
+            flowDiscordIconStart = new FlowLayoutPanel();
+            checkDiscordCustomStart = new CheckBox();
+            linkEditDiscordStart = new LinkLabel();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
             flowLayoutPanel3 = new FlowLayoutPanel();
@@ -97,9 +100,6 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
-            flowLayoutPanel7 = new FlowLayoutPanel();
-            checkDiscordCustomStart = new CheckBox();
-            linkEditDiscordStart = new LinkLabel();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -111,10 +111,10 @@
             flowDiscordDetailsText.SuspendLayout();
             flowDiscordImageText.SuspendLayout();
             flowDiscordIconText.SuspendLayout();
+            flowDiscordIconStart.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
-            flowLayoutPanel7.SuspendLayout();
             SuspendLayout();
             // 
             // checkDiscordBackup
@@ -473,7 +473,7 @@
             flowLayoutPanel1.Controls.Add(flowDiscordDetailsText);
             flowLayoutPanel1.Controls.Add(flowDiscordImageText);
             flowLayoutPanel1.Controls.Add(flowDiscordIconText);
-            flowLayoutPanel1.Controls.Add(flowLayoutPanel7);
+            flowLayoutPanel1.Controls.Add(flowDiscordIconStart);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
             flowLayoutPanel1.Controls.Add(checkPlayAudio);
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
@@ -896,6 +896,50 @@
             linkEditDiscordIcon.TextAlign = ContentAlignment.MiddleLeft;
             linkEditDiscordIcon.VisitedLinkColor = Color.Gray;
             // 
+            // flowDiscordIconStart
+            // 
+            flowDiscordIconStart.AutoSize = true;
+            flowDiscordIconStart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordIconStart.Controls.Add(checkDiscordCustomStart);
+            flowDiscordIconStart.Controls.Add(linkEditDiscordStart);
+            flowDiscordIconStart.Location = new Point(0, 441);
+            flowDiscordIconStart.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordIconStart.Name = "flowDiscordIconStart";
+            flowDiscordIconStart.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordIconStart.Size = new Size(210, 19);
+            flowDiscordIconStart.TabIndex = 22;
+            flowDiscordIconStart.WrapContents = false;
+            // 
+            // checkDiscordCustomStart
+            // 
+            checkDiscordCustomStart.AutoSize = true;
+            checkDiscordCustomStart.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomStart.Location = new Point(3, 0);
+            checkDiscordCustomStart.Margin = new Padding(0);
+            checkDiscordCustomStart.Name = "checkDiscordCustomStart";
+            checkDiscordCustomStart.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomStart.Size = new Size(172, 19);
+            checkDiscordCustomStart.TabIndex = 3;
+            checkDiscordCustomStart.Tag = "DiscordCustomStartText";
+            checkDiscordCustomStart.Text = "Custom Start Text";
+            checkDiscordCustomStart.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordStart
+            // 
+            linkEditDiscordStart.ActiveLinkColor = Color.White;
+            linkEditDiscordStart.AutoSize = true;
+            linkEditDiscordStart.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordStart.LinkColor = Color.Gray;
+            linkEditDiscordStart.Location = new Point(175, 0);
+            linkEditDiscordStart.Margin = new Padding(0);
+            linkEditDiscordStart.Name = "linkEditDiscordStart";
+            linkEditDiscordStart.Size = new Size(35, 15);
+            linkEditDiscordStart.TabIndex = 11;
+            linkEditDiscordStart.TabStop = true;
+            linkEditDiscordStart.Text = "(Edit)";
+            linkEditDiscordStart.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordStart.VisitedLinkColor = Color.Gray;
+            // 
             // labelGroupNotifications
             // 
             labelGroupNotifications.AutoSize = true;
@@ -1055,50 +1099,6 @@
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
             // 
-            // flowLayoutPanel7
-            // 
-            flowLayoutPanel7.AutoSize = true;
-            flowLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel7.Controls.Add(checkDiscordCustomStart);
-            flowLayoutPanel7.Controls.Add(linkEditDiscordStart);
-            flowLayoutPanel7.Location = new Point(0, 441);
-            flowLayoutPanel7.Margin = new Padding(0, 1, 0, 1);
-            flowLayoutPanel7.Name = "flowLayoutPanel7";
-            flowLayoutPanel7.Padding = new Padding(3, 0, 0, 0);
-            flowLayoutPanel7.Size = new Size(210, 19);
-            flowLayoutPanel7.TabIndex = 22;
-            flowLayoutPanel7.WrapContents = false;
-            // 
-            // checkDiscordCustomStart
-            // 
-            checkDiscordCustomStart.AutoSize = true;
-            checkDiscordCustomStart.ForeColor = SystemColors.ScrollBar;
-            checkDiscordCustomStart.Location = new Point(3, 0);
-            checkDiscordCustomStart.Margin = new Padding(0);
-            checkDiscordCustomStart.Name = "checkDiscordCustomStart";
-            checkDiscordCustomStart.Padding = new Padding(50, 0, 3, 0);
-            checkDiscordCustomStart.Size = new Size(172, 19);
-            checkDiscordCustomStart.TabIndex = 3;
-            checkDiscordCustomStart.Tag = "DiscordCustomStartText";
-            checkDiscordCustomStart.Text = "Custom Start Text";
-            checkDiscordCustomStart.UseVisualStyleBackColor = true;
-            // 
-            // linkEditDiscordStart
-            // 
-            linkEditDiscordStart.ActiveLinkColor = Color.White;
-            linkEditDiscordStart.AutoSize = true;
-            linkEditDiscordStart.LinkBehavior = LinkBehavior.HoverUnderline;
-            linkEditDiscordStart.LinkColor = Color.Gray;
-            linkEditDiscordStart.Location = new Point(175, 0);
-            linkEditDiscordStart.Margin = new Padding(0);
-            linkEditDiscordStart.Name = "linkEditDiscordStart";
-            linkEditDiscordStart.Size = new Size(35, 15);
-            linkEditDiscordStart.TabIndex = 11;
-            linkEditDiscordStart.TabStop = true;
-            linkEditDiscordStart.Text = "(Edit)";
-            linkEditDiscordStart.TextAlign = ContentAlignment.MiddleLeft;
-            linkEditDiscordStart.VisitedLinkColor = Color.Gray;
-            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -1139,14 +1139,14 @@
             flowDiscordImageText.PerformLayout();
             flowDiscordIconText.ResumeLayout(false);
             flowDiscordIconText.PerformLayout();
+            flowDiscordIconStart.ResumeLayout(false);
+            flowDiscordIconStart.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel4.ResumeLayout(false);
             flowLayoutPanel4.PerformLayout();
-            flowLayoutPanel7.ResumeLayout(false);
-            flowLayoutPanel7.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1219,7 +1219,7 @@
         private FlowLayoutPanel flowDiscordIconText;
         private CheckBox checkDiscordCustomIcon;
         private LinkLabel linkEditDiscordIcon;
-        private FlowLayoutPanel flowLayoutPanel7;
+        private FlowLayoutPanel flowDiscordIconStart;
         private CheckBox checkDiscordCustomStart;
         private LinkLabel linkEditDiscordStart;
     }

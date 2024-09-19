@@ -9,7 +9,6 @@ using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.OpenRGB;
-using Windows.ApplicationModel.Contacts;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
@@ -398,7 +397,8 @@ namespace ToNSaveManager.Windows
                 }
 
                 flowDiscordDetailsText.Visible = flowDiscordStateText.Visible =
-                    flowDiscordImageText.Visible = flowDiscordIconText.Visible = checkDiscordPresence.Checked;
+                    flowDiscordImageText.Visible = flowDiscordIconText.Visible =
+                    flowDiscordIconStart.Visible = checkDiscordPresence.Checked;
             }
         }
 
