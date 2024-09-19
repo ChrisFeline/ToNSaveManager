@@ -142,6 +142,14 @@ namespace ToNSaveManager.Models.Stats {
             Set(KEY_ONLINE_PLAYERS, players);
         }
 
+        const string KEY_DISPLAY_NAME = nameof(StatsLobby.DisplayName);
+        const string KEY_DISCORD_NAME = nameof(StatsLobby.DiscordName);
+        public static void SetDisplayName(string displayName, bool isDiscord) {
+            if (isDiscord) {
+                Set(KEY_DISCORD_NAME, displayName);
+            } else Set(KEY_DISPLAY_NAME, displayName);
+        }
+
         // Round only stuff
         const string KEY_ROUND_TYPE = nameof(StatsRound.RoundType);
         const string KEY_ROUND_INT = nameof(StatsRound.RoundInt);
@@ -254,11 +262,11 @@ namespace ToNSaveManager.Models.Stats {
                     // Register this property on the interpreter
                 }
 
-                PropertyKeys = TableModified.ToArray();
                 PropertyGroups[propertyInfo.Name] = values.ToArray();
                 values.Clear();
             }
 
+            PropertyKeys = TableModified.ToArray();
             PropertyValues = PropertyDictionary.Values.ToArray();
         }
         #endregion

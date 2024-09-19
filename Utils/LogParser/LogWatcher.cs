@@ -117,7 +117,7 @@
 
                     if (!logContext.Initialized)
                     {
-                        logContext.SetInit();
+                        logContext.OnInit();
 
                         if (logContext.Authenticated) {
                             logContext.Position = logContext.RoomReadPos;

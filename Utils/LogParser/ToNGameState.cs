@@ -23,6 +23,8 @@ namespace ToNSaveManager.Utils {
 
         // Instance Information
         public static int PlayerCount { get; private set; }
+        public static string DisplayName { get; private set; } = "Unknown";
+        public static string DiscordName { get; private set; } = "Unknown";
 
         public static void ClearStates() {
             WebSocketAPI.ClearBuffer();
@@ -35,6 +37,13 @@ namespace ToNSaveManager.Utils {
             SetLocation(ToNIndex.Map.Empty);
             SetRoundType(ToNRoundType.Intermission);
             SetPageCount(0);
+        }
+
+        public static void SetDisplayName(string displayName, bool isDiscord) {
+            if (isDiscord) DiscordName = displayName;
+            else DisplayName = displayName;
+
+            StatsWindow.SetDisplayName(displayName, isDiscord);
         }
 
         public static void SetPlayerCount(int playerCount) {

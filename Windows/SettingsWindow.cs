@@ -73,6 +73,7 @@ namespace ToNSaveManager.Windows
             LANG.C(linkEditDiscordState, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordImage, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordStart, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -129,19 +130,25 @@ namespace ToNSaveManager.Windows
             checkDiscordPresence.CheckedChanged += CheckDiscordBackup_CheckedChanged;
             CheckDiscordBackup_CheckedChanged(null, EventArgs.Empty);
 
+            // Register all the events
             checkDiscordCustomDetails.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
-            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomDetails, EventArgs.Empty);
             checkDiscordCustomState.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
-            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomState, EventArgs.Empty);
             checkDiscordCustomIcon.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
-            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomIcon, EventArgs.Empty);
             checkDiscordCustomImageText.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
-            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomImageText, EventArgs.Empty);
-
+            checkDiscordCustomStart.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            // Events for edit buttons
             linkEditDiscordDetails.LinkClicked += LinkEditDiscordDetails_LinkClicked;
             linkEditDiscordState.LinkClicked += LinkEditDiscordDetails_LinkClicked;
             linkEditDiscordIcon.LinkClicked += LinkEditDiscordDetails_LinkClicked;
             linkEditDiscordImage.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordStart.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            // Call all the events just in case
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomDetails, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomState, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomIcon, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomImageText, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomStart, EventArgs.Empty);
+
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
@@ -171,6 +178,7 @@ namespace ToNSaveManager.Windows
             else if (sender == linkEditDiscordState) template = Settings.Get.DiscordTemplateState;
             else if (sender == linkEditDiscordImage) template = Settings.Get.DiscordTemplateImage;
             else if (sender == linkEditDiscordIcon) template = Settings.Get.DiscordTemplateIcon;
+            else if (sender == linkEditDiscordStart) template = Settings.Get.DiscordTemplateStart;
             else template = Settings.Get.DiscordTemplateDetails;
 
             string value = template.Template;

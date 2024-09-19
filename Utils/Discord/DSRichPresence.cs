@@ -142,10 +142,8 @@ namespace ToNSaveManager.Utils.Discord {
                 bool isHidden = CurrentMatrix.RoundType == ToNRoundType.Fog || CurrentMatrix.RoundType == ToNRoundType.Fog_Alternate || CurrentMatrix.RoundType == ToNRoundType.Eight_Pages;
                 ImageKey = CurrentMatrix.Length > 0 ? ((CurrentMatrix.Length > 1 ? CurrentMatrix.Terror3 : CurrentMatrix.Terror1).AssetID ?? (isHidden ? "icon_254_1" : "icon_254_0")) : (CurrentMap.IsEmpty ? "icon_255_0" : "icon_254_0");
 
-                if (!string.IsNullOrEmpty(CustomAssetID_0) && ImageKey == "icon_255_0") {
+                if (!string.IsNullOrEmpty(CustomAssetID_0) && ImageKey == "icon_255_0")
                     ImageKey = CustomAssetID_0;
-                    ImageText = string.Format(SpecialSnowflake.Intermission ?? "{0} is waiting for a new round.", Client.CurrentUser.DisplayName);
-                }
 
                 if ((CurrentMatrix.Length == 0 && !CurrentMap.IsEmpty)
                     || CurrentRoundType == ToNRoundType.Unbound
@@ -157,7 +155,7 @@ namespace ToNSaveManager.Utils.Discord {
                     if (CurrentRoundType == ToNRoundType.Custom) {
                         ImageText = "What is Beyond up to now?";
                         details = "Custom";
-                    } else if (CurrentMatrix.Length == 0) ImageText = $"Starting a {CurrentRoundType.ToString()} round...";
+                    } else if (CurrentMatrix.Length == 0) ImageText = Settings.Get.GetDiscordTemplateStart.GetString();
                 }
 
                 DetailsText = details;
@@ -172,17 +170,10 @@ namespace ToNSaveManager.Utils.Discord {
                     IconText = "Killer";
 
                     if (!string.IsNullOrEmpty(CustomAssetID_1)) {
-                        if (CurrentMatrix.Length > 0) {
-                            ImageKey = CustomAssetID_1;
-                            ImageText = string.Format(SpecialSnowflake.Killer ?? "{0} is on a rampage with {1}", Client.CurrentUser.DisplayName, ImageText);
-                        } else {
-                            ImageKey = CustomAssetID_0 ?? CustomAssetID_1;
-                            ImageText = string.Format(SpecialSnowflake.Sabotage ?? "{0} is being posessed.", Client.CurrentUser.DisplayName);
-                        }
+                        ImageKey = CurrentMatrix.Length > 0 ? CustomAssetID_1 : (CustomAssetID_0 ?? CustomAssetID_1);
                     }
                 }
 
-                Log.Debug("IMAGE KEY: " + ImageKey);
                 Client.SetPresence(Presence);
             }
         }
@@ -222,16 +213,14 @@ namespace ToNSaveManager.Utils.Discord {
         static string? CustomAssetID_0 = null;
         static string? CustomAssetID_1 = null;
 
-        static ToNIndex.SpecialSnowflake SpecialSnowflake;
-
         private static void Client_OnReady(object sender, ReadyMessage e) {
             ulong userId = e.User.ID;
             Log.Debug("Received Ready from user: " + userId);
 
-            if (false && ToNIndex.Instance.SpecialSnowflakes.ContainsKey(userId)) {
-                SpecialSnowflake = ToNIndex.Instance.SpecialSnowflakes[userId];
+            ToNGameState.SetDisplayName(e.User.DisplayName, true);
 
-                Log.Debug("Hello my special snowflake: " + userId);
+            if (ToNIndex.Instance.SpecialSnowflakes.Contains(userId)) {
+                Log.Info("Hello my special snowflake: " + userId);
                 CustomAssetID_0 = $"icon_p_{userId}_0";
                 CustomAssetID_1 = $"icon_p_{userId}_1";
             }

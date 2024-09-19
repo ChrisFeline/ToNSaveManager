@@ -32,11 +32,14 @@ namespace ToNSaveManager.Models.Stats
         public int MapInt { get; internal set; } = 255;
 
         public int PageCount { get; internal set; } = 0;
-
     }
 
     internal class StatsLobby : StatsData {
         public int PlayersOnline { get; internal set; } = 0;
+
+        // Player data
+        public string DisplayName { get; internal set; } = "Unknown";
+        public string DiscordName { get; internal set; } = "Unknown";
     }
 
     internal class StatsData : StatsBase {

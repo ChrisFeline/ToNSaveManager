@@ -39,20 +39,24 @@ namespace ToNSaveManager.Models
         public bool DiscordRichPresence { get; set; }
 
         public bool DiscordCustomState { get; set; }
-        [JsonIgnore] public RoundInfoTemplate GetDiscordTemplateState => DiscordCustomState ? DiscordTemplateState : Default.DiscordTemplateState;
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("{MapName}");
+        public RoundInfoTemplate GetDiscordTemplateState => DiscordCustomState ? DiscordTemplateState : Default.DiscordTemplateState;
+        public RoundInfoTemplate DiscordTemplateState   = new RoundInfoTemplate("{MapName}");
 
         public bool DiscordCustomDetails { get; set; }
-        [JsonIgnore] public RoundInfoTemplate GetDiscordTemplateDetails => DiscordCustomDetails ? DiscordTemplateDetails : Default.DiscordTemplateDetails;
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("<js>RoundInt === 105 ? RoundType + ' (' + (PageCount + '/8') + ')' : RoundType</js>");
+        public RoundInfoTemplate GetDiscordTemplateDetails => DiscordCustomDetails ? DiscordTemplateDetails : Default.DiscordTemplateDetails;
+        public RoundInfoTemplate DiscordTemplateDetails = new RoundInfoTemplate("<js>RoundInt === 105 ? RoundType + ' (' + (PageCount + '/8') + ')' : RoundType</js>");
 
         public bool DiscordCustomImageText { get; set; }
-        [JsonIgnore] public RoundInfoTemplate GetDiscordTemplateImage => DiscordCustomImageText ? DiscordTemplateImage : Default.DiscordTemplateImage;
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate("{TerrorName}");
+        public RoundInfoTemplate GetDiscordTemplateImage => DiscordCustomImageText ? DiscordTemplateImage : Default.DiscordTemplateImage;
+        public RoundInfoTemplate DiscordTemplateImage = new RoundInfoTemplate("{TerrorName}");
 
         public bool DiscordCustomIconText { get; set; }
-        [JsonIgnore] public RoundInfoTemplate GetDiscordTemplateIcon => DiscordCustomIconText ? DiscordTemplateIcon : Default.DiscordTemplateIcon;
-        [JsonIgnore] public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead'</js>");
+        public RoundInfoTemplate GetDiscordTemplateIcon => DiscordCustomIconText ? DiscordTemplateIcon : Default.DiscordTemplateIcon;
+        public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead'</js>");
+
+        public bool DiscordCustomStartText { get; set; }
+        public RoundInfoTemplate GetDiscordTemplateStart => DiscordCustomStartText ? DiscordTemplateStart : Default.DiscordTemplateStart;
+        public RoundInfoTemplate DiscordTemplateStart = new RoundInfoTemplate("Starting a {RoundType} round...");
 
         /// <summary>
         /// Enables OpenRGB support.

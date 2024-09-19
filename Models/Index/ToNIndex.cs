@@ -24,7 +24,7 @@ namespace ToNSaveManager.Models.Index {
 #endif
 
         #region Properties & Fields
-        [JsonProperty("x")] public Dictionary<ulong, SpecialSnowflake> SpecialSnowflakes = new();
+        [JsonProperty("x")] public HashSet<ulong> SpecialSnowflakes = new();
 
         [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
         [JsonProperty("t")] public Dictionary<int, Terror> Terrors { get; private set; } = new();
@@ -297,12 +297,6 @@ namespace ToNSaveManager.Models.Index {
             public override string ToString() {
                 return Index.ToString();
             }
-        }
-
-        public struct SpecialSnowflake {
-            public string? Intermission { get; set; } // Player is waiting on intermission
-            public string? Sabotage { get; set; } // Player got killer
-            public string? Killer { get; set; } // Player is killer
         }
 #endregion
     }

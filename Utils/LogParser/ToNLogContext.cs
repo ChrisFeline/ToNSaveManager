@@ -63,6 +63,13 @@ namespace ToNSaveManager.Utils.LogParser
             SetRoundResult(IsLeavingRoom ? ToNRoundResult.D : ToNRoundResult.R);
         }
 
+        public override void OnInit() {
+            base.OnInit();
+
+            if (IsRecent && Authenticated && !string.IsNullOrEmpty(DisplayName))
+                ToNGameState.SetDisplayName(DisplayName, false);
+        }
+
         public void SetIsKiller(bool isKiller) {
             if (IsSaboteour == isKiller) return;
 

@@ -12,7 +12,9 @@ namespace ToNSaveManager.Utils.LogParser {
         public long Position;
         public long ReadPos;
         public bool Initialized { get; private set; }
-        public void SetInit() => Initialized = true;
+        public virtual void OnInit() {
+            Initialized = true;
+        }
 
         public string FileName { get; private set; } = string.Empty;
         public string DateKey { get; private set;  } = string.Empty;

@@ -49,6 +49,11 @@ namespace ToNSaveManager
             RefreshTable();
         }
 
+        internal static void SetDisplayName(string displayName, bool isDiscord) {
+            ToNStats.SetDisplayName(displayName, isDiscord);
+            RefreshTable();
+        }
+
         internal static void SetTerrorMatrix(TerrorMatrix terrorMatrix) {
             ToNStats.AddTerrors(terrorMatrix);
             RefreshTable();
