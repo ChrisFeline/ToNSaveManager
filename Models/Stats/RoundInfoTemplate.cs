@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace ToNSaveManager.Models.Stats {
     public class RoundInfoTemplate {
@@ -22,9 +23,21 @@ namespace ToNSaveManager.Models.Stats {
             set {
                 m_Template = value;
 
-                m_TemplateKeys = TemplateManager.MessageTemplatePattern.Matches(value).Select(m => {
-                    return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
-                }).Where(k => !string.IsNullOrEmpty(k) && ToNStats.HasKey(k)).ToArray();
+                List<string> foundKeys =
+                [
+                    .. TemplateManager.MessageTemplatePattern.Matches(value).Select(m => {
+                        return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+                    }).Where(k => !string.IsNullOrEmpty(k) && ToNStats.HasKey(k)),
+                ];
+
+                if (TemplateManager.MessageEvalPattern.IsMatch(value)) {
+                    foreach (Match match in TemplateManager.MessageEvalPattern.Matches(value)) {
+                        foundKeys.AddRange(ToNStats.PropertyKeys.Where(k => match.Value.Contains(k) && !foundKeys.Contains(k)));
+                    }
+                }
+
+                m_TemplateKeys = foundKeys.ToArray();
+                foundKeys.Clear();
             }
         }
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.API;
 using Jint;
+using System.Windows.Forms.VisualStyles;
 
 namespace ToNSaveManager.Models.Stats {
     internal class StatPropertyContainer {
@@ -185,12 +186,12 @@ namespace ToNSaveManager.Models.Stats {
         #region Accessors
         public static bool HasKey(string key) => PropertyDictionary.ContainsKey(key);
         public static bool IsModified(string key) => TableModified.Contains(key);
-        public static void MarkModified(string key) {
+        public static void MarkModified(string key, StatPropertyContainer? property = null) {
             if (!IsModified(key)) {
                 TableModified.Add(key);
             }
 
-            JSEngine.SetValue(key, Get(key));
+            JSEngine.SetValue(key, property == null ? Get(key) : property.GetValue());
         }
 
         public static T? Get<T>(string key) => PropertyDictionary.TryGetValue(key, out StatPropertyContainer? value) ? value.GetValue<T>() : default;
@@ -203,7 +204,7 @@ namespace ToNSaveManager.Models.Stats {
 
                 if (original == null || !original.Equals(val)) {
                     value.SetValue(val);
-                    MarkModified(key);
+                    MarkModified(key, value);
 
                     value.Instance?.SetDirty();
 
@@ -229,8 +230,9 @@ namespace ToNSaveManager.Models.Stats {
         #region Reflection
         internal static readonly HashSet<string> TableModified = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
         internal static readonly Dictionary<string, StatPropertyContainer> PropertyDictionary = new Dictionary<string, StatPropertyContainer>(StringComparer.InvariantCultureIgnoreCase);
-
+        internal static readonly string[] PropertyKeys;
         internal static readonly StatPropertyContainer[] PropertyValues;
+
         internal static readonly Dictionary<string, StatPropertyContainer[]> PropertyGroups = new Dictionary<string, StatPropertyContainer[]>();
 
         internal static readonly Jint.Engine JSEngine = new Jint.Engine(options => {
@@ -239,7 +241,7 @@ namespace ToNSaveManager.Models.Stats {
 
         static ToNStats() {
             Type baseType = typeof(StatsBase);
-            List<StatPropertyContainer> keys = new List<StatPropertyContainer>();
+            List<StatPropertyContainer> values = new List<StatPropertyContainer>();
             foreach (PropertyInfo propertyInfo in typeof(ToNStats).GetProperties(BindingFlags.Public | BindingFlags.Static).Where(t => baseType.IsAssignableFrom(t.PropertyType))) {
                 string prefix = propertyInfo.Name == "Local" ? string.Empty : propertyInfo.Name;
 
@@ -247,13 +249,14 @@ namespace ToNSaveManager.Models.Stats {
                     string key = prop.DeclaringType != propertyInfo.PropertyType ? prefix + prop.Name : prop.Name;
                     var statProp = new StatPropertyContainer(key, propertyInfo, new PropertyInfoContainer(prop));
                     PropertyDictionary.Add(key, statProp);
-                    MarkModified(key);
-                    keys.Add(statProp);
+                    MarkModified(key, statProp);
+                    values.Add(statProp);
                     // Register this property on the interpreter
                 }
 
-                PropertyGroups[propertyInfo.Name] = keys.ToArray();
-                keys.Clear();
+                PropertyKeys = TableModified.ToArray();
+                PropertyGroups[propertyInfo.Name] = values.ToArray();
+                values.Clear();
             }
 
             PropertyValues = PropertyDictionary.Values.ToArray();

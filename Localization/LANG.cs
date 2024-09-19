@@ -222,7 +222,7 @@ namespace ToNSaveManager.Localization {
                 foreach (var pair in SelectedDefault) {
                     if (lang.Value.ContainsKey(pair.Key)) continue;
 
-                    Logger.Debug($"'{langKey}' Missing Key: '{pair.Key}'");
+                    // Logger.Debug($"'{langKey}' Missing Key: '{pair.Key}'");
                     if (!missingKeys.ContainsKey(langKey)) missingKeys[langKey] = new Dictionary<string, string>();
                     missingKeys[langKey][pair.Key] = pair.Value;
                     hasMissingKeys = true;
