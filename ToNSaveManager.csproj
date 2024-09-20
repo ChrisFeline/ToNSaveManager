@@ -19,6 +19,8 @@
     <None Remove="notification.wav" />
     <None Remove="Resources\FiraCode.ttf" />
     <None Remove="Resources\index.json" />
+    <None Remove="Resources\notification_copy.wav" />
+    <None Remove="Resources\notification_secret.wav" />
     <None Remove="Resources\objectives.json" />
     <None Remove="Resources\xs_icon.png" />
   </ItemGroup>
@@ -29,6 +31,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Localization\Language\*.*" />
+    <EmbeddedResource Include="Resources\notification_copy.wav" />
+    <EmbeddedResource Include="Resources\notification_secret.wav" />
     <EmbeddedResource Include="Resources\index.json" />
     <EmbeddedResource Include="Resources\objectives.json" />
     <EmbeddedResource Include="Resources\xs_icon.png">

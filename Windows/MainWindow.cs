@@ -483,13 +483,21 @@ namespace ToNSaveManager
         static readonly XSOverlay XSOverlay = new XSOverlay();
         static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
         static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
+
         static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
             Program.GetEmbededResource("notification.wav");
+
+        static readonly Stream? SecretAudioStream =
+            Program.GetEmbededResource("notification_secret.wav");
+
+        static readonly Stream? CopiedAudioStream =
+            Program.GetEmbededResource("notification_copy.wav");
 
         internal static void ResetNotification() {
             CustomNotificationPlayer.Stop();
             DefaultNotificationPlayer.Stop();
         }
+
         internal static void PlayNotification(bool forceDefault = false) {
             if ((!Started || !Settings.Get.PlayAudio) && !forceDefault) return;
 
@@ -500,10 +508,11 @@ namespace ToNSaveManager
                     return;
                 }
 
-                DefaultNotificationPlayer.Stream = DefaultAudioStream;
+                DefaultNotificationPlayer.Stream = Random.Shared.Next(0, 100) == 87 ? SecretAudioStream : DefaultAudioStream;
                 DefaultNotificationPlayer.Play();
             } catch { }
         }
+
         internal static void SendXSNotification(bool test = false) {
             if (!Started || !Settings.Get.XSOverlay) return;
             const string message = "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>";

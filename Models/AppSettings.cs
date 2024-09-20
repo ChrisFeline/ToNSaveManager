@@ -75,6 +75,7 @@ namespace ToNSaveManager.Models
         /// Play notification audio when a new save is detected.
         /// </summary>
         public bool PlayAudio { get; set; }
+        public bool PlayAudioCopy { get; set; }
 
         /// <summary>
         /// Custom audio location, must be .wav
