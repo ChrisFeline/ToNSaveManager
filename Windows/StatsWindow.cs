@@ -163,6 +163,10 @@ namespace ToNSaveManager
         }
 
         internal void UpdateTable() {
+            if (InvokeRequired) {
+                this.Invoke(new System.Windows.Forms.MethodInvoker(listBox1.Refresh));
+                return;
+            }
             listBox1.Refresh();
             // listBox1.Update();
         }

@@ -58,6 +58,7 @@ namespace ToNSaveManager.Utils.Discord {
         static ToNIndex.Map CurrentMap => ToNGameState.Location;
         static int PageCount => ToNGameState.PageCount;
         static bool IsAlive => ToNGameState.IsAlive;
+        static bool IsOptedIn => ToNGameState.IsOptedIn;
 
         internal static void UpdateTimestamp() {
             Timestamp = DateTime.UtcNow;
@@ -161,17 +162,14 @@ namespace ToNSaveManager.Utils.Discord {
                 DetailsText = details;
                 StateText = state;
 
-                IconKey = CurrentMatrix.Length > 0 ? (IsAlive ? "status_alive" : "status_dead") : null;
                 IconText = CurrentMatrix.Length > 0 ? Settings.Get.GetDiscordTemplateIcon.GetString() : null;
-                //IconText = CurrentMatrix.Length > 0 ? (IsAlive ? "Alive" : "Died") : null;
 
-                if (CurrentMatrix.IsSaboteur) {
+                IconKey = CurrentMatrix.Length > 0 ? (IsOptedIn ? (IsAlive ? "status_alive" : "status_dead") : "status_boring") : null;
+                if (IsOptedIn && CurrentMatrix.IsSaboteur) {
                     IconKey = "status_killer";
-                    IconText = "Killer";
 
-                    if (!string.IsNullOrEmpty(CustomAssetID_1)) {
+                    if (!string.IsNullOrEmpty(CustomAssetID_1))
                         ImageKey = CurrentMatrix.Length > 0 ? CustomAssetID_1 : (CustomAssetID_0 ?? CustomAssetID_1);
-                    }
                 }
 
                 Client.SetPresence(Presence);

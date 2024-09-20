@@ -52,7 +52,7 @@ namespace ToNSaveManager.Models
 
         public bool DiscordCustomIconText { get; set; }
         public RoundInfoTemplate GetDiscordTemplateIcon => DiscordCustomIconText ? DiscordTemplateIcon : Default.DiscordTemplateIcon;
-        public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead'</js>");
+        public RoundInfoTemplate DiscordTemplateIcon = new RoundInfoTemplate("<js>IsOptedIn ? (IsAlive ? (IsKiller ? 'Killer' : 'Alive') : 'Dead') : 'Opted Out'</js>");
 
         public bool DiscordCustomStartText { get; set; }
         public RoundInfoTemplate GetDiscordTemplateStart => DiscordCustomStartText ? DiscordTemplateStart : Default.DiscordTemplateStart;

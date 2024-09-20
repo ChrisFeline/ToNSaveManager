@@ -115,7 +115,7 @@ namespace ToNSaveManager.Utils.LogParser
             }
 
             matrix.IsSaboteur = IsSaboteour && !matrix.IsEmpty;
-            matrix.MapID = Location.IsEmpty ? -1 : Location.Id;
+            matrix.MapID = Location.IsEmpty || matrix.IsEmpty ? -1 : Location.Id;
             Terrors = matrix;
 
             if (IsRecent) ToNGameState.SetTerrorMatrix(matrix);
