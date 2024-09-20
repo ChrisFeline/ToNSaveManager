@@ -89,7 +89,7 @@ namespace ToNSaveManager.Utils {
             IsOptedIn = isOptedIn;
             LilOSC.SetDirty();
 
-            WebSocketAPI.SendValue("OPTED_IN", IsAlive);
+            WebSocketAPI.SendValue("OPTED_IN", IsOptedIn);
         }
 
         public static void SetKiller(bool isKiller) {

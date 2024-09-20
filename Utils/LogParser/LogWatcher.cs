@@ -282,7 +282,9 @@
                 string displayName = line.Substring(index, length);
                 logContext.DisplayName = displayName.Trim();
 
-                string userID = line.Substring(line.IndexOf("(")).Trim('(', ')', ' ', '\n', '\r');
+                index = line.IndexOf("(");
+                length = line.LastIndexOf(')') - index;
+                string userID = line.Substring(index, length).Trim('(', ')', ' ', '\n', '\r');
                 logContext.UserID = userID;
             }
             else

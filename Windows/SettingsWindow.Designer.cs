@@ -710,6 +710,7 @@
             // checkDiscordPresence
             // 
             checkDiscordPresence.AutoSize = true;
+            checkDiscordPresence.Enabled = false;
             checkDiscordPresence.Location = new Point(3, 336);
             checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
             checkDiscordPresence.Name = "checkDiscordPresence";
