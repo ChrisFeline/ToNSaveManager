@@ -421,6 +421,7 @@ namespace ToNSaveManager.Windows
             ToNGameState.SetTerrorMatrix(new TerrorMatrix(CurrentRoundType == ToNRoundType.GIGABYTE ? ToNRoundType.Classic : CurrentRoundType) { IsSaboteur = CurrentIsKiller });
             ToNGameState.SetKiller(CurrentIsKiller);
             ToNGameState.SetAlive(true);
+            ToNGameState.SetRoundActive(true);
         }
 
         private void OnRoundSetKillers(bool reveal = true) {
@@ -466,6 +467,7 @@ namespace ToNSaveManager.Windows
             ToNGameState.SetLocation(Map.Empty);
             ToNGameState.SetKiller(false);
             ToNGameState.SetAlive(true);
+            ToNGameState.SetRoundActive(false);
             ToNGameState.SetEmulated(false);
         }
     }

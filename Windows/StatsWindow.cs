@@ -10,6 +10,7 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
+using static System.Windows.Forms.AxHost;
 
 namespace ToNSaveManager
 {
@@ -79,13 +80,23 @@ namespace ToNSaveManager
             ToNStats.AddPlayerCount(playerCount);
             RefreshTable();
         }
+        internal static void SetIsAlive(bool isAlive) {
+            ToNStats.AddIsAlive(isAlive);
+            RefreshTable();
 
-        internal static bool IsRoundActive;
-        internal static void SetActiveInRound(bool active) {
+            if (!isAlive)
+                SetActiveInRound(false);
+        }
+        internal static void SetIsStarted(bool started) {
+            ToNStats.AddIsStarted(started);
+            RefreshTable();
+
+            SetActiveInRound(started);
+        }
+
+        static bool IsRoundActive;
+        static void SetActiveInRound(bool active) {
             if (IsRoundActive != active) {
-                ToNStats.AddIsAlive(active);
-                RefreshTable();
-
                 IsRoundActive = active;
                 if (IsRoundActive) {
                     LilOSC.SetChatboxMessage(string.Empty);

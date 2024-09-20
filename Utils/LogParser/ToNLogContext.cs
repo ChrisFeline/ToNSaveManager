@@ -19,6 +19,7 @@ namespace ToNSaveManager.Utils.LogParser
         public bool HasLoadedSave { get; set; }
 
         public bool IsAlive { get; private set; }
+        public bool IsRoundActive { get; private set; }
         public bool IsSaboteour { get; private set; }
         public bool IsOptedIn { get; private set; }
         public TerrorMatrix Terrors = TerrorMatrix.Empty;
@@ -80,6 +81,15 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsRecent) ToNGameState.SetKiller(IsSaboteour);
         }
 
+        public void SetRoundActive(bool roundActive) {
+            if (IsRoundActive == roundActive) return;
+
+            IsRoundActive = roundActive;
+            SetIsAlive(IsOptedIn || !roundActive);
+
+            if (IsRecent) ToNGameState.SetRoundActive(IsRoundActive);
+        }
+
         public void SetIsAlive(bool alive) {
             if (IsAlive == alive) return;
 
@@ -93,13 +103,13 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsRecent) ToNGameState.SetOptedIn(IsOptedIn);
 
             if (!IsOptedIn) {
-                SetIsAlive(false);
+                if (IsRoundActive) SetIsAlive(false);
                 ClearSummary();
-            }
+            } else SetIsAlive(!IsRoundActive);
         }
         public void SetTerrorMatrix(TerrorMatrix matrix) {
             if (Terrors.IsEmpty != matrix.IsEmpty) {
-                SetIsAlive(Terrors.IsEmpty); // Is living
+                SetRoundActive(Terrors.IsEmpty); // Is living
                 // Live Build Fallback
                 if (Location.IsEmpty) DSRichPresence.UpdateTimestamp();
             }

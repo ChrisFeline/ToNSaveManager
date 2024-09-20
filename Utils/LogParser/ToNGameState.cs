@@ -13,6 +13,7 @@ namespace ToNSaveManager.Utils {
     internal static class ToNGameState {
         public static bool IsEmulated { get; private set; }
         public static bool IsAlive { get; private set; } = true;
+        public static bool IsRoundActive { get; private set; } = false;
         public static bool IsSaboteour { get; private set; }
         public static bool IsOptedIn { get; private set; }
         public static int PageCount { get; private set; }
@@ -31,7 +32,8 @@ namespace ToNSaveManager.Utils {
             WebSocketAPI.ClearBuffer();
             SetPlayerCount(0);
             SetEmulated(false);
-            SetAlive(false);
+            SetAlive(true);
+            SetRoundActive(false);
             SetOptedIn(false);
             SetKiller(false);
             SetTerrorMatrix(TerrorMatrix.Empty);
@@ -60,12 +62,23 @@ namespace ToNSaveManager.Utils {
             IsEmulated = isEmulated;
         }
 
+        public static void SetRoundActive(bool roundActive) {
+            IsRoundActive = roundActive;
+
+            StatsWindow.SetIsStarted(roundActive);
+            SetPageCount(0);
+
+            LilOSC.SetDirty();
+            DSRichPresence.SetDirty();
+
+            WebSocketAPI.SendValue("ROUND_ACTIVE", roundActive);
+        }
+
         public static void SetAlive(bool isAlive) {
             IsAlive = isAlive;
 
-            StatsWindow.SetActiveInRound(IsAlive);
+            StatsWindow.SetIsAlive(isAlive);
             OpenRGBControl.SetIsAlive();
-            if (isAlive) SetPageCount(0);
             LilOSC.SetDirty();
             DSRichPresence.SetDirty();
 

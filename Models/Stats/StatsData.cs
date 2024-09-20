@@ -25,8 +25,9 @@ namespace ToNSaveManager.Models.Stats
         public string MapCreator { get; internal set; } = "???";
         public string MapOrigin { get; internal set; } = "???";
 
-        public bool IsAlive { get; internal set; } = false;
+        public bool IsAlive { get; internal set; } = true;
         public bool IsKiller { get; internal set; } = false;
+        public bool IsStarted { get; internal set; } = false;
 
         public int RoundInt { get; internal set; } = 0;
         public int MapInt { get; internal set; } = 255;

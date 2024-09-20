@@ -36,6 +36,7 @@ namespace ToNSaveManager.Utils
         const string ParamTerrorColorV = "ToN_ColorV";
 
         const string ParamAlive = "ToN_IsAlive";
+        const string ParamStarted = "ToN_IsStarted";
         const string ParamDamaged = "ToN_Damaged";
         const string ParamPages = "ToN_Pages";
         const string ParamItemStatus = "ToN_ItemStatus";
@@ -68,6 +69,7 @@ namespace ToNSaveManager.Utils
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
         static bool LastAlive = true;
+        static bool LastStarted = false;
         static int LastMapID = -1;
         static Color LastTerrorColor = Color.Black;
 
@@ -99,6 +101,7 @@ namespace ToNSaveManager.Utils
         static ToNIndex.Map RMap => ToNGameState.Location;
         static int PageCount => ToNGameState.PageCount;
         static bool IsAlive => ToNGameState.IsAlive;
+        static bool IsRoundActive => ToNGameState.IsRoundActive;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -236,6 +239,7 @@ namespace ToNSaveManager.Utils
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
                 if (LastPageCount != PageCount || force) SendParam(ParamPages, LastPageCount = PageCount);
                 if (LastAlive != IsAlive || force) SendParam(ParamAlive, LastAlive = IsAlive);
+                if (LastStarted != IsRoundActive || force) SendParam(ParamStarted, LastStarted = IsRoundActive);
             }
 
             if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
