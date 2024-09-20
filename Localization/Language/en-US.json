@@ -326,7 +326,7 @@
 	"STATS.LABEL_ISSTARTED": "Is Started",
 	"STATS.LABEL_ISSTARTED.TT": "True if a round is started and ongoing.",
 	"STATS.LABEL_INSTANCEURL": "Instance URL",
-	"STATS.LABEL_INSTANCEURL": "The current full URL of the instance you joined.",
+	"STATS.LABEL_INSTANCEURL.TT": "The current full URL of the instance you joined.",
 	"STATS.LABEL_ISKILLER": "Is Killer",
 	"STATS.LABEL_ISKILLER.TT": "True if the player is currently the killer on a Sabotage round.",
 	"STATS.LABEL_ROUNDINT": "Round INT",
