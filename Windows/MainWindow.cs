@@ -743,8 +743,8 @@ namespace ToNSaveManager
                     if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
 
                     context.SetIsKiller(false);
-                    context.SetTerrorMatrix(TerrorMatrix.Empty);
                     context.SetLocation(ToNIndex.Map.Empty);
+                    context.SetTerrorMatrix(TerrorMatrix.Empty);
                     return true;
                 }
 
