@@ -201,7 +201,6 @@ namespace ToNSaveManager
 
         private void StatsWindow_ResizeEnd(object sender, EventArgs e) {
             Refresh();
-            Update();
         }
 
         /*
@@ -231,9 +230,6 @@ namespace ToNSaveManager
             if (e.Index < 0)
                 return;
 
-            using (Brush brush = (e.Index % 2 == 0 ? new SolidBrush(e.BackColor) : new SolidBrush(Color.FromArgb(e.BackColor.R / 2, e.BackColor.G / 2, e.BackColor.B / 2)))) {
-                e.Graphics.FillRectangle(brush, e.Bounds);
-            }
 
             ListBox listBox = (ListBox)sender;
 
@@ -241,8 +237,16 @@ namespace ToNSaveManager
             string itemText = DisplayNames == null ? item.Key : DisplayNames[e.Index, 0];
 
             int maxWidth = e.Bounds.Width;
-            TextRenderer.DrawText(e.Graphics, itemText, listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
-            TextRenderer.DrawText(e.Graphics, item.Value?.ToString() ?? "NULL", listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+            Size size = TextRenderer.MeasureText(itemText, listBox.Font);
+            var rect = e.Bounds;
+            rect.Size = size;
+
+            using (Brush brush = (e.Index % 2 == 0 ? new SolidBrush(e.BackColor) : new SolidBrush(Color.FromArgb(e.BackColor.R / 2, e.BackColor.G / 2, e.BackColor.B / 2)))) {
+                e.Graphics.FillRectangle(brush, e.Bounds);
+                TextRenderer.DrawText(e.Graphics, item.Value?.ToString() ?? "NULL", listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+                e.Graphics.FillRectangle(brush, rect);
+                TextRenderer.DrawText(e.Graphics, itemText, listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
+            }
 
             e.DrawFocusRectangle();
         }
@@ -279,6 +283,10 @@ namespace ToNSaveManager
             ContextField = TableProperties[index];
             ctxTypeInValue.Enabled = ContextField != null && ContextField.CanWrite;
             contextMenu.Show(listBox1, e.Location);
+        }
+
+        private void StatsWindow_Resize(object sender, EventArgs e) {
+            Refresh();
         }
     }
 }

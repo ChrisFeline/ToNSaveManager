@@ -69,7 +69,7 @@
             listBox1.ItemHeight = 1;
             listBox1.Location = new Point(7, 7);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(360, 219);
+            listBox1.Size = new Size(310, 187);
             listBox1.TabIndex = 0;
             listBox1.TabStop = false;
             listBox1.UseTabStops = false;
@@ -83,11 +83,11 @@
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(374, 233);
+            ClientSize = new Size(324, 201);
             Controls.Add(listBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimizeBox = false;
-            MinimumSize = new Size(340, 0);
+            MinimumSize = new Size(340, 240);
             Name = "StatsWindow";
             Padding = new Padding(4);
             ShowInTaskbar = false;
@@ -95,6 +95,7 @@
             Text = "ToN Stats Tracker";
             Load += StatsWindow_Load;
             ResizeEnd += StatsWindow_ResizeEnd;
+            Resize += StatsWindow_Resize;
             contextMenu.ResumeLayout(false);
             ResumeLayout(false);
         }
