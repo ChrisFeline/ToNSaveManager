@@ -359,6 +359,8 @@ namespace ToNSaveManager.Windows
                     buttonStepKillerSet.Enabled = true;
                     buttonStepEndRound.Enabled = true;
                     OnRoundStart();
+                    if (CurrentRoundType == ToNRoundType.RUN)
+                        buttonStep_Click(buttonStepKillerSet, EventArgs.Empty);
                     break;
 
                 case 1: // Set
