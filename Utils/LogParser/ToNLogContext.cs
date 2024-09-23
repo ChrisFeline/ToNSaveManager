@@ -24,6 +24,7 @@ namespace ToNSaveManager.Utils.LogParser
         public bool IsOptedIn { get; private set; }
         public TerrorMatrix Terrors = TerrorMatrix.Empty;
         public ToNIndex.Map Location = ToNIndex.Map.Empty;
+        public ToNIndex.Item Item = ToNIndex.Item.Empty;
         public ToNRoundResult Result = ToNRoundResult.R;
 
         public override void Exit() {
@@ -64,6 +65,7 @@ namespace ToNSaveManager.Utils.LogParser
             SetOptedIn(false);
             SetTerrorMatrix(TerrorMatrix.Empty);
             SetLocation(ToNIndex.Map.Empty);
+            SetItem(ToNIndex.Item.Empty);
             SetRoundResult(IsLeavingRoom ? ToNRoundResult.D : ToNRoundResult.R);
         }
 
@@ -124,9 +126,27 @@ namespace ToNSaveManager.Utils.LogParser
             Location = map;
             if (IsRecent) ToNGameState.SetLocation(map);
         }
+        public void SetItem(ToNIndex.Item item) {
+            Item = item;
+            if (IsRecent) ToNGameState.SetItem(item);
+        }
         public void SetRoundResult(ToNRoundResult result) {
             Result = result;
         }
+
+        #region Pickup Parsing
+        private string? LastItemKey;
+        public override void Pickup(string name) {
+            var item = ToNIndex.Instance.GetItem(name);
+            if (item != null) {
+                SetItem(item);
+                LastItemKey = name;
+            }
+        }
+        public override void Drop(string name) {
+            if (name == LastItemKey) SetItem(ToNIndex.Item.Empty);
+        }
+        #endregion
 
         public RoundSummary Summary { get; private set; } = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, null, true);
         // Triggered at end of round

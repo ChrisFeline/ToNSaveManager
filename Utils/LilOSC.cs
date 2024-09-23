@@ -29,6 +29,7 @@ namespace ToNSaveManager.Utils
         const string ParamOptedIn = "ToN_OptedIn";
         const string ParamSaboteur = "ToN_Saboteur";
         const string ParamMap = "ToN_Map";
+        const string ParamItem = "ToN_Item";
         const string ParamEncounter = "ToN_Encounter";
 
         const string ParamTerrorColorH = "ToN_ColorH";
@@ -71,6 +72,7 @@ namespace ToNSaveManager.Utils
         static bool LastAlive = true;
         static bool LastStarted = false;
         static int LastMapID = -1;
+        static int LastItemID = -1;
         static Color LastTerrorColor = Color.Black;
 
         static int LastPageCount = 0;
@@ -99,6 +101,7 @@ namespace ToNSaveManager.Utils
         static bool IsOptedIn => ToNGameState.IsOptedIn;
         static TerrorMatrix TMatrix => ToNGameState.Terrors;
         static ToNIndex.Map RMap => ToNGameState.Location;
+        static ToNIndex.Item RItem => ToNGameState.Item;
         static int PageCount => ToNGameState.PageCount;
         static bool IsAlive => ToNGameState.IsAlive;
         static bool IsRoundActive => ToNGameState.IsRoundActive;
@@ -168,6 +171,7 @@ namespace ToNSaveManager.Utils
 
                 if (LastOptedIn != IsOptedIn || force) SendParam(ParamOptedIn, LastOptedIn = IsOptedIn);
                 if (LastMapID != RMap.Id || force) SendParam(ParamMap, LastMapID = RMap.Id);
+                if (LastItemID != RItem.Id || force) SendParam(ParamItem, LastItemID = RItem.Id);
 
                 int value = (int)TMatrix.RoundType;
                 if (LastRoundType != value && value == 0) SendParam(ParamRoundType, LastRoundType = value);

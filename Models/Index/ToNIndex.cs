@@ -39,7 +39,7 @@ namespace ToNSaveManager.Models.Index {
 
         [JsonProperty("u")] public Dictionary<int, Terror> Unbound { get; private set; } = new();
 
-        [JsonProperty("i")] public Dictionary<int, Item> Items { get; private set; } = new();
+        [JsonProperty("i")] public Dictionary<string, Item> Items { get; private set; } = new();
 
         [JsonIgnore] private List<Terror>? m_AllTerrors { get; set; }
         [JsonIgnore]
@@ -131,6 +131,14 @@ namespace ToNSaveManager.Models.Index {
 
             return Map.Empty;
         }
+
+        /// <summary>
+        /// Get Item information based on it's object name.
+        /// </summary>
+        public Item? GetItem(string? key) {
+            if (string.IsNullOrEmpty(key)) return Item.Empty;
+            return Items.TryGetValue(key, out Item? item) ? item : null;
+        }
         #endregion
 
         #region Enums
@@ -214,11 +222,20 @@ namespace ToNSaveManager.Models.Index {
 
         public class Item : EntryBase
         {
-            public static readonly Item Empty = new Item() { IsEmpty = true, Id = byte.MaxValue };
+            public enum StoreType {
+                EnkephalinShop, // 0
+                SurvivalShop,   // 1
+                EventShop,      // 2
+                SpecialEvents,  // 3 - Like winterfest and such
+                RoleItems,      // 4 - Contributors and such
+            }
 
-            [JsonProperty("d", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Description { get; set; } = string.Empty;
-            [JsonProperty("u", DefaultValueHandling = DefaultValueHandling.Ignore)] public string Usage { get; set; } = string.Empty;
-            [JsonProperty("s", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Store { get; set; } // Point Shop | Survival Shop | Secret Shop
+            public static readonly Item Empty = new Item() { IsEmpty = true, Id = byte.MinValue };
+
+            [JsonProperty("s", DefaultValueHandling = DefaultValueHandling.Ignore)] public StoreType Store { get; set; } = StoreType.EnkephalinShop;
+            [JsonProperty("p", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Points { get; set; } = 0;
+            [JsonProperty("u", DefaultValueHandling = DefaultValueHandling.Ignore)] public int Unlock { get; set; } = 0;
+            [JsonProperty("v", DefaultValueHandling = DefaultValueHandling.Ignore)] public int[] Variants { get; set; } = Array.Empty<int>();
         }
 
         public struct TerrorInfo

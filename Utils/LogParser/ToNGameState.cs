@@ -21,6 +21,7 @@ namespace ToNSaveManager.Utils {
         public static ToNRoundType RoundType { get; private set; } = ToNRoundType.Intermission;
         public static TerrorMatrix Terrors { get; private set; } = TerrorMatrix.Empty;
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
+        public static ToNIndex.Item Item { get; private set; } = ToNIndex.Item.Empty;
 
         // Instance Information
         public static int PlayerCount { get; private set; }
@@ -38,6 +39,7 @@ namespace ToNSaveManager.Utils {
             SetKiller(false);
             SetTerrorMatrix(TerrorMatrix.Empty);
             SetLocation(ToNIndex.Map.Empty);
+            SetItem(ToNIndex.Item.Empty);
             SetRoundType(ToNRoundType.Intermission);
             SetPageCount(0);
         }
@@ -117,6 +119,15 @@ namespace ToNSaveManager.Utils {
             DSRichPresence.SetRoundType(roundType);
 
             WebSocketAPI.EventRoundType.Send(roundType);
+        }
+
+        public static void SetItem(ToNIndex.Item item) {
+            Item = item;
+
+            StatsWindow.SetItem(item);
+            LilOSC.SetDirty();
+
+            WebSocketAPI.EventItem.Send(item);
         }
 
         public static void SetLocation(ToNIndex.Map location) {

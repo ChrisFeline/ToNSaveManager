@@ -68,6 +68,10 @@ namespace ToNSaveManager
             ToNStats.AddLocation(map, killersSet);
             RefreshTable();
         }
+        internal static void SetItem(ToNIndex.Item item) {
+            ToNStats.AddItem(item);
+            RefreshTable();
+        }
         internal static void SetIsKiller(bool isKiller) {
             ToNStats.AddIsKiller(isKiller);
             RefreshTable();

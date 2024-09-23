@@ -120,6 +120,13 @@ namespace ToNSaveManager.Utils.LogParser {
             IsLeavingRoom = false;
         }
 
+        public virtual void Pickup(string name) {
+
+        }
+        public virtual void Drop(string name) {
+
+        }
+
         public void AddException(string exceptionLog) {
             InstanceExceptions.AppendLine(exceptionLog);
             InstanceExceptions.AppendLine();

@@ -261,6 +261,7 @@
             if (ParseLocation(line, lineDate, logContext) ||
                 ParseDisplayName(line, lineDate, logContext) ||
                 ParsePlayerJoin(line, lineDate, logContext) ||
+                ParsePickupGrab(line, lineDate, logContext) ||
                 RecordInstanceLogs && ParseUdonException(line, lineDate, logContext)) { }
 
             if (OnLine != null)
@@ -356,6 +357,37 @@
                 displayName = line.Substring(index + 1).Trim();
 
                 logContext.Leave(displayName);
+                return true;
+            }
+
+            return false;
+        }
+
+        const string PickupGrabKeyword = "[Behaviour] Pickup object: '";
+        const string PickupDropKeyword = "[Behaviour] Drop object: '";
+        private bool ParsePickupGrab(string line, DateTime lineDate, T logContext) {
+            int index, length;
+            string objectName;
+
+            index = line.IndexOf(PickupGrabKeyword, StringComparison.InvariantCulture);
+            if (index > 0) {
+                index = index + PickupGrabKeyword.Length;
+                length = line.IndexOf('\'', index) - index;
+                if (length < 0) return false;
+
+                objectName = line.Substring(index, length);
+                logContext.Pickup(objectName);
+                return true;
+            }
+
+            index = line.IndexOf(PickupDropKeyword, StringComparison.InvariantCulture);
+            if (index > 0) {
+                index = index + PickupDropKeyword.Length;
+                length = line.IndexOf(',', index) - index;
+                if (length < 0) return false;
+
+                objectName = line.Substring(index, length);
+                logContext.Drop(objectName);
                 return true;
             }
 

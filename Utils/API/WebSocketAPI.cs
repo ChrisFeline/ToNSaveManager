@@ -75,12 +75,12 @@ namespace ToNSaveManager.Utils.API {
         #region Event Structs
         public struct EventConnected : IEvent {
             public string Type => "CONNECTED";
-            public byte Command { get; set; }
-
-            public IEvent[] Args { get; set; }
+            [JsonIgnore] public byte Command { get; set; }
 
             public string DisplayName { get; set; }
             public string UserID { get; set; }
+            public IEvent[] Args { get; set; }
+
         }
 
         public struct EventValue<T> : IEvent {
@@ -185,6 +185,23 @@ namespace ToNSaveManager.Utils.API {
                     Command = (byte)(map.IsEmpty ? 0 : 1)
                 };
                 QueueEvent(eventLocation);
+            }
+        }
+        
+        public struct EventItem : IEvent {
+            public string Type => "ITEM";
+            public byte Command { get; set; }
+
+            public string Name { get; set; }
+            public int ID { get; set; }
+
+            internal static void Send(ToNIndex.Item item) {
+                EventItem eventItem = new() {
+                    Name = item.Name,
+                    ID = item.Id,
+                    Command = (byte)(item.IsEmpty ? 0 : 1)
+                };
+                QueueEvent(eventItem);
             }
         }
         #endregion

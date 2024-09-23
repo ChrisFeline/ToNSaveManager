@@ -306,6 +306,8 @@
 	"STATS.LABEL_LOBBYDAMAGETAKEN.TT": "Total damage taken on this lobby.",
 	"STATS.LABEL_PLAYERSONLINE": "Players Online",
 	"STATS.LABEL_PLAYERSONLINE.TT": "Represents the amount of players in the instance.",
+	"STATS.LABEL_ITEMNAME": "Item Name",
+	"STATS.LABEL_ITEMNAME.TT": "The name of the current item held.",
 
 	"STATS.LABEL_ROUNDSTUNS": "Round Stuns",
 	"STATS.LABEL_ROUNDSTUNS.TT": "Amount of times you have stunned a Terror in the round.",

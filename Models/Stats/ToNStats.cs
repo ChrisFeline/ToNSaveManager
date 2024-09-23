@@ -154,6 +154,11 @@ namespace ToNSaveManager.Models.Stats {
             Set(KEY_INSTANCE_ID, instanceURL);
         }
 
+        const string KEY_ITEM_NAME = nameof(StatsLobby.ItemName);
+        public static void AddItem(ToNIndex.Item item) {
+            Set(KEY_ITEM_NAME, item.Name);
+        }
+
         // Round only stuff
         const string KEY_ROUND_TYPE = nameof(StatsRound.RoundType);
         const string KEY_ROUND_INT = nameof(StatsRound.RoundInt);

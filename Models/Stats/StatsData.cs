@@ -36,6 +36,7 @@ namespace ToNSaveManager.Models.Stats
     }
 
     internal class StatsLobby : StatsData {
+        public string ItemName { get; internal set; } = string.Empty;
         public int PlayersOnline { get; internal set; } = 0;
 
         // Player data
