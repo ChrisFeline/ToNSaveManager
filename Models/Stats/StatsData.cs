@@ -24,6 +24,7 @@ namespace ToNSaveManager.Models.Stats
         public string MapName { get; internal set; } = "???";
         public string MapCreator { get; internal set; } = "???";
         public string MapOrigin { get; internal set; } = "???";
+        public string ItemName { get; internal set; } = string.Empty;
 
         public bool IsAlive { get; internal set; } = true;
         public bool IsKiller { get; internal set; } = false;
@@ -36,7 +37,6 @@ namespace ToNSaveManager.Models.Stats
     }
 
     internal class StatsLobby : StatsData {
-        public string ItemName { get; internal set; } = string.Empty;
         public int PlayersOnline { get; internal set; } = 0;
 
         // Player data

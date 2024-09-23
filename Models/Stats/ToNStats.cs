@@ -154,11 +154,6 @@ namespace ToNSaveManager.Models.Stats {
             Set(KEY_INSTANCE_ID, instanceURL);
         }
 
-        const string KEY_ITEM_NAME = nameof(StatsLobby.ItemName);
-        public static void AddItem(ToNIndex.Item item) {
-            Set(KEY_ITEM_NAME, item.Name);
-        }
-
         // Round only stuff
         const string KEY_ROUND_TYPE = nameof(StatsRound.RoundType);
         const string KEY_ROUND_INT = nameof(StatsRound.RoundInt);
@@ -185,6 +180,11 @@ namespace ToNSaveManager.Models.Stats {
             Set(KEY_MAP_CREATOR, map.Creator);
             Set(KEY_MAP_ORIGIN, map.Origin);
             Set(KEY_MAP_INT, map.Id);
+        }
+
+        const string KEY_ITEM_NAME = nameof(StatsRound.ItemName);
+        public static void AddItem(ToNIndex.Item item) {
+            Set(KEY_ITEM_NAME, item.Name);
         }
 
         const string KEY_PAGE_COUNT = nameof(StatsRound.PageCount);
