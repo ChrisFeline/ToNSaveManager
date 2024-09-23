@@ -3,6 +3,7 @@ Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_RoundType`  | `INT`   | The current round type. See the [**Round Type Values**](OSC_RoundType.md) document for more info.
 `ToN_Map`        | `INT`   | The current map of this round.
+`ToN_Item`       | `INT`   | The current item you are holding. See the [**Item Values**](OSC_Items.md) document for more info.
 `ToN_OptedIn`    | `BOOL`  | Is the player opted-in at the lobby
 
 # Events
