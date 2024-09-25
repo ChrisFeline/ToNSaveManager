@@ -188,7 +188,11 @@ namespace ToNSaveManager.Models
             // Windows 11 please... :[
             // Clipboard.Clear();
             // Clipboard.SetText(Content);
-            Clipboard.SetDataObject(Content, true, 4, 200);
+            try {
+                Clipboard.SetDataObject(Content, true, 4, 200);
+            } catch (Exception e) {
+                Logger.Error("Error trying to set clipboard object: " + e);
+            }
             // Clipboard.SetText(Content);
         }
     }
