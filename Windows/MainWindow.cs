@@ -89,6 +89,9 @@ namespace ToNSaveManager
             Started = true;
             SetTitle(null);
 
+            if (Settings.Get.CopyOnOpen)
+                CopyRecent(true);
+
             LilOSC.Initialize();
             WebSocketAPI.Initialize();
             StatsWindow.UpdateChatboxContent();
@@ -612,7 +615,7 @@ namespace ToNSaveManager
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
-            if ((Settings.Get.CopyOnSave && Started) || (Settings.Get.CopyOnOpen && !Started))
+            if ((Settings.Get.CopyOnSave && Started))
                 CopyRecent(false);
 
             Export();

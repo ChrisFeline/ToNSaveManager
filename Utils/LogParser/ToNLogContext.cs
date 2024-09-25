@@ -35,7 +35,7 @@ namespace ToNSaveManager.Utils.LogParser
             base.Enter(name, date);
             HasLoadedSave = false;
 
-            if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin) MainWindow.Instance?.CopyRecent(true);
+            if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started) MainWindow.Instance?.CopyRecent(true);
             if (IsRecent) ToNGameState.ClearStates();
         }
         public override void Enter(string instanceID, bool isHomeWorld) {
