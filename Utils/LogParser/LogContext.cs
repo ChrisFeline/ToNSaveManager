@@ -33,9 +33,6 @@ namespace ToNSaveManager.Utils.LogParser {
         public DateTime RoomDate { get; private set; }
         public readonly HashSet<string> Players = new HashSet<string>();
 
-        public readonly StringBuilder InstanceExceptions = new StringBuilder(); // For debugging
-        public readonly StringBuilder InstanceLogs = new StringBuilder();
-
         /*
         // Hold temporal data in this log instance
         private Dictionary<string, object> Data = new Dictionary<string, object>();
@@ -99,8 +96,6 @@ namespace ToNSaveManager.Utils.LogParser {
             RoomName = name;
             RoomDate = date;
             Players.Clear();
-            InstanceExceptions.Clear();
-            InstanceLogs.Clear();
 
             Logger.Info("Entering Room Name: " + name);
             IsLeavingRoom = false;
@@ -127,14 +122,6 @@ namespace ToNSaveManager.Utils.LogParser {
 
         }
 
-        public void AddException(string exceptionLog) {
-            InstanceExceptions.AppendLine(exceptionLog);
-            InstanceExceptions.AppendLine();
-        }
-        public void AddLog(string line) {
-            InstanceLogs.AppendLine(line);
-        }
-
         /// <summary>
         /// Get's a list of players in this room as a string.
         /// </summary>
@@ -144,13 +131,6 @@ namespace ToNSaveManager.Utils.LogParser {
             sb.Append(start);
             sb.AppendJoin(lineBreak ? Environment.NewLine + start : ", ", Players);
             return sb.ToString();
-        }
-
-        public string GetRoomLogs() {
-            return InstanceLogs.ToString();
-        }
-        public string GetRoomExceptions() {
-            return InstanceExceptions.ToString();
         }
     }
 }

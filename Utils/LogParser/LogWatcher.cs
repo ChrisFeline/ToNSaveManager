@@ -38,7 +38,6 @@
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"Low\VRChat";
 
         #region From Settings
-        bool RecordInstanceLogs => Settings.Get.RecordInstanceLogs;
         bool SkipParsedLogs => Settings.Get.SkipParsedLogs;
 
         long GetParsedPos(string name) => MainWindow.SaveData.GetParsedPos(name);
@@ -261,13 +260,10 @@
             if (ParseLocation(line, lineDate, logContext) ||
                 ParseDisplayName(line, lineDate, logContext) ||
                 ParsePlayerJoin(line, lineDate, logContext) ||
-                ParsePickupGrab(line, lineDate, logContext) ||
-                RecordInstanceLogs && ParseUdonException(line, lineDate, logContext)) { }
+                ParsePickupGrab(line, lineDate, logContext)) { }
 
             if (OnLine != null)
                 OnLine.Invoke(this, new OnLineArgs(line, lineDate, logContext));
-
-            if (RecordInstanceLogs) logContext.AddLog(line);
         }
 
         const string UserAuthKeyword = "User Authenticated: ";
@@ -392,16 +388,6 @@
             }
 
             return false;
-        }
-
-        private bool ParseUdonException(string line, DateTime lineTime, T logContext)
-        {
-            const string errorMatchStr = "[UdonBehaviour] An exception occurred during Udon execution";
-
-            if (!line.Contains(errorMatchStr)) return false;
-
-            logContext.AddException(line);
-            return true;
         }
     }
 }
