@@ -27,10 +27,9 @@ namespace ToNSaveManager.Windows
             languageSelectBox.FixItemHeight(true);
 
 #if DEBUG
-            ToolStripMenuItem copyLogsItem = new ToolStripMenuItem() {
-                Text = "Copy Instance Logs"
-            };
-            copyLogsItem.Click += (e,a) => {
+            linkCopyLogs.Visible = true;
+
+            linkCopyLogs.LinkClicked += (e,a) => {
                 string? instanceLogs = ToNLogContext.Instance?.GetRoomLogs();
                 if (!string.IsNullOrEmpty(instanceLogs)) {
                     Clipboard.SetDataObject(instanceLogs, true, 4, 200);
@@ -38,8 +37,6 @@ namespace ToNSaveManager.Windows
                     MessageBox.Show("Instance logs have been copied to the clipboard.", "Instance Logs Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             };
-
-            ctxData.Items.Add(copyLogsItem);
 #endif
         }
 
