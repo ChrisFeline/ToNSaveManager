@@ -16,6 +16,7 @@ namespace ToNSaveManager.Utils.LogParser {
             Initialized = true;
         }
 
+        public string FilePath { get; private set; } = string.Empty;
         public string FileName { get; private set; } = string.Empty;
         public string DateKey { get; private set;  } = string.Empty;
         public string? DisplayName;
@@ -64,8 +65,9 @@ namespace ToNSaveManager.Utils.LogParser {
 
         public virtual void OnAwake() { }
 
-        public static T CreateContext<T>(string fileName, bool isRecent) where T : LogContext {
+        public static T CreateContext<T>(string fileName, string filePath, bool isRecent) where T : LogContext {
             T context = Activator.CreateInstance<T>();
+            context.FilePath = filePath;
             context.FileName = fileName;
             context.DateKey = fileName.Substring(11, 19);
             context.IsRecent = isRecent;
@@ -131,6 +133,20 @@ namespace ToNSaveManager.Utils.LogParser {
             sb.Append(start);
             sb.AppendJoin(lineBreak ? Environment.NewLine + start : ", ", Players);
             return sb.ToString();
+        }
+
+        public string GetRoomLogs() {
+            string content;
+
+            using (FileStream fileStream = new FileStream(this.FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
+                fileStream.Seek(RoomReadPos, SeekOrigin.Begin);
+
+                using (StreamReader reader = new StreamReader(fileStream)) {
+                    content = reader.ReadToEnd();
+                }
+            }
+
+            return content;
         }
     }
 }

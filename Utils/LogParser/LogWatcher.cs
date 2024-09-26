@@ -94,7 +94,7 @@
                     T? logContext;
                     if (!m_LogContextMap.TryGetValue(fileInfo.Name, out logContext))
                     {
-                        logContext = LogContext.CreateContext<T>(fileInfo.Name, !isOlder);
+                        logContext = LogContext.CreateContext<T>(fileInfo.Name, fileInfo.FullName, !isOlder);
                         m_LogContextMap.Add(fileInfo.Name, logContext);
 
                         if (firstRun)

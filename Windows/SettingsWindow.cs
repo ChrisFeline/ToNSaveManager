@@ -8,6 +8,7 @@ using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.OpenRGB;
 using Timer = System.Windows.Forms.Timer;
 
@@ -24,6 +25,22 @@ namespace ToNSaveManager.Windows
             InitializeComponent();
             ClickTimer.Tick += ClickTimer_Tick;
             languageSelectBox.FixItemHeight(true);
+
+#if DEBUG
+            ToolStripMenuItem copyLogsItem = new ToolStripMenuItem() {
+                Text = "Copy Instance Logs"
+            };
+            copyLogsItem.Click += (e,a) => {
+                string? instanceLogs = ToNLogContext.Instance?.GetRoomLogs();
+                if (!string.IsNullOrEmpty(instanceLogs)) {
+                    Clipboard.SetDataObject(instanceLogs, true, 4, 200);
+
+                    MessageBox.Show("Instance logs have been copied to the clipboard.", "Instance Logs Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
+
+            ctxData.Items.Add(copyLogsItem);
+#endif
         }
 
         public static void Open(Form parent) {

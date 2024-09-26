@@ -59,6 +59,7 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsRecent) {
                 Instance = this;
                 ToNGameState.ClearStates();
+                Logger.Debug("Log Context Path: " + this.FilePath);
             }
 
             ClearSummary();
