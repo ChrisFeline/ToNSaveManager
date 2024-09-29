@@ -28,15 +28,31 @@ namespace ToNSaveManager.Windows
 
 #if DEBUG
             linkCopyLogs.Visible = true;
+            linkOpenLogs.Visible = true;
 
-            linkCopyLogs.LinkClicked += (e,a) => {
-                string? instanceLogs = ToNLogContext.Instance?.GetRoomLogs();
-                if (!string.IsNullOrEmpty(instanceLogs)) {
-                    Clipboard.SetDataObject(instanceLogs, true, 4, 200);
+            var ev = (object? e, LinkLabelLinkClickedEventArgs a) => {
+                bool isOpen = e == linkOpenLogs;
+                if (ToNLogContext.Instance == null) return;
 
-                    MessageBox.Show("Instance logs have been copied to the clipboard.", "Instance Logs Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string fullPath = isOpen ? ToNLogContext.Instance.FilePath : Path.GetFullPath("instance_logs.log");
+
+                if (!isOpen) {
+                    string instanceLogs = ToNLogContext.Instance.GetRoomLogs();
+                    File.WriteAllText(fullPath, instanceLogs);
+
+                    System.Collections.Specialized.StringCollection paths = [fullPath];
+                    Clipboard.SetFileDropList(paths);
+
+                    MessageBox.Show("Instance logs file created and copied to the clipboard.\nUse PASTE on Discord to send the log file.", "Instance Logs Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                using (Process.Start("explorer.exe", "/select, \"" + fullPath + "\"")) {
+                    Logger.Debug("Opened file in explorer: " + fullPath);
                 }
             };
+            var hd = new LinkLabelLinkClickedEventHandler(ev);
+            linkCopyLogs.LinkClicked += hd;
+            linkOpenLogs.LinkClicked += hd;
 #endif
         }
 
