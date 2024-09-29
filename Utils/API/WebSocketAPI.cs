@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -130,9 +131,9 @@ namespace ToNSaveManager.Utils.API {
                     eventTerror.Names = new string[matrix.ActualCount];
                     eventTerror.Assets = new string[matrix.ActualCount];
 
-                    for (int i = matrix.StartIndex; i < matrix.Length; i++) {
-                        eventTerror.Names[i] = matrix[i].Name;
-                        eventTerror.Assets[i] = matrix[i].AssetID;
+                    for (int i = 0; i < eventTerror.Names.Length; i++) {
+                        eventTerror.Names[i] = matrix[i + matrix.StartIndex].Name;
+                        eventTerror.Assets[i] = matrix[i + matrix.StartIndex].AssetID;
                     }
                 }
 
@@ -294,7 +295,7 @@ namespace ToNSaveManager.Utils.API {
 
         #region Helper Functions
         private static uint ColorToUInt(Color color) {
-            return (uint)((color.A << 24) | (color.R << 16) | (color.G << 8) | (color.B << 0));
+            return (uint)((color.R << 16) + (color.G << 8) + color.B);
         }
         #endregion
     }
