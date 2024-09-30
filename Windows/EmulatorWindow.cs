@@ -350,10 +350,12 @@ namespace ToNSaveManager.Windows
             button.ForeColor = button.Enabled ? (button.TabIndex > 3 ? Color.Red : Color.White) : Color.Gray;
         }
 
+        int TempHealth = 100;
         private void buttonStep_Click(object sender, EventArgs e) {
             Button button = (Button)sender;
             switch (button.TabIndex) {
                 case 0: // Start
+                    TempHealth = 100;
                     mainPanel.Enabled = false;
                     buttonStepStart.Enabled = false;
                     buttonStepKillerSet.Enabled = true;
@@ -383,12 +385,19 @@ namespace ToNSaveManager.Windows
                     break;
 
                 case 4: // Damage
-                    ToNGameState.AddDamage(Random.Shared.Next(1, 254));
+                    int dmg = Random.Shared.Next(1, 6) * 5;
+                    ToNGameState.AddDamage(dmg);
+                    TempHealth -= dmg;
+                    if (TempHealth <= 0) {
+                        TempHealth = 0;
+                        buttonStep_Click(buttonDeath, EventArgs.Empty);
+                    }
                     break;
 
                 case 5: // Death
                     ToNGameState.SetAlive(false);
                     ToNGameState.AddDamage(byte.MaxValue);
+                    buttonDeath.Enabled = buttonDamage.Enabled = false;
                     break;
 
                 default:
