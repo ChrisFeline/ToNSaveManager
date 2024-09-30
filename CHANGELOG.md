@@ -15,7 +15,7 @@
 - Added chatbox stats display. (Only shown on Intermissions)
 	- You can display your stats in the chatbox, but the chatbox will be hidden on purpose when participating on a round. Chatbox will be displayed again after death or end of round.
 	- You can customize the chatbox message template.
-	- For example: "Stuns - {LobbyStuns}" will be displayed as "Stuns - 3"
+	- For example: "Stuns - `{LobbyStuns}`" will be displayed as "Stuns - 3"
 - Added 'Round Info to File' in settings.
 	- This feature lets you create templates that will write to a text file, this file can be read by streaming tools like OBS to display round info about your suffering to your audience.
 - Added more keyboard navigation. (Suggested by YoBro)
@@ -43,3 +43,4 @@
 
 ### Localization
 - Added German localization (Provided by @sageyx2002)
+- Added Simplified Chinese localization (Provided by @Fallen-ice)

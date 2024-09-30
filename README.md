@@ -69,6 +69,8 @@ If your parameters are not being received properly... try resetting the OSC conf
 | English  | -          |
 | Spanish  | -          |
 | Japanese | [github.com/nomlasvrc](https://github.com/nomlasvrc) <br> [twitter.com/nomlasvrc](https://twitter.com/nomlasvrc) |
+| German   | [github.com/sageyx2002](https://github.com/sageyx2002) |
+| Simplified Chinese  | [github.com/Fallen-ice](https://github.com/Fallen-ice) |
 
 # 📋 FAQ:
 
