@@ -33,6 +33,7 @@
 - `Auto Discord Backup` Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
 - `Send OSC Parameters` Sends avatar parameters to VRChat using OSC. Check the [documentation](#osc-documentation) below for more info.
 - `WebSocket API Server` Enables a WebSocket server that sends realtime in-game events to the connected clients. Check the [**API Documentation**](Docs/WebSocketAPI.md) for more info.
+- `Send Chatbox Message` Sends ToN info to the VRChat chatbox. (Only visible during Intermissions) - To further customize the template read [**Templates Documentation**](Docs/Templates.md) for more info.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
 ## Right Click Menus
