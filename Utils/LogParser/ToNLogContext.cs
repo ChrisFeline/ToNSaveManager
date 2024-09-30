@@ -49,10 +49,18 @@ namespace ToNSaveManager.Utils.LogParser
         public override void Join(string displayName) {
             base.Join(displayName);
             ToNGameState.SetPlayerCount(Players.Count);
+
+            if (IsRecent) {
+                WebSocketAPI.SendValue("PLAYER_JOIN", displayName);
+            }
         }
         public override void Leave(string displayName) {
             base.Leave(displayName);
             ToNGameState.SetPlayerCount(Players.Count);
+
+            if (IsRecent) {
+                WebSocketAPI.SendValue("PLAYER_LEAVE", displayName);
+            }
         }
 
         public override void OnAwake() {
