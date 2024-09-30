@@ -956,7 +956,7 @@ namespace ToNSaveManager
                 SendXSNotification();
                 DSWebHook.Send(entry);
 
-                if (Settings.Get.WebSocketEnabled) WebSocketAPI.SendValue<string?>("SAVED", null);
+                if (Settings.Get.WebSocketEnabled) WebSocketAPI.SendValue<string?>("SAVED", entry.Content, false);
             }
         }
 

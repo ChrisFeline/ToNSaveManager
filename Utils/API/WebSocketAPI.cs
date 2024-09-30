@@ -81,7 +81,6 @@ namespace ToNSaveManager.Utils.API {
             public string DisplayName { get; set; }
             public string UserID { get; set; }
             public IEvent[] Args { get; set; }
-
         }
 
         public struct EventValue<T> : IEvent {
@@ -175,7 +174,9 @@ namespace ToNSaveManager.Utils.API {
             public byte Command { get; set; }
 
             public string Name { get; set; }
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
             public string Creator { get; set; }
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
             public string Origin { get; set; }
 
             internal static void Send(ToNIndex.Map map) {
@@ -215,9 +216,9 @@ namespace ToNSaveManager.Utils.API {
         }
 
         internal static Queue<IEvent> EventQueue = new Queue<IEvent>();
-        private static void QueueEvent(IEvent ev) {
+        private static void QueueEvent(IEvent ev, bool buffer = true) {
             if (MainWindow.Started) EventQueue.Enqueue(ev);
-            EventBuffer.Add(ev);
+            if (buffer) EventBuffer.Add(ev);
         }
 
         internal static void SendEventUpdate() {
@@ -226,8 +227,8 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
-        internal static void SendValue<T>(string type, T value) {
-            QueueEvent(new EventValue<T>(type, value));
+        internal static void SendValue<T>(string type, T value, bool buffer = true) {
+            QueueEvent(new EventValue<T>(type, value), buffer);
         }
         #endregion
 
