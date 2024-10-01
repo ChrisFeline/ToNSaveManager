@@ -129,17 +129,7 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Midnight:
                     int lvl = 1;
 
-                    if (RoundType == ToNRoundType.EX) {
-                        lvl = 3;
-                        TerrorCount = 1;
-                        Array.Resize(ref indexes, TerrorCount);
-                    } else if (RoundType == ToNRoundType.Double_Trouble) {
-                        lvl = 2;
-                        TerrorCount = 2;
-                        if (indexes[0] == indexes[1]) (indexes[1], indexes[2]) = (indexes[2], indexes[1]);
-                        else if (indexes[1] == indexes[2]) (indexes[0], indexes[1]) = (indexes[1], indexes[0]);
-                        Array.Resize(ref indexes, TerrorCount);
-                    } else if (RoundType == ToNRoundType.Midnight) { // Handle Monarch
+                    if (RoundType == ToNRoundType.Midnight) { // Handle Monarch
                         TerrorCount = 3;
                         if (indexes[2] == 19) {
                             StartIndex = 2;
@@ -149,7 +139,22 @@ namespace ToNSaveManager.Models.Index {
                             StartIndex = 1;
                         }
                     } else {
-                        TerrorCount = 3;
+                        Dictionary<int, int> dupes = new Dictionary<int, int>();
+
+                        for (int i = 0; i < indexes.Length; i++) {
+                            int val = indexes[i];
+                            if (dupes.ContainsKey(val)) {
+                                lvl++;
+                                dupes[val]++;
+                            } else {
+                                dupes[val] = 0;
+                            }
+                        }
+
+                        if (lvl > 1) indexes = dupes.OrderByDescending(v => v.Value).Select(k => k.Key).ToArray();
+                        TerrorCount = indexes.Length;
+
+                        dupes.Clear();
                     }
 
                     Terrors = new ToNIndex.TerrorInfo[indexes.Length];
