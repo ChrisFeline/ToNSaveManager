@@ -20,6 +20,7 @@
 	- This feature lets you create templates that will write to a text file, this file can be read by streaming tools like OBS to display round info about your suffering to your audience.
 - Added more keyboard navigation. (Suggested by YoBro)
 - Save code will now display the Map where you survived.
+- HOR... HOR... HOR HOR... HOR... HOR... HOR HOR... HOR HOR...
 
 ## Fixes & Improvements
 - Log now parses from room join every time you launch the app. This fixes some terror names not being displayed when the app is opened in the middle of a run.
