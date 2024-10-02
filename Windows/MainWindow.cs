@@ -632,15 +632,17 @@ namespace ToNSaveManager
                 return true;
             }
 
+            /*
             int index = line.IndexOf(SaveInitKeyword, StringComparison.InvariantCulture);
             if (index > -1) {
                 context.SaveCodeCreated = true;
                 return true;
             }
+            */
 
-            if (!context.SaveCodeCreated) return false;
+            if (!line.StartsWith(SaveStartKeyword)) return false;
 
-            index = line.IndexOf(SaveStartKeyword, StringComparison.InvariantCulture);
+            int index = line.IndexOf(SaveStartKeyword, StringComparison.InvariantCulture);
             if (index < 0) return false;
 
             index += SaveStartKeyword.Length;
@@ -650,13 +652,9 @@ namespace ToNSaveManager
             end -= index;
 
             string save = line.Substring(index, end);
-            if (string.IsNullOrEmpty(save)) {
-                context.SaveCodeCreated = false;
-                return false;
-            }
+            if (string.IsNullOrEmpty(save) || save.Length < 1000) return false;
 
             AddLogEntry(context.DateKey, save, timestamp, context);
-            context.SaveCodeCreated = false;
             return true;
         }
 
