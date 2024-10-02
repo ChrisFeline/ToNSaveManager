@@ -15,7 +15,6 @@ namespace ToNSaveManager.Utils.LogParser
     internal class ToNLogContext : LogContext {
         internal static ToNLogContext? Instance { get; private set; }
 
-        // public bool SaveCodeCreated { get; set; }
         public bool HasLoadedSave { get; set; }
 
         public bool IsAlive { get; private set; }
