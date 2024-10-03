@@ -587,6 +587,8 @@ namespace ToNSaveManager
         const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
         const string ROUND_PAGE_FOUND = "Page Collected - ";
 
+        const string ROUND_DEATH_MSG_KEYWORD = "[DEATH][";
+
         const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
         const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
@@ -826,6 +828,19 @@ namespace ToNSaveManager
         const string STAT_HIT = "Hit - ";
         private bool HandleStatCollection(string line, DateTime timestamp, ToNLogContext context) {
             if (!context.IsRecent) return false;
+
+            if (Started) {
+                if (Settings.Get.WebSocketEnabled && line.StartsWith(ROUND_DEATH_MSG_KEYWORD)) {
+                    int index = line.IndexOf(']', ROUND_DEATH_MSG_KEYWORD.Length);
+                    int length = index - ROUND_DEATH_MSG_KEYWORD.Length;
+                    if (length < 1) return true;
+
+                    string name = line.Substring(ROUND_DEATH_KEYWORD.Length - 1, length);
+                    string cont = line.Substring(index + 2).Trim();
+                    WebSocketAPI.EventDeath.Send(name, cont, context.DisplayName == name);
+                    return true;
+                }
+            }
 
             if (line.Contains(LogWatcher<ToNLogContext>.LocationKeyword)) {
                 StatsWindow.ClearLobby();

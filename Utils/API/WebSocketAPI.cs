@@ -107,6 +107,19 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
+        public struct EventDeath : IEvent {
+            public string Type => "DEATH";
+            [JsonIgnore] public byte Command { get; set; }
+
+            public string Name { get; set; }
+            public string Message { get; set; }
+            public bool IsLocal { get; set; }
+
+            internal static void Send(string name, string message, bool isLocal) {
+                QueueEvent(new EventDeath() { Name = name, Message = message, IsLocal = isLocal }, false);
+            }
+        }
+
         public struct EventTerror : IEvent {
             public string Type => "TERRORS";
 

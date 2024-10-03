@@ -103,6 +103,14 @@ The event data will be sent as a json object string.
 ```
 
 ```json
+// Sent when a player in the round dies.
+"Type": "DEATH",
+"Name": "Kittenji",
+"Message": "Kittenji spontaneously combusted.",
+"IsLocal": true
+```
+
+```json
 // Sent when a player joins the instance.
 "TYPE": "PLAYER_JOIN",
 "Value": "Kittenji" // The name of the player that joined.
