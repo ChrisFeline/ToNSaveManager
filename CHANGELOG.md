@@ -34,8 +34,9 @@
 - Some RoundType values has changed, please revisit your avatar and the documentation for more info.
 - Added an OSC emulator window that allows you to emulate and test ToN encounters without actually being in the world. This should help avatar creators test their parameters and animations.
 	- To open the emulator, launch the app with --emulator as a console argument.
-	- This will be locked for at least a week to prevent spoilers.
+	- This feature will be locked for at least a week to prevent spoilers.
 - Added parameters for the HUD terror color, allowing you to colorize your avatar with HSV.
+- Added a bunch of other parameters that will be listed on the documentation.
 - Eight Pages is now fully supported.
 - Supports alternates on Fog rounds.
 - Added parameters for special encounters.

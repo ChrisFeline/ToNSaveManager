@@ -60,6 +60,7 @@
             labelGroupGeneral = new Label();
             flowLayoutPanel5 = new FlowLayoutPanel();
             linkLogUpdateRate = new LinkLabel();
+            linkOpenLogs = new LinkLabel();
             linkCopyLogs = new LinkLabel();
             checkWebSocketServer = new CheckBox();
             checkWebTrackerComp = new CheckBox();
@@ -101,7 +102,6 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
-            linkOpenLogs = new LinkLabel();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -542,6 +542,25 @@
             linkLogUpdateRate.VisitedLinkColor = Color.Gray;
             linkLogUpdateRate.LinkClicked += linkLogUpdateRate_LinkClicked;
             // 
+            // linkOpenLogs
+            // 
+            linkOpenLogs.ActiveLinkColor = Color.White;
+            linkOpenLogs.AutoSize = true;
+            linkOpenLogs.BackColor = Color.LightBlue;
+            linkOpenLogs.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkOpenLogs.LinkColor = SystemColors.Desktop;
+            linkOpenLogs.Location = new Point(53, 37);
+            linkOpenLogs.Margin = new Padding(53, 1, 3, 1);
+            linkOpenLogs.Name = "linkOpenLogs";
+            linkOpenLogs.Padding = new Padding(3, 0, 3, 0);
+            linkOpenLogs.Size = new Size(151, 15);
+            linkOpenLogs.TabIndex = 27;
+            linkOpenLogs.TabStop = true;
+            linkOpenLogs.Text = "> FIND LATEST LOG FILE <";
+            linkOpenLogs.TextAlign = ContentAlignment.MiddleLeft;
+            linkOpenLogs.Visible = false;
+            linkOpenLogs.VisitedLinkColor = Color.Gray;
+            // 
             // linkCopyLogs
             // 
             linkCopyLogs.ActiveLinkColor = Color.White;
@@ -733,7 +752,6 @@
             // checkDiscordPresence
             // 
             checkDiscordPresence.AutoSize = true;
-            checkDiscordPresence.Enabled = false;
             checkDiscordPresence.Location = new Point(3, 370);
             checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
             checkDiscordPresence.Name = "checkDiscordPresence";
@@ -1122,25 +1140,6 @@
             linkOpenRGB.TextAlign = ContentAlignment.MiddleLeft;
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
-            // 
-            // linkOpenLogs
-            // 
-            linkOpenLogs.ActiveLinkColor = Color.White;
-            linkOpenLogs.AutoSize = true;
-            linkOpenLogs.BackColor = Color.LightBlue;
-            linkOpenLogs.LinkBehavior = LinkBehavior.HoverUnderline;
-            linkOpenLogs.LinkColor = SystemColors.Desktop;
-            linkOpenLogs.Location = new Point(53, 37);
-            linkOpenLogs.Margin = new Padding(53, 1, 3, 1);
-            linkOpenLogs.Name = "linkOpenLogs";
-            linkOpenLogs.Padding = new Padding(3, 0, 3, 0);
-            linkOpenLogs.Size = new Size(151, 15);
-            linkOpenLogs.TabIndex = 27;
-            linkOpenLogs.TabStop = true;
-            linkOpenLogs.Text = "> FIND LATEST LOG FILE <";
-            linkOpenLogs.TextAlign = ContentAlignment.MiddleLeft;
-            linkOpenLogs.Visible = false;
-            linkOpenLogs.VisitedLinkColor = Color.Gray;
             // 
             // SettingsWindow
             // 
