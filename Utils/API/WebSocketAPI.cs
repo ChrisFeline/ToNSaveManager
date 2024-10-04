@@ -16,7 +16,7 @@ using WebSocketSharp.Server;
 
 namespace ToNSaveManager.Utils.API {
     internal class WebSocketAPI : WebSocketBehavior {
-        static readonly LoggerSource Logger = new LoggerSource("WS-API");
+        static readonly LoggerSource Logger = new LoggerSource(nameof(WebSocketAPI));
         internal static WebSocketServer? Server;
 
         protected override void OnMessage(MessageEventArgs e) {
@@ -30,20 +30,21 @@ namespace ToNSaveManager.Utils.API {
                 Args = EventBuffer.ToArray(),
                 DisplayName = ToNLogContext.Instance?.DisplayName ?? string.Empty,
                 UserID = ToNLogContext.Instance?.UserID ?? string.Empty
-            });
-            
-            SendValue("INSTANCE", ToNLogContext.Instance?.InstanceID);
+            }, this);
+
+            SendEvent(new EventValue<string?>("INSTANCE", ToNLogContext.Instance?.InstanceID), this);
 
             // Send All Stats
             foreach (string key in ToNStats.PropertyKeys) {
-                WebSocketAPI.EventStats.Send(key, ToNStats.Get(key));
+                SendEvent(new EventStats() { Name = key, Value = ToNStats.Get(key) }, this);
             }
         }
 
+        const int DEFAULT_PORT = 11398;
         internal static void Initialize() {
             if (Settings.Get.WebSocketEnabled && Server == null) {
-                const string url = "ws://localhost:11398";
-                Server = new WebSocketServer(url);
+                int port = Settings.Get.WebSocketPort > 0 ? Settings.Get.WebSocketPort : DEFAULT_PORT;
+                Server = new WebSocketServer(port);
                 Server.AddWebSocketService<WebSocketAPI>("/");
             }
 
@@ -62,10 +63,24 @@ namespace ToNSaveManager.Utils.API {
             Logger.Debug("Broadcasting: " + data);
             Server?.WebSocketServices?.Broadcast(data);
         }
-        internal static void SendObject(object data) => Broadcast(JsonConvert.SerializeObject(data));
-        internal static void SendEvent<T>(T value) where T : IEvent
-        {
-            if (Settings.Get.WebSocketEnabled) SendObject(value);
+        internal static void SendEvent<T>(T value, WebSocketAPI? connection) where T : IEvent {
+            if (!Settings.Get.WebSocketEnabled) return;
+            string jsonData = JsonConvert.SerializeObject(value);
+
+            try {
+                if (connection != null) {
+                    Logger.Debug("Sending: " + jsonData);
+                    connection.Send(jsonData);
+                    return;
+                }
+
+                Broadcast(jsonData);
+            } catch (Exception e) {
+                Logger.Error(e);
+#if DEBUG
+                throw;
+#endif
+            }
         }
 
         public interface IEvent {
@@ -236,7 +251,7 @@ namespace ToNSaveManager.Utils.API {
 
         internal static void SendEventUpdate() {
             while (EventQueue.Count > 0) {
-                SendEvent(EventQueue.Dequeue());
+                SendEvent(EventQueue.Dequeue(), null);
             }
         }
 

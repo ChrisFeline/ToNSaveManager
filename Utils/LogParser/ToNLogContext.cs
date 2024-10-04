@@ -159,7 +159,8 @@ namespace ToNSaveManager.Utils.LogParser
         public RoundSummary Summary { get; private set; } = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, null, true);
         // Triggered at end of round
         public void SaveSummary() {
-            Summary = new RoundSummary(Result, Terrors, Location, Settings.Get.SaveRoundNote ? Settings.Get.RoundNoteTemplate.GetString() : null);
+            Summary = new RoundSummary(Result, Terrors, Location,
+                Settings.Get.SaveRoundNote ? (IsRecent && MainWindow.Started ? Settings.Get.RoundNoteTemplate.GetString() : Terrors.GetTerrorNames()) : null); 
         }
         // Triggered when consumed by the save code
         public void ClearSummary() {
