@@ -153,7 +153,7 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// The template used for the chatbox message. Some strings will be replaced.
         /// </summary>
-        [JsonIgnore] public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
+        public RoundInfoTemplate OSCMessageInfoTemplate { get; set; } =
             new RoundInfoTemplate("- Lobby Stats -\nLobby Stuns : {LobbyStunsAll}\nLobby Stun Record : {LobbyTopStunsAll}\n<js>RoundStunsAll < 1 ? '' : 'Current Round Stuns : ' + {RoundStunsAll}</js>");
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ToNSaveManager.Models
         /// Enables writing round info to files using custom templates.
         /// </summary>
         public bool RoundInfoToFile { get; set; }
-        [JsonIgnore] public RoundInfoTemplate[] RoundInfoTemplates { get; set; } = [
+        public RoundInfoTemplate[] RoundInfoTemplates { get; set; } = [
             new ("ton_terror_name.txt", "{TerrorName}"),
             new ("ton_round_type.txt", "{RoundType}"),
             new ("ton_map_name.txt", "{MapName}<js>(MapOrigin ? 'from ' + MapOrigin : '') + (MapCreator ? 'by ' + MapCreator : '')</js>")
