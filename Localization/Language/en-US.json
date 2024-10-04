@@ -308,6 +308,8 @@
 	"STATS.LABEL_PLAYERSONLINE.TT": "Represents the amount of players in the instance.",
 	"STATS.LABEL_ITEMNAME": "Item Name",
 	"STATS.LABEL_ITEMNAME.TT": "The name of the current item held.",
+	"STATS.LABEL_ISOPTEDIN": "Is Opted In",
+	"STATS.LABEL_ISOPTEDIN.TT": "True if the player is opted-in onto the game. This means the player is outside the respawn zone.",
 
 	"STATS.LABEL_ROUNDSTUNS": "Round Stuns",
 	"STATS.LABEL_ROUNDSTUNS.TT": "Amount of times you have stunned a Terror in the round.",

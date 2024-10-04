@@ -38,6 +38,7 @@ namespace ToNSaveManager.Models.Stats
 
     internal class StatsLobby : StatsData {
         public int PlayersOnline { get; internal set; } = 0;
+        public bool IsOptedIn { get; internal set; } = false;
 
         // Player data
         public string DisplayName { get; internal set; } = "Unknown";

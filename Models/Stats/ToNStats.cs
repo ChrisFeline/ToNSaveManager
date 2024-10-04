@@ -137,6 +137,11 @@ namespace ToNSaveManager.Models.Stats {
             if (ready) Add(KEY_DAMAGE, damage);
         }
 
+        const string KEY_OPTEDIN_PLAYERS = nameof(StatsLobby.IsOptedIn);
+        public static void AddOptedIn(bool optedIn) {
+            Set(KEY_OPTEDIN_PLAYERS, optedIn);
+        }
+
         const string KEY_ONLINE_PLAYERS = nameof(StatsLobby.PlayersOnline);
         public static void AddPlayerCount(int players) {
             Set(KEY_ONLINE_PLAYERS, players);

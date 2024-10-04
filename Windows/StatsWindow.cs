@@ -80,6 +80,10 @@ namespace ToNSaveManager
             ToNStats.AddPageCount(pages);
             RefreshTable();
         }
+        internal static void SetOptedIn(bool optedIn) {
+            ToNStats.AddOptedIn(optedIn);
+            RefreshTable();
+        }
         internal static void SetPlayerCount(int playerCount) {
             ToNStats.AddPlayerCount(playerCount);
             RefreshTable();
