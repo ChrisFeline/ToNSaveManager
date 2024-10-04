@@ -188,6 +188,7 @@ namespace ToNSaveManager.Models
         /// </summary>
         public bool WebSocketEnabled { get; set; } = false;
         public bool WebTrackerCompatibility { get; set; } = true;
+        public int WebSocketPort { get; set; } = 11398;
 
         /// <summary>
         /// Import a settings instance from the local json file
