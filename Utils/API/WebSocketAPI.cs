@@ -12,32 +12,29 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils.LogParser;
-using WebSocketSharp;
-using WebSocketSharp.Server;
+// using WebSocketSharp;
+// using WebSocketSharp.Server;
+using WebSocketServer = WatsonWebsocket.WatsonWsServer;
 
 namespace ToNSaveManager.Utils.API {
-    internal class WebSocketAPI : WebSocketBehavior {
+    internal class WebSocketAPI {
         static readonly LoggerSource Logger = new LoggerSource(nameof(WebSocketAPI));
         internal static WebSocketServer? Server;
 
-        protected override void OnMessage(MessageEventArgs e) {
-            Logger.Log("Received: " + e.Data);
-        }
-
-        protected override void OnOpen() {
-            Logger.Log("WebSocket client connected.");
+        static void OnOpen(WatsonWebsocket.ClientMetadata metadata) {
+            Logger.Log("WebSocket client connected: " + metadata.Guid + " | " + metadata.Ip);
 
             SendEvent(new EventConnected() {
                 Args = EventBuffer.ToArray(),
                 DisplayName = ToNLogContext.Instance?.DisplayName ?? string.Empty,
                 UserID = ToNLogContext.Instance?.UserID ?? string.Empty
-            }, this);
+            }, metadata);
 
-            SendEvent(new EventValue<string?>("INSTANCE", ToNLogContext.Instance?.InstanceID), this);
+            SendEvent(new EventValue<string?>("INSTANCE", ToNLogContext.Instance?.InstanceID), metadata);
 
             // Send All Stats
             foreach (string key in ToNStats.PropertyKeys) {
-                SendEvent(new EventStats() { Name = key, Value = ToNStats.Get(key) }, this);
+                SendEvent(new EventStats() { Name = key, Value = ToNStats.Get(key) }, metadata);
             }
         }
 
@@ -45,8 +42,11 @@ namespace ToNSaveManager.Utils.API {
         internal static void Initialize() {
             if (Settings.Get.WebSocketEnabled && Server == null) {
                 int port = Settings.Get.WebSocketPort > 0 ? Settings.Get.WebSocketPort : DEFAULT_PORT;
-                Server = new WebSocketServer(port);
-                Server.AddWebSocketService<WebSocketAPI>("/");
+                Server = new WebSocketServer(new List<string>() { IPAddress.Loopback.ToString(), "localhost" }, port);
+                //Server.AddWebSocketService<WebSocketAPI>("/");
+
+                Server.ClientConnected += Server_ClientConnected;
+                Server.ClientDisconnected += Server_ClientDisconnected;
             }
 
             if (Settings.Get.WebSocketEnabled && Server != null && !Server.IsListening) {
@@ -55,23 +55,35 @@ namespace ToNSaveManager.Utils.API {
             } else if (!Settings.Get.WebSocketEnabled && Server != null && Server.IsListening) {
                 Logger.Debug("Stopping Server...");
                 Server.Stop();
-                Server.RemoveWebSocketService("/");
+                Server.Dispose();
                 Server = null;
             }
         }
 
-        internal static void Broadcast(string data) {
-            Logger.Debug("Broadcasting: " + data);
-            Server?.WebSocketServices?.Broadcast(data);
+        private static void Server_ClientDisconnected(object? sender, WatsonWebsocket.DisconnectionEventArgs e) {
+            Logger.Log("WebSocket client disconnected" + e.Client.Guid);
         }
-        internal static void SendEvent<T>(T value, WebSocketAPI? connection) where T : IEvent {
+
+        private static void Server_ClientConnected(object? sender, WatsonWebsocket.ConnectionEventArgs e) {
+            OnOpen(e.Client);
+        }
+
+        internal static void Broadcast(string data) {
+            if (Server == null) return;
+            Logger.Debug("Broadcasting: " + data);
+
+            foreach (var metadata in Server.ListClients()) {
+                _ = Server.SendAsync(metadata.Guid, data).Result;
+            }
+        }
+        internal static void SendEvent<T>(T value, WatsonWebsocket.ClientMetadata? metadata) where T : IEvent {
             if (!Settings.Get.WebSocketEnabled) return;
             string jsonData = JsonConvert.SerializeObject(value);
 
             try {
-                if (connection != null) {
+                if (metadata != null) {
                     Logger.Debug("Sending: " + jsonData);
-                    connection.Send(jsonData);
+                    _ = Server?.SendAsync(metadata.Guid, jsonData).Result;
                     return;
                 }
 
