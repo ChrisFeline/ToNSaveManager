@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
-            groupBoxGeneral = new GroupBox();
-            checkOSCEnabled = new CheckBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             checkDiscordBackup = new CheckBox();
             checkShowWinLose = new CheckBox();
             checkSaveTerrorsNote = new CheckBox();
@@ -37,10 +36,9 @@
             checkPlayerNames = new CheckBox();
             checkAutoCopy = new CheckBox();
             checkSkipParsedLogs = new CheckBox();
-            groupBoxNotifications = new GroupBox();
+            checkOSCEnabled = new CheckBox();
             checkPlayAudio = new CheckBox();
             checkXSOverlay = new CheckBox();
-            groupBoxTime = new GroupBox();
             checkShowDate = new CheckBox();
             checkInvertMD = new CheckBox();
             checkShowSeconds = new CheckBox();
@@ -52,95 +50,124 @@
             ctxItemPickFolder = new ToolStripMenuItem();
             ctxItemResetToDefault = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
-            groupBoxStyle = new GroupBox();
             checkColorObjectives = new CheckBox();
             languageSelectBox = new ComboBox();
-            groupBoxGeneral.SuspendLayout();
-            groupBoxNotifications.SuspendLayout();
-            groupBoxTime.SuspendLayout();
+            panel1 = new Panel();
+            checkSendChatbox = new CheckBox();
+            checkOSCSendColor = new CheckBox();
+            panel2 = new Panel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            labelGroupGeneral = new Label();
+            flowLayoutPanel5 = new FlowLayoutPanel();
+            linkLogUpdateRate = new LinkLabel();
+            linkOpenLogs = new LinkLabel();
+            linkCopyLogs = new LinkLabel();
+            checkWebSocketServer = new CheckBox();
+            checkWebTrackerComp = new CheckBox();
+            checkCopyOnOpen = new CheckBox();
+            checkCopyOnJoin = new CheckBox();
+            checkCopyOnSave = new CheckBox();
+            flowLayoutPanel6 = new FlowLayoutPanel();
+            linkAutoNoteEdit = new LinkLabel();
+            flowRoundInfoFilePanel = new FlowLayoutPanel();
+            checkRoundToFile = new CheckBox();
+            flowRoundInfoFiles = new FlowLayoutPanel();
+            linkAddInfoFile = new LinkLabel();
+            labelGroupDiscord = new Label();
+            checkDiscordPresence = new CheckBox();
+            flowDiscordStateText = new FlowLayoutPanel();
+            checkDiscordCustomState = new CheckBox();
+            linkEditDiscordState = new LinkLabel();
+            flowDiscordDetailsText = new FlowLayoutPanel();
+            checkDiscordCustomDetails = new CheckBox();
+            linkEditDiscordDetails = new LinkLabel();
+            flowDiscordImageText = new FlowLayoutPanel();
+            checkDiscordCustomImageText = new CheckBox();
+            linkEditDiscordImage = new LinkLabel();
+            flowDiscordIconText = new FlowLayoutPanel();
+            checkDiscordCustomIcon = new CheckBox();
+            linkEditDiscordIcon = new LinkLabel();
+            flowDiscordIconStart = new FlowLayoutPanel();
+            checkDiscordCustomStart = new CheckBox();
+            linkEditDiscordStart = new LinkLabel();
+            labelGroupNotifications = new Label();
+            labelGroupOSC = new Label();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            checkOSCSendDamage = new CheckBox();
+            linkSetDamageInterval = new LinkLabel();
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            linkEditChatbox = new LinkLabel();
+            labelGroupFormat = new Label();
+            labelGroupStyle = new Label();
+            flowLayoutPanel4 = new FlowLayoutPanel();
+            checkOpenRGBEnabled = new CheckBox();
+            linkOpenRGB = new LinkLabel();
             ctxData.SuspendLayout();
-            groupBoxStyle.SuspendLayout();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel5.SuspendLayout();
+            flowLayoutPanel6.SuspendLayout();
+            flowRoundInfoFilePanel.SuspendLayout();
+            flowDiscordStateText.SuspendLayout();
+            flowDiscordDetailsText.SuspendLayout();
+            flowDiscordImageText.SuspendLayout();
+            flowDiscordIconText.SuspendLayout();
+            flowDiscordIconStart.SuspendLayout();
+            flowLayoutPanel3.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
+            flowLayoutPanel4.SuspendLayout();
             SuspendLayout();
-            // 
-            // groupBoxGeneral
-            // 
-            groupBoxGeneral.AutoSize = true;
-            groupBoxGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxGeneral.Controls.Add(checkOSCEnabled);
-            groupBoxGeneral.Controls.Add(checkDiscordBackup);
-            groupBoxGeneral.Controls.Add(checkShowWinLose);
-            groupBoxGeneral.Controls.Add(checkSaveTerrorsNote);
-            groupBoxGeneral.Controls.Add(checkSaveTerrors);
-            groupBoxGeneral.Controls.Add(checkPlayerNames);
-            groupBoxGeneral.Controls.Add(checkAutoCopy);
-            groupBoxGeneral.Controls.Add(checkSkipParsedLogs);
-            groupBoxGeneral.Dock = DockStyle.Top;
-            groupBoxGeneral.ForeColor = Color.White;
-            groupBoxGeneral.Location = new Point(8, 31);
-            groupBoxGeneral.Name = "groupBoxGeneral";
-            groupBoxGeneral.Size = new Size(268, 166);
-            groupBoxGeneral.TabIndex = 0;
-            groupBoxGeneral.TabStop = false;
-            groupBoxGeneral.Text = "General";
-            // 
-            // checkOSCEnabled
-            // 
-            checkOSCEnabled.Dock = DockStyle.Top;
-            checkOSCEnabled.Location = new Point(3, 145);
-            checkOSCEnabled.Name = "checkOSCEnabled";
-            checkOSCEnabled.Padding = new Padding(3, 0, 3, 0);
-            checkOSCEnabled.Size = new Size(262, 18);
-            checkOSCEnabled.TabIndex = 7;
-            checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
-            checkOSCEnabled.Text = "Send OSC Parameters";
-            checkOSCEnabled.UseVisualStyleBackColor = true;
-            checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
             // checkDiscordBackup
             // 
-            checkDiscordBackup.Dock = DockStyle.Top;
-            checkDiscordBackup.Location = new Point(3, 127);
+            checkDiscordBackup.AutoSize = true;
+            checkDiscordBackup.Location = new Point(3, 349);
+            checkDiscordBackup.Margin = new Padding(3, 1, 3, 1);
             checkDiscordBackup.Name = "checkDiscordBackup";
-            checkDiscordBackup.Padding = new Padding(3, 0, 3, 0);
-            checkDiscordBackup.Size = new Size(262, 18);
+            checkDiscordBackup.Padding = new Padding(20, 0, 3, 0);
+            checkDiscordBackup.Size = new Size(209, 19);
             checkDiscordBackup.TabIndex = 6;
             checkDiscordBackup.Tag = "DiscordWebhookEnabled|Automatically saves your new codes to a Discord channel using a webhook integration.";
-            checkDiscordBackup.Text = "Auto Discord Backup (Webhook)";
+            checkDiscordBackup.Text = "Automatic Backup (Webhook)";
             checkDiscordBackup.UseVisualStyleBackColor = true;
             // 
             // checkShowWinLose
             // 
-            checkShowWinLose.Dock = DockStyle.Top;
+            checkShowWinLose.AutoSize = true;
             checkShowWinLose.ForeColor = Color.PowderBlue;
-            checkShowWinLose.Location = new Point(3, 109);
+            checkShowWinLose.Location = new Point(3, 239);
+            checkShowWinLose.Margin = new Padding(3, 1, 3, 1);
             checkShowWinLose.Name = "checkShowWinLose";
-            checkShowWinLose.Padding = new Padding(21, 0, 3, 0);
-            checkShowWinLose.Size = new Size(262, 18);
+            checkShowWinLose.Padding = new Padding(50, 0, 3, 0);
+            checkShowWinLose.Size = new Size(183, 19);
             checkShowWinLose.TabIndex = 5;
             checkShowWinLose.Tag = "ShowWinLose|Entries will show a [R], [W] or [D] tag based on the source that triggered the save.";
-            checkShowWinLose.Text = "Show [R][W][D] Tags";
+            checkShowWinLose.Text = "Show Save Symbols";
             checkShowWinLose.UseVisualStyleBackColor = true;
             // 
             // checkSaveTerrorsNote
             // 
-            checkSaveTerrorsNote.Dock = DockStyle.Top;
+            checkSaveTerrorsNote.AutoSize = true;
             checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
-            checkSaveTerrorsNote.Location = new Point(3, 91);
+            checkSaveTerrorsNote.Location = new Point(3, 0);
+            checkSaveTerrorsNote.Margin = new Padding(0);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
-            checkSaveTerrorsNote.Padding = new Padding(21, 0, 3, 0);
-            checkSaveTerrorsNote.Size = new Size(262, 18);
+            checkSaveTerrorsNote.Padding = new Padding(50, 0, 3, 0);
+            checkSaveTerrorsNote.Size = new Size(164, 19);
             checkSaveTerrorsNote.TabIndex = 3;
             checkSaveTerrorsNote.Tag = "SaveRoundNote|Automatically set survived terror names as note.";
-            checkSaveTerrorsNote.Text = "Terror Name Notes";
+            checkSaveTerrorsNote.Text = "Automatic Note";
             checkSaveTerrorsNote.UseVisualStyleBackColor = true;
             // 
             // checkSaveTerrors
             // 
-            checkSaveTerrors.Dock = DockStyle.Top;
-            checkSaveTerrors.Location = new Point(3, 73);
+            checkSaveTerrors.AutoSize = true;
+            checkSaveTerrors.Location = new Point(3, 218);
+            checkSaveTerrors.Margin = new Padding(3, 1, 3, 1);
             checkSaveTerrors.Name = "checkSaveTerrors";
-            checkSaveTerrors.Padding = new Padding(3, 0, 3, 0);
-            checkSaveTerrors.Size = new Size(262, 18);
+            checkSaveTerrors.Padding = new Padding(20, 0, 3, 0);
+            checkSaveTerrors.Size = new Size(135, 19);
             checkSaveTerrors.TabIndex = 2;
             checkSaveTerrors.Tag = "SaveRoundInfo|Save codes will display the last round type and terror names.";
             checkSaveTerrors.Text = "Save Round Info";
@@ -148,11 +175,12 @@
             // 
             // checkPlayerNames
             // 
-            checkPlayerNames.Dock = DockStyle.Top;
-            checkPlayerNames.Location = new Point(3, 55);
+            checkPlayerNames.AutoSize = true;
+            checkPlayerNames.Location = new Point(3, 197);
+            checkPlayerNames.Margin = new Padding(3, 1, 3, 1);
             checkPlayerNames.Name = "checkPlayerNames";
-            checkPlayerNames.Padding = new Padding(3, 0, 3, 0);
-            checkPlayerNames.Size = new Size(262, 18);
+            checkPlayerNames.Padding = new Padding(20, 0, 3, 0);
+            checkPlayerNames.Size = new Size(161, 19);
             checkPlayerNames.TabIndex = 1;
             checkPlayerNames.Tag = "SaveNames|Save codes will show players in the instance at the time of saving.";
             checkPlayerNames.Text = "Collect Player Names";
@@ -160,11 +188,12 @@
             // 
             // checkAutoCopy
             // 
-            checkAutoCopy.Dock = DockStyle.Top;
-            checkAutoCopy.Location = new Point(3, 37);
+            checkAutoCopy.AutoSize = true;
+            checkAutoCopy.Location = new Point(3, 113);
+            checkAutoCopy.Margin = new Padding(3, 1, 3, 1);
             checkAutoCopy.Name = "checkAutoCopy";
-            checkAutoCopy.Padding = new Padding(3, 0, 3, 0);
-            checkAutoCopy.Size = new Size(262, 18);
+            checkAutoCopy.Padding = new Padding(20, 0, 3, 0);
+            checkAutoCopy.Size = new Size(161, 19);
             checkAutoCopy.TabIndex = 0;
             checkAutoCopy.Tag = "AutoCopy|Automatically copy new save codes to clipboard.";
             checkAutoCopy.Text = "Auto Clipboard Copy";
@@ -172,39 +201,41 @@
             // 
             // checkSkipParsedLogs
             // 
-            checkSkipParsedLogs.Dock = DockStyle.Top;
-            checkSkipParsedLogs.Location = new Point(3, 19);
+            checkSkipParsedLogs.AutoSize = true;
+            checkSkipParsedLogs.Location = new Point(3, 0);
+            checkSkipParsedLogs.Margin = new Padding(0);
             checkSkipParsedLogs.Name = "checkSkipParsedLogs";
-            checkSkipParsedLogs.Padding = new Padding(3, 0, 3, 0);
-            checkSkipParsedLogs.Size = new Size(262, 18);
+            checkSkipParsedLogs.Padding = new Padding(20, 0, 3, 0);
+            checkSkipParsedLogs.RightToLeft = RightToLeft.No;
+            checkSkipParsedLogs.Size = new Size(151, 19);
             checkSkipParsedLogs.TabIndex = 4;
             checkSkipParsedLogs.Tag = "SkipParsedLogs|Skip old parsed log files that were already processed and saved.\\nOnly disable this if you accidentally deleted a save code.";
             checkSkipParsedLogs.Text = "Skip Parsed Logs (!)";
             checkSkipParsedLogs.UseVisualStyleBackColor = true;
             // 
-            // groupBoxNotifications
+            // checkOSCEnabled
             // 
-            groupBoxNotifications.AutoSize = true;
-            groupBoxNotifications.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxNotifications.Controls.Add(checkPlayAudio);
-            groupBoxNotifications.Controls.Add(checkXSOverlay);
-            groupBoxNotifications.Dock = DockStyle.Top;
-            groupBoxNotifications.ForeColor = Color.White;
-            groupBoxNotifications.Location = new Point(8, 197);
-            groupBoxNotifications.Name = "groupBoxNotifications";
-            groupBoxNotifications.Size = new Size(268, 58);
-            groupBoxNotifications.TabIndex = 2;
-            groupBoxNotifications.TabStop = false;
-            groupBoxNotifications.Text = "Notifications";
+            checkOSCEnabled.AutoSize = true;
+            checkOSCEnabled.Location = new Point(3, 598);
+            checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
+            checkOSCEnabled.Name = "checkOSCEnabled";
+            checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
+            checkOSCEnabled.Size = new Size(163, 19);
+            checkOSCEnabled.TabIndex = 7;
+            checkOSCEnabled.Tag = "OSCEnabled|Sends avatar parameters to VRChat using OSC. Right click this entry to open documentation about parameter names and types.";
+            checkOSCEnabled.Text = "Send OSC Parameters";
+            checkOSCEnabled.UseVisualStyleBackColor = true;
+            checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
             // checkPlayAudio
             // 
             checkPlayAudio.AutoCheck = false;
-            checkPlayAudio.Dock = DockStyle.Top;
-            checkPlayAudio.Location = new Point(3, 37);
+            checkPlayAudio.AutoSize = true;
+            checkPlayAudio.Location = new Point(3, 526);
+            checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
             checkPlayAudio.Name = "checkPlayAudio";
-            checkPlayAudio.Padding = new Padding(3, 0, 3, 0);
-            checkPlayAudio.Size = new Size(262, 18);
+            checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
+            checkPlayAudio.Size = new Size(180, 19);
             checkPlayAudio.TabIndex = 1;
             checkPlayAudio.Tag = "PlayAudio|Double click to select custom audio file.\\nRight click to reset back to 'default.wav'";
             checkPlayAudio.Text = "Play Sound (default.wav)";
@@ -214,40 +245,25 @@
             // 
             // checkXSOverlay
             // 
-            checkXSOverlay.Dock = DockStyle.Top;
-            checkXSOverlay.Location = new Point(3, 19);
+            checkXSOverlay.AutoSize = true;
+            checkXSOverlay.Location = new Point(3, 547);
+            checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
-            checkXSOverlay.Padding = new Padding(3, 0, 3, 0);
-            checkXSOverlay.Size = new Size(262, 18);
+            checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
+            checkXSOverlay.Size = new Size(140, 19);
             checkXSOverlay.TabIndex = 0;
             checkXSOverlay.Tag = "XSOverlay|XSOverlay popup notifications when saving.";
             checkXSOverlay.Text = "XSOverlay Popup";
             checkXSOverlay.UseVisualStyleBackColor = true;
             // 
-            // groupBoxTime
-            // 
-            groupBoxTime.AutoSize = true;
-            groupBoxTime.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxTime.Controls.Add(checkShowDate);
-            groupBoxTime.Controls.Add(checkInvertMD);
-            groupBoxTime.Controls.Add(checkShowSeconds);
-            groupBoxTime.Controls.Add(check24Hour);
-            groupBoxTime.Dock = DockStyle.Top;
-            groupBoxTime.ForeColor = Color.White;
-            groupBoxTime.Location = new Point(8, 255);
-            groupBoxTime.Name = "groupBoxTime";
-            groupBoxTime.Size = new Size(268, 94);
-            groupBoxTime.TabIndex = 3;
-            groupBoxTime.TabStop = false;
-            groupBoxTime.Text = "Time Formatting";
-            // 
             // checkShowDate
             // 
-            checkShowDate.Dock = DockStyle.Top;
-            checkShowDate.Location = new Point(3, 73);
+            checkShowDate.AutoSize = true;
+            checkShowDate.Location = new Point(3, 775);
+            checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
-            checkShowDate.Padding = new Padding(3, 0, 3, 0);
-            checkShowDate.Size = new Size(262, 18);
+            checkShowDate.Padding = new Padding(20, 0, 3, 0);
+            checkShowDate.Size = new Size(136, 19);
             checkShowDate.TabIndex = 3;
             checkShowDate.Tag = "ShowDate|Entries on the right panel will display a full date.";
             checkShowDate.Text = "Right Panel Date";
@@ -255,11 +271,12 @@
             // 
             // checkInvertMD
             // 
-            checkInvertMD.Dock = DockStyle.Top;
-            checkInvertMD.Location = new Point(3, 55);
+            checkInvertMD.AutoSize = true;
+            checkInvertMD.Location = new Point(3, 733);
+            checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
-            checkInvertMD.Padding = new Padding(3, 0, 3, 0);
-            checkInvertMD.Size = new Size(262, 18);
+            checkInvertMD.Padding = new Padding(20, 0, 3, 0);
+            checkInvertMD.Size = new Size(143, 19);
             checkInvertMD.TabIndex = 2;
             checkInvertMD.Tag = "InvertMD";
             checkInvertMD.Text = "Invert Month/Day";
@@ -267,11 +284,12 @@
             // 
             // checkShowSeconds
             // 
-            checkShowSeconds.Dock = DockStyle.Top;
-            checkShowSeconds.Location = new Point(3, 37);
+            checkShowSeconds.AutoSize = true;
+            checkShowSeconds.Location = new Point(3, 754);
+            checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
-            checkShowSeconds.Padding = new Padding(3, 0, 3, 0);
-            checkShowSeconds.Size = new Size(262, 18);
+            checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
+            checkShowSeconds.Size = new Size(125, 19);
             checkShowSeconds.TabIndex = 1;
             checkShowSeconds.Tag = "ShowSeconds";
             checkShowSeconds.Text = "Show Seconds";
@@ -279,11 +297,12 @@
             // 
             // check24Hour
             // 
-            check24Hour.Dock = DockStyle.Top;
-            check24Hour.Location = new Point(3, 19);
+            check24Hour.AutoSize = true;
+            check24Hour.Location = new Point(3, 712);
+            check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
-            check24Hour.Padding = new Padding(3, 0, 3, 0);
-            check24Hour.Size = new Size(262, 18);
+            check24Hour.Padding = new Padding(20, 0, 3, 0);
+            check24Hour.Size = new Size(120, 19);
             check24Hour.TabIndex = 0;
             check24Hour.Tag = "Use24Hour";
             check24Hour.Text = "24 Hour Time";
@@ -291,13 +310,13 @@
             // 
             // btnCheckForUpdates
             // 
-            btnCheckForUpdates.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnCheckForUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
-            btnCheckForUpdates.Location = new Point(8, 393);
+            btnCheckForUpdates.Location = new Point(0, 4);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
-            btnCheckForUpdates.Size = new Size(209, 24);
+            btnCheckForUpdates.Size = new Size(510, 24);
             btnCheckForUpdates.TabIndex = 4;
             btnCheckForUpdates.Text = "Check For Updates";
             btnCheckForUpdates.UseVisualStyleBackColor = true;
@@ -305,12 +324,12 @@
             // 
             // btnOpenData
             // 
-            btnOpenData.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             btnOpenData.ContextMenuStrip = ctxData;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
             btnOpenData.ForeColor = Color.White;
-            btnOpenData.Location = new Point(223, 393);
+            btnOpenData.Location = new Point(516, 4);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
             btnOpenData.TabIndex = 5;
@@ -352,27 +371,14 @@
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 100;
             // 
-            // groupBoxStyle
-            // 
-            groupBoxStyle.AutoSize = true;
-            groupBoxStyle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            groupBoxStyle.Controls.Add(checkColorObjectives);
-            groupBoxStyle.Dock = DockStyle.Top;
-            groupBoxStyle.ForeColor = Color.White;
-            groupBoxStyle.Location = new Point(8, 349);
-            groupBoxStyle.Name = "groupBoxStyle";
-            groupBoxStyle.Size = new Size(268, 40);
-            groupBoxStyle.TabIndex = 6;
-            groupBoxStyle.TabStop = false;
-            groupBoxStyle.Text = "Style";
-            // 
             // checkColorObjectives
             // 
-            checkColorObjectives.Dock = DockStyle.Top;
-            checkColorObjectives.Location = new Point(3, 19);
+            checkColorObjectives.AutoSize = true;
+            checkColorObjectives.Location = new Point(3, 826);
+            checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
-            checkColorObjectives.Padding = new Padding(3, 0, 3, 0);
-            checkColorObjectives.Size = new Size(262, 18);
+            checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
+            checkColorObjectives.Size = new Size(150, 19);
             checkColorObjectives.TabIndex = 0;
             checkColorObjectives.Tag = "ColorfulObjectives|Items in the 'Objectives' window will show colors that correspond to those of the items in the game.";
             checkColorObjectives.Text = "Colorful Objectives";
@@ -388,65 +394,815 @@
             languageSelectBox.FormattingEnabled = true;
             languageSelectBox.Location = new Point(8, 8);
             languageSelectBox.Name = "languageSelectBox";
-            languageSelectBox.Size = new Size(268, 23);
+            languageSelectBox.Size = new Size(569, 23);
             languageSelectBox.TabIndex = 7;
             languageSelectBox.TabStop = false;
             languageSelectBox.SelectedIndexChanged += languageSelectBox_SelectedIndexChanged;
             languageSelectBox.DragDrop += languageSelect_DragDrop;
             languageSelectBox.DragEnter += languageSelect_DragEnter;
             // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.Controls.Add(btnCheckForUpdates);
+            panel1.Controls.Add(btnOpenData);
+            panel1.Location = new Point(8, 575);
+            panel1.Name = "panel1";
+            panel1.Padding = new Padding(0, 4, 0, 0);
+            panel1.Size = new Size(569, 28);
+            panel1.TabIndex = 8;
+            // 
+            // checkSendChatbox
+            // 
+            checkSendChatbox.AutoSize = true;
+            checkSendChatbox.Location = new Point(3, 0);
+            checkSendChatbox.Margin = new Padding(0);
+            checkSendChatbox.Name = "checkSendChatbox";
+            checkSendChatbox.Padding = new Padding(20, 0, 3, 0);
+            checkSendChatbox.Size = new Size(172, 19);
+            checkSendChatbox.TabIndex = 8;
+            checkSendChatbox.Tag = "OSCSendChatbox|Sends ToN information to the VRChat chatbox.\\nRight click to customize the message template.";
+            checkSendChatbox.Text = "Send Chatbox Message";
+            checkSendChatbox.UseVisualStyleBackColor = true;
+            // 
+            // checkOSCSendColor
+            // 
+            checkOSCSendColor.AutoSize = true;
+            checkOSCSendColor.ForeColor = Color.PowderBlue;
+            checkOSCSendColor.Location = new Point(3, 619);
+            checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
+            checkOSCSendColor.Name = "checkOSCSendColor";
+            checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
+            checkOSCSendColor.Size = new Size(203, 19);
+            checkOSCSendColor.TabIndex = 9;
+            checkOSCSendColor.Tag = "OSCSendColor|Sends the current Terror color as HSV parameters.";
+            checkOSCSendColor.Text = "Send Terror Color (HSV)";
+            checkOSCSendColor.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.AutoScroll = true;
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(flowLayoutPanel1);
+            panel2.Location = new Point(8, 37);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(3);
+            panel2.Size = new Size(569, 536);
+            panel2.TabIndex = 1;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(labelGroupGeneral);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel5);
+            flowLayoutPanel1.Controls.Add(linkOpenLogs);
+            flowLayoutPanel1.Controls.Add(linkCopyLogs);
+            flowLayoutPanel1.Controls.Add(checkWebSocketServer);
+            flowLayoutPanel1.Controls.Add(checkWebTrackerComp);
+            flowLayoutPanel1.Controls.Add(checkAutoCopy);
+            flowLayoutPanel1.Controls.Add(checkCopyOnOpen);
+            flowLayoutPanel1.Controls.Add(checkCopyOnJoin);
+            flowLayoutPanel1.Controls.Add(checkCopyOnSave);
+            flowLayoutPanel1.Controls.Add(checkPlayerNames);
+            flowLayoutPanel1.Controls.Add(checkSaveTerrors);
+            flowLayoutPanel1.Controls.Add(checkShowWinLose);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel6);
+            flowLayoutPanel1.Controls.Add(flowRoundInfoFilePanel);
+            flowLayoutPanel1.Controls.Add(labelGroupDiscord);
+            flowLayoutPanel1.Controls.Add(checkDiscordBackup);
+            flowLayoutPanel1.Controls.Add(checkDiscordPresence);
+            flowLayoutPanel1.Controls.Add(flowDiscordStateText);
+            flowLayoutPanel1.Controls.Add(flowDiscordDetailsText);
+            flowLayoutPanel1.Controls.Add(flowDiscordImageText);
+            flowLayoutPanel1.Controls.Add(flowDiscordIconText);
+            flowLayoutPanel1.Controls.Add(flowDiscordIconStart);
+            flowLayoutPanel1.Controls.Add(labelGroupNotifications);
+            flowLayoutPanel1.Controls.Add(checkPlayAudio);
+            flowLayoutPanel1.Controls.Add(checkXSOverlay);
+            flowLayoutPanel1.Controls.Add(labelGroupOSC);
+            flowLayoutPanel1.Controls.Add(checkOSCEnabled);
+            flowLayoutPanel1.Controls.Add(checkOSCSendColor);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel3);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
+            flowLayoutPanel1.Controls.Add(labelGroupFormat);
+            flowLayoutPanel1.Controls.Add(check24Hour);
+            flowLayoutPanel1.Controls.Add(checkInvertMD);
+            flowLayoutPanel1.Controls.Add(checkShowSeconds);
+            flowLayoutPanel1.Controls.Add(checkShowDate);
+            flowLayoutPanel1.Controls.Add(labelGroupStyle);
+            flowLayoutPanel1.Controls.Add(checkColorObjectives);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel4);
+            flowLayoutPanel1.Dock = DockStyle.Top;
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(3, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(544, 867);
+            flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.WrapContents = false;
+            // 
+            // labelGroupGeneral
+            // 
+            labelGroupGeneral.AutoSize = true;
+            labelGroupGeneral.Location = new Point(3, 0);
+            labelGroupGeneral.Name = "labelGroupGeneral";
+            labelGroupGeneral.Size = new Size(47, 15);
+            labelGroupGeneral.TabIndex = 10;
+            labelGroupGeneral.Text = "General";
+            // 
+            // flowLayoutPanel5
+            // 
+            flowLayoutPanel5.AutoSize = true;
+            flowLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel5.Controls.Add(checkSkipParsedLogs);
+            flowLayoutPanel5.Controls.Add(linkLogUpdateRate);
+            flowLayoutPanel5.Location = new Point(0, 16);
+            flowLayoutPanel5.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel5.Name = "flowLayoutPanel5";
+            flowLayoutPanel5.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel5.Size = new Size(252, 19);
+            flowLayoutPanel5.TabIndex = 17;
+            flowLayoutPanel5.WrapContents = false;
+            // 
+            // linkLogUpdateRate
+            // 
+            linkLogUpdateRate.ActiveLinkColor = Color.White;
+            linkLogUpdateRate.AutoSize = true;
+            linkLogUpdateRate.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkLogUpdateRate.LinkColor = Color.Gray;
+            linkLogUpdateRate.Location = new Point(154, 0);
+            linkLogUpdateRate.Margin = new Padding(0);
+            linkLogUpdateRate.Name = "linkLogUpdateRate";
+            linkLogUpdateRate.Size = new Size(98, 15);
+            linkLogUpdateRate.TabIndex = 11;
+            linkLogUpdateRate.TabStop = true;
+            linkLogUpdateRate.Text = "(Set Update Rate)";
+            linkLogUpdateRate.TextAlign = ContentAlignment.MiddleLeft;
+            linkLogUpdateRate.VisitedLinkColor = Color.Gray;
+            linkLogUpdateRate.LinkClicked += linkLogUpdateRate_LinkClicked;
+            // 
+            // linkOpenLogs
+            // 
+            linkOpenLogs.ActiveLinkColor = Color.White;
+            linkOpenLogs.AutoSize = true;
+            linkOpenLogs.BackColor = Color.LightBlue;
+            linkOpenLogs.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkOpenLogs.LinkColor = SystemColors.Desktop;
+            linkOpenLogs.Location = new Point(53, 37);
+            linkOpenLogs.Margin = new Padding(53, 1, 3, 1);
+            linkOpenLogs.Name = "linkOpenLogs";
+            linkOpenLogs.Padding = new Padding(3, 0, 3, 0);
+            linkOpenLogs.Size = new Size(151, 15);
+            linkOpenLogs.TabIndex = 27;
+            linkOpenLogs.TabStop = true;
+            linkOpenLogs.Text = "> FIND LATEST LOG FILE <";
+            linkOpenLogs.TextAlign = ContentAlignment.MiddleLeft;
+            linkOpenLogs.Visible = false;
+            linkOpenLogs.VisitedLinkColor = Color.Gray;
+            // 
+            // linkCopyLogs
+            // 
+            linkCopyLogs.ActiveLinkColor = Color.White;
+            linkCopyLogs.AutoSize = true;
+            linkCopyLogs.BackColor = Color.LightBlue;
+            linkCopyLogs.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkCopyLogs.LinkColor = SystemColors.Desktop;
+            linkCopyLogs.Location = new Point(53, 54);
+            linkCopyLogs.Margin = new Padding(53, 1, 3, 1);
+            linkCopyLogs.Name = "linkCopyLogs";
+            linkCopyLogs.Padding = new Padding(3, 0, 3, 0);
+            linkCopyLogs.Size = new Size(155, 15);
+            linkCopyLogs.TabIndex = 12;
+            linkCopyLogs.TabStop = true;
+            linkCopyLogs.Text = "> COPY INSTANCE LOGS <";
+            linkCopyLogs.TextAlign = ContentAlignment.MiddleLeft;
+            linkCopyLogs.Visible = false;
+            linkCopyLogs.VisitedLinkColor = Color.Gray;
+            // 
+            // checkWebSocketServer
+            // 
+            checkWebSocketServer.AutoSize = true;
+            checkWebSocketServer.Location = new Point(3, 71);
+            checkWebSocketServer.Margin = new Padding(3, 1, 3, 1);
+            checkWebSocketServer.Name = "checkWebSocketServer";
+            checkWebSocketServer.Padding = new Padding(20, 0, 3, 0);
+            checkWebSocketServer.Size = new Size(164, 19);
+            checkWebSocketServer.TabIndex = 25;
+            checkWebSocketServer.Tag = "WebSocketEnabled";
+            checkWebSocketServer.Text = "WebSocket API Server";
+            checkWebSocketServer.UseVisualStyleBackColor = true;
+            // 
+            // checkWebTrackerComp
+            // 
+            checkWebTrackerComp.AutoSize = true;
+            checkWebTrackerComp.ForeColor = Color.White;
+            checkWebTrackerComp.Location = new Point(3, 92);
+            checkWebTrackerComp.Margin = new Padding(3, 1, 3, 1);
+            checkWebTrackerComp.Name = "checkWebTrackerComp";
+            checkWebTrackerComp.Padding = new Padding(50, 0, 3, 0);
+            checkWebTrackerComp.Size = new Size(215, 19);
+            checkWebTrackerComp.TabIndex = 26;
+            checkWebTrackerComp.Tag = "WebTrackerCompatibility";
+            checkWebTrackerComp.Text = "Live Tracker Compatibility";
+            checkWebTrackerComp.UseVisualStyleBackColor = true;
+            // 
+            // checkCopyOnOpen
+            // 
+            checkCopyOnOpen.AutoSize = true;
+            checkCopyOnOpen.ForeColor = Color.PowderBlue;
+            checkCopyOnOpen.Location = new Point(3, 134);
+            checkCopyOnOpen.Margin = new Padding(3, 1, 3, 1);
+            checkCopyOnOpen.Name = "checkCopyOnOpen";
+            checkCopyOnOpen.Padding = new Padding(50, 0, 3, 0);
+            checkCopyOnOpen.Size = new Size(158, 19);
+            checkCopyOnOpen.TabIndex = 23;
+            checkCopyOnOpen.Tag = "CopyOnOpen";
+            checkCopyOnOpen.Text = "Copy On Open";
+            checkCopyOnOpen.UseVisualStyleBackColor = true;
+            // 
+            // checkCopyOnJoin
+            // 
+            checkCopyOnJoin.AutoSize = true;
+            checkCopyOnJoin.ForeColor = Color.PowderBlue;
+            checkCopyOnJoin.Location = new Point(3, 155);
+            checkCopyOnJoin.Margin = new Padding(3, 1, 3, 1);
+            checkCopyOnJoin.Name = "checkCopyOnJoin";
+            checkCopyOnJoin.Padding = new Padding(50, 0, 3, 0);
+            checkCopyOnJoin.Size = new Size(150, 19);
+            checkCopyOnJoin.TabIndex = 24;
+            checkCopyOnJoin.Tag = "CopyOnJoin";
+            checkCopyOnJoin.Text = "Copy On Join";
+            checkCopyOnJoin.UseVisualStyleBackColor = true;
+            // 
+            // checkCopyOnSave
+            // 
+            checkCopyOnSave.AutoSize = true;
+            checkCopyOnSave.ForeColor = Color.PowderBlue;
+            checkCopyOnSave.Location = new Point(3, 176);
+            checkCopyOnSave.Margin = new Padding(3, 1, 3, 1);
+            checkCopyOnSave.Name = "checkCopyOnSave";
+            checkCopyOnSave.Padding = new Padding(50, 0, 3, 0);
+            checkCopyOnSave.Size = new Size(153, 19);
+            checkCopyOnSave.TabIndex = 22;
+            checkCopyOnSave.Tag = "CopyOnSave";
+            checkCopyOnSave.Text = "Copy On Save";
+            checkCopyOnSave.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel6
+            // 
+            flowLayoutPanel6.AutoSize = true;
+            flowLayoutPanel6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel6.Controls.Add(checkSaveTerrorsNote);
+            flowLayoutPanel6.Controls.Add(linkAutoNoteEdit);
+            flowLayoutPanel6.Location = new Point(0, 260);
+            flowLayoutPanel6.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel6.Name = "flowLayoutPanel6";
+            flowLayoutPanel6.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel6.Size = new Size(202, 19);
+            flowLayoutPanel6.TabIndex = 17;
+            flowLayoutPanel6.WrapContents = false;
+            // 
+            // linkAutoNoteEdit
+            // 
+            linkAutoNoteEdit.ActiveLinkColor = Color.White;
+            linkAutoNoteEdit.AutoSize = true;
+            linkAutoNoteEdit.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkAutoNoteEdit.LinkColor = Color.Gray;
+            linkAutoNoteEdit.Location = new Point(167, 0);
+            linkAutoNoteEdit.Margin = new Padding(0);
+            linkAutoNoteEdit.Name = "linkAutoNoteEdit";
+            linkAutoNoteEdit.Size = new Size(35, 15);
+            linkAutoNoteEdit.TabIndex = 11;
+            linkAutoNoteEdit.TabStop = true;
+            linkAutoNoteEdit.Text = "(Edit)";
+            linkAutoNoteEdit.TextAlign = ContentAlignment.MiddleLeft;
+            linkAutoNoteEdit.VisitedLinkColor = Color.Gray;
+            linkAutoNoteEdit.LinkClicked += linkAutoNoteEdit_LinkClicked;
+            // 
+            // flowRoundInfoFilePanel
+            // 
+            flowRoundInfoFilePanel.AutoSize = true;
+            flowRoundInfoFilePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowRoundInfoFilePanel.BorderStyle = BorderStyle.FixedSingle;
+            flowRoundInfoFilePanel.Controls.Add(checkRoundToFile);
+            flowRoundInfoFilePanel.Controls.Add(flowRoundInfoFiles);
+            flowRoundInfoFilePanel.Controls.Add(linkAddInfoFile);
+            flowRoundInfoFilePanel.FlowDirection = FlowDirection.TopDown;
+            flowRoundInfoFilePanel.Location = new Point(3, 281);
+            flowRoundInfoFilePanel.Margin = new Padding(3, 1, 3, 1);
+            flowRoundInfoFilePanel.Name = "flowRoundInfoFilePanel";
+            flowRoundInfoFilePanel.Size = new Size(145, 36);
+            flowRoundInfoFilePanel.TabIndex = 17;
+            flowRoundInfoFilePanel.WrapContents = false;
+            // 
+            // checkRoundToFile
+            // 
+            checkRoundToFile.AutoSize = true;
+            checkRoundToFile.Location = new Point(0, 0);
+            checkRoundToFile.Margin = new Padding(0);
+            checkRoundToFile.Name = "checkRoundToFile";
+            checkRoundToFile.Padding = new Padding(20, 0, 3, 0);
+            checkRoundToFile.Size = new Size(143, 19);
+            checkRoundToFile.TabIndex = 15;
+            checkRoundToFile.Tag = resources.GetString("checkRoundToFile.Tag");
+            checkRoundToFile.Text = "Round Info to File";
+            checkRoundToFile.UseVisualStyleBackColor = true;
+            // 
+            // flowRoundInfoFiles
+            // 
+            flowRoundInfoFiles.AutoSize = true;
+            flowRoundInfoFiles.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowRoundInfoFiles.FlowDirection = FlowDirection.TopDown;
+            flowRoundInfoFiles.Location = new Point(50, 19);
+            flowRoundInfoFiles.Margin = new Padding(50, 0, 0, 0);
+            flowRoundInfoFiles.Name = "flowRoundInfoFiles";
+            flowRoundInfoFiles.Size = new Size(0, 0);
+            flowRoundInfoFiles.TabIndex = 17;
+            flowRoundInfoFiles.WrapContents = false;
+            // 
+            // linkAddInfoFile
+            // 
+            linkAddInfoFile.ActiveLinkColor = Color.White;
+            linkAddInfoFile.AutoSize = true;
+            linkAddInfoFile.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkAddInfoFile.LinkColor = Color.Gray;
+            linkAddInfoFile.Location = new Point(0, 19);
+            linkAddInfoFile.Margin = new Padding(0);
+            linkAddInfoFile.Name = "linkAddInfoFile";
+            linkAddInfoFile.Padding = new Padding(50, 0, 0, 0);
+            linkAddInfoFile.Size = new Size(108, 15);
+            linkAddInfoFile.TabIndex = 16;
+            linkAddInfoFile.TabStop = true;
+            linkAddInfoFile.Text = "(Add File)";
+            linkAddInfoFile.TextAlign = ContentAlignment.MiddleLeft;
+            linkAddInfoFile.VisitedLinkColor = Color.Gray;
+            linkAddInfoFile.LinkClicked += linkAddInfoFile_LinkClicked;
+            // 
+            // labelGroupDiscord
+            // 
+            labelGroupDiscord.AutoSize = true;
+            labelGroupDiscord.Location = new Point(3, 333);
+            labelGroupDiscord.Margin = new Padding(3, 15, 3, 0);
+            labelGroupDiscord.Name = "labelGroupDiscord";
+            labelGroupDiscord.Size = new Size(94, 15);
+            labelGroupDiscord.TabIndex = 19;
+            labelGroupDiscord.Text = "Discord Features";
+            // 
+            // checkDiscordPresence
+            // 
+            checkDiscordPresence.AutoSize = true;
+            checkDiscordPresence.Location = new Point(3, 370);
+            checkDiscordPresence.Margin = new Padding(3, 1, 3, 1);
+            checkDiscordPresence.Name = "checkDiscordPresence";
+            checkDiscordPresence.Padding = new Padding(20, 0, 3, 0);
+            checkDiscordPresence.Size = new Size(160, 19);
+            checkDiscordPresence.TabIndex = 20;
+            checkDiscordPresence.Tag = "DiscordRichPresence";
+            checkDiscordPresence.Text = "Enable Rich Presence";
+            checkDiscordPresence.UseVisualStyleBackColor = true;
+            // 
+            // flowDiscordStateText
+            // 
+            flowDiscordStateText.AutoSize = true;
+            flowDiscordStateText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordStateText.Controls.Add(checkDiscordCustomState);
+            flowDiscordStateText.Controls.Add(linkEditDiscordState);
+            flowDiscordStateText.Location = new Point(0, 391);
+            flowDiscordStateText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordStateText.Name = "flowDiscordStateText";
+            flowDiscordStateText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordStateText.Size = new Size(212, 19);
+            flowDiscordStateText.TabIndex = 18;
+            flowDiscordStateText.WrapContents = false;
+            // 
+            // checkDiscordCustomState
+            // 
+            checkDiscordCustomState.AutoSize = true;
+            checkDiscordCustomState.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomState.Location = new Point(3, 0);
+            checkDiscordCustomState.Margin = new Padding(0);
+            checkDiscordCustomState.Name = "checkDiscordCustomState";
+            checkDiscordCustomState.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomState.Size = new Size(174, 19);
+            checkDiscordCustomState.TabIndex = 3;
+            checkDiscordCustomState.Tag = "DiscordCustomState";
+            checkDiscordCustomState.Text = "Custom State Text";
+            checkDiscordCustomState.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordState
+            // 
+            linkEditDiscordState.ActiveLinkColor = Color.White;
+            linkEditDiscordState.AutoSize = true;
+            linkEditDiscordState.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordState.LinkColor = Color.Gray;
+            linkEditDiscordState.Location = new Point(177, 0);
+            linkEditDiscordState.Margin = new Padding(0);
+            linkEditDiscordState.Name = "linkEditDiscordState";
+            linkEditDiscordState.Size = new Size(35, 15);
+            linkEditDiscordState.TabIndex = 11;
+            linkEditDiscordState.TabStop = true;
+            linkEditDiscordState.Text = "(Edit)";
+            linkEditDiscordState.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordState.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordDetailsText
+            // 
+            flowDiscordDetailsText.AutoSize = true;
+            flowDiscordDetailsText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordDetailsText.Controls.Add(checkDiscordCustomDetails);
+            flowDiscordDetailsText.Controls.Add(linkEditDiscordDetails);
+            flowDiscordDetailsText.Location = new Point(0, 412);
+            flowDiscordDetailsText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordDetailsText.Name = "flowDiscordDetailsText";
+            flowDiscordDetailsText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordDetailsText.Size = new Size(221, 19);
+            flowDiscordDetailsText.TabIndex = 19;
+            flowDiscordDetailsText.WrapContents = false;
+            // 
+            // checkDiscordCustomDetails
+            // 
+            checkDiscordCustomDetails.AutoSize = true;
+            checkDiscordCustomDetails.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomDetails.Location = new Point(3, 0);
+            checkDiscordCustomDetails.Margin = new Padding(0);
+            checkDiscordCustomDetails.Name = "checkDiscordCustomDetails";
+            checkDiscordCustomDetails.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomDetails.Size = new Size(183, 19);
+            checkDiscordCustomDetails.TabIndex = 3;
+            checkDiscordCustomDetails.Tag = "DiscordCustomDetails";
+            checkDiscordCustomDetails.Text = "Custom Details Text";
+            checkDiscordCustomDetails.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordDetails
+            // 
+            linkEditDiscordDetails.ActiveLinkColor = Color.White;
+            linkEditDiscordDetails.AutoSize = true;
+            linkEditDiscordDetails.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordDetails.LinkColor = Color.Gray;
+            linkEditDiscordDetails.Location = new Point(186, 0);
+            linkEditDiscordDetails.Margin = new Padding(0);
+            linkEditDiscordDetails.Name = "linkEditDiscordDetails";
+            linkEditDiscordDetails.Size = new Size(35, 15);
+            linkEditDiscordDetails.TabIndex = 11;
+            linkEditDiscordDetails.TabStop = true;
+            linkEditDiscordDetails.Text = "(Edit)";
+            linkEditDiscordDetails.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordDetails.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordImageText
+            // 
+            flowDiscordImageText.AutoSize = true;
+            flowDiscordImageText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordImageText.Controls.Add(checkDiscordCustomImageText);
+            flowDiscordImageText.Controls.Add(linkEditDiscordImage);
+            flowDiscordImageText.Location = new Point(0, 433);
+            flowDiscordImageText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordImageText.Name = "flowDiscordImageText";
+            flowDiscordImageText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordImageText.Size = new Size(219, 19);
+            flowDiscordImageText.TabIndex = 20;
+            flowDiscordImageText.WrapContents = false;
+            // 
+            // checkDiscordCustomImageText
+            // 
+            checkDiscordCustomImageText.AutoSize = true;
+            checkDiscordCustomImageText.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomImageText.Location = new Point(3, 0);
+            checkDiscordCustomImageText.Margin = new Padding(0);
+            checkDiscordCustomImageText.Name = "checkDiscordCustomImageText";
+            checkDiscordCustomImageText.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomImageText.Size = new Size(181, 19);
+            checkDiscordCustomImageText.TabIndex = 3;
+            checkDiscordCustomImageText.Tag = "DiscordCustomImageText";
+            checkDiscordCustomImageText.Text = "Custom Image Text";
+            checkDiscordCustomImageText.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordImage
+            // 
+            linkEditDiscordImage.ActiveLinkColor = Color.White;
+            linkEditDiscordImage.AutoSize = true;
+            linkEditDiscordImage.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordImage.LinkColor = Color.Gray;
+            linkEditDiscordImage.Location = new Point(184, 0);
+            linkEditDiscordImage.Margin = new Padding(0);
+            linkEditDiscordImage.Name = "linkEditDiscordImage";
+            linkEditDiscordImage.Size = new Size(35, 15);
+            linkEditDiscordImage.TabIndex = 11;
+            linkEditDiscordImage.TabStop = true;
+            linkEditDiscordImage.Text = "(Edit)";
+            linkEditDiscordImage.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordImage.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordIconText
+            // 
+            flowDiscordIconText.AutoSize = true;
+            flowDiscordIconText.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordIconText.Controls.Add(checkDiscordCustomIcon);
+            flowDiscordIconText.Controls.Add(linkEditDiscordIcon);
+            flowDiscordIconText.Location = new Point(0, 454);
+            flowDiscordIconText.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordIconText.Name = "flowDiscordIconText";
+            flowDiscordIconText.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordIconText.Size = new Size(209, 19);
+            flowDiscordIconText.TabIndex = 21;
+            flowDiscordIconText.WrapContents = false;
+            // 
+            // checkDiscordCustomIcon
+            // 
+            checkDiscordCustomIcon.AutoSize = true;
+            checkDiscordCustomIcon.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomIcon.Location = new Point(3, 0);
+            checkDiscordCustomIcon.Margin = new Padding(0);
+            checkDiscordCustomIcon.Name = "checkDiscordCustomIcon";
+            checkDiscordCustomIcon.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomIcon.Size = new Size(171, 19);
+            checkDiscordCustomIcon.TabIndex = 3;
+            checkDiscordCustomIcon.Tag = "DiscordCustomIconText";
+            checkDiscordCustomIcon.Text = "Custom Icon Text";
+            checkDiscordCustomIcon.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordIcon
+            // 
+            linkEditDiscordIcon.ActiveLinkColor = Color.White;
+            linkEditDiscordIcon.AutoSize = true;
+            linkEditDiscordIcon.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordIcon.LinkColor = Color.Gray;
+            linkEditDiscordIcon.Location = new Point(174, 0);
+            linkEditDiscordIcon.Margin = new Padding(0);
+            linkEditDiscordIcon.Name = "linkEditDiscordIcon";
+            linkEditDiscordIcon.Size = new Size(35, 15);
+            linkEditDiscordIcon.TabIndex = 11;
+            linkEditDiscordIcon.TabStop = true;
+            linkEditDiscordIcon.Text = "(Edit)";
+            linkEditDiscordIcon.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordIcon.VisitedLinkColor = Color.Gray;
+            // 
+            // flowDiscordIconStart
+            // 
+            flowDiscordIconStart.AutoSize = true;
+            flowDiscordIconStart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowDiscordIconStart.Controls.Add(checkDiscordCustomStart);
+            flowDiscordIconStart.Controls.Add(linkEditDiscordStart);
+            flowDiscordIconStart.Location = new Point(0, 475);
+            flowDiscordIconStart.Margin = new Padding(0, 1, 0, 1);
+            flowDiscordIconStart.Name = "flowDiscordIconStart";
+            flowDiscordIconStart.Padding = new Padding(3, 0, 0, 0);
+            flowDiscordIconStart.Size = new Size(210, 19);
+            flowDiscordIconStart.TabIndex = 22;
+            flowDiscordIconStart.WrapContents = false;
+            // 
+            // checkDiscordCustomStart
+            // 
+            checkDiscordCustomStart.AutoSize = true;
+            checkDiscordCustomStart.ForeColor = SystemColors.ScrollBar;
+            checkDiscordCustomStart.Location = new Point(3, 0);
+            checkDiscordCustomStart.Margin = new Padding(0);
+            checkDiscordCustomStart.Name = "checkDiscordCustomStart";
+            checkDiscordCustomStart.Padding = new Padding(50, 0, 3, 0);
+            checkDiscordCustomStart.Size = new Size(172, 19);
+            checkDiscordCustomStart.TabIndex = 3;
+            checkDiscordCustomStart.Tag = "DiscordCustomStartText";
+            checkDiscordCustomStart.Text = "Custom Start Text";
+            checkDiscordCustomStart.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDiscordStart
+            // 
+            linkEditDiscordStart.ActiveLinkColor = Color.White;
+            linkEditDiscordStart.AutoSize = true;
+            linkEditDiscordStart.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDiscordStart.LinkColor = Color.Gray;
+            linkEditDiscordStart.Location = new Point(175, 0);
+            linkEditDiscordStart.Margin = new Padding(0);
+            linkEditDiscordStart.Name = "linkEditDiscordStart";
+            linkEditDiscordStart.Size = new Size(35, 15);
+            linkEditDiscordStart.TabIndex = 11;
+            linkEditDiscordStart.TabStop = true;
+            linkEditDiscordStart.Text = "(Edit)";
+            linkEditDiscordStart.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDiscordStart.VisitedLinkColor = Color.Gray;
+            // 
+            // labelGroupNotifications
+            // 
+            labelGroupNotifications.AutoSize = true;
+            labelGroupNotifications.Location = new Point(3, 510);
+            labelGroupNotifications.Margin = new Padding(3, 15, 3, 0);
+            labelGroupNotifications.Name = "labelGroupNotifications";
+            labelGroupNotifications.Size = new Size(75, 15);
+            labelGroupNotifications.TabIndex = 12;
+            labelGroupNotifications.Text = "Notifications";
+            // 
+            // labelGroupOSC
+            // 
+            labelGroupOSC.AutoSize = true;
+            labelGroupOSC.Location = new Point(3, 582);
+            labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
+            labelGroupOSC.Name = "labelGroupOSC";
+            labelGroupOSC.Size = new Size(30, 15);
+            labelGroupOSC.TabIndex = 11;
+            labelGroupOSC.Text = "OSC";
+            // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.AutoSize = true;
+            flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
+            flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
+            flowLayoutPanel3.Location = new Point(3, 640);
+            flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(286, 19);
+            flowLayoutPanel3.TabIndex = 18;
+            flowLayoutPanel3.WrapContents = false;
+            // 
+            // checkOSCSendDamage
+            // 
+            checkOSCSendDamage.AutoSize = true;
+            checkOSCSendDamage.ForeColor = Color.PowderBlue;
+            checkOSCSendDamage.Location = new Point(0, 0);
+            checkOSCSendDamage.Margin = new Padding(0);
+            checkOSCSendDamage.Name = "checkOSCSendDamage";
+            checkOSCSendDamage.Padding = new Padding(50, 0, 3, 0);
+            checkOSCSendDamage.Size = new Size(213, 19);
+            checkOSCSendDamage.TabIndex = 12;
+            checkOSCSendDamage.Tag = "OSCDamagedEvent";
+            checkOSCSendDamage.Text = "Send Damage Event (INT)";
+            checkOSCSendDamage.UseVisualStyleBackColor = true;
+            // 
+            // linkSetDamageInterval
+            // 
+            linkSetDamageInterval.ActiveLinkColor = Color.White;
+            linkSetDamageInterval.AutoSize = true;
+            linkSetDamageInterval.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSetDamageInterval.LinkColor = Color.Gray;
+            linkSetDamageInterval.Location = new Point(213, 0);
+            linkSetDamageInterval.Margin = new Padding(0);
+            linkSetDamageInterval.Name = "linkSetDamageInterval";
+            linkSetDamageInterval.Size = new Size(73, 15);
+            linkSetDamageInterval.TabIndex = 11;
+            linkSetDamageInterval.TabStop = true;
+            linkSetDamageInterval.Text = "(Set Interval)";
+            linkSetDamageInterval.TextAlign = ContentAlignment.MiddleLeft;
+            linkSetDamageInterval.VisitedLinkColor = Color.Gray;
+            linkSetDamageInterval.LinkClicked += linkSetDamageInterval_LinkClicked;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel2.Controls.Add(checkSendChatbox);
+            flowLayoutPanel2.Controls.Add(linkEditChatbox);
+            flowLayoutPanel2.Location = new Point(0, 661);
+            flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel2.Size = new Size(210, 19);
+            flowLayoutPanel2.TabIndex = 16;
+            flowLayoutPanel2.WrapContents = false;
+            // 
+            // linkEditChatbox
+            // 
+            linkEditChatbox.ActiveLinkColor = Color.White;
+            linkEditChatbox.AutoSize = true;
+            linkEditChatbox.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditChatbox.LinkColor = Color.Gray;
+            linkEditChatbox.Location = new Point(175, 0);
+            linkEditChatbox.Margin = new Padding(0);
+            linkEditChatbox.Name = "linkEditChatbox";
+            linkEditChatbox.Size = new Size(35, 15);
+            linkEditChatbox.TabIndex = 11;
+            linkEditChatbox.TabStop = true;
+            linkEditChatbox.Text = "(Edit)";
+            linkEditChatbox.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditChatbox.VisitedLinkColor = Color.Gray;
+            linkEditChatbox.LinkClicked += linkEditChatbox_Click;
+            // 
+            // labelGroupFormat
+            // 
+            labelGroupFormat.AutoSize = true;
+            labelGroupFormat.Location = new Point(3, 696);
+            labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
+            labelGroupFormat.Name = "labelGroupFormat";
+            labelGroupFormat.Size = new Size(74, 15);
+            labelGroupFormat.TabIndex = 13;
+            labelGroupFormat.Text = "Time Format";
+            // 
+            // labelGroupStyle
+            // 
+            labelGroupStyle.AutoSize = true;
+            labelGroupStyle.Location = new Point(3, 810);
+            labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
+            labelGroupStyle.Name = "labelGroupStyle";
+            labelGroupStyle.Size = new Size(32, 15);
+            labelGroupStyle.TabIndex = 14;
+            labelGroupStyle.Text = "Style";
+            // 
+            // flowLayoutPanel4
+            // 
+            flowLayoutPanel4.AutoSize = true;
+            flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
+            flowLayoutPanel4.Controls.Add(linkOpenRGB);
+            flowLayoutPanel4.Location = new Point(0, 847);
+            flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel4.Name = "flowLayoutPanel4";
+            flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel4.Size = new Size(223, 19);
+            flowLayoutPanel4.TabIndex = 21;
+            flowLayoutPanel4.WrapContents = false;
+            // 
+            // checkOpenRGBEnabled
+            // 
+            checkOpenRGBEnabled.AutoSize = true;
+            checkOpenRGBEnabled.Location = new Point(3, 0);
+            checkOpenRGBEnabled.Margin = new Padding(0);
+            checkOpenRGBEnabled.Name = "checkOpenRGBEnabled";
+            checkOpenRGBEnabled.Padding = new Padding(20, 0, 3, 0);
+            checkOpenRGBEnabled.Size = new Size(145, 19);
+            checkOpenRGBEnabled.TabIndex = 8;
+            checkOpenRGBEnabled.Tag = "OpenRGBEnabled";
+            checkOpenRGBEnabled.Text = "OpenRGB Support";
+            checkOpenRGBEnabled.UseVisualStyleBackColor = true;
+            // 
+            // linkOpenRGB
+            // 
+            linkOpenRGB.ActiveLinkColor = Color.White;
+            linkOpenRGB.AutoSize = true;
+            linkOpenRGB.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkOpenRGB.LinkColor = Color.Gray;
+            linkOpenRGB.Location = new Point(148, 0);
+            linkOpenRGB.Margin = new Padding(0);
+            linkOpenRGB.Name = "linkOpenRGB";
+            linkOpenRGB.Size = new Size(75, 15);
+            linkOpenRGB.TabIndex = 11;
+            linkOpenRGB.TabStop = true;
+            linkOpenRGB.Text = "(Open JSON)";
+            linkOpenRGB.TextAlign = ContentAlignment.MiddleLeft;
+            linkOpenRGB.VisitedLinkColor = Color.Gray;
+            linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
+            // 
             // SettingsWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(284, 425);
-            Controls.Add(groupBoxStyle);
-            Controls.Add(btnOpenData);
-            Controls.Add(btnCheckForUpdates);
-            Controls.Add(groupBoxTime);
-            Controls.Add(groupBoxNotifications);
-            Controls.Add(groupBoxGeneral);
+            ClientSize = new Size(585, 614);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
             Controls.Add(languageSelectBox);
             ForeColor = Color.White;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            MinimumSize = new Size(258, 200);
+            MinimumSize = new Size(200, 200);
             Name = "SettingsWindow";
             Padding = new Padding(8);
-            ShowIcon = false;
             ShowInTaskbar = false;
-            SizeGripStyle = SizeGripStyle.Hide;
             Text = "Settings";
             FormClosed += SettingsWindow_FormClosed;
             Load += SettingsWindow_Load;
-            groupBoxGeneral.ResumeLayout(false);
-            groupBoxNotifications.ResumeLayout(false);
-            groupBoxTime.ResumeLayout(false);
             ctxData.ResumeLayout(false);
-            groupBoxStyle.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel5.ResumeLayout(false);
+            flowLayoutPanel5.PerformLayout();
+            flowLayoutPanel6.ResumeLayout(false);
+            flowLayoutPanel6.PerformLayout();
+            flowRoundInfoFilePanel.ResumeLayout(false);
+            flowRoundInfoFilePanel.PerformLayout();
+            flowDiscordStateText.ResumeLayout(false);
+            flowDiscordStateText.PerformLayout();
+            flowDiscordDetailsText.ResumeLayout(false);
+            flowDiscordDetailsText.PerformLayout();
+            flowDiscordImageText.ResumeLayout(false);
+            flowDiscordImageText.PerformLayout();
+            flowDiscordIconText.ResumeLayout(false);
+            flowDiscordIconText.PerformLayout();
+            flowDiscordIconStart.ResumeLayout(false);
+            flowDiscordIconStart.PerformLayout();
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
+            flowLayoutPanel4.ResumeLayout(false);
+            flowLayoutPanel4.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private GroupBox groupBoxGeneral;
         private CheckBox checkAutoCopy;
         private CheckBox checkPlayerNames;
         private Button btnCheckForUpdates;
-        private GroupBox groupBoxNotifications;
         private CheckBox checkPlayAudio;
         private CheckBox checkXSOverlay;
-        private GroupBox groupBoxTime;
         private CheckBox checkInvertMD;
         private CheckBox checkShowSeconds;
         private CheckBox check24Hour;
         private Button btnOpenData;
         private ToolTip toolTip;
-        private GroupBox groupBoxStyle;
         private CheckBox checkColorObjectives;
         private CheckBox checkSaveTerrorsNote;
         private CheckBox checkSaveTerrors;
@@ -460,5 +1216,55 @@
         private CheckBox checkDiscordBackup;
         private CheckBox checkOSCEnabled;
         private ComboBox languageSelectBox;
+        private Panel panel1;
+        private CheckBox checkSendChatbox;
+        private CheckBox checkOSCSendColor;
+        private Panel panel2;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Label labelGroupGeneral;
+        private Label labelGroupOSC;
+        private Label labelGroupNotifications;
+        private Label labelGroupFormat;
+        private Label labelGroupStyle;
+        private CheckBox checkRoundToFile;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private LinkLabel linkEditChatbox;
+        private FlowLayoutPanel flowRoundInfoFilePanel;
+        private LinkLabel linkAddInfoFile;
+        private FlowLayoutPanel flowRoundInfoFiles;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private CheckBox checkOSCSendDamage;
+        private LinkLabel linkSetDamageInterval;
+        private Label labelGroupDiscord;
+        private CheckBox checkDiscordPresence;
+        private FlowLayoutPanel flowLayoutPanel4;
+        private CheckBox checkOpenRGBEnabled;
+        private LinkLabel linkOpenRGB;
+        private FlowLayoutPanel flowLayoutPanel5;
+        private LinkLabel linkLogUpdateRate;
+        private CheckBox checkCopyOnSave;
+        private CheckBox checkCopyOnOpen;
+        private CheckBox checkCopyOnJoin;
+        private FlowLayoutPanel flowLayoutPanel6;
+        private LinkLabel linkAutoNoteEdit;
+        private CheckBox checkWebSocketServer;
+        private CheckBox checkWebTrackerComp;
+        private FlowLayoutPanel flowDiscordStateText;
+        private CheckBox checkDiscordCustomState;
+        private LinkLabel linkEditDiscordState;
+        private FlowLayoutPanel flowDiscordDetailsText;
+        private CheckBox checkDiscordCustomDetails;
+        private LinkLabel linkEditDiscordDetails;
+        private FlowLayoutPanel flowDiscordImageText;
+        private CheckBox checkDiscordCustomImageText;
+        private LinkLabel linkEditDiscordImage;
+        private FlowLayoutPanel flowDiscordIconText;
+        private CheckBox checkDiscordCustomIcon;
+        private LinkLabel linkEditDiscordIcon;
+        private FlowLayoutPanel flowDiscordIconStart;
+        private CheckBox checkDiscordCustomStart;
+        private LinkLabel linkEditDiscordStart;
+        private LinkLabel linkCopyLogs;
+        private LinkLabel linkOpenLogs;
     }
 }

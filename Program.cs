@@ -1,11 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.Drawing.Text;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
-using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.API;
+using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.LogParser;
 
 namespace ToNSaveManager
 {
@@ -15,7 +18,7 @@ namespace ToNSaveManager
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
-        internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher.GetVRChatDataLocation(), ProgramName);
+        internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher<ToNLogContext>.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
         internal static void ReleaseMutex()
@@ -32,12 +35,23 @@ namespace ToNSaveManager
             return AppMutex != null && !AppMutex.WaitOne(TimeSpan.Zero, true);
         }
 
+        static string[] Arguments = Array.Empty<string>();
+        internal static bool ContainsArg(string arg) {
+            return Array.IndexOf(Arguments, arg) != -1;
+        }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
+            Arguments = args;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             LANG.Initialize();
 
             UpdateWindow.RunPostUpdateCheck(args);
@@ -54,19 +68,20 @@ namespace ToNSaveManager
             InitializeFont();
 
             Application.ApplicationExit += delegate {
-                Debug.WriteLine("Disposing on exit");
+                Logger.Log("Disposing used resources...");
                 FontCollection.Dispose();
                 DefaultFont?.Dispose();
                 ReleaseMutex();
-                Debug.WriteLine("Saving on exit");
+                Logger.Log("Saving before app exit...");
                 MainWindow.SaveData.Export();
+                StatsWindow.WriteChanges();
+                Logger.Log("Done.");
             };
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
-            Debug.WriteLine(ProgramDirectory);
-
             if (!StartCheckForUpdate()) {
+                DSRichPresence.Initialize();
                 Application.Run(new MainWindow());
             }
         }
@@ -92,7 +107,7 @@ namespace ToNSaveManager
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.ToString());
+                        Logger.Error(ex.ToString());
                     }
             }
 
@@ -118,6 +133,9 @@ namespace ToNSaveManager
         /// <param name="showUpToDate">Shows a message if there's no updates available.</param>
         internal static bool StartCheckForUpdate(bool showUpToDate = false)
         {
+#if DEBUG
+            return false;
+#else
             Version? currentVersion = GetVersion();
             if (currentVersion == null) return false; // No current version?
 
@@ -131,8 +149,8 @@ namespace ToNSaveManager
                 const string log_start = "[changelog]: <> (START)";
                 const string log_end = "[changelog]: <> (END)";
 
-                int start = release.body.IndexOf(log_start);
-                int end = release.body.IndexOf(log_end);
+                int start = release.body.IndexOf(log_start, StringComparison.InvariantCulture);
+                int end = release.body.IndexOf(log_end, StringComparison.InvariantCulture);
                 string body = string.Empty;
 
                 if (start > -1 && end > (start + log_start.Length) && end > start)
@@ -158,11 +176,12 @@ namespace ToNSaveManager
             }
 
             return false;
+#endif
         }
 
         internal static bool CreateFileBackup(string filePath)
         {
-            Debug.WriteLine("Creating Backup For: " + filePath);
+            Logger.Info("Creating Backup For: " + filePath);
 
             try
             {

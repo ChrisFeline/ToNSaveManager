@@ -47,6 +47,7 @@
             btnObjectives = new Button();
             linkWiki = new Button();
             splitContainer1 = new SplitContainer();
+            btnStats = new Button();
             linkSupport = new Button();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
@@ -72,6 +73,7 @@
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
+            listBoxKeys.KeyDown += listBoxKeys_KeyDown;
             listBoxKeys.MouseDown += listBoxKeys_MouseDown;
             listBoxKeys.MouseUp += listBoxKeys_MouseUp;
             // 
@@ -205,7 +207,7 @@
             btnObjectives.ForeColor = Color.White;
             btnObjectives.Location = new Point(0, 223);
             btnObjectives.Name = "btnObjectives";
-            btnObjectives.Size = new Size(229, 24);
+            btnObjectives.Size = new Size(165, 24);
             btnObjectives.TabIndex = 0;
             btnObjectives.TabStop = false;
             btnObjectives.Text = "Objectives";
@@ -241,6 +243,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(btnStats);
             splitContainer1.Panel2.Controls.Add(linkSupport);
             splitContainer1.Panel2.Controls.Add(listBoxEntries);
             splitContainer1.Panel2.Controls.Add(btnObjectives);
@@ -250,6 +253,22 @@
             splitContainer1.TabIndex = 0;
             splitContainer1.TabStop = false;
             splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
+            // 
+            // btnStats
+            // 
+            btnStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnStats.BackColor = Color.FromArgb(46, 52, 64);
+            btnStats.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnStats.FlatStyle = FlatStyle.Flat;
+            btnStats.ForeColor = Color.White;
+            btnStats.Location = new Point(171, 223);
+            btnStats.Name = "btnStats";
+            btnStats.Size = new Size(58, 24);
+            btnStats.TabIndex = 5;
+            btnStats.TabStop = false;
+            btnStats.Text = "Stats";
+            btnStats.UseVisualStyleBackColor = false;
+            btnStats.Click += btnStats_Click;
             // 
             // linkSupport
             // 
@@ -269,8 +288,8 @@
             // 
             // MainWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(46, 52, 64);
             ClientSize = new Size(529, 271);
             Controls.Add(splitContainer1);
@@ -279,6 +298,7 @@
             MinimumSize = new Size(412, 256);
             Name = "MainWindow";
             Text = "ToN Save Manager";
+            Activated += MainWindow_Activated;
             FormClosing += MainWindow_FormClosing;
             Load += mainWindow_Loaded;
             Shown += mainWindow_Shown;
@@ -312,5 +332,6 @@
         private SplitContainer splitContainer1;
         private ToolStripMenuItem ctxMenuEntriesBackup;
         private Button linkSupport;
+        private Button btnStats;
     }
 }

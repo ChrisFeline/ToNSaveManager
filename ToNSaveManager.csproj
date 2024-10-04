@@ -7,9 +7,11 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
-    <Version>1.0.0.1</Version>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.2</Version>
+    <FileVersion>1.0.0.2</FileVersion>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,8 @@
     <None Remove="notification.wav" />
     <None Remove="Resources\FiraCode.ttf" />
     <None Remove="Resources\index.json" />
+    <None Remove="Resources\notification_copy.wav" />
+    <None Remove="Resources\notification_secret.wav" />
     <None Remove="Resources\objectives.json" />
     <None Remove="Resources\xs_icon.png" />
   </ItemGroup>
@@ -27,6 +31,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Localization\Language\*.*" />
+    <EmbeddedResource Include="Resources\notification_copy.wav" />
+    <EmbeddedResource Include="Resources\notification_secret.wav" />
     <EmbeddedResource Include="Resources\index.json" />
     <EmbeddedResource Include="Resources\objectives.json" />
     <EmbeddedResource Include="Resources\xs_icon.png">
@@ -38,7 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
+    <PackageReference Include="Jint" Version="4.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenRGB.NET" Version="3.1.1" />
+    <PackageReference Include="websocketsharp.core" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

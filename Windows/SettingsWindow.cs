@@ -1,9 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Security.Policy;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
+using ToNSaveManager.Utils.LogParser;
+using ToNSaveManager.Utils.OpenRGB;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ToNSaveManager.Windows
@@ -18,6 +24,36 @@ namespace ToNSaveManager.Windows
         public SettingsWindow() {
             InitializeComponent();
             ClickTimer.Tick += ClickTimer_Tick;
+            languageSelectBox.FixItemHeight(true);
+
+#if DEBUG
+            linkCopyLogs.Visible = true;
+            linkOpenLogs.Visible = true;
+
+            var ev = (object? e, LinkLabelLinkClickedEventArgs a) => {
+                bool isOpen = e == linkOpenLogs;
+                if (ToNLogContext.Instance == null) return;
+
+                string fullPath = isOpen ? ToNLogContext.Instance.FilePath : Path.GetFullPath("instance_logs.log");
+
+                if (!isOpen) {
+                    string instanceLogs = ToNLogContext.Instance.GetRoomLogs();
+                    File.WriteAllText(fullPath, instanceLogs);
+
+                    System.Collections.Specialized.StringCollection paths = [fullPath];
+                    Clipboard.SetFileDropList(paths);
+
+                    MessageBox.Show("Instance logs file created and copied to the clipboard.\nUse PASTE on Discord to send the log file.", "Instance Logs Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                using (Process.Start("explorer.exe", "/select, \"" + fullPath + "\"")) {
+                    Logger.Debug("Opened file in explorer: " + fullPath);
+                }
+            };
+            var hd = new LinkLabelLinkClickedEventHandler(ev);
+            linkCopyLogs.LinkClicked += hd;
+            linkOpenLogs.LinkClicked += hd;
+#endif
         }
 
         public static void Open(Form parent) {
@@ -48,10 +84,25 @@ namespace ToNSaveManager.Windows
                 if (pair.Key == "SETTINGS.PLAYAUDIO") PostAudioLocationSet();
             }
 
-            LANG.C(groupBoxGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
-            LANG.C(groupBoxNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
-            LANG.C(groupBoxTime, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
-            LANG.C(groupBoxStyle, "SETTINGS.GROUP.STYLE", toolTip);
+            LANG.C(labelGroupGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
+            LANG.C(labelGroupDiscord, "SETTINGS.GROUP.DISCORD", toolTip);
+            LANG.C(labelGroupNotifications, "SETTINGS.GROUP.NOTIFICATIONS", toolTip);
+            LANG.C(labelGroupFormat, "SETTINGS.GROUP.TIME_FORMAT", toolTip);
+            LANG.C(labelGroupStyle, "SETTINGS.GROUP.STYLE", toolTip);
+            LANG.C(labelGroupOSC, "SETTINGS.GROUP.OSC", toolTip);
+
+            LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
+            LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
+            LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
+            LANG.C(linkOpenRGB, "SETTINGS.OPENRGB_JSONFILE", toolTip);
+            LANG.C(linkLogUpdateRate, "SETTINGS.LOGUPDATERATE", toolTip);
+            LANG.C(linkAutoNoteEdit, "SETTINGS.SAVEROUNDNOTE_EDIT", toolTip);
+
+            LANG.C(linkEditDiscordDetails, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordState, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordImage, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+            LANG.C(linkEditDiscordStart, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -63,12 +114,28 @@ namespace ToNSaveManager.Windows
             string? versionString = Program.GetVersion()?.ToString();
             if (!string.IsNullOrEmpty(versionString))
                 toolTip.SetToolTip(btnCheckForUpdates, LANG.S("SETTINGS.VERSION", versionString) ?? $"Current Version {versionString}");
+
+            RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
+        private static Font? GroupLabelFont { get; set; }
         // Subscribe to events on load
         private void SettingsWindow_Load(object sender, EventArgs e) {
             BindControlsRecursive(Controls);
             LocalizeContent();
+
+            // Clone font for group labels
+            if (GroupLabelFont == null) {
+                GroupLabelFont = new Font(labelGroupGeneral.Font.FontFamily, 12, FontStyle.Bold);
+            }
+
+            // Check font size for group labels
+            labelGroupGeneral.Font = GroupLabelFont;
+            labelGroupDiscord.Font = GroupLabelFont;
+            labelGroupNotifications.Font = GroupLabelFont;
+            labelGroupFormat.Font = GroupLabelFont;
+            labelGroupStyle.Font = GroupLabelFont;
+            labelGroupOSC.Font = GroupLabelFont;
 
             // Custom audio handling
             PostAudioLocationSet();
@@ -89,11 +156,222 @@ namespace ToNSaveManager.Windows
 
             // Discord Backups
             checkDiscordBackup.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+            checkDiscordPresence.CheckedChanged += CheckDiscordBackup_CheckedChanged;
+            CheckDiscordBackup_CheckedChanged(null, EventArgs.Empty);
+
+            // Register all the events
+            checkDiscordCustomDetails.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            checkDiscordCustomState.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            checkDiscordCustomIcon.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            checkDiscordCustomImageText.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            checkDiscordCustomStart.CheckedChanged += CheckDiscordCustomDetails_CheckedChanged;
+            // Events for edit buttons
+            linkEditDiscordDetails.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordState.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordIcon.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordImage.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            linkEditDiscordStart.LinkClicked += LinkEditDiscordDetails_LinkClicked;
+            // Call all the events just in case
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomDetails, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomState, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomIcon, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomImageText, EventArgs.Empty);
+            CheckDiscordCustomDetails_CheckedChanged(checkDiscordCustomStart, EventArgs.Empty);
+
 
             // OSC
             checkOSCEnabled.CheckedChanged += checkOSCEnabled_CheckedChanged;
+            checkOSCEnabled_CheckedChanged(null, EventArgs.Empty);
+            checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
+            checkOSCSendColor.CheckedChanged += CheckOSCSendColor_CheckedChanged;
+
+            // OBS
+            checkRoundToFile.CheckedChanged += CheckRoundToFile_CheckedChanged;
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+
+            // Open RGB
+            checkOpenRGBEnabled.CheckedChanged += CheckOpenRGBEnabled_CheckedChanged;
+            // CheckOpenRGBEnabled_CheckedChanged(null, EventArgs.Empty);
+
+            checkAutoCopy.CheckedChanged += checkAutoCopy_CheckedChanged;
+            checkAutoCopy_CheckedChanged(null, EventArgs.Empty);
+
+            checkWebSocketServer.CheckedChanged += CheckWebSocketServer_CheckedChanged;
 
             FillLanguageBox();
+        }
+
+        private void LinkEditDiscordDetails_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
+            RoundInfoTemplate template;
+            if (sender == linkEditDiscordDetails) template = Settings.Get.DiscordTemplateDetails;
+            else if (sender == linkEditDiscordState) template = Settings.Get.DiscordTemplateState;
+            else if (sender == linkEditDiscordImage) template = Settings.Get.DiscordTemplateImage;
+            else if (sender == linkEditDiscordIcon) template = Settings.Get.DiscordTemplateIcon;
+            else if (sender == linkEditDiscordStart) template = Settings.Get.DiscordTemplateStart;
+            else template = Settings.Get.DiscordTemplateDetails;
+
+            string value = template.Template;
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.DISCORDRICHPRESENCE_EDIT.TITLE", template.FileName) ?? $"Edit Template", this, false, false, false, true);
+            if (show.Accept) {
+                if (string.IsNullOrWhiteSpace(show.Text))
+                    template.Template = string.Empty;
+                else template.Template = show.Text;
+
+                Settings.Export();
+            }
+        }
+
+        private void CheckDiscordCustomDetails_CheckedChanged(object? sender, EventArgs e) {
+            CheckBox? checkBox = (CheckBox?)sender;
+            Control? control = checkBox?.Parent;
+            if (checkBox == null || control == null) return;
+
+            foreach (Control c in control.Controls) {
+                if (c is LinkLabel) c.Visible = checkBox.Checked;
+            }
+        }
+
+        private void CheckWebSocketServer_CheckedChanged(object? sender, EventArgs e) {
+            checkWebTrackerComp.Visible = checkWebSocketServer.Checked;
+            WebSocketAPI.Initialize();
+        }
+
+        private void CheckOpenRGBEnabled_CheckedChanged(object? sender, EventArgs e) {
+            if (sender == null) return;
+            if (checkOpenRGBEnabled.Checked) OpenRGBControl.Initialize();
+            else OpenRGBControl.DeInitialize();
+        }
+
+        private void linkOpenRGB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            RGBProfile.OpenFile();
+        }
+
+        private void RoundInfoTemplate_Control_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
+            RoundInfoTemplate? template = (RoundInfoTemplate?)((LinkLabel?)sender)?.DataContext;
+            if (template == null) return;
+
+            if (e.Button == MouseButtons.Right) RoundInfoTemplate_OnDelete(template);
+            else if (e.Button == MouseButtons.Middle) MainWindow.OpenExternalLink(Path.GetDirectoryName(template.FilePath));
+            else RoundInfoTemplate_OnEdit(template);
+        }
+        private void RoundInfoTemplate_OnDelete(RoundInfoTemplate template) {
+            DialogResult dRes = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE", template.FileName) ?? $"Are you sure you want to delete this template file?\nFile Name: {template.FileName}", LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE", template.FileName) ?? $"Deleting Template: {template.FileName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (dRes == DialogResult.OK) {
+                int index = Array.IndexOf(Settings.Get.RoundInfoTemplates, template);
+                if (index < 0) return;
+
+                var templates = new RoundInfoTemplate[Settings.Get.RoundInfoTemplates.Length - 1];
+                for (int i = 0, j = 0; i < Settings.Get.RoundInfoTemplates.Length; i++) {
+                    if (i == index) continue;
+
+                    templates[j] = Settings.Get.RoundInfoTemplates[i];
+                    j++;
+                }
+                Settings.Get.RoundInfoTemplates = templates;
+                Settings.Export();
+
+                CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+            }
+        }
+        private void RoundInfoTemplate_OnEdit(RoundInfoTemplate template) {
+            string value = template.Template;
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.ROUNDINFOTOFILE_EDIT.TITLE", template.FileName) ?? $"Editing: {template.FileName}", this, true, false, true, true);
+            if (show.Accept) {
+                if (string.IsNullOrWhiteSpace(show.Text)) {
+                    DialogResult dRes = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.MESSAGE", template.FileName) ?? $"Are you sure you want to delete this template file?\nFile Name: {template.FileName}", LANG.S("SETTINGS.ROUNDINFOTOFILE_DELETE.TITLE", template.FileName) ?? $"Deleting Template: {template.FileName}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (dRes == DialogResult.OK) RoundInfoTemplate_OnDelete(template);
+                } else {
+                    template.Template = show.Text;
+                    Settings.Export();
+                }
+            }
+
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+        }
+        private void CheckRoundToFile_CheckedChanged(object? sender, EventArgs e) {
+            int length = Settings.Get.RoundInfoTemplates.Length;
+            int count = flowRoundInfoFiles.Controls.Count;
+            int max = Math.Max(length, count);
+            for (int i = 0; i < max; i++) {
+                LinkLabel control;
+                if (i < count) {
+                    control = (LinkLabel)flowRoundInfoFiles.Controls[i];
+                } else {
+                    control = new LinkLabel() {
+                        VisitedLinkColor = Color.Gainsboro,
+                        ActiveLinkColor = Color.White,
+                        LinkColor = Color.Gainsboro,
+                        AutoSize = true,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                        UseMnemonic = false,
+                        Margin = new Padding(0, 0, 5, 3),
+                        LinkBehavior = LinkBehavior.HoverUnderline
+                    };
+                    control.LinkClicked += RoundInfoTemplate_Control_LinkClicked;
+                    control.BorderStyle = BorderStyle.FixedSingle;
+
+                    flowRoundInfoFiles.Controls.Add(control);
+                }
+
+                if (i < length) {
+                    RoundInfoTemplate template = Settings.Get.RoundInfoTemplates[i];
+
+                    if (control.Visible = checkRoundToFile.Checked && i < length) {
+                        control.DataContext = template;
+                        control.Text = template.FileName;
+                        toolTip.SetToolTip(control, template.FilePath);
+                    }
+                } else control.Visible = false;
+            }
+
+            linkAddInfoFile.Visible = checkRoundToFile.Checked;
+            flowRoundInfoFilePanel.BorderStyle = checkRoundToFile.Checked ? BorderStyle.FixedSingle : BorderStyle.None;
+
+            flowRoundInfoFilePanel.Update();
+        }
+
+        private void linkAddInfoFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            EditResult show = EditWindow.Show(string.Empty, LANG.S("SETTINGS.ROUNDINFOTOFILE_ADD.TITLE") ?? "Create New Template", this, false, true, true);
+            if (!show.Accept || string.IsNullOrEmpty(show.Text)) return;
+
+            string template = show.Text;
+            string filePath = string.Empty;
+
+            using (SaveFileDialog saveFileDialog = new() { FileName = "ton_new_template.txt", Title = "Save Template File", Filter = "Text File|*.txt" }) {
+                filePath = saveFileDialog.ShowDialog() == DialogResult.OK ? saveFileDialog.FileName : string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            if (Settings.Get.RoundInfoTemplates.Any(t => t.FilePath == filePath)) {
+                _ = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_FILE_EXISTS.MESSAGE", Path.GetFileName(filePath)), string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Logger.Debug("Selected File Path: " + filePath);
+
+            // Add to settings file
+            RoundInfoTemplate infoTemplate = new RoundInfoTemplate(filePath, template);
+            if (!infoTemplate.HasKeys) {
+                _ = MessageBox.Show(LANG.S("SETTINGS.ROUNDINFOTOFILE_NOKEYS.MESSAGE", Path.GetFileName(filePath)), string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            RoundInfoTemplate[] temp = new RoundInfoTemplate[Settings.Get.RoundInfoTemplates.Length + 1];
+            int index = temp.Length - 1;
+            temp[index] = infoTemplate;
+            Array.Copy(Settings.Get.RoundInfoTemplates, temp, index);
+            Settings.Get.RoundInfoTemplates = temp;
+            Settings.Export();
+
+            infoTemplate.WriteToFile(true);
+            Logger.Debug("Added new template: " + infoTemplate.FilePath);
+            CheckRoundToFile_CheckedChanged(null, EventArgs.Empty);
+        }
+
+        private void CheckOSCSendColor_CheckedChanged(object? sender, EventArgs e) {
+            if (checkOSCSendColor.Checked) LilOSC.IsDirty = true;
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
@@ -117,30 +395,41 @@ namespace ToNSaveManager.Windows
         }
 
         private void CheckDiscordBackup_CheckedChanged(object? sender, EventArgs e) {
-            if (checkDiscordBackup.Checked) {
-                string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
-                EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, LANG.S("SETTINGS.DISCORDWEBHOOK.TITLE") ?? "Discord Webhook URL", this);
-                if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
-                    url = edit.Text.Trim();
+            if (sender == checkDiscordBackup) {
+                if (checkDiscordBackup.Checked) {
+                    string url = Settings.Get.DiscordWebhookURL ?? string.Empty;
+                    EditResult edit = EditWindow.Show(Settings.Get.DiscordWebhookURL ?? string.Empty, LANG.S("SETTINGS.DISCORDWEBHOOK.TITLE") ?? "Discord Webhook URL", this);
+                    if (edit.Accept && !edit.Text.Equals(url, StringComparison.Ordinal)) {
+                        url = edit.Text.Trim();
 
-                    if (!string.IsNullOrWhiteSpace(url)) {
-                        bool valid = DSWebHook.ValidateURL(url);
+                        if (!string.IsNullOrWhiteSpace(url)) {
+                            bool valid = DSWebHook.ValidateURL(url);
 
-                        if (valid) {
-                            Settings.Get.DiscordWebhookURL = url;
-                            Settings.Export();
+                            if (valid) {
+                                Settings.Get.DiscordWebhookURL = url;
+                                Settings.Export();
+                            } else {
+                                MessageBox.Show(LANG.S("SETTINGS.DISCORDWEBHOOKINVALID") ?? "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", LANG.S("SETTINGS.DISCORDWEBHOOKINVALID.TITLE") ?? "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         } else {
-                            MessageBox.Show(LANG.S("SETTINGS.DISCORDWEBHOOKINVALID") ?? "The URL your provided does not match a discord webhook url.\n\nMake sure you created your webhook and copied the url correctly.", LANG.S("SETTINGS.DISCORDWEBHOOKINVALID.TITLE") ?? "Invalid Webhook URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Settings.Get.DiscordWebhookURL = null;
                         }
-                    } else {
-                        Settings.Get.DiscordWebhookURL = null;
                     }
+
+                    if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
                 }
 
-                if (string.IsNullOrEmpty(Settings.Get.DiscordWebhookURL)) checkDiscordBackup.Checked = false;
-            }
+                MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
+            } else { // Is the rich presence one
+                if (sender != null) {
+                    if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
+                    else DSRichPresence.Deinitialize();
+                }
 
-            MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
+                flowDiscordDetailsText.Visible = flowDiscordStateText.Visible =
+                    flowDiscordImageText.Visible = flowDiscordIconText.Visible =
+                    flowDiscordIconStart.Visible = checkDiscordPresence.Checked;
+            }
         }
 
         private void btnCheckForUpdates_Click(object sender, EventArgs e) {
@@ -155,6 +444,54 @@ namespace ToNSaveManager.Windows
             if (e.Button != MouseButtons.Left) return;
             Stopwatch.Start();
             CancelNext = false;
+        }
+
+        private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
+            if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
+            else LilOSC.SetChatboxMessage(string.Empty);
+        }
+
+        private void linkEditChatbox_Click(object sender, LinkLabelLinkClickedEventArgs e) {
+            string template = Settings.Get.OSCMessageInfoTemplate.Template;
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true, insertKeyTemplate: true);
+            if (edit.Accept) {
+                Settings.Get.OSCMessageInfoTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageInfoTemplate.Template : edit.Text;
+                Settings.Export();
+
+                StatsWindow.UpdateChatboxContent();
+            }
+        }
+
+        private void linkAutoNoteEdit_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            string template = Settings.Get.RoundNoteTemplate.Template;
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.SAVEROUNDNOTE.TITLE") ?? "Automatic Note Template", this, handleNewLine: true, insertKeyTemplate: true);
+            if (edit.Accept) {
+                Settings.Get.RoundNoteTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.RoundNoteTemplate.Template : edit.Text;
+                Settings.Export();
+            }
+        }
+
+        private void linkSetDamageInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            int original = Settings.Get.OSCDamagedInterval;
+            string value = original.ToString();
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDAMAGEDEVENT.TITLE") ?? "Set Damage Interval", this);
+
+            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                Settings.Get.OSCDamagedInterval = result;
+                Settings.Export();
+            }
+        }
+
+        private void linkLogUpdateRate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            int original = Settings.Get.LogUpdateRate;
+            string value = original.ToString();
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.LOGUPDATERATE.TITLE") ?? "Set Update Rate (Milliseconds)", this);
+
+            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                Settings.Get.LogUpdateRate = Math.Clamp(result, 10, 5000);
+                MainWindow.LogWatcher.Interval = Settings.Get.LogUpdateRate;
+                Settings.Export();
+            }
         }
 
         private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
@@ -204,8 +541,16 @@ namespace ToNSaveManager.Windows
             }
         }
 
+        private void checkAutoCopy_CheckedChanged(object? sender, EventArgs e) {
+            if (checkAutoCopy.Checked && sender != null) LilOSC.SendData(true);
+            checkCopyOnOpen.ForeColor = checkCopyOnJoin.ForeColor = checkCopyOnSave.ForeColor =
+                checkAutoCopy.Checked ? Color.White : Color.Gray;
+        }
+
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
-            if (checkOSCEnabled.Checked) LilOSC.SendData(true);
+            if (checkOSCEnabled.Checked && sender != null) LilOSC.SendData(true);
+            checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
+                checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 
         private void checkOSCEnabled_MouseUp(object sender, MouseEventArgs e) {
@@ -242,7 +587,7 @@ namespace ToNSaveManager.Windows
             LANG.LangKey langKey = (LANG.LangKey)languageSelectBox.SelectedItem;
 
             if (LANG.SelectedKey != langKey.Key) {
-                Debug.WriteLine("Changing language to: " + langKey);
+                Logger.Log("Changing language to: " + langKey);
                 LANG.Select(langKey.Key);
                 LANG.ReloadAll();
                 Settings.Get.SelectedLanguage = langKey.Key;
@@ -298,6 +643,9 @@ namespace ToNSaveManager.Windows
                     case GroupBox g:
                         BindControlsRecursive(g.Controls);
                         break;
+                    case Panel p:
+                        BindControlsRecursive(p.Controls);
+                        break;
                     case CheckBox b:
                         if (!string.IsNullOrEmpty(tag)) {
                             LocalizedControlCache.Add("SETTINGS." + tag.ToUpperInvariant(), c);
@@ -315,5 +663,6 @@ namespace ToNSaveManager.Windows
             checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
         #endregion
+
     }
 }

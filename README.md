@@ -9,8 +9,7 @@
 
   [View Releases](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
   [Saving Guide](https://terror.moe/save "HOW TO SAVE & LOAD FOR DUMMIES") • 
-  [How To Use](#-faq) • 
-  [Español](README.es.md)
+  [How To Use](#-faq)
 </div>
 
 <p align="center">
@@ -33,6 +32,8 @@
 - `Colorful Objectives` Items in the 'Objectives' window will show colors that correspond to those of the items in the game.
 - `Auto Discord Backup` Uses a [discord webhook](#how-to-properly-configure-automatic-discord-backup-using-webhooks) to automatically upload a backup of your new codes to a discord channel as you play.
 - `Send OSC Parameters` Sends avatar parameters to VRChat using OSC. Check the [documentation](#osc-documentation) below for more info.
+- `WebSocket API Server` Enables a WebSocket server that sends realtime in-game events to the connected clients. Check the [**API Documentation**](Docs/WebSocketAPI.md) for more info.
+- `Send Chatbox Message` Sends ToN info to the VRChat chatbox. (Only visible during Intermissions) - To further customize the template read [**Templates Documentation**](Docs/Templates.md) for more info.
 <details><summary>Preview Image</summary><p> <img src="Resources/settings.png" > </p></details>
 
 ## Right Click Menus
@@ -50,39 +51,9 @@
 - This window gives you a list of unlockables that you can check to track your progress. Just click on the things you already unlocked.
 
 ## OSC Documentation
-<details><summary>Parameter Names & Types</summary><p>
-<pre>
-Parameter Name | Type |
----------------|------|--------------------------
-ToN_RoundType  | INT  | The current round type.
-ToN_Terror1    | INT  | The current terror index.
-ToN_Terror2    | INT  | The second terror index.
-ToN_Terror3    | INT  | The third terror index.
-ToN_OptedIn    | BOOL | Is the player opted-in at the lobby
-ToN_Saboteur   | BOOL | Is the player currently the Saboteur
-</pre>
-</p></details>
+[**Parameter Names & Types**](Docs/OSC/OSC_Parameters.md)
 
-<details><summary>Round Type Values</summary><p>
-<pre>
- 0  =  Unknown
- 1  =  Classic
- 2  =  Fog
- 3  =  Punished
- 4  =  Sabotage
- 5  =  Cracked
- 6  =  Bloodbath
- 7  =  Midnight
- 8  =  Alternate
- 9  =  Mystic_Moon
-10  =  Blood_Moon
-11  =  Twilight
-12  =  Solstice
-13  =  RUN
-14  =  Eight_Pages
-15  =  Cold_Night
-</pre>
-</p></details>
+[**Round Type Values**](Docs/OSC/OSC_RoundType.md)
 
 <details><summary>OSC Troubleshooting</summary><p>
 If your parameters are not being received properly... try resetting the OSC config.
@@ -98,6 +69,8 @@ If your parameters are not being received properly... try resetting the OSC conf
 | English  | -          |
 | Spanish  | -          |
 | Japanese | [github.com/nomlasvrc](https://github.com/nomlasvrc) <br> [twitter.com/nomlasvrc](https://twitter.com/nomlasvrc) |
+| German   | [github.com/sageyx2002](https://github.com/sageyx2002) |
+| Simplified Chinese  | [github.com/Fallen-ice](https://github.com/Fallen-ice) |
 
 # 📋 FAQ:
 
@@ -139,9 +112,9 @@ If your parameters are not being received properly... try resetting the OSC conf
 > NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
 > <details>
 > <summary><b>Show Discord Screenshots</b></summary>
-> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto" > </p>
-> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px" > </p>
-> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px" > </p>
+> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto"> </p>
+> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px"> </p>
+> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px"> </p>
 > </details>
 
 > ## Why is the .exe so big? >100MB

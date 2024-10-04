@@ -8,9 +8,13 @@ namespace ToNSaveManager.Utils.Discord
 {
     using Models;
     using Localization;
+    using ToNSaveManager.Models.Index;
 
     internal class Payload
     {
+        [JsonProperty("content", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? Content { get; set; }
+
         [JsonProperty("embeds")]
         public Embed[] Embeds = new Embed[1] { new Embed() };
 
@@ -21,6 +25,7 @@ namespace ToNSaveManager.Utils.Discord
     internal static class DSWebHook {
         static string LABEL_PLAYER = "**Player**: `{0}`";
 	    static string LABEL_ROUND = "**Round Type**: `{0}`";
+        static string LABEL_MAP = "**Map**: `{0}`";
 	    static string LABEL_TERRORS = "**Terrors in Round**: `{0}`";
         static string LABEL_TERRORS_SPLIT = "`, `";
         static string LABEL_COUNT = "**Player Count**: `{0}`";
@@ -28,6 +33,7 @@ namespace ToNSaveManager.Utils.Discord
         internal static void LocalizeContent() {
             LABEL_PLAYER = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_PLAYER") ?? "**Player**: `{0}`";
             LABEL_ROUND = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_ROUND") ?? "**Round Type**: `{0}`";
+            LABEL_MAP = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_MAP") ?? "**Map**: `{0}`";
             LABEL_TERRORS = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS") ?? "**Terrors in Round**: `{0}`";
             LABEL_TERRORS_SPLIT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT") ?? "**Terrors in Round**: `{0}`";
             LABEL_COUNT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_COUNT") ?? "**Player Count**: `{0}`";
@@ -97,16 +103,21 @@ namespace ToNSaveManager.Utils.Discord
                             EmbedData.Description += string.Format(LABEL_PLAYER, entry.Parent.DisplayName);
                         }
 
-                        if (!string.IsNullOrEmpty(entry.RType))
+                        if (entry.RT != ToNRoundType.Intermission)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_ROUND, entry.RType);
+                            EmbedData.Description += string.Format(LABEL_ROUND, entry.RT);
                         }
 
-                        if (entry.RTerrors != null && entry.RTerrors.Length > 0)
+                        if (entry.MapID > -1) {
+                            if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
+                            EmbedData.Description += string.Format(LABEL_MAP, ToNIndex.Instance.GetMap(entry.MapID).Name);
+                        }
+
+                        if (entry.TD != null && entry.TD.Length > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.RTerrors));
+                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.TD.Select(ToNIndex.Instance.GetTerror)));
                         }
 
                         if (entry.PlayerCount > 0)

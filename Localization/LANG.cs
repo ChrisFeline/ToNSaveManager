@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using ToNSaveManager.Windows;
 
 namespace ToNSaveManager.Localization {
@@ -22,6 +24,7 @@ namespace ToNSaveManager.Localization {
 
         static Dictionary<string, string> SelectedLang = new Dictionary<string, string>();
         internal static string SelectedKey { get; private set; } = PREF_DEFAULT_KEY;
+        internal static bool IsRightToLeft = false;
 
         static Dictionary<string, string> SelectedDefault = new Dictionary<string, string>();
         static string SelectedDefaultKey = string.Empty;
@@ -32,7 +35,7 @@ namespace ToNSaveManager.Localization {
 
         private static string? D(string key, params string[] args) {
 #if DEBUG
-            // if (!key.EndsWith(".TT")) Debug.WriteLine($"Missing key '{key}' in language pack '{SelectedKey}'");
+            // if (!key.EndsWith(".TT")) Logger.Debug($"Missing key '{key}' in language pack '{SelectedKey}'");
 #endif
 
             if (SelectedDefault.ContainsKey(key)) {
@@ -40,7 +43,7 @@ namespace ToNSaveManager.Localization {
             }
 
 #if DEBUG
-            if (!key.EndsWith(".TT")) Debug.WriteLine($"Invalid language key '{key}'");
+            if (!key.EndsWith(".TT")) Logger.Debug($"Invalid language key '{key}'");
 #endif
             return null;
         }
@@ -60,6 +63,10 @@ namespace ToNSaveManager.Localization {
                 });
             }
 
+#if DEBUG
+            // if (!string.IsNullOrEmpty(result)) result = '!' + result;
+#endif
+
             return result;
         }
 
@@ -67,28 +74,43 @@ namespace ToNSaveManager.Localization {
             return (S(key, args), S(key + ".TT", args));
         }
 
-        public static void C(Control control, string key, ToolTip? toolTip = null) {
+        public static void C(Control control, string key, ToolTip? toolTip = null, string? value = null) {
             (string? tx, string? tt) = T(key);
             if (!string.IsNullOrEmpty(tx)) control.Text = tx;
+            else if (!string.IsNullOrEmpty(value)) control.Text = value;
             if (!string.IsNullOrEmpty(tt)) {
                 if (toolTip == null) TooltipUtil.Set(control, tt);
                 else toolTip.SetToolTip(control, tt);
             }
+
+            control.RightToLeft = IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
         public static void C(ToolStripItem item, string key) {
             (string? text, string? tooltip) = T(key);
             if (!string.IsNullOrEmpty(text)) item.Text = text;
             if (!string.IsNullOrEmpty(tooltip)) item.ToolTipText = tooltip;
+
+            item.RightToLeft = IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         }
 
         internal static void Select(string key) {
-            Debug.WriteLine("Selecting language key: " + key);
+            Logger.Info("Selecting language key: " + key);
             SelectedLang = LanguageData.ContainsKey(key) ? LanguageData[key] : LanguageData[key = SelectedDefaultKey];
             SelectedKey = key;
+            IsRightToLeft = SelectedLang.ContainsKey("RIGHT_TO_LEFT") && SelectedLang["RIGHT_TO_LEFT"] == "YES";
         }
 
         internal static string FindLanguageKey() {
-            var currentCulture = System.Globalization.CultureInfo.CurrentUICulture;
+            var currentCulture = CultureInfo.InstalledUICulture;
+
+            Logger.Info("Current UI Language Info:");
+            Logger.Info(string.Format("* Name: {0}", currentCulture.Name));
+            Logger.Info(string.Format("* Display Name: {0}", currentCulture.DisplayName));
+            Logger.Info(string.Format("* English Name: {0}", currentCulture.EnglishName));
+            Logger.Info(string.Format("* 2-letter ISO Name: {0}", currentCulture.TwoLetterISOLanguageName));
+            Logger.Info(string.Format("* 3-letter ISO Name: {0}", currentCulture.ThreeLetterISOLanguageName));
+            Logger.Info(string.Format("* 3-letter Win32 API Name: {0}", currentCulture.ThreeLetterWindowsLanguageName));
+
             string langName = currentCulture.TwoLetterISOLanguageName;
             string fullLangName = currentCulture.Name;
 
@@ -117,6 +139,7 @@ namespace ToNSaveManager.Localization {
             EditWindow.Instance?.LocalizeContent();
             ObjectivesWindow.Instance?.LocalizeContent();
             SettingsWindow.Instance?.LocalizeContent();
+            StatsWindow.Instance?.LocalizeContent();
         }
 
         internal static void AddFromFile(string filePath) {
@@ -124,10 +147,18 @@ namespace ToNSaveManager.Localization {
             var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             if (obj != null) {
                 string key = Path.GetFileNameWithoutExtension(filePath);
-                LanguageData.Add(key, obj);
+                if (!LanguageData.ContainsKey(key)) {
+                    AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
+                    LanguageData.Add(key, obj);
+                } else {
+                    int index = AvailableLang.FindIndex(v => v.Key == key);
+                    if (index > -1)
+                        AvailableLang[index] = new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] };
 
-                Debug.WriteLine("Added custom language with key: " + key);
-                AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
+                    LanguageData[key] = obj;
+                }
+
+                Logger.Debug("Added custom language with key: " + key);
                 Select(key);
 
                 SettingsWindow.Instance?.FillLanguageBox();
@@ -157,12 +188,12 @@ namespace ToNSaveManager.Localization {
                                         SelectedDefaultKey = key;
                                         Select(key);
 
-                                        Debug.WriteLine("Found default language.");
+                                        Logger.Debug("Found default language.");
                                     }
 
                                     if (string.IsNullOrEmpty(firstKey)) firstKey = key;
 
-                                    Debug.WriteLine("Added language with key: " + key);
+                                    Logger.Debug("Added language with key: " + key);
                                     AvailableLang.Add(new LangKey() { Key = key, Chars = obj["DISPLAY_INIT"], Name = obj["DISPLAY_NAME"] });
                                 }
                             }
@@ -172,7 +203,7 @@ namespace ToNSaveManager.Localization {
             }
 
             if (string.IsNullOrEmpty(SelectedDefaultKey) && !string.IsNullOrEmpty(firstKey)) {
-                Debug.WriteLine("Default prefered language not found, using " + firstKey);
+                Logger.Debug("Default prefered language not found, using " + firstKey);
 
                 SelectedDefault = LanguageData[firstKey];
                 SelectedDefaultKey = firstKey;
@@ -180,6 +211,29 @@ namespace ToNSaveManager.Localization {
             } else if (string.IsNullOrEmpty(firstKey)) {
                 throw new Exception("Could not load any language pack.");
             }
+
+#if DEBUG
+            Dictionary<string, Dictionary<string, string>> missingKeys = new Dictionary<string, Dictionary<string, string>>();
+            bool hasMissingKeys = false;
+            foreach (var lang in LanguageData) {
+                string langKey = lang.Key;
+                if (langKey == "ts-TS") continue;
+
+                foreach (var pair in SelectedDefault) {
+                    if (lang.Value.ContainsKey(pair.Key)) continue;
+
+                    // Logger.Debug($"'{langKey}' Missing Key: '{pair.Key}'");
+                    if (!missingKeys.ContainsKey(langKey)) missingKeys[langKey] = new Dictionary<string, string>();
+                    missingKeys[langKey][pair.Key] = pair.Value;
+                    hasMissingKeys = true;
+                }
+            }
+
+            if (hasMissingKeys) {
+                string _json = JsonConvert.SerializeObject(missingKeys, Formatting.Indented);
+                File.WriteAllText("LANG_KEYS_PENDING.json", _json);
+            }
+#endif
         }
     }
 }
