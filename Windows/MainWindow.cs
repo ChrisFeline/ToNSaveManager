@@ -722,32 +722,35 @@ namespace ToNSaveManager
                 return true;
             }
 
-            bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN); // Killers is unknown - 
-            bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL); // Killers have been revealed - 
-            if (isUnknown || isRevealed || line.StartsWith(KILLER_MATRIX_KEYWORD)) { // Killers have been set - 
-                int index = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
-                int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index, StringComparison.InvariantCulture);
-                if (rndInd < 0) return true;
+            if (!context.Location.IsEmpty) {
+                bool isUnknown = line.StartsWith(KILLER_MATRIX_UNKNOWN); // Killers is unknown - 
+                bool isRevealed = line.StartsWith(KILLER_MATRIX_REVEAL); // Killers have been revealed - 
+                bool isSet = line.StartsWith(KILLER_MATRIX_KEYWORD);
+                if (isUnknown || isRevealed || isSet) { // Killers have been set - 
+                    int index = isRevealed ? KILLER_MATRIX_REVEAL.Length : KILLER_MATRIX_KEYWORD.Length;
+                    int rndInd = line.IndexOf(KILLER_ROUND_TYPE_KEYWORD, index, StringComparison.InvariantCulture);
+                    if (rndInd < 0) return true;
 
-                string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
-                int[] killerMatrix = new int[3];
+                    string roundType = line.Substring(rndInd + KILLER_ROUND_TYPE_KEYWORD.Length).Trim();
+                    int[] killerMatrix = new int[3];
 
-                if (isUnknown) {
-                    killerMatrix[0] = killerMatrix[1] = killerMatrix[2] = byte.MaxValue;
-                } else {
-                    string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    for (int i = 0; i < kMatrixRaw.Length; i++) {
-                        killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                    if (isUnknown) {
+                        killerMatrix[0] = killerMatrix[1] = killerMatrix[2] = byte.MaxValue;
+                    } else {
+                        string[] kMatrixRaw = line.Substring(index, rndInd - index).Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        for (int i = 0; i < kMatrixRaw.Length; i++) {
+                            killerMatrix[i] = int.TryParse(kMatrixRaw[i], out index) ? index : -1;
+                        }
                     }
-                }
 
-                context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix) { IsUnknown = isUnknown, IsRevealed = isRevealed });
-                return true;
+                    context.SetTerrorMatrix(new TerrorMatrix(roundType, killerMatrix) { IsUnknown = isUnknown, IsRevealed = isRevealed });
+                    return true;
+                }
             }
 
             if (!context.Terrors.IsEmpty) {
                 // Track round participation results / Supports live build maybe
-                if (line.StartsWith(ROUND_OVER_KEYWORD) || line.StartsWith(ROUND_WON_KEYWORD) || line.StartsWith(ROUND_LOST_KEYWORD)) {
+                if (line.StartsWith(ROUND_OVER_KEYWORD)) {
                     if (context.IsOptedIn) {
                         context.SetRoundResult(context.IsAlive ? ToNRoundResult.W : ToNRoundResult.L);
                         context.SaveSummary();
@@ -956,7 +959,7 @@ namespace ToNSaveManager
                 if (!context.HasLoadedSave) entry.Pre = true;
             }
 
-            if (!context.IsHomeWorld) entry.Note = "(BETA) " + entry.Note;
+            // if (!context.IsHomeWorld) entry.Note = "(BETA) " + entry.Note;
 
             if (listBoxKeys.SelectedItem == collection)
                 InsertSafe(listBoxEntries, ind, entry);
