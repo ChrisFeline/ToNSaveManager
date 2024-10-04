@@ -305,7 +305,7 @@
                 if (index >= line.Length) return false;
 
                 var instanceId = line.Substring(index).Trim('\n', '\r');
-                logContext.Enter(instanceId, instanceId.StartsWith(HomeWorldID));
+                logContext.Enter(instanceId, instanceId.Contains(HomeWorldID));
 
                 return true;
             }

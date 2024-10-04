@@ -10,6 +10,7 @@ using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils;
+using ToNSaveManager.Utils.LogParser;
 using static System.Windows.Forms.AxHost;
 
 namespace ToNSaveManager
@@ -229,7 +230,7 @@ namespace ToNSaveManager
         */
 
         internal static void UpdateChatboxContent() {
-            if (IsRoundActive || !MainWindow.Started || !Settings.Get.OSCSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
+            if (IsRoundActive || !MainWindow.Started || !ToNLogContext.CanSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
             string template = TemplateManager.ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
             LilOSC.SetChatboxMessage(template);
         }

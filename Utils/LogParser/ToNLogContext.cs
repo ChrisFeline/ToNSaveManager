@@ -14,6 +14,7 @@ namespace ToNSaveManager.Utils.LogParser
 {
     internal class ToNLogContext : LogContext {
         internal static ToNLogContext? Instance { get; private set; }
+        internal static bool CanSendChatbox => Instance != null && Instance.IsHomeWorld && Settings.Get.OSCSendChatbox;
 
         public bool HasLoadedSave { get; set; }
 
@@ -66,7 +67,7 @@ namespace ToNSaveManager.Utils.LogParser
             if (IsRecent) {
                 Instance = this;
                 ToNGameState.ClearStates();
-                Logger.Debug("Log Context Path: " + this.FilePath);
+                LilOSC.SetChatboxMessage(string.Empty);
             }
 
             ClearSummary();

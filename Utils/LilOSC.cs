@@ -246,7 +246,7 @@ namespace ToNSaveManager.Utils
                 if (LastStarted != IsRoundActive || force) SendParam(ParamStarted, LastStarted = IsRoundActive);
             }
 
-            if (ChatboxClear || (Settings.Get.OSCSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
+            if (ChatboxClear || (ToNLogContext.CanSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
                 ChatboxCountdown -= MainWindow.LogWatcher.Interval;
                 if (ChatboxCountdown < 0) {
                     ChatboxCountdown = ChatboxInterval;
