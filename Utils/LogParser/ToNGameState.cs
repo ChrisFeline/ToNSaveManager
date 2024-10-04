@@ -89,6 +89,8 @@ namespace ToNSaveManager.Utils {
 
         public static void SetOptedIn(bool isOptedIn) {
             IsOptedIn = isOptedIn;
+
+            StatsWindow.SetOptedIn(IsOptedIn);
             LilOSC.SetDirty();
 
             WebSocketAPI.SendValue("OPTED_IN", IsOptedIn);
