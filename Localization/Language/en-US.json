@@ -6,6 +6,7 @@
 	"EDIT.DELETE": "Delete",
 	"EDIT.OK": "OK",
 	"EDIT.CANCEL": "Cancel",
+	"EDIT.INSERT_TEMPLATE": "Insert Template Key",
 
 	"MESSAGE.WRITE_SETTINGS_ERROR": "An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.",
 	"MESSAGE.COPY_FILES_ERROR": "An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {0}",
