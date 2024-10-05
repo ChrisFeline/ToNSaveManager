@@ -198,6 +198,8 @@ namespace ToNSaveManager.Utils.Discord {
             if (IsDirty && Client != null && Client.IsInitialized && Client.CurrentUser != null) {
                 IsDirty = false;
 
+                if (ToNGameState.IsEmulated) return;
+
                 //string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
                 string details = Settings.Get.GetDiscordTemplateDetails.GetString();
                 string state = Settings.Get.GetDiscordTemplateState.GetString();
