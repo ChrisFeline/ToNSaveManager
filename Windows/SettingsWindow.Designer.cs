@@ -92,6 +92,9 @@
             linkEditDiscordStart = new LinkLabel();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
+            flowLayoutPanel7 = new FlowLayoutPanel();
+            linkOSCFormat = new LinkLabel();
+            labelOSCFormat = new Label();
             flowLayoutPanel3 = new FlowLayoutPanel();
             checkOSCSendDamage = new CheckBox();
             linkSetDamageInterval = new LinkLabel();
@@ -114,6 +117,7 @@
             flowDiscordImageText.SuspendLayout();
             flowDiscordIconText.SuspendLayout();
             flowDiscordIconStart.SuspendLayout();
+            flowLayoutPanel7.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
@@ -429,14 +433,14 @@
             // 
             checkOSCSendColor.AutoSize = true;
             checkOSCSendColor.ForeColor = Color.PowderBlue;
-            checkOSCSendColor.Location = new Point(3, 619);
-            checkOSCSendColor.Margin = new Padding(3, 1, 3, 1);
+            checkOSCSendColor.Location = new Point(3, 0);
+            checkOSCSendColor.Margin = new Padding(0);
             checkOSCSendColor.Name = "checkOSCSendColor";
             checkOSCSendColor.Padding = new Padding(50, 0, 3, 0);
-            checkOSCSendColor.Size = new Size(203, 19);
+            checkOSCSendColor.Size = new Size(170, 19);
             checkOSCSendColor.TabIndex = 9;
             checkOSCSendColor.Tag = "OSCSendColor|Sends the current Terror color as HSV parameters.";
-            checkOSCSendColor.Text = "Send Terror Color (HSV)";
+            checkOSCSendColor.Text = "Send Terror Color";
             checkOSCSendColor.UseVisualStyleBackColor = true;
             // 
             // panel2
@@ -483,7 +487,7 @@
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
-            flowLayoutPanel1.Controls.Add(checkOSCSendColor);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel7);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel3);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
@@ -1002,6 +1006,53 @@
             labelGroupOSC.TabIndex = 11;
             labelGroupOSC.Text = "OSC";
             // 
+            // flowLayoutPanel7
+            // 
+            flowLayoutPanel7.AutoSize = true;
+            flowLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel7.Controls.Add(checkOSCSendColor);
+            flowLayoutPanel7.Controls.Add(linkOSCFormat);
+            flowLayoutPanel7.Controls.Add(labelOSCFormat);
+            flowLayoutPanel7.Location = new Point(0, 619);
+            flowLayoutPanel7.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel7.Name = "flowLayoutPanel7";
+            flowLayoutPanel7.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel7.Size = new Size(307, 19);
+            flowLayoutPanel7.TabIndex = 18;
+            flowLayoutPanel7.WrapContents = false;
+            // 
+            // linkOSCFormat
+            // 
+            linkOSCFormat.ActiveLinkColor = Color.Black;
+            linkOSCFormat.AutoSize = true;
+            linkOSCFormat.BackColor = Color.LightGray;
+            linkOSCFormat.ForeColor = Color.Black;
+            linkOSCFormat.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkOSCFormat.LinkColor = Color.Black;
+            linkOSCFormat.Location = new Point(173, 0);
+            linkOSCFormat.Margin = new Padding(0);
+            linkOSCFormat.Name = "linkOSCFormat";
+            linkOSCFormat.Size = new Size(97, 15);
+            linkOSCFormat.TabIndex = 11;
+            linkOSCFormat.TabStop = true;
+            linkOSCFormat.Text = "(Change Format)";
+            linkOSCFormat.TextAlign = ContentAlignment.MiddleCenter;
+            linkOSCFormat.VisitedLinkColor = Color.Gray;
+            // 
+            // labelOSCFormat
+            // 
+            labelOSCFormat.AutoSize = true;
+            labelOSCFormat.BackColor = Color.LightBlue;
+            labelOSCFormat.ForeColor = Color.Black;
+            labelOSCFormat.Location = new Point(270, 0);
+            labelOSCFormat.Margin = new Padding(0);
+            labelOSCFormat.Name = "labelOSCFormat";
+            labelOSCFormat.Padding = new Padding(4, 0, 4, 0);
+            labelOSCFormat.Size = new Size(37, 15);
+            labelOSCFormat.TabIndex = 12;
+            labelOSCFormat.Text = "HSV";
+            labelOSCFormat.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // flowLayoutPanel3
             // 
             flowLayoutPanel3.AutoSize = true;
@@ -1183,6 +1234,8 @@
             flowDiscordIconText.PerformLayout();
             flowDiscordIconStart.ResumeLayout(false);
             flowDiscordIconStart.PerformLayout();
+            flowLayoutPanel7.ResumeLayout(false);
+            flowLayoutPanel7.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
@@ -1266,5 +1319,8 @@
         private LinkLabel linkEditDiscordStart;
         private LinkLabel linkCopyLogs;
         private LinkLabel linkOpenLogs;
+        private FlowLayoutPanel flowLayoutPanel7;
+        private LinkLabel linkOSCFormat;
+        private Label labelOSCFormat;
     }
 }

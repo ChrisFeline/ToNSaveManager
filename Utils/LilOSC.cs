@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
-using ToNSaveManager.Utils.Discord;
-using ToNSaveManager.Utils.OpenRGB;
 using ToNSaveManager.Utils.LogParser;
+using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils
 {
     internal static class LilOSC {
+        static readonly LoggerSource Logger = new LoggerSource("OSC");
+
         static UdpClient? UdpClient;
         const string ParamRoundType = "ToN_RoundType";
 
@@ -32,9 +30,13 @@ namespace ToNSaveManager.Utils
         const string ParamItem = "ToN_Item";
         const string ParamEncounter = "ToN_Encounter";
 
-        const string ParamTerrorColorH = "ToN_ColorH";
-        const string ParamTerrorColorS = "ToN_ColorS";
-        const string ParamTerrorColorV = "ToN_ColorV";
+        internal const string ParamTerrorColorH = "ToN_ColorH";
+        internal const string ParamTerrorColorS = "ToN_ColorS";
+        internal const string ParamTerrorColorV = "ToN_ColorV";
+        internal const string ParamTerrorColorL = "ToN_ColorL";
+        internal const string ParamTerrorColorR = "ToN_ColorR";
+        internal const string ParamTerrorColorG = "ToN_ColorG";
+        internal const string ParamTerrorColorB = "ToN_ColorB";
 
         const string ParamAlive = "ToN_IsAlive";
         const string ParamStarted = "ToN_IsStarted";
@@ -46,6 +48,7 @@ namespace ToNSaveManager.Utils
             ParamRoundType, ParamTerror1, ParamTerror2, ParamTerror3, ParamTPhase1, ParamTPhase2, ParamTPhase3,
             ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
             ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV,
+            ParamTerrorColorR, ParamTerrorColorG, ParamTerrorColorB,
             ParamAlive, ParamDamaged, ParamPages, ParamItemStatus
         ];
         const string ParameterFileName = "osc_parameters.txt";
@@ -205,10 +208,32 @@ namespace ToNSaveManager.Utils
                     Color terrorColor = TMatrix.DisplayColor;
 
                     if (LastTerrorColor != terrorColor || force) {
-                        Vector3 hsv = Color2HSV(LastTerrorColor = terrorColor);
-                        SendParam(ParamTerrorColorH, hsv.X);
-                        SendParam(ParamTerrorColorS, hsv.Y);
-                        SendParam(ParamTerrorColorV, hsv.Z);
+                        LastTerrorColor = terrorColor;
+                        Vector3 col;
+                        switch (Settings.Get.OSCSendColorFormat) {
+                            default: // HSV
+                                col = Color2HSV(terrorColor);
+                                SendParam(ParamTerrorColorH, col.X);
+                                SendParam(ParamTerrorColorS, col.Y);
+                                SendParam(ParamTerrorColorV, col.Z);
+                                break;
+                            case 1: // RGB
+                                const float f_byte_max = byte.MaxValue;
+                                SendParam(ParamTerrorColorR, terrorColor.R / f_byte_max);
+                                SendParam(ParamTerrorColorG, terrorColor.G / f_byte_max);
+                                SendParam(ParamTerrorColorB, terrorColor.B / f_byte_max);
+                                break;
+                            case 2: // HSL
+                                SendParam(ParamTerrorColorH, terrorColor.GetHue());
+                                SendParam(ParamTerrorColorS, terrorColor.GetSaturation());
+                                SendParam(ParamTerrorColorL, terrorColor.GetBrightness());
+                                break;
+                            case 3: // RGB32
+                                SendParam(ParamTerrorColorR, terrorColor.R);
+                                SendParam(ParamTerrorColorG, terrorColor.G);
+                                SendParam(ParamTerrorColorB, terrorColor.B);
+                                break;
+                        }
                     }
                 }
 

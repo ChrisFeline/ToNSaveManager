@@ -137,6 +137,15 @@ namespace ToNSaveManager.Models
         public bool OSCSendColor { get; set; }
 
         /// <summary>
+        /// Sends other formats instead of HSV color values if OSCSendColor is enabled.
+        /// 0 - HSV
+        /// 1 - HSL
+        /// 2 - RGB
+        /// 3 - RGB32
+        /// </summary>
+        public byte OSCSendColorFormat { get; set; }
+
+        /// <summary>
         /// Sends damage as an INT via OSC
         /// </summary>
         public bool OSCDamagedEvent { get; set; }
