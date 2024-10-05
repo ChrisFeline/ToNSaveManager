@@ -3,6 +3,7 @@ using DiscordRPC.Logging;
 using DiscordRPC.Message;
 using Microsoft.VisualBasic.Logging;
 using System.Text;
+using System.Text.RegularExpressions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -21,6 +22,10 @@ namespace ToNSaveManager.Utils.Discord {
             Assets = new Assets() {
                 LargeImageKey = "icon_255_0",
                 LargeImageText = "Intermission"
+            },
+            Party = new Party() {
+                Max = 20,
+                Size = 0
             }
         };
         static string DetailsText {
@@ -51,6 +56,14 @@ namespace ToNSaveManager.Utils.Discord {
             get => Presence.Timestamps.Start;
             set => Presence.Timestamps.Start = value;
         }
+        static string? PartyID {
+            get => Presence.Party.ID;
+            set => Presence.Party.ID = value;
+        }
+        static Party.PrivacySetting PartyPrivacy {
+            get => Presence.Party.Privacy;
+            set => Presence.Party.Privacy = value;
+        }
 
         static bool IsDirty = true;
 
@@ -73,6 +86,53 @@ namespace ToNSaveManager.Utils.Discord {
                 CurrentRoundType = roundType;
                 SetDirty();
             }
+        }
+
+        static Regex InstanceTagsPattern = new Regex(@"~(hidden|friends|private|group)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        static Regex InstanceRegionPattern = new Regex(@"~region\((\w+)\)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        static Regex InstanceGroupPattern = new Regex(@"~groupAccessType\((\w+)\)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private static bool IsPlayingTerrors;
+        private static string TerrorsInstanceID = string.Empty;
+
+        internal static void SetInstanceID(string instanceId, bool isHome) {
+            IsPlayingTerrors = isHome;
+            TerrorsInstanceID = instanceId;
+            if (!MainWindow.Started) return;
+
+            if (isHome) {
+                int index1 = instanceId.IndexOf(':') + 1;
+                int index2 = instanceId.IndexOf('~', index1);
+                string lobbyId = instanceId.Substring(index1, index2 - index1);
+
+                Match match = InstanceRegionPattern.Match(instanceId);
+                string region = match == null ? string.Empty : match.Groups[1].Value;
+
+                match = InstanceTagsPattern.Match(instanceId);
+                string tag = match == null ? "public" : match.Groups[1].Value;
+
+                PartyPrivacy = tag == "private" ? Party.PrivacySetting.Private : Party.PrivacySetting.Public;
+                PartyID = lobbyId + "-" + region;
+
+                /*
+                Presence.Secrets = new Secrets() {
+                    JoinSecret = instanceId.Substring(index1)
+                };
+                */
+
+                Log.Debug("Setting party id: " + instanceId);
+            } else {
+                PartyID = string.Empty;
+            }
+
+            Initialize();
+            SetDirty();
+        }
+
+        const int INSTANCE_MAX_PLAYERS = 16;
+        internal static void SetPlayerCount(int playerCount) {
+            Presence.Party.Max = Math.Max(INSTANCE_MAX_PLAYERS, playerCount);
+            Presence.Party.Size = playerCount;
+            SetDirty();
         }
 
         static readonly Dictionary<ToNRoundType, int> RoundTypeToAssetID = new Dictionary<ToNRoundType, int>() {
@@ -176,11 +236,22 @@ namespace ToNSaveManager.Utils.Discord {
             }
         }
 
-        internal static void Initialize() {
-            if (!Settings.Get.DiscordRichPresence) return;
+        static bool CurrentInitState = false;
+        internal static void Initialize(bool onStart = false) {
+            if (onStart)
+                SetInstanceID(TerrorsInstanceID, IsPlayingTerrors);
 
+            bool currentState = Settings.Get.DiscordRichPresence && IsPlayingTerrors;
+            if (CurrentInitState == currentState) return;
+
+            if (CurrentInitState) DeInitialize_Internal();
+            else Initialize_Internal();
+        }
+
+        static void Initialize_Internal() {
             if (Client == null || Client.IsDisposed) {
                 Client = new DiscordRpcClient("1281246143224746035");
+                // Client.RegisterUriScheme("438100");
                 Client.OnReady += Client_OnReady;
                 Client.OnPresenceUpdate += Client_OnPresenceUpdate;
             }
@@ -192,7 +263,7 @@ namespace ToNSaveManager.Utils.Discord {
                 SetDirty();
             }
         }
-        internal static void Deinitialize() {
+        static void DeInitialize_Internal() {
             if (Client != null) {
                 Log.Debug("Stopping");
 

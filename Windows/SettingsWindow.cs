@@ -422,8 +422,7 @@ namespace ToNSaveManager.Windows
                 MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
             } else { // Is the rich presence one
                 if (sender != null) {
-                    if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
-                    else DSRichPresence.Deinitialize();
+                    DSRichPresence.Initialize();
                 }
 
                 flowDiscordDetailsText.Visible = flowDiscordStateText.Visible =

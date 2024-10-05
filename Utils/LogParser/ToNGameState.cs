@@ -58,6 +58,7 @@ namespace ToNSaveManager.Utils {
         public static void SetPlayerCount(int playerCount) {
             PlayerCount = playerCount;
             StatsWindow.SetPlayerCount(PlayerCount);
+            DSRichPresence.SetPlayerCount(PlayerCount);
         }
 
         public static void SetEmulated(bool isEmulated) {
