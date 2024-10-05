@@ -2,6 +2,7 @@
 using DiscordRPC.Logging;
 using DiscordRPC.Message;
 using Microsoft.VisualBasic.Logging;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using ToNSaveManager.Models;
@@ -98,6 +99,9 @@ namespace ToNSaveManager.Utils.Discord {
             IsPlayingTerrors = isHome;
             TerrorsInstanceID = instanceId;
             if (!MainWindow.Started) return;
+
+            UpdateTimestamp();
+            Log.Debug("Setting instance home: " + isHome);
 
             if (isHome) {
                 int index1 = instanceId.IndexOf(':') + 1;
@@ -236,19 +240,66 @@ namespace ToNSaveManager.Utils.Discord {
             }
         }
 
+        // Check game running
+        internal static bool VRCIsOpen;
+
+        static async Task WaitForVRChat_Interval() {
+            while (true) {
+                Log.Debug("Attempting to find game process...");
+
+                try {
+                    var vrc = Process.GetProcessesByName("VRChat").FirstOrDefault();
+                    if (vrc != null) {
+                        Log.Debug("Game process found, initializing.");
+
+                        VRCIsOpen = true;
+                        Initialize();
+
+                        Log.Debug("Waiting for game exit.");
+                        await vrc.WaitForExitAsync();
+                    } else {
+                        VRCIsOpen = false;
+                    }
+                } catch (Exception e) {
+                    Log.Error("Error trying to find game process.");
+                    Log.Error(e);
+                    VRCIsOpen = false;
+                }
+
+                Initialize();
+                // Retry to find vrc process in 5 seconds.
+                Log.Debug("Could not find VRChat process, retrying in 30 seconds.");
+                await Task.Delay(30000);
+            }
+        }
+
+        internal static void VRCProcessTest() {
+            _ = WaitForVRChat_Interval();
+        }
+
         static bool CurrentInitState = false;
         internal static void Initialize(bool onStart = false) {
-            if (onStart)
+            if (onStart) {
                 SetInstanceID(TerrorsInstanceID, IsPlayingTerrors);
+                VRCProcessTest();
+                return;
+            }
 
-            bool currentState = Settings.Get.DiscordRichPresence && IsPlayingTerrors;
-            if (CurrentInitState == currentState) return;
+            bool currentState = Settings.Get.DiscordRichPresence && IsPlayingTerrors && VRCIsOpen;
+            if (CurrentInitState != currentState) {
+                CurrentInitState = currentState;
 
-            if (CurrentInitState) DeInitialize_Internal();
-            else Initialize_Internal();
+                if (CurrentInitState) {
+                    Initialize_Internal();
+                } else {
+                    DeInitialize_Internal();
+                }
+            }
         }
 
         static void Initialize_Internal() {
+            Log.Debug("Init Internal");
+
             if (Client == null || Client.IsDisposed) {
                 Client = new DiscordRpcClient("1281246143224746035");
                 // Client.RegisterUriScheme("438100");
