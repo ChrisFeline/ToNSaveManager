@@ -30,6 +30,11 @@ namespace ToNSaveManager.Utils.LogParser
         public override void Exit() {
             base.Exit();
             OnAwake();
+
+            if (IsRecent) {
+                DSRichPresence.SetInstanceID(string.Empty, false);
+                DSRichPresence.Initialize();
+            }
         }
         public override void Enter(string name, DateTime date) {
             base.Enter(name, date);
@@ -40,25 +45,27 @@ namespace ToNSaveManager.Utils.LogParser
         }
         public override void Enter(string instanceID, bool isHomeWorld) {
             base.Enter(instanceID, isHomeWorld);
+
             if (IsRecent) {
                 StatsWindow.SetInstanceURL(instanceID);
                 WebSocketAPI.SendValue("INSTANCE", instanceID);
+                DSRichPresence.SetInstanceID(instanceID, isHomeWorld);
             }
         }
 
         public override void Join(string displayName) {
             base.Join(displayName);
-            ToNGameState.SetPlayerCount(Players.Count);
 
             if (IsRecent) {
+                ToNGameState.SetPlayerCount(Players.Count);
                 WebSocketAPI.SendValue("PLAYER_JOIN", displayName);
             }
         }
         public override void Leave(string displayName) {
             base.Leave(displayName);
-            ToNGameState.SetPlayerCount(Players.Count);
 
             if (IsRecent) {
+                ToNGameState.SetPlayerCount(Players.Count);
                 WebSocketAPI.SendValue("PLAYER_LEAVE", displayName);
             }
         }

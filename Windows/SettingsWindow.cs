@@ -197,6 +197,7 @@ namespace ToNSaveManager.Windows
             checkAutoCopy_CheckedChanged(null, EventArgs.Empty);
 
             checkWebSocketServer.CheckedChanged += CheckWebSocketServer_CheckedChanged;
+            CheckWebSocketServer_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
         }
@@ -422,8 +423,7 @@ namespace ToNSaveManager.Windows
                 MainWindow.Instance?.SetBackupButton(checkDiscordBackup.Checked);
             } else { // Is the rich presence one
                 if (sender != null) {
-                    if (checkDiscordPresence.Checked) DSRichPresence.Initialize();
-                    else DSRichPresence.Deinitialize();
+                    DSRichPresence.Initialize();
                 }
 
                 flowDiscordDetailsText.Visible = flowDiscordStateText.Visible =

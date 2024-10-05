@@ -33,5 +33,4 @@ These are the possible values that will be sent to the `ToN_RoundType` [**parame
 | - | - |
 | `104` |  RUN
 | `105` |  8 PAGES
-| `106` |  GIGABYTE
 | `107` |  COLD NIGHT (Winterfest)

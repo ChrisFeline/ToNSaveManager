@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace ToNSaveManager.Models.Stats {
     public class RoundInfoTemplate {
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore), DefaultValue("")]
         public string FileName { get; set; }
 
         [JsonIgnore] private string m_FilePath { get; set; } = string.Empty;
         [JsonIgnore] private string m_FileDir { get; set; } = string.Empty;
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore), DefaultValue("")]
         public string FilePath {
             get => m_FilePath;
             set {

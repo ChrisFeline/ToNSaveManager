@@ -81,7 +81,6 @@ namespace ToNSaveManager
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             if (!StartCheckForUpdate()) {
-                DSRichPresence.Initialize();
                 Application.Run(new MainWindow());
             }
         }

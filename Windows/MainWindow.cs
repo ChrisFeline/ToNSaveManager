@@ -71,7 +71,7 @@ namespace ToNSaveManager
             SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
             TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
 
-#if DEBUG
+#if DEBUGG
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
 #endif
@@ -97,6 +97,7 @@ namespace ToNSaveManager
 
             LilOSC.Initialize();
             WebSocketAPI.Initialize();
+            DSRichPresence.Initialize(true);
             StatsWindow.UpdateChatboxContent();
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
         }

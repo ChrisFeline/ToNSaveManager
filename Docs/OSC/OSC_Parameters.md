@@ -40,4 +40,3 @@ Parameter          | Type    | Description
 `ToN_EncounterATR` | `BOOL`  | Atrached
 `ToN_EncounterWYB` | `BOOL`  | Wild Yet Bloodthirsty Creature
 `ToN_EncounterGLO` | `BOOL`  | Glorbo
-`ToN_EncounterEPF` | `BOOL`  | Shadow Evil Purple Foxy
