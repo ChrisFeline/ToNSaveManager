@@ -197,6 +197,7 @@ namespace ToNSaveManager.Windows
             checkAutoCopy_CheckedChanged(null, EventArgs.Empty);
 
             checkWebSocketServer.CheckedChanged += CheckWebSocketServer_CheckedChanged;
+            CheckWebSocketServer_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
         }
