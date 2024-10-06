@@ -203,7 +203,6 @@ namespace ToNSaveManager.Utils
                         break;
                 }
 
-                // Color Testing
                 if (Settings.Get.OSCSendColor) {
                     Color terrorColor = TMatrix.DisplayColor;
 
