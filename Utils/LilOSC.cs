@@ -47,7 +47,7 @@ namespace ToNSaveManager.Utils
         static readonly string[] ParamAll = [
             ParamRoundType, ParamTerror1, ParamTerror2, ParamTerror3, ParamTPhase1, ParamTPhase2, ParamTPhase3,
             ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
-            ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV,
+            ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV, ParamTerrorColorL,
             ParamTerrorColorR, ParamTerrorColorG, ParamTerrorColorB,
             ParamAlive, ParamDamaged, ParamPages, ParamItemStatus
         ];

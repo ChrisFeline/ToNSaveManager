@@ -65,9 +65,9 @@ Parameter        | Type    | Description
 
 Parameter        | Type    | Description
 -----------------|---------|--------------------------
-`ToN_ColorR`     | `FLOAT` | HUD Terror Color RED
-`ToN_ColorG`     | `FLOAT` | HUD Terror Color GREEN
-`ToN_ColorB`     | `FLOAT` | HUD Terror Color BLUE
+`ToN_ColorR`     | `FLOAT` | HUD Terror Color RED channel.
+`ToN_ColorG`     | `FLOAT` | HUD Terror Color GREEN channel.
+`ToN_ColorB`     | `FLOAT` | HUD Terror Color BLUE channel.
 
 # Encounters
 Parameter          | Type    | Description
