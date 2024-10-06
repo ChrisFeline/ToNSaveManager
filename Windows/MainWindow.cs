@@ -754,12 +754,12 @@ namespace ToNSaveManager
             if (!context.Terrors.IsEmpty) {
                 // Track round participation results / Supports live build maybe
                 if (line.StartsWith(ROUND_OVER_KEYWORD)) {
+                    if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
+
                     if (context.IsOptedIn) {
                         context.SetRoundResult(context.IsAlive ? ToNRoundResult.W : ToNRoundResult.L);
                         context.SaveSummary();
                     }
-
-                    if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
 
                     context.SetIsKiller(false);
                     context.SetTerrorMatrix(TerrorMatrix.Empty);

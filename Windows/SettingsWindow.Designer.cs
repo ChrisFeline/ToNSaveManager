@@ -105,6 +105,7 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
+            checkShowTime = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -378,7 +379,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 826);
+            checkColorObjectives.Location = new Point(3, 847);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -495,6 +496,7 @@
             flowLayoutPanel1.Controls.Add(checkInvertMD);
             flowLayoutPanel1.Controls.Add(checkShowSeconds);
             flowLayoutPanel1.Controls.Add(checkShowDate);
+            flowLayoutPanel1.Controls.Add(checkShowTime);
             flowLayoutPanel1.Controls.Add(labelGroupStyle);
             flowLayoutPanel1.Controls.Add(checkColorObjectives);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel4);
@@ -502,7 +504,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 867);
+            flowLayoutPanel1.Size = new Size(544, 888);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -1141,7 +1143,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 810);
+            labelGroupStyle.Location = new Point(3, 831);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -1154,7 +1156,7 @@
             flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel4.Controls.Add(linkOpenRGB);
-            flowLayoutPanel4.Location = new Point(0, 847);
+            flowLayoutPanel4.Location = new Point(0, 868);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
@@ -1191,6 +1193,19 @@
             linkOpenRGB.TextAlign = ContentAlignment.MiddleLeft;
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
+            // 
+            // checkShowTime
+            // 
+            checkShowTime.AutoSize = true;
+            checkShowTime.Location = new Point(3, 796);
+            checkShowTime.Margin = new Padding(3, 1, 3, 1);
+            checkShowTime.Name = "checkShowTime";
+            checkShowTime.Padding = new Padding(20, 0, 3, 0);
+            checkShowTime.Size = new Size(138, 19);
+            checkShowTime.TabIndex = 28;
+            checkShowTime.Tag = "ShowTime";
+            checkShowTime.Text = "Right Panel Time";
+            checkShowTime.UseVisualStyleBackColor = true;
             // 
             // SettingsWindow
             // 
@@ -1322,5 +1337,6 @@
         private FlowLayoutPanel flowLayoutPanel7;
         private LinkLabel linkOSCFormat;
         private Label labelOSCFormat;
+        private CheckBox checkShowTime;
     }
 }

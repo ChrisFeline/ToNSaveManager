@@ -210,6 +210,8 @@
 	"SETTINGS.INVERTMD": "Invert Month/Day",
 	"SETTINGS.SHOWDATE": "Right Panel Date",
 	"SETTINGS.SHOWDATE.TT": "Entries on the right panel will display a full date.",
+	"SETTINGS.SHOWTIME": "Right Panel Time",
+	"SETTINGS.SHOWTIME.TT": "Entries on the right panel will display the time it was created.",
 
 	"SETTINGS.GROUP.STYLE": "Style",
 	"SETTINGS.COLORFULOBJECTIVES": "Colorful Objectives",

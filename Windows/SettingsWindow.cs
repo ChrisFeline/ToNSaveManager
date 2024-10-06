@@ -153,6 +153,7 @@ namespace ToNSaveManager.Windows
             checkInvertMD.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowSeconds.CheckedChanged += TimeFormat_CheckedChanged;
             checkShowDate.CheckedChanged += TimeFormat_CheckedChanged;
+            checkShowTime.CheckedChanged += TimeFormat_CheckedChanged;
             // Refresh list when style is changed
             checkColorObjectives.CheckedChanged += CheckColorObjectives_CheckedChanged;
 
