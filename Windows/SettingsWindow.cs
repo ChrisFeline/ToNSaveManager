@@ -251,6 +251,11 @@ namespace ToNSaveManager.Windows
                     break;
             }
 
+            string tag = index == 3 ? " (INT)" : " (FLOAT)";
+            paramX += tag;
+            paramY += tag;
+            paramZ += tag;
+
             toolTip.SetToolTip(checkOSCSendColor, string.Format(ColorFormatTooltip, paramX, paramY, paramZ, label));
         }
 
