@@ -6,6 +6,7 @@
 	"EDIT.DELETE": "Delete",
 	"EDIT.OK": "OK",
 	"EDIT.CANCEL": "Cancel",
+	"EDIT.INSERT_TEMPLATE": "Insert Template Key",
 
 	"MESSAGE.WRITE_SETTINGS_ERROR": "An error ocurred while trying to write your settings to a file.\n\nMake sure that the program contains permissions to write files in the current folder it's located at.",
 	"MESSAGE.COPY_FILES_ERROR": "An error ocurred while trying to copy your files to the selected location.\n\nMake sure that the program contains permissions to write files to the destination.\nPath: {0}",
@@ -183,7 +184,9 @@
 	"SETTINGS.OSCSENDCHATBOX_EDIT": "(Edit)",
 	"SETTINGS.OSCSENDCHATBOX_EDIT.TT": "Customize the message template to be displayed in the chatbox.",
 	"SETTINGS.OSCSENDCOLOR": "Send Terror Color",
-	"SETTINGS.OSCSENDCOLOR.TT": "Sends the current Terror color represented as HSV.\nColor will be sent as 3 FLOAT parameters:\n- ToN_ColorH (Hue)\n- ToN_ColorS (Saturation)\n- ToN_ColorV (Value)",
+	"SETTINGS.OSCSENDCOLOR.TT": "Sends the current Terror color represented as {3}.\nColor will be sent as 3 FLOAT parameters:\n- {0}\n- {1}\n- {2}",
+	"SETTINGS.OSCSENDCOLORFORMAT": "Change Color Format",
+	"SETTINGS.OSCSENDCOLORFORMAT.TT": "Alternates the current color format for the values to send with OSC.\nAvailable formats are HSV, HSL, RGB and RGB32",
 	"SETTINGS.OSCDAMAGEDEVENT": "Send Damage Event",
 	"SETTINGS.OSCDAMAGEDEVENT.TT": "Sends a damage event to an INT parameter, the number represents the damage value received.\nThe value will be sent to a parameter named 'ToN_Damaged' then it will reset to 0 after the interval.\nIf the player dies, damage value will be 255 for maximum pain.",
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT": "(Set Interval)",

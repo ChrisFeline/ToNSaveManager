@@ -103,30 +103,30 @@ namespace ToNSaveManager.Utils.Discord {
             UpdateTimestamp();
             Log.Debug("Setting instance home: " + isHome);
 
+            string partyId = string.Empty;
             if (isHome) {
                 int index1 = instanceId.IndexOf(':') + 1;
-                int index2 = instanceId.IndexOf('~', index1);
-                string lobbyId = instanceId.Substring(index1, index2 - index1);
+                if (index1 > 0) {
+                    int index2 = instanceId.IndexOf('~', index1);
 
-                Match match = InstanceRegionPattern.Match(instanceId);
-                string region = match == null ? string.Empty : match.Groups[1].Value;
+                    string lobbyId = index2 < 0 ? instanceId.Substring(index1) : instanceId.Substring(index1, index2 - index1);
 
-                match = InstanceTagsPattern.Match(instanceId);
-                string tag = match == null ? "public" : match.Groups[1].Value;
+                    if (!string.IsNullOrEmpty(lobbyId)) {
+                        Match match = InstanceRegionPattern.Match(instanceId);
+                        string region = match == null ? string.Empty : match.Groups[1].Value;
 
-                PartyPrivacy = tag == "private" ? Party.PrivacySetting.Private : Party.PrivacySetting.Public;
-                PartyID = lobbyId + "-" + region;
+                        match = InstanceTagsPattern.Match(instanceId);
+                        string tag = match == null ? "public" : match.Groups[1].Value;
 
-                /*
-                Presence.Secrets = new Secrets() {
-                    JoinSecret = instanceId.Substring(index1)
-                };
-                */
+                        PartyPrivacy = tag != "public" ? Party.PrivacySetting.Private : Party.PrivacySetting.Public;
+                        partyId = lobbyId + "-" + region;
 
-                Log.Debug("Setting party id: " + instanceId);
-            } else {
-                PartyID = string.Empty;
+                        Log.Debug("Setting party id: " + instanceId);
+                    }
+                }
             }
+
+            PartyID = partyId;
 
             Initialize();
             SetDirty();
@@ -197,6 +197,8 @@ namespace ToNSaveManager.Utils.Discord {
         internal static void Send() {
             if (IsDirty && Client != null && Client.IsInitialized && Client.CurrentUser != null) {
                 IsDirty = false;
+
+                if (ToNGameState.IsEmulated) return;
 
                 //string details = CurrentMatrix.Length > 0 ? CurrentMatrix.RoundType.ToString() + (CurrentMatrix.RoundType == ToNRoundType.Eight_Pages ? $" ({PageCount}/8)" : " on") : (CurrentMap.IsEmpty ? "Intermission" : "Traveling to");
                 string details = Settings.Get.GetDiscordTemplateDetails.GetString();

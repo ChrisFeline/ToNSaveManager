@@ -75,6 +75,8 @@ namespace ToNSaveManager.Windows
 
         #region Form Events
         private Dictionary<string, Control> LocalizedControlCache = new Dictionary<string, Control>();
+        private readonly string[] ColorFormatLabels = [ "HSV", "RGB", "HSL", "RGB32" ];
+        private static string ColorFormatTooltip = "Sends the current Terror color represented as {3}.\nColor will be sent as 3 FLOAT parameters:\n- {0}\n- {1}\n- {2}";
 
         internal void LocalizeContent() {
             LANG.C(this, "MAIN.SETTINGS");
@@ -103,6 +105,11 @@ namespace ToNSaveManager.Windows
             LANG.C(linkEditDiscordImage, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordStart, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+
+            LANG.C(linkOSCFormat, "SETTINGS.OSCSENDCOLORFORMAT", toolTip);
+            string? tt = LANG.S("SETTINGS.OSCSENDCOLOR.TT");
+            if (tt != null) ColorFormatTooltip = tt;
+            LinkOSCFormat_LinkClicked(null, null);
 
             LANG.C(btnCheckForUpdates, "SETTINGS.CHECK_UPDATE", toolTip);
             LANG.C(btnOpenData, "SETTINGS.OPEN_DATA_BTN", toolTip);
@@ -184,6 +191,8 @@ namespace ToNSaveManager.Windows
             checkOSCEnabled_CheckedChanged(null, EventArgs.Empty);
             checkSendChatbox.CheckedChanged += checkSendChatbox_CheckedChanged;
             checkOSCSendColor.CheckedChanged += CheckOSCSendColor_CheckedChanged;
+            linkOSCFormat.LinkClicked += LinkOSCFormat_LinkClicked;
+            LinkOSCFormat_LinkClicked(null, null);
 
             // OBS
             checkRoundToFile.CheckedChanged += CheckRoundToFile_CheckedChanged;
@@ -200,6 +209,54 @@ namespace ToNSaveManager.Windows
             CheckWebSocketServer_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
+        }
+
+        private void LinkOSCFormat_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs? e) {
+            int index = Settings.Get.OSCSendColorFormat;
+            if (sender != null && e != null) {
+                if (e.Button == MouseButtons.Left) {
+                    index = (index + 1) % ColorFormatLabels.Length;
+                } else if (e.Button == MouseButtons.Right) {
+                    index = index - 1;
+                    if (index < 0) index = ColorFormatLabels.Length - 1;
+                }
+                Settings.Get.OSCSendColorFormat = (byte)index;
+                Settings.Export();
+            }
+
+            string label = ColorFormatLabels[index];
+            labelOSCFormat.Text = label;
+
+            string paramX, paramY, paramZ;
+            switch (index) {
+                default: // HSV
+                    paramX = LilOSC.ParamTerrorColorH;
+                    paramY = LilOSC.ParamTerrorColorS;
+                    paramZ = LilOSC.ParamTerrorColorV;
+                    break;
+                case 1: // RGB
+                    paramX = LilOSC.ParamTerrorColorR;
+                    paramY = LilOSC.ParamTerrorColorG;
+                    paramZ = LilOSC.ParamTerrorColorB;
+                    break;
+                case 2: // HSL
+                    paramX = LilOSC.ParamTerrorColorH;
+                    paramY = LilOSC.ParamTerrorColorS;
+                    paramZ = LilOSC.ParamTerrorColorL;
+                    break;
+                case 3: // RGB32
+                    paramX = LilOSC.ParamTerrorColorR;
+                    paramY = LilOSC.ParamTerrorColorG;
+                    paramZ = LilOSC.ParamTerrorColorB;
+                    break;
+            }
+
+            string tag = index == 3 ? " (INT)" : " (FLOAT)";
+            paramX += tag;
+            paramY += tag;
+            paramZ += tag;
+
+            toolTip.SetToolTip(checkOSCSendColor, string.Format(ColorFormatTooltip, paramX, paramY, paramZ, label));
         }
 
         private void LinkEditDiscordDetails_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {

@@ -17,21 +17,57 @@ Parameter        | Type    | Description
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
 
 # Terrors
+### Terrors in Round
+> These values represent the current index or id of the terror in the current round.<br>
+> Since these ID's are index based, the value will be **255** when no terror has spawned.<br>
+
 Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_Terror1`    | `INT`   | The current terror index.
 `ToN_Terror2`    | `INT`   | The second terror index. (Bloodbath & Midnight)
-`ToN_Terror3`    | `INT`   | The third terror index. (Bloodbath & Alternate on Midnight)
+`ToN_Terror3`    | `INT`   | The third terror index. (Bloodbath & Midnight)<br>This last one will be an Alternate ID on Midnight.
+
+> Please note that there's some special cases where these values change a bit.
+> **Monarch** will use the `Terror3` as identifier and `Terror1` and `Terror2` will be set to **255**.
+
+> **8 PAGES** uses these parameters a bit differently.<br>
+> - `Terror1` is the normalized terror ID, meaning it will use the index from the corresponding group.
+> - `Terror2` is the group that the `Terror1` belongs to.
+>	* `0` - is **Classic**
+>	* `1` - is **Alternate**
+>	* `2` - is **8 Pages** Original
+> - `Terror3` would be the actual index on the **8 PAGES** pool.
+
+### Terrors phase index.
+> These values represent the different phases of some terrors.<br>
+> For example: **Faker** or **Bliss**.
+
+Parameter        | Type    | Description
+-----------------|---------|--------------------------
 `ToN_TPhase1`    | `INT`   | The current terror phase.
 `ToN_TPhase2`    | `INT`   | The second terror phase. (Bloodbath)
 `ToN_TPhase3`    | `INT`   | The third terror phase. (Bloodbath & Midnight)
 
 # Colors
+### HSV - HSL Format (Default)
+> If the format is set to **HSV**, these parameters will be sent to **OSC**.<br>
+> In **HSL** format, `ToN_ColorV` will change to `ToN_ColorL` instead.
+
 Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_ColorH`     | `FLOAT` | HUD Terror Color (HUE)
 `ToN_ColorS`     | `FLOAT` | HUD Terror Color (Saturation)
-`ToN_ColorV`     | `FLOAT` | HUD Terror Color (Value)
+`ToN_ColorV`<br>`ToN_ColorL`     | `FLOAT` | HUD Terror Color (Value)<br>(Lightness) If format is **HSL**.
+
+### RGB - RGB32 Format
+> If the format is set to **RGB**, these parameters will be sent instead of **HSV**.<br>
+> In **RGB32** format, these values will be sent as an **Int** (Range 0-255) instead of a **Float**.
+
+Parameter        | Type    | Description
+-----------------|---------|--------------------------
+`ToN_ColorR`     | `FLOAT` | HUD Terror Color RED channel.
+`ToN_ColorG`     | `FLOAT` | HUD Terror Color GREEN channel.
+`ToN_ColorB`     | `FLOAT` | HUD Terror Color BLUE channel.
 
 # Encounters
 Parameter          | Type    | Description

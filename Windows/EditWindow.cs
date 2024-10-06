@@ -77,6 +77,7 @@ namespace ToNSaveManager
         internal void LocalizeContent() {
             button1.Text = LANG.S("EDIT.SAVE") ?? "Save";
             button2.Text = LANG.S("EDIT.CANCEL") ?? "Cancel";
+            buttonInsert.Text = LANG.S("EDIT.INSERT_TEMPLATE") ?? "Insert Template Key";
         }
 
         private bool IsEmpty;

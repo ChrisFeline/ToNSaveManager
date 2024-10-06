@@ -31,8 +31,8 @@ namespace ToNSaveManager.Utils {
 
         public static void ClearStates() {
             WebSocketAPI.ClearBuffer();
-            SetPlayerCount(0);
             SetEmulated(false);
+            SetPlayerCount(0);
             SetAlive(true);
             SetRoundActive(false);
             SetOptedIn(false);
@@ -63,6 +63,7 @@ namespace ToNSaveManager.Utils {
 
         public static void SetEmulated(bool isEmulated) {
             IsEmulated = isEmulated;
+            DSRichPresence.SetDirty();
         }
 
         public static void SetRoundActive(bool roundActive) {

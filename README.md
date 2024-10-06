@@ -6,10 +6,11 @@
   And saves your code history locally for later use.
 
   # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip "Use this link to download the latest version directly from GitHub.")
-
+  
   [View Releases](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
   [Saving Guide](https://terror.moe/save "HOW TO SAVE & LOAD FOR DUMMIES") • 
   [How To Use](#-faq)
+  ### [Join the Official Discord Server](https://discord.gg/Anpm8d3fPD)
 </div>
 
 <p align="center">
@@ -82,7 +83,7 @@ If your parameters are not being received properly... try resetting the OSC conf
 > 5. Your code is now in the clipboard, go to VRChat and paste the code in the input field.
 
 > ## Where can I request a feature?
-> If you want to suggest new features or changes, you can open an [Issue](https://github.com/ChrisFeline/ToNSaveManager/issues) here or you can ping me on the official [Toren Discord](https://discord.gg/bus-to-nowhere) as @**Kittenji**
+> If you want to suggest new features or changes, you can open an [Issue](https://github.com/ChrisFeline/ToNSaveManager/issues) here or you can join the [official Save Manager Discord Server](https://discord.gg/Anpm8d3fPD) and find me as @**Kittenji**
 
 > ## How does it work?
 > The world periodically saves a snapshot of your progress in the VRChat log files.
@@ -152,7 +153,7 @@ If your parameters are not being received properly... try resetting the OSC conf
 > You can report problems or suggestions under the [Issues](https://github.com/ChrisFeline/ToNSaveManager/issues) tab on this repo. Alternatively see contact information below.
 
 # 📫 Contact:
-> - **Discord:** [@Kittenji](https://discord.gg/HGk2RQX)<br>
+> - **Discord:** [@Kittenji](https://discord.gg/Anpm8d3fPD)<br>
 > - **VRChat:** [Kittenji](https://vrchat.com/home/user/usr_7ac745b8-e50e-4c9c-95e5-8e7e3bcde682)
 > ## Say hi if you see me playing [Terrors of Nowhere](https://vrchat.com/home/world/wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd)!
 > <p> <img src="Resources/loop.gif" alt="Preview" title="AAAAAA!"> </p>

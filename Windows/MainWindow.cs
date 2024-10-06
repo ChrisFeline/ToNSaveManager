@@ -71,7 +71,7 @@ namespace ToNSaveManager
             SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
             TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
 
-#if DEBUGG
+#if PARAMETER_EMULATOR
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
 #endif
