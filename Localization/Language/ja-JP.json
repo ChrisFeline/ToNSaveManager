@@ -210,6 +210,8 @@
 	"SETTINGS.INVERTMD": "月/日を反転",
 	"SETTINGS.SHOWDATE": "右パネルの日付",
 	"SETTINGS.SHOWDATE.TT": "右パネルのエントリに日付を表示します。",
+	"SETTINGS.SHOWTIME": "右パネルの時刻",
+	"SETTINGS.SHOWTIME.TT": "右パネルのエントリに時刻を表示します。",
 
 	"SETTINGS.GROUP.STYLE": "スタイル",
 	"SETTINGS.COLORFULOBJECTIVES": "カラフルなアイテム",
