@@ -7,10 +7,11 @@
 
   # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip "Use this link to download the latest version directly from GitHub.")
   
+  **[Discord Server](https://discord.gg/Anpm8d3fPD) • 
+  [VRChat Group](https://vrc.group/TONSM.0849)**<br>
   [View Releases](https://github.com/ChrisFeline/ToNSaveManager/releases "Show a list of current and previous releases.") • 
   [Saving Guide](https://terror.moe/save "HOW TO SAVE & LOAD FOR DUMMIES") • 
   [How To Use](#-faq)
-  ### [Join the Official Discord Server](https://discord.gg/Anpm8d3fPD)
 </div>
 
 <p align="center">
