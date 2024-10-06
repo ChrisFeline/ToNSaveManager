@@ -127,7 +127,7 @@ namespace ToNSaveManager.Utils
 
         static bool ItemStatus = true;
         internal static void SetItemStatus(bool status) {
-            //IsDirty = true;
+            if (!MainWindow.Started || !Settings.Get.OSCEnabled) return;
 
             if (ItemStatus != status) {
                 ItemStatus = status;
