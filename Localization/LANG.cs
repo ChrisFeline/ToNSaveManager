@@ -188,7 +188,7 @@ namespace ToNSaveManager.Localization {
                                         SelectedDefaultKey = key;
                                         Select(key);
 
-                                        Logger.Debug("Found default language.");
+                                        Logger.Log("Found default language.");
                                     }
 
                                     if (string.IsNullOrEmpty(firstKey)) firstKey = key;

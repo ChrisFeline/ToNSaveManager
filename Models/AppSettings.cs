@@ -120,6 +120,7 @@ namespace ToNSaveManager.Models
         public bool ShowSeconds { get; set; } = true;
         public bool InvertMD { get; set; }
         public bool ShowDate { get; set; } // Show full date in entries
+        [JsonIgnore] public bool ShowTime { get; set; } = true; // Show time in entries.
 
         /// <summary>
         /// If true, objectives items will be colored like the items in game.

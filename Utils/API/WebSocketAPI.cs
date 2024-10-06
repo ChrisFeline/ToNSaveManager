@@ -50,10 +50,10 @@ namespace ToNSaveManager.Utils.API {
             }
 
             if (Settings.Get.WebSocketEnabled && Server != null && !Server.IsListening) {
-                Logger.Debug("Starting Server...");
+                Logger.Log("Starting Server...");
                 Server.Start();
             } else if (!Settings.Get.WebSocketEnabled && Server != null && Server.IsListening) {
-                Logger.Debug("Stopping Server...");
+                Logger.Log("Stopping Server...");
                 Server.Stop();
                 Server.Dispose();
                 Server = null;

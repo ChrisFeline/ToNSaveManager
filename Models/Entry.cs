@@ -16,17 +16,22 @@ namespace ToNSaveManager.Models
         const string Time_24H = "HH:mm";
         const string Time_12H = "hh:mm tt";
 
-        internal static string GetDateFormat(bool isEntry = false)
+        internal static string? GetDateFormat(bool isEntry = false)
         {
+            if (isEntry && !Settings.Get.ShowTime && !Settings.Get.ShowDate) return null;
+
             bool use24Hour = Settings.Get.Use24Hour;
             bool invertMD = Settings.Get.InvertMD;
             bool showSeconds = Settings.Get.ShowSeconds;
-            // Sometimes I get nightmares too
-            return (!isEntry || Settings.Get.ShowDate ? (invertMD ? DateFormat_DD_MM : Date_MM_DD) + " | " : string.Empty) +
+
+            bool showDate = !isEntry || Settings.Get.ShowDate;
+
+            // Sometimes I get nightmares too, and i hate myself
+            return (showDate ? (invertMD ? DateFormat_DD_MM : Date_MM_DD) : string.Empty) +
                 // Append Time
-                (use24Hour ?
+                (!isEntry || Settings.Get.ShowTime ? (showDate ? " | " : string.Empty) + (use24Hour ?
                 (showSeconds ? Time_24H_S : Time_24H) :
-                (showSeconds ? Time_12H_S : Time_12H));
+                (showSeconds ? Time_12H_S : Time_12H)) : string.Empty);
         }
     }
 
@@ -107,14 +112,17 @@ namespace ToNSaveManager.Models
                     case ToNRoundResult.X: sb.Append(TextTagX); break;
                 }
 
-                sb.Append(" | ");
+                sb.Append(separator);
             }
 
-            sb.Append(Timestamp.ToString(EntryDate.GetDateFormat(true)));
+            string? dateFormat = EntryDate.GetDateFormat(true);
+            if (!string.IsNullOrEmpty(dateFormat)) {
+                sb.Append(Timestamp.ToString(dateFormat));
+                sb.Append(separator);
+            }
 
             if (!string.IsNullOrEmpty(Note))
             {
-                sb.Append(separator);
                 sb.Append(Note);
             }
 
