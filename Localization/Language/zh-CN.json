@@ -210,6 +210,8 @@
 	"SETTINGS.INVERTMD": "交换月/日",
 	"SETTINGS.SHOWDATE": "右侧面板日期",
 	"SETTINGS.SHOWDATE.TT": "右侧面板上的记录将显示完整的日期。",
+	"SETTINGS.SHOWTIME": "右侧面板时间",
+	"SETTINGS.SHOWTIME.TT": "右侧面板上的记录将显示创建时的时间。",
 
 	"SETTINGS.GROUP.STYLE": "风格",
 	"SETTINGS.COLORFULOBJECTIVES": "彩色的物品",
