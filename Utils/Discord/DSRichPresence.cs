@@ -250,18 +250,23 @@ namespace ToNSaveManager.Utils.Discord {
                 Log.Debug("Attempting to find game process...");
 
                 try {
-                    var vrc = Process.GetProcessesByName("VRChat").FirstOrDefault();
-                    if (vrc != null) {
+                    var vrc = Process.GetProcessesByName("VRChat");
+                    if (vrc.Length > 0) {
                         Log.Debug("Game process found, initializing.");
 
                         VRCIsOpen = true;
                         Initialize();
 
                         Log.Debug("Waiting for game exit.");
-                        await vrc.WaitForExitAsync();
-                    } else {
-                        VRCIsOpen = false;
+                        while (vrc.Length > 0) {
+                            await Task.Delay(60000);
+                            vrc = Process.GetProcessesByName("VRChat");
+                        }
+
+                        Log.Warning("VRChat game has closed.");
                     }
+
+                    VRCIsOpen = false;
                 } catch (Exception e) {
                     Log.Error("Error trying to find game process.");
                     Log.Error(e);
@@ -271,7 +276,7 @@ namespace ToNSaveManager.Utils.Discord {
                 Initialize();
                 // Retry to find vrc process in 5 seconds.
                 Log.Debug("Could not find VRChat process, retrying in 30 seconds.");
-                await Task.Delay(30000);
+                await Task.Delay(60000);
             }
         }
 
