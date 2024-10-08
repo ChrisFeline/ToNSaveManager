@@ -133,7 +133,7 @@
 	"SETTINGS.SHOWWINLOSE": "セーブシンボルを表示",
 	"SETTINGS.SHOWWINLOSE.TT": "エントリには、保存のトリガーとなったソースに基づきタグが表示されます。\n$$SAVE.TAG_R$$ リスポーン\n$$SAVE.TAG_W$$ 生存\n$$SAVE.TAG_D$$ 切断\n$$SAVE.TAG_X$$ Load Save Reminder\n$$SAVE.TAG_L$$ 死亡 (使用されません)",
 
-	"SETTINGS.GROUP.DISCORD": "Discordとの統合",
+	"SETTINGS.GROUP.DISCORD": "Discordと連携",
 	"SETTINGS.DISCORDWEBHOOKENABLED": "自動でDiscordにバックアップ (Webhook)",
 	"SETTINGS.DISCORDWEBHOOKENABLED.TT": "Webhookを使用して、セーブコードをDiscordチャンネルに自動的に保存します。",
 	"SETTINGS.DISCORDWEBHOOK.TITLE": "Discord Webhook URL",
