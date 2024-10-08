@@ -839,6 +839,13 @@ namespace ToNSaveManager
                     WebSocketAPI.EventDeath.Send(name, cont, context.DisplayName == name);
                     return true;
                 }
+
+                bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
+                bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
+                if (isActivated || isDeactivated) {
+                    LilOSC.SetItemStatus(isActivated);
+                    return true;
+                }
             }
 
             if (line.Contains(LogWatcher<ToNLogContext>.LocationKeyword)) {
@@ -859,13 +866,6 @@ namespace ToNSaveManager
             if (line.StartsWith(STAT_HIT)) {
                 string ammount = line.Substring(STAT_HIT.Length).Trim();
                 if (int.TryParse(ammount, out int result)) ToNGameState.AddDamage(result);
-                return true;
-            }
-
-            bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!");
-            bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!");
-            if (isActivated || isDeactivated) {
-                LilOSC.SetItemStatus(isActivated);
                 return true;
             }
 
