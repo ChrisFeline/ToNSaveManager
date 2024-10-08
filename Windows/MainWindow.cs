@@ -598,6 +598,7 @@ namespace ToNSaveManager
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
         const string ROUND_MAP_RTYPE = " and the round type is ";
         const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
+        const string ROUND_MAP_SPECIAL = "Dring King's Citadel";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
@@ -679,9 +680,20 @@ namespace ToNSaveManager
                 string id_str = line.Substring(index, length);
                 string name = line.Substring(ROUND_MAP_LOCATION.Length, index - ROUND_MAP_LOCATION.Length - 1).Trim();
 
-                ToNIndex.Map map = ToNIndex.Instance.GetMap(name);
-                if (map.IsEmpty && int.TryParse(id_str, out int mapIndex))
+                ToNIndex.Map map = ToNIndex.Map.Empty;
+                if (name.Equals(ROUND_MAP_SPECIAL)) {
+                    // Check special
+                    map = ToNIndex.Instance.GetMap(name);
+                } else if (int.TryParse(id_str, out int mapIndex)) {
+                    // Check by ID
                     map = ToNIndex.Instance.GetMap(mapIndex);
+                }
+
+                if (map.IsEmpty) {
+                    // Check by name
+                    Logger.Warning($"Map ID check ({id_str}) failed, trying map name instead: {name}");
+                    map = ToNIndex.Instance.GetMap(name);
+                }
 
                 context.SetLocation(map);
 
