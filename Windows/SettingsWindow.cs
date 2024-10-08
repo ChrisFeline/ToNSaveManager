@@ -258,6 +258,8 @@ namespace ToNSaveManager.Windows
             paramZ += tag;
 
             toolTip.SetToolTip(checkOSCSendColor, string.Format(ColorFormatTooltip, paramX, paramY, paramZ, label));
+
+            flowTerrorColor.Refresh();
         }
 
         private void LinkEditDiscordDetails_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {

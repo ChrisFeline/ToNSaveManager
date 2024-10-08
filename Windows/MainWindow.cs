@@ -570,19 +570,14 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
-        const string SaveInitKey = "saveInit";
         const string SaveStartKeyword = "[START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "[TERRORS SAVE CODE CREATED";
         const string SaveLoadedKeyword = "Loaded Data Successfully";
 
-        const string ROUND_PARTICIPATION_KEY = "optedIn";
         const string ROUND_OPTIN_KEYWORD = "opted in";
         const string ROUND_OPTOUT_KEYWORD = "Player respawned";
 
-        const string ROUND_RESULT_KEY = "rResult";
-        const string ROUND_KILLERS_KEY = "rKillers";
-        const string ROUND_PHASE_KEY = "rPhase";
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
         const string ROUND_OVER_KEYWORD = "RoundOver";
@@ -592,7 +587,6 @@ namespace ToNSaveManager
 
         const string ROUND_DEATH_MSG_KEYWORD = "[DEATH][";
 
-        const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
         const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
 
@@ -601,10 +595,10 @@ namespace ToNSaveManager
         const string KILLER_MATRIX_REVEAL = "Killers have been revealed - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
-        const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
         const string ROUND_MAP_RTYPE = " and the round type is ";
         const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
+        const string ROUND_MAP_SPECIAL = "Dring King's Citadel";
 
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
@@ -686,9 +680,20 @@ namespace ToNSaveManager
                 string id_str = line.Substring(index, length);
                 string name = line.Substring(ROUND_MAP_LOCATION.Length, index - ROUND_MAP_LOCATION.Length - 1).Trim();
 
-                ToNIndex.Map map = ToNIndex.Instance.GetMap(name);
-                if (map.IsEmpty && int.TryParse(id_str, out int mapIndex))
+                ToNIndex.Map map = ToNIndex.Map.Empty;
+                if (name.Equals(ROUND_MAP_SPECIAL)) {
+                    // Check special
+                    map = ToNIndex.Instance.GetMap(name);
+                } else if (int.TryParse(id_str, out int mapIndex)) {
+                    // Check by ID
                     map = ToNIndex.Instance.GetMap(mapIndex);
+                }
+
+                if (map.IsEmpty) {
+                    // Check by name
+                    Logger.Warning($"Map ID check ({id_str}) failed, trying map name instead: {name}");
+                    map = ToNIndex.Instance.GetMap(name);
+                }
 
                 context.SetLocation(map);
 
@@ -846,6 +851,15 @@ namespace ToNSaveManager
                     WebSocketAPI.EventDeath.Send(name, cont, context.DisplayName == name);
                     return true;
                 }
+
+                if (Settings.Get.OSCEnabled) {
+                    bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
+                    bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
+                    if (isActivated || isDeactivated) {
+                        LilOSC.SetItemStatus(isActivated);
+                        return true;
+                    }
+                }
             }
 
             if (line.Contains(LogWatcher<ToNLogContext>.LocationKeyword)) {
@@ -866,13 +880,6 @@ namespace ToNSaveManager
             if (line.StartsWith(STAT_HIT)) {
                 string ammount = line.Substring(STAT_HIT.Length).Trim();
                 if (int.TryParse(ammount, out int result)) ToNGameState.AddDamage(result);
-                return true;
-            }
-
-            bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!");
-            bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!");
-            if (isActivated || isDeactivated) {
-                LilOSC.SetItemStatus(isActivated);
                 return true;
             }
 

@@ -127,8 +127,6 @@ namespace ToNSaveManager.Utils
 
         static bool ItemStatus = true;
         internal static void SetItemStatus(bool status) {
-            if (!MainWindow.Started || !Settings.Get.OSCEnabled) return;
-
             if (ItemStatus != status) {
                 ItemStatus = status;
                 Logger.Debug("Setting Item Status: " + status);

@@ -92,7 +92,7 @@
             linkEditDiscordStart = new LinkLabel();
             labelGroupNotifications = new Label();
             labelGroupOSC = new Label();
-            flowLayoutPanel7 = new FlowLayoutPanel();
+            flowTerrorColor = new FlowLayoutPanel();
             linkOSCFormat = new LinkLabel();
             labelOSCFormat = new Label();
             flowLayoutPanel3 = new FlowLayoutPanel();
@@ -101,11 +101,11 @@
             flowLayoutPanel2 = new FlowLayoutPanel();
             linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
+            checkShowTime = new CheckBox();
             labelGroupStyle = new Label();
             flowLayoutPanel4 = new FlowLayoutPanel();
             checkOpenRGBEnabled = new CheckBox();
             linkOpenRGB = new LinkLabel();
-            checkShowTime = new CheckBox();
             ctxData.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -118,7 +118,7 @@
             flowDiscordImageText.SuspendLayout();
             flowDiscordIconText.SuspendLayout();
             flowDiscordIconStart.SuspendLayout();
-            flowLayoutPanel7.SuspendLayout();
+            flowTerrorColor.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
@@ -488,7 +488,7 @@
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
-            flowLayoutPanel1.Controls.Add(flowLayoutPanel7);
+            flowLayoutPanel1.Controls.Add(flowTerrorColor);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel3);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
@@ -1008,20 +1008,20 @@
             labelGroupOSC.TabIndex = 11;
             labelGroupOSC.Text = "OSC";
             // 
-            // flowLayoutPanel7
+            // flowTerrorColor
             // 
-            flowLayoutPanel7.AutoSize = true;
-            flowLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel7.Controls.Add(checkOSCSendColor);
-            flowLayoutPanel7.Controls.Add(linkOSCFormat);
-            flowLayoutPanel7.Controls.Add(labelOSCFormat);
-            flowLayoutPanel7.Location = new Point(0, 619);
-            flowLayoutPanel7.Margin = new Padding(0, 1, 0, 1);
-            flowLayoutPanel7.Name = "flowLayoutPanel7";
-            flowLayoutPanel7.Padding = new Padding(3, 0, 0, 0);
-            flowLayoutPanel7.Size = new Size(307, 19);
-            flowLayoutPanel7.TabIndex = 18;
-            flowLayoutPanel7.WrapContents = false;
+            flowTerrorColor.AutoSize = true;
+            flowTerrorColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowTerrorColor.Controls.Add(checkOSCSendColor);
+            flowTerrorColor.Controls.Add(linkOSCFormat);
+            flowTerrorColor.Controls.Add(labelOSCFormat);
+            flowTerrorColor.Location = new Point(0, 619);
+            flowTerrorColor.Margin = new Padding(0, 1, 0, 1);
+            flowTerrorColor.Name = "flowTerrorColor";
+            flowTerrorColor.Padding = new Padding(3, 0, 0, 0);
+            flowTerrorColor.Size = new Size(315, 19);
+            flowTerrorColor.TabIndex = 18;
+            flowTerrorColor.WrapContents = false;
             // 
             // linkOSCFormat
             // 
@@ -1034,7 +1034,8 @@
             linkOSCFormat.Location = new Point(173, 0);
             linkOSCFormat.Margin = new Padding(0);
             linkOSCFormat.Name = "linkOSCFormat";
-            linkOSCFormat.Size = new Size(97, 15);
+            linkOSCFormat.Padding = new Padding(4, 0, 4, 0);
+            linkOSCFormat.Size = new Size(105, 15);
             linkOSCFormat.TabIndex = 11;
             linkOSCFormat.TabStop = true;
             linkOSCFormat.Text = "(Change Format)";
@@ -1046,7 +1047,7 @@
             labelOSCFormat.AutoSize = true;
             labelOSCFormat.BackColor = Color.LightBlue;
             labelOSCFormat.ForeColor = Color.Black;
-            labelOSCFormat.Location = new Point(270, 0);
+            labelOSCFormat.Location = new Point(278, 0);
             labelOSCFormat.Margin = new Padding(0);
             labelOSCFormat.Name = "labelOSCFormat";
             labelOSCFormat.Padding = new Padding(4, 0, 4, 0);
@@ -1140,6 +1141,19 @@
             labelGroupFormat.TabIndex = 13;
             labelGroupFormat.Text = "Time Format";
             // 
+            // checkShowTime
+            // 
+            checkShowTime.AutoSize = true;
+            checkShowTime.Location = new Point(3, 796);
+            checkShowTime.Margin = new Padding(3, 1, 3, 1);
+            checkShowTime.Name = "checkShowTime";
+            checkShowTime.Padding = new Padding(20, 0, 3, 0);
+            checkShowTime.Size = new Size(138, 19);
+            checkShowTime.TabIndex = 28;
+            checkShowTime.Tag = "ShowTime";
+            checkShowTime.Text = "Right Panel Time";
+            checkShowTime.UseVisualStyleBackColor = true;
+            // 
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
@@ -1194,19 +1208,6 @@
             linkOpenRGB.VisitedLinkColor = Color.Gray;
             linkOpenRGB.LinkClicked += linkOpenRGB_LinkClicked;
             // 
-            // checkShowTime
-            // 
-            checkShowTime.AutoSize = true;
-            checkShowTime.Location = new Point(3, 796);
-            checkShowTime.Margin = new Padding(3, 1, 3, 1);
-            checkShowTime.Name = "checkShowTime";
-            checkShowTime.Padding = new Padding(20, 0, 3, 0);
-            checkShowTime.Size = new Size(138, 19);
-            checkShowTime.TabIndex = 28;
-            checkShowTime.Tag = "ShowTime";
-            checkShowTime.Text = "Right Panel Time";
-            checkShowTime.UseVisualStyleBackColor = true;
-            // 
             // SettingsWindow
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -1249,8 +1250,8 @@
             flowDiscordIconText.PerformLayout();
             flowDiscordIconStart.ResumeLayout(false);
             flowDiscordIconStart.PerformLayout();
-            flowLayoutPanel7.ResumeLayout(false);
-            flowLayoutPanel7.PerformLayout();
+            flowTerrorColor.ResumeLayout(false);
+            flowTerrorColor.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
@@ -1334,7 +1335,7 @@
         private LinkLabel linkEditDiscordStart;
         private LinkLabel linkCopyLogs;
         private LinkLabel linkOpenLogs;
-        private FlowLayoutPanel flowLayoutPanel7;
+        private FlowLayoutPanel flowTerrorColor;
         private LinkLabel linkOSCFormat;
         private Label labelOSCFormat;
         private CheckBox checkShowTime;
