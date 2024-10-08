@@ -840,11 +840,13 @@ namespace ToNSaveManager
                     return true;
                 }
 
-                bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
-                bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
-                if (isActivated || isDeactivated) {
-                    LilOSC.SetItemStatus(isActivated);
-                    return true;
+                if (Settings.Get.OSCEnabled) {
+                    bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
+                    bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
+                    if (isActivated || isDeactivated) {
+                        LilOSC.SetItemStatus(isActivated);
+                        return true;
+                    }
                 }
             }
 
