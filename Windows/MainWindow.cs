@@ -570,19 +570,14 @@ namespace ToNSaveManager
         #endregion
 
         #region Log Handling
-        const string SaveInitKey = "saveInit";
         const string SaveStartKeyword = "[START]";
         const string SaveEndKeyword = "[END]";
         const string SaveInitKeyword = "[TERRORS SAVE CODE CREATED";
         const string SaveLoadedKeyword = "Loaded Data Successfully";
 
-        const string ROUND_PARTICIPATION_KEY = "optedIn";
         const string ROUND_OPTIN_KEYWORD = "opted in";
         const string ROUND_OPTOUT_KEYWORD = "Player respawned";
 
-        const string ROUND_RESULT_KEY = "rResult";
-        const string ROUND_KILLERS_KEY = "rKillers";
-        const string ROUND_PHASE_KEY = "rPhase";
         const string ROUND_WON_KEYWORD = "Player Won";
         const string ROUND_LOST_KEYWORD = "Player lost,";
         const string ROUND_OVER_KEYWORD = "RoundOver";
@@ -592,7 +587,6 @@ namespace ToNSaveManager
 
         const string ROUND_DEATH_MSG_KEYWORD = "[DEATH][";
 
-        const string ROUND_IS_SABO_KEY = "rSabo";
         const string ROUND_SABO_END = "Clearing Items // Ran Item Removal";
         const string ROUND_IS_SABO = "You are the sussy baka of cringe naenae legend";
 
@@ -601,7 +595,6 @@ namespace ToNSaveManager
         const string KILLER_MATRIX_REVEAL = "Killers have been revealed - ";
         const string KILLER_ROUND_TYPE_KEYWORD = " // Round type is ";
 
-        const string ROUND_MAP_KEY = "rMap";
         const string ROUND_MAP_LOCATION = "This round is taking place at ";
         const string ROUND_MAP_RTYPE = " and the round type is ";
         const string ROUND_MAP_SWAPPED = "Solstice has swapped the map to ";
