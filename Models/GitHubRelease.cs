@@ -17,7 +17,7 @@ namespace ToNSaveManager.Models
         public string body { get; set; } = string.Empty;
         public DateTime created_at { get; set; }
         public DateTime published_at { get; set; }
-        public Asset[] assets { get; set; } = new Asset[0];
+        public Asset[] assets { get; set; } = Array.Empty<Asset>();
 
         internal class Asset
         {
