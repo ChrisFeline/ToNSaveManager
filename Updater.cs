@@ -107,7 +107,7 @@ namespace ToNSaveManager {
 
                 Program.ReleaseMutex(); // Release mutex so downloaded app opens properly
                                         // Start new process with --post-update
-                ProcessStartInfo processInfo = new ProcessStartInfo("ToNSaveManager.exe", "--post-update");
+                ProcessStartInfo processInfo = new ProcessStartInfo(Program.ProgramFile, "--post-update");
                 Process.Start(processInfo);
                 // Exit this app
                 Application.Exit();
