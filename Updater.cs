@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ToNSaveManager.Models;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace ToNSaveManager {
     internal static class Updater {
@@ -101,7 +95,8 @@ namespace ToNSaveManager {
 
                 Console.WriteLine("Extracting update files . . .");
                 Logger.Info("Extracting: " + TempFileLocation);
-                ZipFile.ExtractToDirectory(TempFileLocation, Program.ProgramDirectory, true);
+                FastZip zip = new FastZip();
+                zip.ExtractZip(TempFileLocation, Program.ProgramDirectory, null);
 
                 Console.WriteLine("Finishing update . . .");
                 File.Delete(TempFileLocation); // .zip file cleanup
