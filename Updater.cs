@@ -95,9 +95,12 @@ namespace ToNSaveManager {
                 progress.Done();
 
                 // Move current executable
+                Logger.Info("Moving from: " + Program.ProgramLocation);
+                Logger.Info("Moving to: " + Program.ProgramLocationTemporary);
                 File.Move(Program.ProgramLocation, Program.ProgramLocationTemporary, true);
 
                 Console.WriteLine("Extracting update files . . .");
+                Logger.Info("Extracting: " + TempFileLocation);
                 ZipFile.ExtractToDirectory(TempFileLocation, Program.ProgramDirectory, true);
 
                 Console.WriteLine("Finishing update . . .");
