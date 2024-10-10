@@ -934,7 +934,10 @@ namespace ToNSaveManager
 
             if (Settings.Get.AutoCopy) {
                 Entry? first = temp?.Database.FirstOrDefault();
-                if (first != null) SetRecent(first);
+                if (first != null) {
+                    SetRecent(first);
+                    NotificationManager.PlayCopy();
+                }
             }
         }
 
