@@ -50,13 +50,18 @@ namespace ToNSaveManager.Utils {
             }
 
             if (fallback != null) {
-                StreamPlayer.Stop();
-                StreamPlayer.Stream = null;
+                try {
+                    StreamPlayer.Stop();
+                    StreamPlayer.Stream = null;
 
-                fallback.Position = 0;
-                StreamPlayer.Stream = fallback;
+                    fallback.Position = 0;
+                    StreamPlayer.Stream = fallback;
 
-                StreamPlayer.Play();
+                    StreamPlayer.Play();
+                } catch (Exception ex) {
+                    Logger.Error("Exception trying to play default audio.");
+                    Logger.Error(ex);
+                }
             }
 
             return false;
