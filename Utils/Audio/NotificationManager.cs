@@ -17,7 +17,7 @@ namespace ToNSaveManager.Utils {
         }
 
         internal static void PlaySave() {
-            if (StartPlaying(Settings.Get.AudioLocation, DefaultSaveStream)) {
+            if (StartPlaying(Settings.Get.AudioLocation, Random.Shared.Next(0,127) == 87 ? SecretSaveStream : DefaultSaveStream)) {
                 Settings.Get.AudioLocation = null;
                 Settings.Export();
             }
