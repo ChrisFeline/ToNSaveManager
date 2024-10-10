@@ -299,11 +299,11 @@ namespace ToNSaveManager
                 if (listBoxEntries.SelectedItem != null) {
                     Entry entry = (Entry)listBoxEntries.SelectedItem;
                     entry.CopyToClipboard();
-                    //MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    NotificationManager.PlayCopy();
 
                     SetJustCopied(index);
-                    // TooltipUtil.Show(listBoxEntries, LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\nYou can now paste the code in game.");
+
+                    if (Settings.Get.PlayAudioCopy)
+                        NotificationManager.PlayCopy();
                 }
 
                 listBoxEntries.SelectedIndex = -1;
@@ -522,11 +522,21 @@ namespace ToNSaveManager
         static readonly XSOverlay XSOverlay = new XSOverlay();
 
         internal static void ResetNotification() {
-            // NotificationManager.Reset();
+            NotificationManager.Reset();
         }
 
-        internal static void PlayAudioNotification() {
-            if (!Started || !Settings.Get.PlayAudio) return;
+        internal static void PlayCopyNotification() {
+            if (!Started || !Settings.Get.PlayAudioCopy) return;
+
+            try {
+                NotificationManager.PlayCopy();
+            } catch (Exception ex) {
+                Logger.Error(ex);
+            }
+        }
+
+        internal static void PlaySaveNotification() {
+            if (!Started || !Settings.Get.PlayAudioSave) return;
 
             try {
                 NotificationManager.PlaySave();
@@ -995,7 +1005,7 @@ namespace ToNSaveManager
             SaveData.SetDirty();
 
             if (context.Initialized) {
-                PlayAudioNotification();
+                PlaySaveNotification();
                 SendXSNotification();
                 DSWebHook.Send(entry);
 

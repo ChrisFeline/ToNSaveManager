@@ -202,9 +202,19 @@
 	"SETTINGS.XSOVERLAY.MESSAGE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Save Data Stored</color>",
 	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>Notifications Enabled</color>",
 
-	"SETTINGS.PLAYAUDIO": "Play Audio ({0})",
-	"SETTINGS.PLAYAUDIO.TT": "Double click to select custom audio file.\nRight click to reset back to 'default.wav'",
-	"SETTINGS.PLAYAUDIO.TITLE": "Select Custom Audio",
+
+	"SETTINGS.PLAYAUDIO.TITLE": "Select Custom Audio File",
+
+	"SETTINGS.PLAYAUDIOSAVE": "Play Audio on Save",
+	"SETTINGS.PLAYAUDIOSAVE.TT": "Plays an audio when a new save code is created.",
+
+	"SETTINGS.PLAYAUDIOCOPY": "Play Audio on Copy",
+	"SETTINGS.PLAYAUDIOCOPY.TT": "Plays an audio when you copy a save code entry.",
+
+	"SETTINGS.PLAYAUDIO_SELECT": "(Select Audio File)",
+	"SETTINGS.PLAYAUDIO_SELECT.TT": "Select a custom audio file on your computer for this notification.",
+	"SETTINGS.PLAYAUDIO_SELECT.ALT": "$$SETTINGS.PLAYAUDIO_SELECT.TT$$\nRight click this button to reset this notification audio back to default.",
+
 
 	"SETTINGS.GROUP.TIME_FORMAT": "Time Formatting",
 	"SETTINGS.USE24HOUR": "24 Hour Time",
