@@ -75,6 +75,8 @@ namespace ToNSaveManager
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
 #endif
+
+            // NotificationManager.SetSave(Settings.Get.AudioLocation, false);
         }
 
         private void mainWindow_Shown(object sender, EventArgs e) {
@@ -294,7 +296,10 @@ namespace ToNSaveManager
                 if (listBoxEntries.SelectedItem != null) {
                     Entry entry = (Entry)listBoxEntries.SelectedItem;
                     entry.CopyToClipboard();
-                    MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    NotificationManager.PlayCopy();
+
+
                 }
 
                 listBoxEntries.SelectedIndex = -1;
@@ -488,36 +493,19 @@ namespace ToNSaveManager
         #region Form Methods
         #region Notifications
         static readonly XSOverlay XSOverlay = new XSOverlay();
-        static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
-        static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
-
-        static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
-            Program.GetEmbededResource("notification.wav");
-
-        static readonly Stream? SecretAudioStream =
-            Program.GetEmbededResource("notification_secret.wav");
-
-        static readonly Stream? CopiedAudioStream =
-            Program.GetEmbededResource("notification_copy.wav");
 
         internal static void ResetNotification() {
-            CustomNotificationPlayer.Stop();
-            DefaultNotificationPlayer.Stop();
+            // NotificationManager.Reset();
         }
 
-        internal static void PlayNotification(bool forceDefault = false) {
-            if ((!Started || !Settings.Get.PlayAudio) && !forceDefault) return;
+        internal static void PlayAudioNotification() {
+            if (!Started || !Settings.Get.PlayAudio) return;
 
             try {
-                if (!forceDefault && !string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation)) {
-                    CustomNotificationPlayer.SoundLocation = Settings.Get.AudioLocation;
-                    CustomNotificationPlayer.Play();
-                    return;
-                }
-
-                DefaultNotificationPlayer.Stream = Random.Shared.Next(0, 100) == 87 ? SecretAudioStream : DefaultAudioStream;
-                DefaultNotificationPlayer.Play();
-            } catch { }
+                NotificationManager.PlaySave();
+            } catch (Exception ex) {
+                Logger.Error(ex);
+            }
         }
 
         internal static void SendXSNotification(bool test = false) {
@@ -979,7 +967,7 @@ namespace ToNSaveManager
             SaveData.SetDirty();
 
             if (context.Initialized) {
-                PlayNotification();
+                PlayAudioNotification();
                 SendXSNotification();
                 DSWebHook.Send(entry);
 

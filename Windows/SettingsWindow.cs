@@ -18,12 +18,8 @@ namespace ToNSaveManager.Windows
         #region Initialization
         internal static SettingsWindow? Instance;
 
-        readonly Timer ClickTimer = new Timer() { Interval = 200 };
-        readonly Stopwatch Stopwatch = new Stopwatch();
-
         public SettingsWindow() {
             InitializeComponent();
-            ClickTimer.Tick += ClickTimer_Tick;
             languageSelectBox.FixItemHeight(true);
 
 #if DEBUG
@@ -436,8 +432,6 @@ namespace ToNSaveManager.Windows
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
-            ClickTimer.Dispose();
-
             MainWindow.RefreshLists();
             MainWindow.ResetNotification();
         }
@@ -445,7 +439,7 @@ namespace ToNSaveManager.Windows
         private void TimeFormat_CheckedChanged(object? sender, EventArgs e) => MainWindow.RefreshLists();
         private void CheckXSOverlay_CheckedChanged(object? sender, EventArgs e) => MainWindow.SendXSNotification(true);
         private void CheckPlayAudio_CheckedChanged(object? sender, EventArgs e) {
-            MainWindow.PlayNotification();
+            MainWindow.PlayAudioNotification();
             if (!checkPlayAudio.Checked) MainWindow.ResetNotification();
         }
 
@@ -500,12 +494,6 @@ namespace ToNSaveManager.Windows
             SaveData.OpenDataLocation();
         }
 
-        private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button != MouseButtons.Left) return;
-            Stopwatch.Start();
-            CancelNext = false;
-        }
-
         private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
             if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
             else LilOSC.SetChatboxMessage(string.Empty);
@@ -554,44 +542,12 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation)) {
-                Settings.Get.AudioLocation = null;
-                Settings.Export();
-                PostAudioLocationSet();
-                return;
-            }
-
-            if (e.Button != MouseButtons.Left) return;
-
-            Stopwatch.Stop();
-            long elapsed = Stopwatch.ElapsedMilliseconds;
-            Stopwatch.Reset();
-
-            if (CancelNext) {
-                CancelNext = false;
-                return;
-            }
-
-            if (elapsed > 210) {
-                TogglePlayAudio();
-                return;
-            }
-
-            if (!DoubleClickCheck) {
-                DoubleClickCheck = true;
-                ClickTimer.Stop();
-                ClickTimer.Start();
-                return;
-            }
-
-            DoubleClickCheck = false;
-            ClickTimer.Stop();
-
+        /// TODO: Move this function somewhere else
+        private void SelectAudioFile(object sender, MouseEventArgs e) {
             using (OpenFileDialog fileDialog = new OpenFileDialog()) {
                 fileDialog.InitialDirectory = "./";
                 fileDialog.Title = LANG.S("SETTINGS.PLAYAUDIO.TITLE") ?? "Select Custom Sound";
-                fileDialog.Filter = "Waveform (*.wav)|*.wav";
+                fileDialog.Filter = "Waveform (*.wav)|*.wav|MP3 (*.mp3)|*.mp3|Vorbis (*.ogg)|*.ogg";
 
                 if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName)) {
                     Settings.Get.AudioLocation = fileDialog.FileName;
@@ -628,18 +584,6 @@ namespace ToNSaveManager.Windows
 
         private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e) {
             ObjectivesWindow.RefreshLists();
-        }
-
-        // Double click
-        private bool DoubleClickCheck = false;
-        private bool CancelNext = false;
-        private void ClickTimer_Tick(object? sender, EventArgs e) {
-            ClickTimer.Stop();
-            if (DoubleClickCheck) {
-                DoubleClickCheck = false;
-                CancelNext = true;
-                TogglePlayAudio();
-            }
         }
 
         private void languageSelectBox_SelectedIndexChanged(object sender, EventArgs e) {
@@ -683,10 +627,6 @@ namespace ToNSaveManager.Windows
         #endregion
 
         #region Utils
-        private void TogglePlayAudio() {
-            checkPlayAudio.Checked = !checkPlayAudio.Checked;
-        }
-
         private void BindControlsRecursive(Control.ControlCollection controls) {
             foreach (Control c in controls) {
                 string? tag = c.Tag?.ToString();

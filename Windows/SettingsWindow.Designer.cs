@@ -234,7 +234,6 @@
             // 
             // checkPlayAudio
             // 
-            checkPlayAudio.AutoCheck = false;
             checkPlayAudio.AutoSize = true;
             checkPlayAudio.Location = new Point(3, 526);
             checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
@@ -242,11 +241,9 @@
             checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
             checkPlayAudio.Size = new Size(180, 19);
             checkPlayAudio.TabIndex = 1;
-            checkPlayAudio.Tag = "PlayAudio|Double click to select custom audio file.\\nRight click to reset back to 'default.wav'";
+            checkPlayAudio.Tag = "PlayAudio";
             checkPlayAudio.Text = "Play Sound (default.wav)";
             checkPlayAudio.UseVisualStyleBackColor = true;
-            checkPlayAudio.MouseDown += checkPlayAudio_MouseDown;
-            checkPlayAudio.MouseUp += checkPlayAudio_MouseUp;
             // 
             // checkXSOverlay
             // 

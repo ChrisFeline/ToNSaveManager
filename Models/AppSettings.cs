@@ -81,6 +81,7 @@ namespace ToNSaveManager.Models
         /// Custom audio location, must be .wav
         /// </summary>
         public string? AudioLocation { get; set; }
+        public string? AudioCopyLocation { get; set; }
 
         /// <summary>
         /// Saves a list of players that were in the same room as you at the time of the save.
