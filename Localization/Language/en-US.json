@@ -60,6 +60,7 @@
 	"MAIN.ENTRY_PLAYERS": "Players in room:",
 	"MAIN.ENTRY_MAP": "Map:",
 	"MAIN.ENTRY_WARNING": "$$SAVE.TAG_X$$ Warning!! This save was generated before you loaded your Save Code.\nIf you are not a new player, go back one save and load that instead.",
+	"MAIN.ENTRY_COPIED": "COPIED TO CLIPBOARD!",
 
 	"ROUND_TYPE.INTERMISSION": "Intermission",
 	"ROUND_TYPE.CLASSIC": "Classic",
@@ -91,6 +92,7 @@
 	"SAVE.TAG_D": "🔌",
 	"SAVE.TAG_L": "💀",
 	"SAVE.TAG_X": "❗",
+	"SAVE.TAG_C": "✅",
 
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
 	"SETTINGS.OPEN_DATA_BTN": "Data",

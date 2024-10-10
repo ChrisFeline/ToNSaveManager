@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Media;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
@@ -76,7 +75,8 @@ namespace ToNSaveManager
                 EmulatorWindow.Open(this);
 #endif
 
-            // NotificationManager.SetSave(Settings.Get.AudioLocation, false);
+            JustCopiedTimer.Interval = 1000;
+            JustCopiedTimer.Tick += JustCopiedTimer_Tick;
         }
 
         private void mainWindow_Shown(object sender, EventArgs e) {
@@ -282,6 +282,8 @@ namespace ToNSaveManager
             }
         }
 
+        int JustCopiedIndex = -1;
+        System.Windows.Forms.Timer JustCopiedTimer = new System.Windows.Forms.Timer();
         private void listBoxEntries_MouseUp(object sender, MouseEventArgs e) {
             bool isRight = e.Button == MouseButtons.Right;
             if (e.Button == MouseButtons.Left || isRight) {
@@ -299,10 +301,30 @@ namespace ToNSaveManager
                     //MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     NotificationManager.PlayCopy();
 
-
+                    SetJustCopied(index);
+                    // TooltipUtil.Show(listBoxEntries, LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\nYou can now paste the code in game.");
                 }
 
                 listBoxEntries.SelectedIndex = -1;
+            }
+        }
+
+        private void SetJustCopied(int index) {
+            JustCopiedTimer.Stop();
+            JustCopiedIndex = index;
+
+            if (JustCopiedIndex > -1) {
+                listBoxEntries.Refresh();
+                JustCopiedTimer.Start();
+            }
+        }
+
+        private void JustCopiedTimer_Tick(object? sender, EventArgs e) {
+            JustCopiedTimer.Stop();
+
+            if (JustCopiedIndex > -1) {
+                JustCopiedIndex = -1;
+                listBoxEntries.Refresh();
             }
         }
 
@@ -314,6 +336,10 @@ namespace ToNSaveManager
 
             ListBox listBox = (ListBox)sender;
             string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
+
+            if (e.Index == JustCopiedIndex && listBox == listBoxEntries) {
+                itemText = Entry.TextCopied;
+            }
 
             int maxWidth = e.Bounds.Width;
             TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
@@ -525,6 +551,7 @@ namespace ToNSaveManager
 
         private void UpdateEntries() {
             listBoxEntries.Items.Clear();
+            if (JustCopiedIndex > -1) SetJustCopied(-1);
 
             if (listBoxKeys.SelectedItem == null)
                 return;
