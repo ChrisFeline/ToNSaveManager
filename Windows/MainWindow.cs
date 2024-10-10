@@ -28,6 +28,10 @@ namespace ToNSaveManager
             InitializeComponent();
             listBoxKeys.FixItemHeight();
             listBoxEntries.FixItemHeight();
+
+            JustCopiedTimer.Interval = 1000;
+            JustCopiedTimer.Tick += JustCopiedTimer_Tick;
+
             Instance = this;
         }
         #endregion
@@ -74,9 +78,6 @@ namespace ToNSaveManager
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
 #endif
-
-            JustCopiedTimer.Interval = 1000;
-            JustCopiedTimer.Tick += JustCopiedTimer_Tick;
         }
 
         private void mainWindow_Shown(object sender, EventArgs e) {
