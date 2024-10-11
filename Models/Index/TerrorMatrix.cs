@@ -157,11 +157,15 @@ namespace ToNSaveManager.Models.Index {
                         dupes.Clear();
                     }
 
-                    Terrors = new ToNIndex.TerrorInfo[indexes.Length];
+                    Terrors = new ToNIndex.TerrorInfo[3];
                     for (int i = 0; i < Terrors.Length; i++) {
-                        ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
-                        if (i == StartIndex && lvl > 1) info.Level = lvl;
-                        Terrors[i] = info;
+                        if (i < TerrorCount) {
+                            ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
+                            if (i == StartIndex && lvl > 1) info.Level = lvl;
+                            Terrors[i] = info;
+                        } else {
+                            Terrors[i] = Terrors[0];
+                        }
                     }
                     break;
 
@@ -212,9 +216,10 @@ namespace ToNSaveManager.Models.Index {
                         RoundType != ToNRoundType.Fog_Alternate) {
                 Color c = Color.White;
                 int R = 0, G = 0, B = 0, L = 0;
-                for (int i = StartIndex; i < TerrorCount; i++) {
+                for (int i = 0; i < Terrors.Length; i++) {
                     if (i > 2) break;
 
+                    if (Terrors[i].IsEmpty) continue;
                     c = Terrors[i].Value.Color;
 
                     R += c.R;
