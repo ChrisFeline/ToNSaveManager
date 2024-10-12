@@ -40,10 +40,6 @@ namespace ToNSaveManager.Utils.LogParser
             base.Enter(name, date);
             HasLoadedSave = false;
 
-            if (Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started) {
-                MainWindow.Instance?.CopyRecent(true);
-                NotificationManager.PlayCopy();
-            }
             if (IsRecent) ToNGameState.ClearStates();
         }
         public override void Enter(string instanceID, bool isHomeWorld) {
@@ -53,6 +49,11 @@ namespace ToNSaveManager.Utils.LogParser
                 StatsWindow.SetInstanceURL(instanceID);
                 WebSocketAPI.SendValue("INSTANCE", instanceID);
                 DSRichPresence.SetInstanceID(instanceID, isHomeWorld);
+
+                if (isHomeWorld && Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started) {
+                    MainWindow.Instance?.CopyRecent(true);
+                    NotificationManager.PlayCopy();
+                }
             }
         }
 
