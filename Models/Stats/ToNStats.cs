@@ -59,13 +59,9 @@ namespace ToNSaveManager.Models.Stats {
         static readonly LoggerSource Log = new LoggerSource(nameof(ToNStats));
 
         #region Settings
-        private static string m_Destination = "Stats.json";
+        private static string? m_Destination = null;
         internal static string Destination {
-            get => m_Destination;
-            set {
-                Log.Print("Setting destination: " + value);
-                m_Destination = Path.Combine(value, "Stats.json");
-            }
+            get => m_Destination ?? (m_Destination = Path.Combine(Program.DataLocation, "Stats.json"));
         }
         #endregion
 
