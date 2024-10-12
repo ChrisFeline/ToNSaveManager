@@ -42,12 +42,15 @@ namespace ToNSaveManager.Models
         static string TextPlayers = "Players in room:";
         static string TextMap = "Map:";
         static string TextWarn = "Warning!! You forgot to load your save code.";
+        public static string TextCopied = TextTagC + Separator + "COPIED TO CLIPBOARD!";
 
         static string TextTagR = "🔄";
         static string TextTagW = "🏆";
         static string TextTagD = "🔌";
         static string TextTagL = "💀";
         static string TextTagX = "⚠️";
+        static string TextTagC = "✅";
+        const string Separator = " | ";
 
         internal static void LocalizeContent() {
             TextNote = LANG.S("MAIN.ENTRY_NOTE") ?? "Note:";
@@ -56,12 +59,16 @@ namespace ToNSaveManager.Models
             TextPlayers = LANG.S("MAIN.ENTRY_PLAYERS") ?? "Players in room:";
             TextMap = LANG.S("MAIN.ENTRY_MAP") ?? "Map:";
             TextWarn = LANG.S("MAIN.ENTRY_WARNING") ?? "Warning!! You forgot to load your save code.";
+            TextCopied = LANG.S("MAIN.ENTRY_COPIED") ?? "COPIED TO CLIPBOARD!";
 
             TextTagR = LANG.S("SAVE.TAG_R") ?? "🔄";
             TextTagW = LANG.S("SAVE.TAG_W") ?? "🏆";
             TextTagD = LANG.S("SAVE.TAG_D") ?? "🔌";
             TextTagL = LANG.S("SAVE.TAG_L") ?? "💀";
             TextTagX = LANG.S("SAVE.TAG_X") ?? "⚠️";
+            TextTagC = LANG.S("SAVE.TAG_C") ?? "✅";
+
+            TextCopied = TextTagC + Separator + TextCopied;
         }
 
         public string Note = string.Empty;
@@ -98,7 +105,6 @@ namespace ToNSaveManager.Models
 
         public override string ToString()
         {
-            const string separator = " | ";
             StringBuilder sb = new StringBuilder();
 
             if (Settings.Get.SaveRoundInfo && Settings.Get.ShowWinLose) {
@@ -112,13 +118,13 @@ namespace ToNSaveManager.Models
                     case ToNRoundResult.X: sb.Append(TextTagX); break;
                 }
 
-                sb.Append(separator);
+                sb.Append(Separator);
             }
 
             string? dateFormat = EntryDate.GetDateFormat(true);
             if (!string.IsNullOrEmpty(dateFormat)) {
                 sb.Append(Timestamp.ToString(dateFormat));
-                sb.Append(separator);
+                sb.Append(Separator);
             }
 
             if (!string.IsNullOrEmpty(Note))

@@ -17,6 +17,10 @@ namespace ToNSaveManager
         internal const string ProgramName = "ToNSaveManager";
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
+        internal static readonly string ProgramLocation = Path.Combine(ProgramDirectory, ProgramFile);
+        internal static readonly string ProgramLocationTemporary = Path.Combine(ProgramDirectory, "__" + ProgramFile);
+        internal const string ProgramFile = ProgramName + ".exe";
+
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
         internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher<ToNLogContext>.GetVRChatDataLocation(), ProgramName);
 
@@ -52,9 +56,10 @@ namespace ToNSaveManager
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            LANG.Initialize();
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
-            UpdateWindow.RunPostUpdateCheck(args);
+            LANG.Initialize();
+            Updater.CheckPostUpdate(args);
 
             if (CheckMutex())
             {
@@ -67,22 +72,27 @@ namespace ToNSaveManager
             Application.SetCompatibleTextRenderingDefault(true);
             InitializeFont();
 
-            Application.ApplicationExit += delegate {
-                Logger.Log("Disposing used resources...");
-                FontCollection.Dispose();
-                DefaultFont?.Dispose();
-                ReleaseMutex();
-                Logger.Log("Saving before app exit...");
-                MainWindow.SaveData.Export();
-                StatsWindow.WriteChanges();
-                Logger.Log("Done.");
-            };
-
-            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+            MainWindow.Started = false;
 
             if (!StartCheckForUpdate()) {
+                Application.ApplicationExit += OnApplicationExit;
                 Application.Run(new MainWindow());
             }
+
+            // Check when all forms close
+            Logger.Info("All windows are closed...");
+            GitHubUpdate.Start();
+        }
+
+        private static void OnApplicationExit(object? sender, EventArgs e) {
+            Logger.Log("Disposing used resources...");
+            FontCollection.Dispose();
+            DefaultFont?.Dispose();
+            ReleaseMutex();
+            Logger.Log("Saving before app exit...");
+            MainWindow.SaveData.Export();
+            StatsWindow.WriteChanges();
+            Logger.Log("Done.");
         }
 
         static readonly PrivateFontCollection FontCollection = new PrivateFontCollection();
@@ -132,9 +142,6 @@ namespace ToNSaveManager
         /// <param name="showUpToDate">Shows a message if there's no updates available.</param>
         internal static bool StartCheckForUpdate(bool showUpToDate = false)
         {
-#if DEBUG
-            return false;
-#else
             Version? currentVersion = GetVersion();
             if (currentVersion == null) return false; // No current version?
 
@@ -161,8 +168,7 @@ namespace ToNSaveManager
                 DialogResult result = MessageBox.Show((LANG.S("MESSAGE.UPDATE_AVAILABLE") ?? "A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?") + body, LANG.S("MESSAGE.UPDATE_AVAILABLE.TITLE") ?? "New update available", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
-                    UpdateWindow updateWindow = new UpdateWindow(release, asset);
-                    updateWindow.ShowDialog();
+                    GitHubUpdate.Set(release, asset);
                     return true;
                 } else if (!showUpToDate)
                 {
@@ -175,7 +181,6 @@ namespace ToNSaveManager
             }
 
             return false;
-#endif
         }
 
         internal static bool CreateFileBackup(string filePath)

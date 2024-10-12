@@ -37,7 +37,7 @@
             checkAutoCopy = new CheckBox();
             checkSkipParsedLogs = new CheckBox();
             checkOSCEnabled = new CheckBox();
-            checkPlayAudio = new CheckBox();
+            checkPlayAudioSave = new CheckBox();
             checkXSOverlay = new CheckBox();
             checkShowDate = new CheckBox();
             checkInvertMD = new CheckBox();
@@ -91,6 +91,11 @@
             checkDiscordCustomStart = new CheckBox();
             linkEditDiscordStart = new LinkLabel();
             labelGroupNotifications = new Label();
+            flowLayoutPanel7 = new FlowLayoutPanel();
+            linkSelectAudioSave = new LinkLabel();
+            flowLayoutPanel8 = new FlowLayoutPanel();
+            checkPlayAudioCopy = new CheckBox();
+            linkSelectAudioCopy = new LinkLabel();
             labelGroupOSC = new Label();
             flowTerrorColor = new FlowLayoutPanel();
             linkOSCFormat = new LinkLabel();
@@ -118,6 +123,8 @@
             flowDiscordImageText.SuspendLayout();
             flowDiscordIconText.SuspendLayout();
             flowDiscordIconStart.SuspendLayout();
+            flowLayoutPanel7.SuspendLayout();
+            flowLayoutPanel8.SuspendLayout();
             flowTerrorColor.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -221,7 +228,7 @@
             // checkOSCEnabled
             // 
             checkOSCEnabled.AutoSize = true;
-            checkOSCEnabled.Location = new Point(3, 598);
+            checkOSCEnabled.Location = new Point(3, 619);
             checkOSCEnabled.Margin = new Padding(3, 1, 3, 1);
             checkOSCEnabled.Name = "checkOSCEnabled";
             checkOSCEnabled.Padding = new Padding(20, 0, 3, 0);
@@ -232,26 +239,23 @@
             checkOSCEnabled.UseVisualStyleBackColor = true;
             checkOSCEnabled.MouseUp += checkOSCEnabled_MouseUp;
             // 
-            // checkPlayAudio
+            // checkPlayAudioSave
             // 
-            checkPlayAudio.AutoCheck = false;
-            checkPlayAudio.AutoSize = true;
-            checkPlayAudio.Location = new Point(3, 526);
-            checkPlayAudio.Margin = new Padding(3, 1, 3, 1);
-            checkPlayAudio.Name = "checkPlayAudio";
-            checkPlayAudio.Padding = new Padding(20, 0, 3, 0);
-            checkPlayAudio.Size = new Size(180, 19);
-            checkPlayAudio.TabIndex = 1;
-            checkPlayAudio.Tag = "PlayAudio|Double click to select custom audio file.\\nRight click to reset back to 'default.wav'";
-            checkPlayAudio.Text = "Play Sound (default.wav)";
-            checkPlayAudio.UseVisualStyleBackColor = true;
-            checkPlayAudio.MouseDown += checkPlayAudio_MouseDown;
-            checkPlayAudio.MouseUp += checkPlayAudio_MouseUp;
+            checkPlayAudioSave.AutoSize = true;
+            checkPlayAudioSave.Location = new Point(3, 0);
+            checkPlayAudioSave.Margin = new Padding(0);
+            checkPlayAudioSave.Name = "checkPlayAudioSave";
+            checkPlayAudioSave.Padding = new Padding(20, 0, 3, 0);
+            checkPlayAudioSave.Size = new Size(152, 19);
+            checkPlayAudioSave.TabIndex = 1;
+            checkPlayAudioSave.Tag = "PlayAudioSave";
+            checkPlayAudioSave.Text = "Play Sound on Save";
+            checkPlayAudioSave.UseVisualStyleBackColor = true;
             // 
             // checkXSOverlay
             // 
             checkXSOverlay.AutoSize = true;
-            checkXSOverlay.Location = new Point(3, 547);
+            checkXSOverlay.Location = new Point(3, 568);
             checkXSOverlay.Margin = new Padding(3, 1, 3, 1);
             checkXSOverlay.Name = "checkXSOverlay";
             checkXSOverlay.Padding = new Padding(20, 0, 3, 0);
@@ -264,7 +268,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 775);
+            checkShowDate.Location = new Point(3, 796);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -277,7 +281,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 733);
+            checkInvertMD.Location = new Point(3, 754);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -290,7 +294,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 754);
+            checkShowSeconds.Location = new Point(3, 775);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -303,7 +307,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 712);
+            check24Hour.Location = new Point(3, 733);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -379,7 +383,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 847);
+            checkColorObjectives.Location = new Point(3, 868);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -484,7 +488,8 @@
             flowLayoutPanel1.Controls.Add(flowDiscordIconText);
             flowLayoutPanel1.Controls.Add(flowDiscordIconStart);
             flowLayoutPanel1.Controls.Add(labelGroupNotifications);
-            flowLayoutPanel1.Controls.Add(checkPlayAudio);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel7);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel8);
             flowLayoutPanel1.Controls.Add(checkXSOverlay);
             flowLayoutPanel1.Controls.Add(labelGroupOSC);
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
@@ -504,7 +509,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 888);
+            flowLayoutPanel1.Size = new Size(544, 909);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -998,10 +1003,83 @@
             labelGroupNotifications.TabIndex = 12;
             labelGroupNotifications.Text = "Notifications";
             // 
+            // flowLayoutPanel7
+            // 
+            flowLayoutPanel7.AutoSize = true;
+            flowLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel7.Controls.Add(checkPlayAudioSave);
+            flowLayoutPanel7.Controls.Add(linkSelectAudioSave);
+            flowLayoutPanel7.Location = new Point(0, 526);
+            flowLayoutPanel7.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel7.Name = "flowLayoutPanel7";
+            flowLayoutPanel7.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel7.Size = new Size(257, 19);
+            flowLayoutPanel7.TabIndex = 17;
+            flowLayoutPanel7.WrapContents = false;
+            // 
+            // linkSelectAudioSave
+            // 
+            linkSelectAudioSave.ActiveLinkColor = Color.White;
+            linkSelectAudioSave.AutoSize = true;
+            linkSelectAudioSave.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSelectAudioSave.LinkColor = Color.Gray;
+            linkSelectAudioSave.Location = new Point(155, 0);
+            linkSelectAudioSave.Margin = new Padding(0);
+            linkSelectAudioSave.Name = "linkSelectAudioSave";
+            linkSelectAudioSave.Size = new Size(102, 15);
+            linkSelectAudioSave.TabIndex = 11;
+            linkSelectAudioSave.TabStop = true;
+            linkSelectAudioSave.Text = "(Select Audio File)";
+            linkSelectAudioSave.TextAlign = ContentAlignment.MiddleLeft;
+            linkSelectAudioSave.VisitedLinkColor = Color.Gray;
+            // 
+            // flowLayoutPanel8
+            // 
+            flowLayoutPanel8.AutoSize = true;
+            flowLayoutPanel8.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel8.Controls.Add(checkPlayAudioCopy);
+            flowLayoutPanel8.Controls.Add(linkSelectAudioCopy);
+            flowLayoutPanel8.Location = new Point(0, 547);
+            flowLayoutPanel8.Margin = new Padding(0, 1, 0, 1);
+            flowLayoutPanel8.Name = "flowLayoutPanel8";
+            flowLayoutPanel8.Padding = new Padding(3, 0, 0, 0);
+            flowLayoutPanel8.Size = new Size(261, 19);
+            flowLayoutPanel8.TabIndex = 18;
+            flowLayoutPanel8.WrapContents = false;
+            // 
+            // checkPlayAudioCopy
+            // 
+            checkPlayAudioCopy.AutoSize = true;
+            checkPlayAudioCopy.Location = new Point(3, 0);
+            checkPlayAudioCopy.Margin = new Padding(0);
+            checkPlayAudioCopy.Name = "checkPlayAudioCopy";
+            checkPlayAudioCopy.Padding = new Padding(20, 0, 3, 0);
+            checkPlayAudioCopy.Size = new Size(156, 19);
+            checkPlayAudioCopy.TabIndex = 1;
+            checkPlayAudioCopy.Tag = "PlayAudioCopy";
+            checkPlayAudioCopy.Text = "Play Sound on Copy";
+            checkPlayAudioCopy.UseVisualStyleBackColor = true;
+            // 
+            // linkSelectAudioCopy
+            // 
+            linkSelectAudioCopy.ActiveLinkColor = Color.White;
+            linkSelectAudioCopy.AutoSize = true;
+            linkSelectAudioCopy.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSelectAudioCopy.LinkColor = Color.Gray;
+            linkSelectAudioCopy.Location = new Point(159, 0);
+            linkSelectAudioCopy.Margin = new Padding(0);
+            linkSelectAudioCopy.Name = "linkSelectAudioCopy";
+            linkSelectAudioCopy.Size = new Size(102, 15);
+            linkSelectAudioCopy.TabIndex = 11;
+            linkSelectAudioCopy.TabStop = true;
+            linkSelectAudioCopy.Text = "(Select Audio File)";
+            linkSelectAudioCopy.TextAlign = ContentAlignment.MiddleLeft;
+            linkSelectAudioCopy.VisitedLinkColor = Color.Gray;
+            // 
             // labelGroupOSC
             // 
             labelGroupOSC.AutoSize = true;
-            labelGroupOSC.Location = new Point(3, 582);
+            labelGroupOSC.Location = new Point(3, 603);
             labelGroupOSC.Margin = new Padding(3, 15, 3, 0);
             labelGroupOSC.Name = "labelGroupOSC";
             labelGroupOSC.Size = new Size(30, 15);
@@ -1015,7 +1093,7 @@
             flowTerrorColor.Controls.Add(checkOSCSendColor);
             flowTerrorColor.Controls.Add(linkOSCFormat);
             flowTerrorColor.Controls.Add(labelOSCFormat);
-            flowTerrorColor.Location = new Point(0, 619);
+            flowTerrorColor.Location = new Point(0, 640);
             flowTerrorColor.Margin = new Padding(0, 1, 0, 1);
             flowTerrorColor.Name = "flowTerrorColor";
             flowTerrorColor.Padding = new Padding(3, 0, 0, 0);
@@ -1062,7 +1140,7 @@
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
             flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
-            flowLayoutPanel3.Location = new Point(3, 640);
+            flowLayoutPanel3.Location = new Point(3, 661);
             flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Size = new Size(286, 19);
@@ -1106,7 +1184,7 @@
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(checkSendChatbox);
             flowLayoutPanel2.Controls.Add(linkEditChatbox);
-            flowLayoutPanel2.Location = new Point(0, 661);
+            flowLayoutPanel2.Location = new Point(0, 682);
             flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
@@ -1134,7 +1212,7 @@
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 696);
+            labelGroupFormat.Location = new Point(3, 717);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -1144,7 +1222,7 @@
             // checkShowTime
             // 
             checkShowTime.AutoSize = true;
-            checkShowTime.Location = new Point(3, 796);
+            checkShowTime.Location = new Point(3, 817);
             checkShowTime.Margin = new Padding(3, 1, 3, 1);
             checkShowTime.Name = "checkShowTime";
             checkShowTime.Padding = new Padding(20, 0, 3, 0);
@@ -1157,7 +1235,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 831);
+            labelGroupStyle.Location = new Point(3, 852);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -1170,7 +1248,7 @@
             flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel4.Controls.Add(linkOpenRGB);
-            flowLayoutPanel4.Location = new Point(0, 868);
+            flowLayoutPanel4.Location = new Point(0, 889);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
@@ -1250,6 +1328,10 @@
             flowDiscordIconText.PerformLayout();
             flowDiscordIconStart.ResumeLayout(false);
             flowDiscordIconStart.PerformLayout();
+            flowLayoutPanel7.ResumeLayout(false);
+            flowLayoutPanel7.PerformLayout();
+            flowLayoutPanel8.ResumeLayout(false);
+            flowLayoutPanel8.PerformLayout();
             flowTerrorColor.ResumeLayout(false);
             flowTerrorColor.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
@@ -1265,7 +1347,7 @@
         private CheckBox checkAutoCopy;
         private CheckBox checkPlayerNames;
         private Button btnCheckForUpdates;
-        private CheckBox checkPlayAudio;
+        private CheckBox checkPlayAudioSave;
         private CheckBox checkXSOverlay;
         private CheckBox checkInvertMD;
         private CheckBox checkShowSeconds;
@@ -1339,5 +1421,10 @@
         private LinkLabel linkOSCFormat;
         private Label labelOSCFormat;
         private CheckBox checkShowTime;
+        private FlowLayoutPanel flowLayoutPanel7;
+        private LinkLabel linkSelectAudioSave;
+        private FlowLayoutPanel flowLayoutPanel8;
+        private CheckBox checkPlayAudioCopy;
+        private LinkLabel linkSelectAudioCopy;
     }
 }

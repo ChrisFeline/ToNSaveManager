@@ -18,12 +18,8 @@ namespace ToNSaveManager.Windows
         #region Initialization
         internal static SettingsWindow? Instance;
 
-        readonly Timer ClickTimer = new Timer() { Interval = 200 };
-        readonly Stopwatch Stopwatch = new Stopwatch();
-
         public SettingsWindow() {
             InitializeComponent();
-            ClickTimer.Tick += ClickTimer_Tick;
             languageSelectBox.FixItemHeight(true);
 
 #if DEBUG
@@ -83,7 +79,7 @@ namespace ToNSaveManager.Windows
 
             foreach (KeyValuePair<string, Control> pair in LocalizedControlCache) {
                 LANG.C(pair.Value, pair.Key, toolTip);
-                if (pair.Key == "SETTINGS.PLAYAUDIO") PostAudioLocationSet();
+                // if (pair.Key == "SETTINGS.PLAYAUDIO") PostAudioLocationSet();
             }
 
             LANG.C(labelGroupGeneral, "SETTINGS.GROUP.GENERAL", toolTip);
@@ -106,6 +102,10 @@ namespace ToNSaveManager.Windows
             LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordStart, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
 
+            LANG.C(linkSelectAudioSave, "SETTINGS.PLAYAUDIO_SELECT", toolTip);
+            LANG.C(linkSelectAudioCopy, "SETTINGS.PLAYAUDIO_SELECT", toolTip);
+            UpdatePlayLink();
+
             LANG.C(linkOSCFormat, "SETTINGS.OSCSENDCOLORFORMAT", toolTip);
             string? tt = LANG.S("SETTINGS.OSCSENDCOLOR.TT");
             if (tt != null) ColorFormatTooltip = tt;
@@ -123,6 +123,19 @@ namespace ToNSaveManager.Windows
                 toolTip.SetToolTip(btnCheckForUpdates, LANG.S("SETTINGS.VERSION", versionString) ?? $"Current Version {versionString}");
 
             RightToLeft = LANG.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        }
+
+        private void UpdateAudioLink(LinkLabel audioLinkLabel, string? location) {
+            LANG.C(audioLinkLabel, "SETTINGS.PLAYAUDIO_SELECT", toolTip);
+            if (!string.IsNullOrEmpty(location)) {
+                toolTip.SetToolTip(audioLinkLabel, LANG.S("SETTINGS.PLAYAUDIO_SELECT.ALT"));
+                string fileName = Path.GetFileName(location);
+                if (!string.IsNullOrEmpty(fileName)) audioLinkLabel.Text = $"({fileName})";
+            }
+        }
+        private void UpdatePlayLink() {
+            UpdateAudioLink(linkSelectAudioSave, Settings.Get.AudioLocation);
+            UpdateAudioLink(linkSelectAudioCopy, Settings.Get.AudioCopyLocation);
         }
 
         private static Font? GroupLabelFont { get; set; }
@@ -145,8 +158,14 @@ namespace ToNSaveManager.Windows
             labelGroupOSC.Font = GroupLabelFont;
 
             // Custom audio handling
-            PostAudioLocationSet();
-            checkPlayAudio.CheckedChanged += CheckPlayAudio_CheckedChanged;
+            checkPlayAudioSave.CheckedChanged += CheckPlayAudio_CheckedChanged;
+            checkPlayAudioCopy.CheckedChanged += CheckPlayAudio_CheckedChanged;
+            CheckPlayAudio_CheckedChanged(null, EventArgs.Empty);
+
+            linkSelectAudioSave.LinkClicked += LinkSelectAudio_LinkClicked;
+            linkSelectAudioCopy.LinkClicked += LinkSelectAudio_LinkClicked;
+
+            // Other notifications
             checkXSOverlay.CheckedChanged += CheckXSOverlay_CheckedChanged;
             // Refresh lists when time format changes
             check24Hour.CheckedChanged += TimeFormat_CheckedChanged;
@@ -210,6 +229,28 @@ namespace ToNSaveManager.Windows
             CheckWebSocketServer_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
+        }
+
+        private void LinkSelectAudio_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
+            bool isLeft = e.Button == MouseButtons.Left;
+
+            string? file = null;
+            if (isLeft) {
+                file = SelectAudioFile();
+                if (string.IsNullOrEmpty(file)) return;
+            }
+
+            bool isSave = sender == linkSelectAudioSave;
+            if (isSave) {
+                Settings.Get.AudioLocation = file;
+                NotificationManager.PlaySave();
+            } else {
+                Settings.Get.AudioCopyLocation = file;
+                NotificationManager.PlayCopy();
+            }
+
+            Settings.Export();
+            UpdatePlayLink();
         }
 
         private void LinkOSCFormat_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs? e) {
@@ -436,8 +477,6 @@ namespace ToNSaveManager.Windows
         }
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e) {
-            ClickTimer.Dispose();
-
             MainWindow.RefreshLists();
             MainWindow.ResetNotification();
         }
@@ -445,8 +484,22 @@ namespace ToNSaveManager.Windows
         private void TimeFormat_CheckedChanged(object? sender, EventArgs e) => MainWindow.RefreshLists();
         private void CheckXSOverlay_CheckedChanged(object? sender, EventArgs e) => MainWindow.SendXSNotification(true);
         private void CheckPlayAudio_CheckedChanged(object? sender, EventArgs e) {
-            MainWindow.PlayNotification();
-            if (!checkPlayAudio.Checked) MainWindow.ResetNotification();
+            linkSelectAudioCopy.Visible = checkPlayAudioCopy.Checked;
+            linkSelectAudioSave.Visible = checkPlayAudioSave.Checked;
+
+            if (sender == null) return;
+
+            CheckBox checkbox = (CheckBox)sender;
+            bool isChecked = checkbox.Checked;
+
+            if (!isChecked) {
+                MainWindow.ResetNotification();
+                return;
+            }
+
+            if (checkbox == checkPlayAudioSave)
+                MainWindow.PlaySaveNotification();
+            else MainWindow.PlayCopyNotification();
         }
 
         private void checkSaveTerrors_CheckedChanged(object? sender, EventArgs e) {
@@ -500,12 +553,6 @@ namespace ToNSaveManager.Windows
             SaveData.OpenDataLocation();
         }
 
-        private void checkPlayAudio_MouseDown(object sender, MouseEventArgs e) {
-            if (e.Button != MouseButtons.Left) return;
-            Stopwatch.Start();
-            CancelNext = false;
-        }
-
         private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
             if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
             else LilOSC.SetChatboxMessage(string.Empty);
@@ -554,39 +601,9 @@ namespace ToNSaveManager.Windows
             }
         }
 
-        private void checkPlayAudio_MouseUp(object sender, MouseEventArgs e) {
-            if (e.Button == MouseButtons.Right && !string.IsNullOrEmpty(Settings.Get.AudioLocation)) {
-                Settings.Get.AudioLocation = null;
-                Settings.Export();
-                PostAudioLocationSet();
-                return;
-            }
-
-            if (e.Button != MouseButtons.Left) return;
-
-            Stopwatch.Stop();
-            long elapsed = Stopwatch.ElapsedMilliseconds;
-            Stopwatch.Reset();
-
-            if (CancelNext) {
-                CancelNext = false;
-                return;
-            }
-
-            if (elapsed > 210) {
-                TogglePlayAudio();
-                return;
-            }
-
-            if (!DoubleClickCheck) {
-                DoubleClickCheck = true;
-                ClickTimer.Stop();
-                ClickTimer.Start();
-                return;
-            }
-
-            DoubleClickCheck = false;
-            ClickTimer.Stop();
+        /// TODO: Move this function somewhere else
+        private string? SelectAudioFile() {
+            string? result = null;
 
             using (OpenFileDialog fileDialog = new OpenFileDialog()) {
                 fileDialog.InitialDirectory = "./";
@@ -594,11 +611,13 @@ namespace ToNSaveManager.Windows
                 fileDialog.Filter = "Waveform (*.wav)|*.wav";
 
                 if (fileDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(fileDialog.FileName)) {
-                    Settings.Get.AudioLocation = fileDialog.FileName;
-                    Settings.Export();
-                    PostAudioLocationSet();
+                    result = fileDialog.FileName;
+                } else {
+                    result = null;
                 }
             }
+
+            return result;
         }
 
         private void checkAutoCopy_CheckedChanged(object? sender, EventArgs e) {
@@ -628,18 +647,6 @@ namespace ToNSaveManager.Windows
 
         private void CheckColorObjectives_CheckedChanged(object? sender, EventArgs e) {
             ObjectivesWindow.RefreshLists();
-        }
-
-        // Double click
-        private bool DoubleClickCheck = false;
-        private bool CancelNext = false;
-        private void ClickTimer_Tick(object? sender, EventArgs e) {
-            ClickTimer.Stop();
-            if (DoubleClickCheck) {
-                DoubleClickCheck = false;
-                CancelNext = true;
-                TogglePlayAudio();
-            }
         }
 
         private void languageSelectBox_SelectedIndexChanged(object sender, EventArgs e) {
@@ -683,10 +690,6 @@ namespace ToNSaveManager.Windows
         #endregion
 
         #region Utils
-        private void TogglePlayAudio() {
-            checkPlayAudio.Checked = !checkPlayAudio.Checked;
-        }
-
         private void BindControlsRecursive(Control.ControlCollection controls) {
             foreach (Control c in controls) {
                 string? tag = c.Tag?.ToString();
@@ -715,12 +718,6 @@ namespace ToNSaveManager.Windows
                     default: break;
                 }
             }
-        }
-
-        private void PostAudioLocationSet() {
-            bool hasLocation = string.IsNullOrEmpty(Settings.Get.AudioLocation);
-            string? name = (hasLocation ? "default.wav" : (Path.GetFileName(Settings.Get.AudioLocation) ?? "custom.wav"));
-            checkPlayAudio.Text = LANG.S("SETTINGS.PLAYAUDIO", name) ?? $"Play Audio ({name})";
         }
         #endregion
 

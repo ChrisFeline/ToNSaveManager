@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Media;
 using ToNSaveManager.Extensions;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils;
@@ -29,6 +28,10 @@ namespace ToNSaveManager
             InitializeComponent();
             listBoxKeys.FixItemHeight();
             listBoxEntries.FixItemHeight();
+
+            JustCopiedTimer.Interval = 1000;
+            JustCopiedTimer.Tick += JustCopiedTimer_Tick;
+
             Instance = this;
         }
         #endregion
@@ -280,6 +283,8 @@ namespace ToNSaveManager
             }
         }
 
+        int JustCopiedIndex = -1;
+        System.Windows.Forms.Timer JustCopiedTimer = new System.Windows.Forms.Timer();
         private void listBoxEntries_MouseUp(object sender, MouseEventArgs e) {
             bool isRight = e.Button == MouseButtons.Right;
             if (e.Button == MouseButtons.Left || isRight) {
@@ -294,10 +299,33 @@ namespace ToNSaveManager
                 if (listBoxEntries.SelectedItem != null) {
                     Entry entry = (Entry)listBoxEntries.SelectedItem;
                     entry.CopyToClipboard();
-                    MessageBox.Show(LANG.S("MESSAGE.COPY_TO_CLIPBOARD") ?? "Copied to clipboard!\n\nYou can now paste the code in game.", LANG.S("MESSAGE.COPY_TO_CLIPBOARD.TITLE") ?? "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    SetJustCopied(index);
+
+                    if (Settings.Get.PlayAudioCopy)
+                        NotificationManager.PlayCopy();
                 }
 
                 listBoxEntries.SelectedIndex = -1;
+            }
+        }
+
+        private void SetJustCopied(int index) {
+            JustCopiedTimer.Stop();
+            JustCopiedIndex = index;
+
+            if (JustCopiedIndex > -1) {
+                listBoxEntries.Refresh();
+                JustCopiedTimer.Start();
+            }
+        }
+
+        private void JustCopiedTimer_Tick(object? sender, EventArgs e) {
+            JustCopiedTimer.Stop();
+
+            if (JustCopiedIndex > -1) {
+                JustCopiedIndex = -1;
+                listBoxEntries.Refresh();
             }
         }
 
@@ -309,6 +337,10 @@ namespace ToNSaveManager
 
             ListBox listBox = (ListBox)sender;
             string itemText = listBox.Items[e.Index].ToString() ?? string.Empty;
+
+            if (e.Index == JustCopiedIndex && listBox == listBoxEntries) {
+                itemText = Entry.TextCopied;
+            }
 
             int maxWidth = e.Bounds.Width;
             TextRenderer.DrawText(e.Graphics, GetTruncatedText(itemText, listBox.Font, maxWidth), listBox.Font, e.Bounds, e.ForeColor, TextFormatFlags.VerticalCenter | TextFormatFlags.NoPrefix);
@@ -488,36 +520,29 @@ namespace ToNSaveManager
         #region Form Methods
         #region Notifications
         static readonly XSOverlay XSOverlay = new XSOverlay();
-        static readonly SoundPlayer CustomNotificationPlayer = new SoundPlayer();
-        static readonly SoundPlayer DefaultNotificationPlayer = new SoundPlayer();
-
-        static readonly Stream? DefaultAudioStream = // Get default notification in the embeded resources
-            Program.GetEmbededResource("notification.wav");
-
-        static readonly Stream? SecretAudioStream =
-            Program.GetEmbededResource("notification_secret.wav");
-
-        static readonly Stream? CopiedAudioStream =
-            Program.GetEmbededResource("notification_copy.wav");
 
         internal static void ResetNotification() {
-            CustomNotificationPlayer.Stop();
-            DefaultNotificationPlayer.Stop();
+            NotificationManager.Reset();
         }
 
-        internal static void PlayNotification(bool forceDefault = false) {
-            if ((!Started || !Settings.Get.PlayAudio) && !forceDefault) return;
+        internal static void PlayCopyNotification() {
+            if (!Started || !Settings.Get.PlayAudioCopy) return;
 
             try {
-                if (!forceDefault && !string.IsNullOrEmpty(Settings.Get.AudioLocation) && File.Exists(Settings.Get.AudioLocation)) {
-                    CustomNotificationPlayer.SoundLocation = Settings.Get.AudioLocation;
-                    CustomNotificationPlayer.Play();
-                    return;
-                }
+                NotificationManager.PlayCopy();
+            } catch (Exception ex) {
+                Logger.Error(ex);
+            }
+        }
 
-                DefaultNotificationPlayer.Stream = Random.Shared.Next(0, 100) == 87 ? SecretAudioStream : DefaultAudioStream;
-                DefaultNotificationPlayer.Play();
-            } catch { }
+        internal static void PlaySaveNotification() {
+            if (!Started || !Settings.Get.PlayAudioSave) return;
+
+            try {
+                NotificationManager.PlaySave();
+            } catch (Exception ex) {
+                Logger.Error(ex);
+            }
         }
 
         internal static void SendXSNotification(bool test = false) {
@@ -537,6 +562,7 @@ namespace ToNSaveManager
 
         private void UpdateEntries() {
             listBoxEntries.Items.Clear();
+            if (JustCopiedIndex > -1) SetJustCopied(-1);
 
             if (listBoxKeys.SelectedItem == null)
                 return;
@@ -908,7 +934,10 @@ namespace ToNSaveManager
 
             if (Settings.Get.AutoCopy) {
                 Entry? first = temp?.Database.FirstOrDefault();
-                if (first != null) SetRecent(first);
+                if (first != null) {
+                    SetRecent(first);
+                    NotificationManager.PlayCopy();
+                }
             }
         }
 
@@ -979,7 +1008,7 @@ namespace ToNSaveManager
             SaveData.SetDirty();
 
             if (context.Initialized) {
-                PlayNotification();
+                PlaySaveNotification();
                 SendXSNotification();
                 DSWebHook.Send(entry);
 
