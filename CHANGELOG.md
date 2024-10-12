@@ -6,5 +6,6 @@
 	- The custom sound notifications in settings have been reworked too.
 	- The 'Auto Copy' feature will also play an audio if the 'Play Audio on Copy' setting is enabled.
 - Fixed OSC colors for Double Trouble.
+- Stats for the chatbox is now stored in the correct location.
 - Reworked the Automatic Updates.
 - Updated Traditional Chinese localization (Thank you @XoF-eLtTiL)

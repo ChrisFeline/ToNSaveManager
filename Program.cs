@@ -56,6 +56,8 @@ namespace ToNSaveManager
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
             LANG.Initialize();
             Updater.CheckPostUpdate(args);
 
@@ -70,7 +72,6 @@ namespace ToNSaveManager
             Application.SetCompatibleTextRenderingDefault(true);
             InitializeFont();
 
-            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
             MainWindow.Started = false;
 
             if (!StartCheckForUpdate()) {
