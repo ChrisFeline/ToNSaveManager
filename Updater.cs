@@ -60,6 +60,7 @@ namespace ToNSaveManager {
             }
         }
 
+        const string POST_UPDATE_ARG = "--clean-update";
         internal static void Start(GitHubRelease release, GitHubRelease.Asset asset) {
             AllocConsole();
 
@@ -105,7 +106,7 @@ namespace ToNSaveManager {
 
                 Program.ReleaseMutex(); // Release mutex so downloaded app opens properly
                                         // Start new process with --post-update
-                ProcessStartInfo processInfo = new ProcessStartInfo(Program.ProgramFile, "--post-update");
+                ProcessStartInfo processInfo = new ProcessStartInfo(Program.ProgramFile, POST_UPDATE_ARG);
                 Process.Start(processInfo);
                 // Exit this app
                 Application.Exit();
@@ -123,7 +124,10 @@ namespace ToNSaveManager {
             }
         }
 
-        internal static void PostUpdate(string[] args) {
+        const string LEGACY_POST_UPDATE_ARG = "--post-update";
+        internal static void CheckPostUpdate(string[] args) {
+            bool updateLegacy = Program.ContainsArg(LEGACY_POST_UPDATE_ARG);
+            if (!updateLegacy && !Program.ContainsArg(POST_UPDATE_ARG)) return;
             Logger.Info("Running post-update cleanup.");
 
             try {
@@ -140,6 +144,36 @@ namespace ToNSaveManager {
                     }
                 }
 
+                if (updateLegacy) {
+                    // Run legacy cleanup, old to new transition
+                    Logger.Info("Updated from legacy version, running legacy cleanup...");
+
+                    try {
+                        string legacyTempFiles = Path.Combine(Program.ProgramDirectory, ".temp_files");
+                        if (Directory.Exists(legacyTempFiles)) {
+                            Logger.Info("Deleting legacy temp files: " + legacyTempFiles);
+                            Directory.Delete(legacyTempFiles, true);
+                        }
+                    } catch (Exception ex) {
+                        Logger.Error(ex);
+                    }
+
+                    try {
+                        Logger.Info("Deleting unused legacy files.");
+                        var unusedFiles = Directory.GetFiles(Program.ProgramDirectory)
+                            .Where(f => f.EndsWith(".pdb") || f.EndsWith(".dll"));
+
+                        foreach (string file in unusedFiles) {
+                            try {
+                                Logger.Info("Deleting unused file: " + file);
+                                File.Delete(file);
+                            } catch { }
+                        }
+                    } catch (Exception ex) {
+                        Logger.Error(ex);
+                    }
+                }
+
                 if (File.Exists(Program.ProgramLocationTemporary)) {
                     Logger.Info("Deleting old program files.");
                     File.Delete(Program.ProgramLocationTemporary);
@@ -151,7 +185,7 @@ namespace ToNSaveManager {
                 Logger.Error("Failed to run post-update.");
                 Logger.Error(ex);
 
-                MessageBox.Show("Failed to run post-update.\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to run post-update.\nPlease report this issue on the GitHub page.\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

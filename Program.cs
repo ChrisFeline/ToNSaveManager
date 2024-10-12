@@ -57,8 +57,7 @@ namespace ToNSaveManager
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             LANG.Initialize();
-
-            if (ContainsArg("--post-update")) Updater.PostUpdate(args);
+            Updater.CheckPostUpdate(args);
 
             if (CheckMutex())
             {
