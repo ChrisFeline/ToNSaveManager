@@ -71,6 +71,7 @@ namespace ToNSaveManager
             InitializeFont();
 
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+            MainWindow.Started = false;
 
             if (!StartCheckForUpdate()) {
                 Application.ApplicationExit += OnApplicationExit;
