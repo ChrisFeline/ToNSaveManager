@@ -5,6 +5,7 @@
 | `2` | Medkit
 | `3` | ^ **Red Medkit**
 | `4` | Have's Mysterious Brew
+| `5` | ^ **Portable Slots**
 | `6` | Glow Coil
 | `7` | ^ **Psycho Coil**
 | `8` | Teleporter
@@ -20,11 +21,14 @@
 | `21` | ^ **Colorable Bat**
 | `22` | ^ **Metal Pipe**
 | `24` | Silver Kat Charm
+| `25` | ^ **Bloody Kat Charm**
 | `27` | Chaos Coil
 | `28` | ^ **Twilight Coil**
 | `29` | Glass Coil
 | `30` | Corkscrew Coil
 | `32` | Antique Revolver
+| `33` | ^ **Bloody Revolver**
+| `34` | ^ **Pale Pistol**
 
 
 # Survival Shop
