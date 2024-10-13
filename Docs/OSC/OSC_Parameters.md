@@ -15,6 +15,7 @@ Parameter        | Type    | Description
 `ToN_Pages`      | `INT`   | The amount of pages collected on an **Eight Pages** round. This number can be a value from `0` to `8`
 `ToN_ItemStatus` | `BOOL`  | (Experimental) Determines the active status of items like the **Chaos Coil**, **Emerald Coil**, **Corkscrew** and **TBH**.
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
+`ToN_DeathID`    | `INT`   | ...
 
 # Terrors
 ### Terrors in Round

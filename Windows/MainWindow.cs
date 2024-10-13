@@ -875,6 +875,11 @@ namespace ToNSaveManager
                     string name = line.Substring(ROUND_DEATH_KEYWORD.Length - 1, length);
                     string cont = line.Substring(index + 2).Trim();
                     WebSocketAPI.EventDeath.Send(name, cont, context.DisplayName == name);
+
+                    if (Settings.Get.OSCDeathEvent) {
+                        int deathId = Settings.Get.GetDeathID(name);
+                        if (deathId > 0) LilOSC.SetDeathID(deathId);
+                    }
                     return true;
                 }
 
