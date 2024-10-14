@@ -178,6 +178,10 @@ namespace ToNSaveManager
             }
             listBox1.Refresh();
             // listBox1.Update();
+
+#if DEBUG
+            this.BackColor = ToNGameState.Terrors.DisplayColor;
+#endif
         }
 
         StatPropertyContainer? ContextField;
