@@ -15,7 +15,20 @@ Parameter        | Type    | Description
 `ToN_Pages`      | `INT`   | The amount of pages collected on an **Eight Pages** round. This number can be a value from `0` to `8`
 `ToN_ItemStatus` | `BOOL`  | (Experimental) Determines the active status of items like the **Chaos Coil**, **Emerald Coil**, **Corkscrew** and **TBH**.
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
-`ToN_DeathID`    | `INT`   | ...
+`ToN_DeathID`    | `INT`   | You can use this parameter to track when your friends die in the game.
+
+> You need to specify a list of player names to use with the **ToN_DeathID** parameter.<br>
+> You can do so under Settings > Send Death ID > (Edit)<br>
+> Specify here a list of player names that you want to track. Each display name needs to be separated by a comma (,) to be identified as a different user.
+> 
+> For example:
+> - Setting the player names as `Kittenji,YoBro,TONPRO42` will create a list like this:<br>
+>   * ID 1 - Kittenji<br>
+>   * ID 2 - YoBro<br>
+>	* ID 3 - TONPRO42
+>
+> So, if 'Kittenji' dies in the round, the parameter **ToN_DeathID** will be set to 1, then it will be set back to 0 after the specified decay time.<br>
+> You can specify 254 player names in here, have fun!
 
 # Terrors
 ### Terrors in Round
