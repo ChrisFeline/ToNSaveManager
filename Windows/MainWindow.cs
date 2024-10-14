@@ -608,6 +608,7 @@ namespace ToNSaveManager
         const string ROUND_LOST_KEYWORD = "Player lost,";
         const string ROUND_OVER_KEYWORD = "RoundOver";
         const string ROUND_DEATH_KEYWORD = "You died.";
+        const string ROUND_REBORN_KEYWORD = "LOL JK, REBORN!";
         const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
         const string ROUND_PAGE_FOUND = "Page Collected - ";
 
@@ -802,6 +803,14 @@ namespace ToNSaveManager
                     context.SetRoundResult(ToNRoundResult.L);
                     context.SetIsAlive(false);
                     if (context.IsRecent) LilOSC.SetDamage(byte.MaxValue);
+                    return true;
+                }
+
+                if (line.StartsWith(ROUND_REBORN_KEYWORD)) {
+                    // God dammit beyond
+                    context.SetRoundResult(ToNRoundResult.W);
+                    context.SetIsAlive(true);
+                    // TODO: Make this into an OSC parameter 'ToN_Reborn' (BOOL)
                     return true;
                 }
 
