@@ -194,6 +194,17 @@
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT": "(Set Interval)",
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT.TT": "Sets the interval (in milliseconds) between sending the damage event and resetting it back to zero.",
 	"SETTINGS.OSCDAMAGEDEVENT.TITLE": "Set Damage Interval",
+	"SETTINGS.OSCDEATHEVENT": "Send Death Event",
+	"SETTINGS.OSCDEATHEVENT.TT": "Sends a death event to the INT parameter 'ToN_DeathID'.\nYou can use this feature to track when your friends die in the game.\nThe number represents the location on the list for the specified username that just died, after the decay time this value will be reset back to 0.",
+	"SETTINGS.OSCDEATHEVENT.TITLE": "Set Player Names",
+	"SETTINGS.OSCDEATHEVENT_EDIT": "(Edit)",
+	"SETTINGS.OSCDEATHEVENT_EDIT.TT": "Set the list of player names that will be used for this parameter.\nSeparate different display names using a comma (,) character.",
+	"SETTINGS.OSCDEATHEVENT_DECAY": "(Decay)",
+	"SETTINGS.OSCDEATHEVENT_DECAY.TT": "Set the time (in milliseconds) to wait before resetting this value back to zero.",
+	"SETTINGS.OSCDEATHEVENT_DECAY.TITLE": "Set Decay Time",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN": "(Cooldown)",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TT": "Set the time (in milliseconds) to wait before setting the ID value for this parameter after multiple players die in quick succession.",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TITLE": "Set Cooldown Time",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 

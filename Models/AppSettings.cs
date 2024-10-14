@@ -162,11 +162,8 @@ namespace ToNSaveManager.Models
         public bool OSCDeathEvent { get; set; }
         public int OSCDeathDecay { get; set; } = 200; // Time to wait before resetting params
         public int OSCDeathCooldown { get; set; } = 500; // Time to wait before next death
-#if DEBUG
-        [JsonIgnore] public string[] OSCDeathIDs { get; set; } = ["Kittenji"];
-#else
         public string[] OSCDeathIDs { get; set; } = Array.Empty<string>();
-#endif
+
         public int GetDeathID (string id) {
             if (OSCDeathIDs == null || OSCDeathIDs.Length == 0) return 0;
             return Array.IndexOf(OSCDeathIDs, id) + 1;

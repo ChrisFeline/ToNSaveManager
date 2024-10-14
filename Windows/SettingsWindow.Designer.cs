@@ -103,6 +103,11 @@
             flowLayoutPanel3 = new FlowLayoutPanel();
             checkOSCSendDamage = new CheckBox();
             linkSetDamageInterval = new LinkLabel();
+            flowLayoutPanel9 = new FlowLayoutPanel();
+            checkOSCDeathEvent = new CheckBox();
+            linkEditDeathID = new LinkLabel();
+            linkSetDeathDecay = new LinkLabel();
+            linkSetDeathCooldown = new LinkLabel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             linkEditChatbox = new LinkLabel();
             labelGroupFormat = new Label();
@@ -127,6 +132,7 @@
             flowLayoutPanel8.SuspendLayout();
             flowTerrorColor.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
+            flowLayoutPanel9.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
             SuspendLayout();
@@ -268,7 +274,7 @@
             // checkShowDate
             // 
             checkShowDate.AutoSize = true;
-            checkShowDate.Location = new Point(3, 796);
+            checkShowDate.Location = new Point(3, 817);
             checkShowDate.Margin = new Padding(3, 1, 3, 1);
             checkShowDate.Name = "checkShowDate";
             checkShowDate.Padding = new Padding(20, 0, 3, 0);
@@ -281,7 +287,7 @@
             // checkInvertMD
             // 
             checkInvertMD.AutoSize = true;
-            checkInvertMD.Location = new Point(3, 754);
+            checkInvertMD.Location = new Point(3, 775);
             checkInvertMD.Margin = new Padding(3, 1, 3, 1);
             checkInvertMD.Name = "checkInvertMD";
             checkInvertMD.Padding = new Padding(20, 0, 3, 0);
@@ -294,7 +300,7 @@
             // checkShowSeconds
             // 
             checkShowSeconds.AutoSize = true;
-            checkShowSeconds.Location = new Point(3, 775);
+            checkShowSeconds.Location = new Point(3, 796);
             checkShowSeconds.Margin = new Padding(3, 1, 3, 1);
             checkShowSeconds.Name = "checkShowSeconds";
             checkShowSeconds.Padding = new Padding(20, 0, 3, 0);
@@ -307,7 +313,7 @@
             // check24Hour
             // 
             check24Hour.AutoSize = true;
-            check24Hour.Location = new Point(3, 733);
+            check24Hour.Location = new Point(3, 754);
             check24Hour.Margin = new Padding(3, 1, 3, 1);
             check24Hour.Name = "check24Hour";
             check24Hour.Padding = new Padding(20, 0, 3, 0);
@@ -383,7 +389,7 @@
             // checkColorObjectives
             // 
             checkColorObjectives.AutoSize = true;
-            checkColorObjectives.Location = new Point(3, 868);
+            checkColorObjectives.Location = new Point(3, 889);
             checkColorObjectives.Margin = new Padding(3, 1, 3, 1);
             checkColorObjectives.Name = "checkColorObjectives";
             checkColorObjectives.Padding = new Padding(20, 0, 3, 0);
@@ -495,6 +501,7 @@
             flowLayoutPanel1.Controls.Add(checkOSCEnabled);
             flowLayoutPanel1.Controls.Add(flowTerrorColor);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel3);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel9);
             flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Controls.Add(labelGroupFormat);
             flowLayoutPanel1.Controls.Add(check24Hour);
@@ -509,7 +516,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(544, 909);
+            flowLayoutPanel1.Size = new Size(544, 930);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -1178,13 +1185,93 @@
             linkSetDamageInterval.VisitedLinkColor = Color.Gray;
             linkSetDamageInterval.LinkClicked += linkSetDamageInterval_LinkClicked;
             // 
+            // flowLayoutPanel9
+            // 
+            flowLayoutPanel9.AutoSize = true;
+            flowLayoutPanel9.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel9.Controls.Add(checkOSCDeathEvent);
+            flowLayoutPanel9.Controls.Add(linkEditDeathID);
+            flowLayoutPanel9.Controls.Add(linkSetDeathDecay);
+            flowLayoutPanel9.Controls.Add(linkSetDeathCooldown);
+            flowLayoutPanel9.Location = new Point(3, 682);
+            flowLayoutPanel9.Margin = new Padding(3, 1, 3, 1);
+            flowLayoutPanel9.Name = "flowLayoutPanel9";
+            flowLayoutPanel9.Size = new Size(352, 19);
+            flowLayoutPanel9.TabIndex = 19;
+            flowLayoutPanel9.WrapContents = false;
+            // 
+            // checkOSCDeathEvent
+            // 
+            checkOSCDeathEvent.AutoSize = true;
+            checkOSCDeathEvent.ForeColor = Color.PowderBlue;
+            checkOSCDeathEvent.Location = new Point(0, 0);
+            checkOSCDeathEvent.Margin = new Padding(0);
+            checkOSCDeathEvent.Name = "checkOSCDeathEvent";
+            checkOSCDeathEvent.Padding = new Padding(50, 0, 3, 0);
+            checkOSCDeathEvent.Size = new Size(153, 19);
+            checkOSCDeathEvent.TabIndex = 12;
+            checkOSCDeathEvent.Tag = "OSCDeathEvent";
+            checkOSCDeathEvent.Text = "Send Death ID";
+            checkOSCDeathEvent.UseVisualStyleBackColor = true;
+            // 
+            // linkEditDeathID
+            // 
+            linkEditDeathID.ActiveLinkColor = Color.White;
+            linkEditDeathID.AutoSize = true;
+            linkEditDeathID.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkEditDeathID.LinkColor = Color.Gray;
+            linkEditDeathID.Location = new Point(153, 0);
+            linkEditDeathID.Margin = new Padding(0);
+            linkEditDeathID.Name = "linkEditDeathID";
+            linkEditDeathID.Padding = new Padding(0, 0, 3, 0);
+            linkEditDeathID.Size = new Size(38, 15);
+            linkEditDeathID.TabIndex = 11;
+            linkEditDeathID.TabStop = true;
+            linkEditDeathID.Text = "(Edit)";
+            linkEditDeathID.TextAlign = ContentAlignment.MiddleLeft;
+            linkEditDeathID.VisitedLinkColor = Color.Gray;
+            // 
+            // linkSetDeathDecay
+            // 
+            linkSetDeathDecay.ActiveLinkColor = Color.White;
+            linkSetDeathDecay.AutoSize = true;
+            linkSetDeathDecay.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSetDeathDecay.LinkColor = Color.Gray;
+            linkSetDeathDecay.Location = new Point(191, 0);
+            linkSetDeathDecay.Margin = new Padding(0);
+            linkSetDeathDecay.Name = "linkSetDeathDecay";
+            linkSetDeathDecay.Padding = new Padding(0, 0, 3, 0);
+            linkSetDeathDecay.Size = new Size(69, 15);
+            linkSetDeathDecay.TabIndex = 13;
+            linkSetDeathDecay.TabStop = true;
+            linkSetDeathDecay.Text = "(Set Decay)";
+            linkSetDeathDecay.TextAlign = ContentAlignment.MiddleLeft;
+            linkSetDeathDecay.VisitedLinkColor = Color.Gray;
+            // 
+            // linkSetDeathCooldown
+            // 
+            linkSetDeathCooldown.ActiveLinkColor = Color.White;
+            linkSetDeathCooldown.AutoSize = true;
+            linkSetDeathCooldown.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSetDeathCooldown.LinkColor = Color.Gray;
+            linkSetDeathCooldown.Location = new Point(260, 0);
+            linkSetDeathCooldown.Margin = new Padding(0);
+            linkSetDeathCooldown.Name = "linkSetDeathCooldown";
+            linkSetDeathCooldown.Padding = new Padding(0, 0, 3, 0);
+            linkSetDeathCooldown.Size = new Size(92, 15);
+            linkSetDeathCooldown.TabIndex = 14;
+            linkSetDeathCooldown.TabStop = true;
+            linkSetDeathCooldown.Text = "(Set Cooldown)";
+            linkSetDeathCooldown.TextAlign = ContentAlignment.MiddleLeft;
+            linkSetDeathCooldown.VisitedLinkColor = Color.Gray;
+            // 
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.AutoSize = true;
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(checkSendChatbox);
             flowLayoutPanel2.Controls.Add(linkEditChatbox);
-            flowLayoutPanel2.Location = new Point(0, 682);
+            flowLayoutPanel2.Location = new Point(0, 703);
             flowLayoutPanel2.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(3, 0, 0, 0);
@@ -1212,7 +1299,7 @@
             // labelGroupFormat
             // 
             labelGroupFormat.AutoSize = true;
-            labelGroupFormat.Location = new Point(3, 717);
+            labelGroupFormat.Location = new Point(3, 738);
             labelGroupFormat.Margin = new Padding(3, 15, 3, 0);
             labelGroupFormat.Name = "labelGroupFormat";
             labelGroupFormat.Size = new Size(74, 15);
@@ -1222,7 +1309,7 @@
             // checkShowTime
             // 
             checkShowTime.AutoSize = true;
-            checkShowTime.Location = new Point(3, 817);
+            checkShowTime.Location = new Point(3, 838);
             checkShowTime.Margin = new Padding(3, 1, 3, 1);
             checkShowTime.Name = "checkShowTime";
             checkShowTime.Padding = new Padding(20, 0, 3, 0);
@@ -1235,7 +1322,7 @@
             // labelGroupStyle
             // 
             labelGroupStyle.AutoSize = true;
-            labelGroupStyle.Location = new Point(3, 852);
+            labelGroupStyle.Location = new Point(3, 873);
             labelGroupStyle.Margin = new Padding(3, 15, 3, 0);
             labelGroupStyle.Name = "labelGroupStyle";
             labelGroupStyle.Size = new Size(32, 15);
@@ -1248,7 +1335,7 @@
             flowLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel4.Controls.Add(checkOpenRGBEnabled);
             flowLayoutPanel4.Controls.Add(linkOpenRGB);
-            flowLayoutPanel4.Location = new Point(0, 889);
+            flowLayoutPanel4.Location = new Point(0, 910);
             flowLayoutPanel4.Margin = new Padding(0, 1, 0, 1);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(3, 0, 0, 0);
@@ -1336,6 +1423,8 @@
             flowTerrorColor.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
+            flowLayoutPanel9.ResumeLayout(false);
+            flowLayoutPanel9.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel4.ResumeLayout(false);
@@ -1426,5 +1515,10 @@
         private FlowLayoutPanel flowLayoutPanel8;
         private CheckBox checkPlayAudioCopy;
         private LinkLabel linkSelectAudioCopy;
+        private FlowLayoutPanel flowLayoutPanel9;
+        private CheckBox checkOSCDeathEvent;
+        private LinkLabel linkEditDeathID;
+        private LinkLabel linkSetDeathDecay;
+        private LinkLabel linkSetDeathCooldown;
     }
 }
