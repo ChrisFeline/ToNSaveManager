@@ -789,7 +789,7 @@ namespace ToNSaveManager
                     if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
 
                     if (context.IsOptedIn) {
-                        context.SetRoundResult(context.IsAlive ? ToNRoundResult.W : ToNRoundResult.L);
+                        context.SetRoundResult(context.IsAlive ? (context.IsReborn ? ToNRoundResult.B : ToNRoundResult.W) : ToNRoundResult.L);
                         context.SaveSummary();
                     }
 
@@ -808,9 +808,9 @@ namespace ToNSaveManager
 
                 if (line.StartsWith(ROUND_REBORN_KEYWORD)) {
                     // God dammit beyond
-                    context.SetRoundResult(ToNRoundResult.W);
+                    context.SetRoundResult(ToNRoundResult.B);
                     context.SetIsAlive(true);
-                    // TODO: Make this into an OSC parameter 'ToN_Reborn' (BOOL)
+                    context.SetIsReborn(true);
                     return true;
                 }
 

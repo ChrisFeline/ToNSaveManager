@@ -10,6 +10,7 @@ Parameter        | Type    | Description
 Parameter        | Type    | Description
 -----------------|---------|--------------------------
 `ToN_IsAlive`    | `BOOL`  | Is the player alive or not. Should be `true` on Intermission.
+`ToN_Reborn`     | `BOOL`  | Set to `true` when the player gets reborn using Maxwell. Should reset back to `false` if you die again.
 `ToN_IsStarted`  | `BOOL`  | `True` if the round has started and ongoing.
 `ToN_Damaged`    | `INT`   | Set to `true` for a few frames when the player takes damage. The number represents the amount of damage taken on that hit. If the player dies this number will be `255`
 `ToN_Pages`      | `INT`   | The amount of pages collected on an **Eight Pages** round. This number can be a value from `0` to `8`

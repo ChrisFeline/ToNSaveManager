@@ -27,6 +27,7 @@ namespace ToNSaveManager.Models.Stats
         public string ItemName { get; internal set; } = string.Empty;
 
         public bool IsAlive { get; internal set; } = true;
+        public bool IsReborn { get; internal set; } = false;
         public bool IsKiller { get; internal set; } = false;
         public bool IsStarted { get; internal set; } = false;
 

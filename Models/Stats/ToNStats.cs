@@ -166,9 +166,11 @@ namespace ToNSaveManager.Models.Stats {
         }
 
         const string KEY_IS_ALIVE = nameof(StatsRound.IsAlive);
+        const string KEY_IS_REBORN = nameof(StatsRound.IsReborn);
         const string KEY_IS_KILLER = nameof(StatsRound.IsKiller);
         const string KEY_IS_STARTED = nameof(StatsRound.IsStarted);
         public static void AddIsAlive(bool value) => Set(KEY_IS_ALIVE, value);
+        public static void AddIsReborn(bool value) => Set(KEY_IS_REBORN, value);
         public static void AddIsKiller(bool value) => Set(KEY_IS_KILLER, value);
         public static void AddIsStarted(bool value) => Set(KEY_IS_STARTED, value);
 

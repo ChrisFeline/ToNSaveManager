@@ -19,6 +19,7 @@ namespace ToNSaveManager.Utils.LogParser
         public bool HasLoadedSave { get; set; }
 
         public bool IsAlive { get; private set; }
+        public bool IsReborn { get; private set; }
         public bool IsRoundActive { get; private set; }
         public bool IsSaboteour { get; private set; }
         public bool IsOptedIn { get; private set; }
@@ -115,8 +116,16 @@ namespace ToNSaveManager.Utils.LogParser
         public void SetIsAlive(bool alive) {
             if (IsAlive == alive) return;
 
+            SetIsReborn(false);
             IsAlive = alive;
             if (IsRecent) ToNGameState.SetAlive(IsAlive);
+        }
+
+        public void SetIsReborn(bool reborn) {
+            if (!reborn && IsReborn == reborn) return;
+
+            IsReborn = reborn;
+            if (IsRecent) ToNGameState.SetReborn(IsReborn);
         }
 
         public void SetOptedIn(bool isOptedIn) {

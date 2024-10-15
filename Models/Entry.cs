@@ -50,6 +50,7 @@ namespace ToNSaveManager.Models
         static string TextTagL = "💀";
         static string TextTagX = "⚠️";
         static string TextTagC = "✅";
+        static string TextTagB = "😇";
         const string Separator = " | ";
 
         internal static void LocalizeContent() {
@@ -67,6 +68,7 @@ namespace ToNSaveManager.Models
             TextTagL = LANG.S("SAVE.TAG_L") ?? "💀";
             TextTagX = LANG.S("SAVE.TAG_X") ?? "⚠️";
             TextTagC = LANG.S("SAVE.TAG_C") ?? "✅";
+            TextTagB = LANG.S("SAVE.TAG_B") ?? "😇";
 
             TextCopied = TextTagC + Separator + TextCopied;
         }
@@ -116,6 +118,7 @@ namespace ToNSaveManager.Models
                     case ToNRoundResult.D: sb.Append(TextTagD); break;
                     case ToNRoundResult.L: sb.Append(TextTagL); break;
                     case ToNRoundResult.X: sb.Append(TextTagX); break;
+                    case ToNRoundResult.B: sb.Append(TextTagB); break;
                 }
 
                 sb.Append(Separator);

@@ -96,6 +96,10 @@ namespace ToNSaveManager
             if (!isAlive)
                 SetActiveInRound(false);
         }
+        internal static void SetIsReborn(bool reborn) {
+            ToNStats.AddIsReborn(reborn);
+            RefreshTable();
+        }
         internal static void SetIsStarted(bool started) {
             ToNStats.AddIsStarted(started);
             RefreshTable();

@@ -92,6 +92,7 @@
 	"SAVE.TAG_D": "🔌",
 	"SAVE.TAG_L": "💀",
 	"SAVE.TAG_X": "❗",
+	"SAVE.TAG_B": "😇",
 	"SAVE.TAG_C": "✅",
 
 	"SETTINGS.CHECK_UPDATE": "Check For Updates",
@@ -355,6 +356,8 @@
 	"STATS.LABEL_MAPORIGIN.TT": "Displays where this map originates from.",
 	"STATS.LABEL_ISALIVE": "Is Alive",
 	"STATS.LABEL_ISALIVE.TT": "True if the player is currently alive on a round.",
+	"STATS.LABEL_ISREBORN": "Is Reborn",
+	"STATS.LABEL_ISREBORN.TT": "True if the player was reborn using Maxwell on a round.",
 	"STATS.LABEL_ISSTARTED": "Is Started",
 	"STATS.LABEL_ISSTARTED.TT": "True if a round is started and ongoing.",
 	"STATS.LABEL_INSTANCEURL": "Instance URL",

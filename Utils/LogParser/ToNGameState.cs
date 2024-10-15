@@ -13,6 +13,7 @@ namespace ToNSaveManager.Utils {
     internal static class ToNGameState {
         public static bool IsEmulated { get; private set; }
         public static bool IsAlive { get; private set; } = true;
+        public static bool IsReborn { get; private set; } = false;
         public static bool IsRoundActive { get; private set; } = false;
         public static bool IsSaboteour { get; private set; }
         public static bool IsOptedIn { get; private set; }
@@ -87,6 +88,16 @@ namespace ToNSaveManager.Utils {
             DSRichPresence.SetDirty();
 
             WebSocketAPI.SendValue("ALIVE", IsAlive);
+        }
+
+        public static void SetReborn(bool reborn) {
+            IsReborn = reborn;
+
+            Logger.Debug("REBORN: " + IsReborn);
+            StatsWindow.SetIsReborn(reborn);
+            LilOSC.SetDirty();
+
+            if (reborn) WebSocketAPI.SendValue("REBORN", reborn);
         }
 
         public static void SetOptedIn(bool isOptedIn) {
