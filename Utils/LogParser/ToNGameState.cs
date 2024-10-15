@@ -93,11 +93,10 @@ namespace ToNSaveManager.Utils {
         public static void SetReborn(bool reborn) {
             IsReborn = reborn;
 
-            Logger.Debug("REBORN: " + IsReborn);
             StatsWindow.SetIsReborn(reborn);
             LilOSC.SetDirty();
 
-            if (reborn) WebSocketAPI.SendValue("REBORN", reborn);
+            WebSocketAPI.SendValue("REBORN", reborn);
         }
 
         public static void SetOptedIn(bool isOptedIn) {
