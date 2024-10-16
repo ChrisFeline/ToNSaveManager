@@ -9,57 +9,6 @@ namespace ToNSaveManager {
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
 
-        internal class UpdateProgressBar : IProgress<float> {
-            string start = "[";
-            string end = "]";
-            char fill = '#';
-            char back = '-';
-
-            int top = 0;
-            int left = 0;
-            int length = 0;
-
-            int full_len = 0;
-
-            string final = "Done.";
-
-            internal UpdateProgressBar (int length = 20) {
-                this.top = Console.CursorTop;
-                this.left = Console.CursorLeft;
-                this.length = length;
-            }
-
-            public void Start() {
-                Console.CursorVisible = false;
-            }
-
-            public void Report(float value) {
-                lock (start) {
-                    Console.SetCursorPosition(left, top);
-
-
-                    int c = (int)Math.Round(value * length);
-                    Console.Write(start);
-                    Console.Write(new string(fill, c).PadRight(length, back));
-                    Console.Write(end);
-                    Console.Write(' ');
-
-                    float percent = value * 100;
-                    Console.Write(percent.ToString("0.00").PadLeft(6, ' '));
-                    Console.Write('%');
-
-                    full_len = Console.CursorLeft - left;
-                }
-            }
-
-            public void Done() {
-                Report(1);
-                Console.SetCursorPosition(left, top);
-                Console.WriteLine((start + final + end).PadRight(full_len));
-                Console.CursorVisible = true;
-            }
-        }
-
         const string POST_UPDATE_ARG = "--clean-update";
         internal static void Start(GitHubRelease release, GitHubRelease.Asset asset) {
             AllocConsole();
@@ -75,19 +24,14 @@ namespace ToNSaveManager {
 
                 Console.Write($"Downloading '{asset.name}' . . . ");
 
-                UpdateProgressBar progress = new UpdateProgressBar();
-                progress.Start();
                 string downloadUrl = asset.browser_download_url;
-
                 using (HttpClient client = new HttpClient()) {
-                    client.Timeout = TimeSpan.FromMinutes(5);
-
-                    using (var file = new FileStream(TempFileLocation, FileMode.Create, FileAccess.Write, FileShare.None)) {
-                        client.Download(downloadUrl, file, progress);
+                    using (var s = client.GetStreamAsync(downloadUrl).Result) {
+                        using (var fs = new FileStream(TempFileLocation, FileMode.CreateNew)) {
+                            s.CopyTo(fs);
+                        }
                     }
                 }
-
-                progress.Done();
 
                 // Move current executable
                 Logger.Info("Moving from: " + Program.ProgramLocation);
@@ -210,6 +154,7 @@ namespace ToNSaveManager {
             }
         }
 
+        /*
         static void Download(this HttpClient client, string requestUri, Stream destination, IProgress<float>? progress = null) {
             // Get the http headers first to examine the content length
             using (var response = client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead).Result) {
@@ -232,6 +177,7 @@ namespace ToNSaveManager {
                 }
             }
         }
+        */
         #endregion
     }
 }
