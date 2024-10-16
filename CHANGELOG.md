@@ -7,4 +7,6 @@
 - 'Auto Copy On Join' only works when you join a ToN lobby now.
 - Updated OSC docs for items to reveal more item IDs found by players.
 - Finally fixed Double Trouble colors for OSC.
+
+- Added Italian localization (Thank you @TheIceDragonz)
 - Updated Simplified Chinese localization (Thank you @Fallen-ice)
