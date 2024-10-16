@@ -1,14 +1,5 @@
 ﻿# Latest Changelog
 
-- New items added to the Objectives window. Have fun!
-- Added new OSC configurable parameter 'ToN_DeathID'
-	- With this parameter, you can set a list of friends and you will receive OSC events when they die in a round.
-- Added new OSC parameter 'ToN_Reborn'
-	- This parameter is set to true when you get reborn using Maxwell.
-	- Added event to WebSocket API: 'REBORN'
-- 'Auto Copy On Join' only works when you join a ToN lobby now.
-- Updated OSC docs for items to reveal more item IDs.
-- Finally fixed Double Trouble colors for OSC.
-
-- Added Italian localization (Thank you @TheIceDragonz)
+- Attempting to fix the False Positives with the two only FREE Anti Viruses. (Avast and AVG) again...
 - Updated Simplified Chinese localization (Thank you @Fallen-ice)
+- I always knew.
