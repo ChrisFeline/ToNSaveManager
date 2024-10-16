@@ -1,4 +1,4 @@
 ﻿# Latest Changelog
 
-- Fixed the False Positives with the two only free Anti Viruses.
+- Attempting to fix the False Positives with the two only FREE Anti Viruses.
 - Updated Simplified Chinese localization (Thank you @Fallen-ice)
