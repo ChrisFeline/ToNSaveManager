@@ -11,7 +11,6 @@ namespace ToNSaveManager {
 
         const string POST_UPDATE_ARG = "--clean-update";
         internal static void Start(GitHubRelease release, GitHubRelease.Asset asset) {
-            /*
             AllocConsole();
 
             Console.Title = "ToNSaveManager - Updating " + release.name;
@@ -67,7 +66,6 @@ namespace ToNSaveManager {
             if (File.Exists(Program.ProgramLocationTemporary)) {
                 File.Move(Program.ProgramLocationTemporary, Program.ProgramLocation, true);
             }
-            */
         }
 
         const string LEGACY_POST_UPDATE_ARG = "--post-update";
