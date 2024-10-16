@@ -124,7 +124,7 @@ namespace ToNSaveManager {
                 }
 
                 Logger.Info("Post-update success.");
-                MessageBox.Show("Successfully updated to version " + Program.GetVersion(), Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show("Successfully updated to version " + Program.GetVersion(), Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             } catch (Exception ex) {
                 Logger.Error("Failed to run post-update.");
                 Logger.Error(ex);
@@ -132,52 +132,5 @@ namespace ToNSaveManager {
                 MessageBox.Show("Failed to run post-update.\nPlease report this issue on the GitHub page.\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        #region Extensions
-        static void CopyTo(this Stream source, Stream destination, int bufferSize, IProgress<long>? progress = null) {
-            ArgumentNullException.ThrowIfNull(source);
-            ArgumentNullException.ThrowIfNull(destination);
-            ArgumentOutOfRangeException.ThrowIfNegative(bufferSize);
-
-            if (!source.CanRead)
-                throw new ArgumentException("Has to be readable", nameof(source));
-            if (!destination.CanWrite)
-                throw new ArgumentException("Has to be writable", nameof(destination));
-
-            var buffer = new byte[bufferSize];
-            long totalBytesRead = 0;
-            int bytesRead;
-            while ((bytesRead = source.Read(buffer, 0, buffer.Length)) != 0) {
-                destination.Write(buffer, 0, bytesRead);
-                totalBytesRead += bytesRead;
-                progress?.Report(totalBytesRead);
-            }
-        }
-
-        /*
-        static void Download(this HttpClient client, string requestUri, Stream destination, IProgress<float>? progress = null) {
-            // Get the http headers first to examine the content length
-            using (var response = client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead).Result) {
-                var contentLength = response.Content.Headers.ContentLength;
-
-                using (var download = response.Content.ReadAsStream()) {
-
-                    // Ignore progress reporting when no progress reporter was 
-                    // passed or when the content length is unknown
-                    if (progress == null || !contentLength.HasValue) {
-                        download.CopyTo(destination);
-                        return;
-                    }
-
-                    // Convert absolute progress (bytes downloaded) into relative progress (0% - 100%)
-                    var relativeProgress = new Progress<long>(totalBytes => progress.Report((float)totalBytes / contentLength.Value));
-                    // Use extension method to report progress while downloading
-                    download.CopyTo(destination, 81920, relativeProgress);
-                    progress.Report(1);
-                }
-            }
-        }
-        */
-        #endregion
     }
 }
