@@ -58,6 +58,24 @@
     "DisplayColor": "255, 94, 93"
   },
   {
+    "Name": "Thorn Glognut",
+    "Description": "Survive Glaggle Gang.",
+    "Reference": "https://terror.moe/items/thorn_glognut",
+    "DisplayColor": "255, 255, 136"
+  },
+  {
+    "Name": "Jailbird",
+    "Description": "Survive every classic terror at least once.",
+    "Reference": "https://terror.moe/items/jailbird",
+    "DisplayColor": "228, 255, 255"
+  },
+  {
+    "Name": "Joyous Orb",
+    "Description": "Survive JOY.",
+    "Reference": "https://terror.moe/items/joyous_orb",
+    "DisplayColor": "255, 255, 136"
+  },
+  {
     "Name": "Have Plush",
     "Description": "Survive The Observation.",
     "Reference": "https://terror.moe/items/have_plush",
