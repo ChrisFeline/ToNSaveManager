@@ -74,6 +74,7 @@ If your parameters are not being received properly... try resetting the OSC conf
 | German   | [github.com/sageyx2002](https://github.com/sageyx2002) |
 | Traditional Chinese  | [github.com/XoF-eLtTiL](https://github.com/XoF-eLtTiL) |
 | Simplified Chinese  | [github.com/Fallen-ice](https://github.com/Fallen-ice) |
+| Italian  | [github.com/TheIceDragonz](https://github.com/TheIceDragonz) |
 
 # 📋 FAQ:
 

@@ -608,6 +608,7 @@ namespace ToNSaveManager
         const string ROUND_LOST_KEYWORD = "Player lost,";
         const string ROUND_OVER_KEYWORD = "RoundOver";
         const string ROUND_DEATH_KEYWORD = "You died.";
+        const string ROUND_REBORN_KEYWORD = "LOL JK, REBORN!";
         const string ROUND_TEROR_GIGABYTE = "The Gigabytes have come.";
         const string ROUND_PAGE_FOUND = "Page Collected - ";
 
@@ -788,7 +789,7 @@ namespace ToNSaveManager
                     if (context.IsRecent) StatsWindow.AddRound(context.IsAlive);
 
                     if (context.IsOptedIn) {
-                        context.SetRoundResult(context.IsAlive ? ToNRoundResult.W : ToNRoundResult.L);
+                        context.SetRoundResult(context.IsAlive ? (context.IsReborn ? ToNRoundResult.B : ToNRoundResult.W) : ToNRoundResult.L);
                         context.SaveSummary();
                     }
 
@@ -802,6 +803,14 @@ namespace ToNSaveManager
                     context.SetRoundResult(ToNRoundResult.L);
                     context.SetIsAlive(false);
                     if (context.IsRecent) LilOSC.SetDamage(byte.MaxValue);
+                    return true;
+                }
+
+                if (line.StartsWith(ROUND_REBORN_KEYWORD)) {
+                    // God dammit beyond
+                    context.SetRoundResult(ToNRoundResult.B);
+                    context.SetIsAlive(true);
+                    context.SetIsReborn(true);
                     return true;
                 }
 
@@ -875,6 +884,11 @@ namespace ToNSaveManager
                     string name = line.Substring(ROUND_DEATH_KEYWORD.Length - 1, length);
                     string cont = line.Substring(index + 2).Trim();
                     WebSocketAPI.EventDeath.Send(name, cont, context.DisplayName == name);
+
+                    if (Settings.Get.OSCDeathEvent) {
+                        int deathId = Settings.Get.GetDeathID(name);
+                        if (deathId > 0) LilOSC.SetDeathID(deathId);
+                    }
                     return true;
                 }
 

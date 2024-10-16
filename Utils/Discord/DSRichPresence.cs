@@ -360,10 +360,10 @@ namespace ToNSaveManager.Utils.Discord {
             { "icon_0_83",     "https://i.imgur.com/MErskLH.gif" }, // Lain
             { "icon_1_28",     "https://i.imgur.com/dkib59R.gif" }, // Roblander
             { "icon_1_28_v50", "https://i.imgur.com/R0DwhQ1.gif" }, // Roblander Midnight
-            { "icon_1_10", "https://i.imgur.com/y6mPG7p.gif" }, // zm64
-            { "icon_m_10", "https://i.imgur.com/p0HG7Xc.gif" }, // zm64 midnight
-            { "icon_1_3", "https://i.imgur.com/NwEWIyn.gif" }, // parhelion
-            { "icon_m_3", "https://i.imgur.com/U6wGpqV.gif" }, // Parhelion Midnight
+            { "icon_1_10",     "https://i.imgur.com/y6mPG7p.gif" }, // zm64
+            { "icon_m_10",     "https://i.imgur.com/p0HG7Xc.gif" }, // zm64 midnight
+            { "icon_1_3",      "https://i.imgur.com/NwEWIyn.gif" }, // parhelion
+            { "icon_m_3",      "https://i.imgur.com/U6wGpqV.gif" }, // Parhelion Midnight
         };
 
         // https://github.com/vrcx-team/VRCX/blob/6825616d5fbf7fa68121ba80858f11626ea5eeb8/Dotnet/Discord.cs#L135

@@ -157,6 +157,19 @@ namespace ToNSaveManager.Models
         public int OSCDamagedInterval { get; set; } = 200;
 
         /// <summary>
+        /// Sends a death event for known users specified on a list.
+        /// </summary>
+        public bool OSCDeathEvent { get; set; }
+        public int OSCDeathDecay { get; set; } = 200; // Time to wait before resetting params
+        public int OSCDeathCooldown { get; set; } = 500; // Time to wait before next death
+        public string[] OSCDeathIDs { get; set; } = Array.Empty<string>();
+
+        public int GetDeathID (string id) {
+            if (OSCDeathIDs == null || OSCDeathIDs.Length == 0) return 0;
+            return Array.IndexOf(OSCDeathIDs, id) + 1;
+        }
+
+        /// <summary>
         /// Enables OSC chatbox messages.
         /// </summary>
         public bool OSCSendChatbox { get; set; } = false;

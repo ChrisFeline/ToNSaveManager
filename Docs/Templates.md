@@ -52,6 +52,7 @@ These keys are available to be included on templates.
 | Stuns | `{Stuns}` | Amount of times you have stunned a Terror. |
 | Stuns All | `{StunsAll}` | Amount of times you and other players have stunned a Terror. |
 | Players Online | `{PlayersOnline}` | Represents the amount of players in the instance. |
+| Is Opted In | `{IsOptedIn}` | True if the player is opted-in onto the game. This means the player is outside the respawn zone. |
 | Display Name | `{DisplayName}` | Your display name in VRChat. |
 | Discord Name | `{DiscordName}` | Your display name in Discord.<br>Rich Presence must be enabled. |
 | Instance URL | `{InstanceURL}` | The current full URL of the instance you joined. |
@@ -70,6 +71,7 @@ These keys are available to be included on templates.
 | Map Origin | `{MapOrigin}` | Displays where this map originates from. |
 | Item Name | `{ItemName}` | The name of the current item held. |
 | Is Alive | `{IsAlive}` | True if the player is currently alive on a round. |
+| Is Reborn | `{IsReborn}` | True if the player was reborn using Maxwell on a round. |
 | Is Killer | `{IsKiller}` | True if the player is currently the killer on a Sabotage round. |
 | Is Started | `{IsStarted}` | True if a round is started and ongoing. |
 | Round INT | `{RoundInt}` | Represents the int value of the current round type. |

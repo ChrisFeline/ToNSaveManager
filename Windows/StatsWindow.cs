@@ -96,6 +96,10 @@ namespace ToNSaveManager
             if (!isAlive)
                 SetActiveInRound(false);
         }
+        internal static void SetIsReborn(bool reborn) {
+            ToNStats.AddIsReborn(reborn);
+            RefreshTable();
+        }
         internal static void SetIsStarted(bool started) {
             ToNStats.AddIsStarted(started);
             RefreshTable();
@@ -178,6 +182,10 @@ namespace ToNSaveManager
             }
             listBox1.Refresh();
             // listBox1.Update();
+
+#if DEBUG
+            this.BackColor = ToNGameState.Terrors.DisplayColor;
+#endif
         }
 
         StatPropertyContainer? ContextField;

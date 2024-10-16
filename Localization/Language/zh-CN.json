@@ -60,6 +60,7 @@
 	"MAIN.ENTRY_PLAYERS": "房间玩家：",
 	"MAIN.ENTRY_MAP": "地图：",
 	"MAIN.ENTRY_WARNING": "$$SAVE.TAG_X$$ 警告！此保存信息是在加载保存代码之前生成的。\n如果你不是新玩家，请返回前一个保存并加载它。",
+	"MAIN.ENTRY_COPIED": "已复制到剪贴板！",
 
 	"ROUND_TYPE.INTERMISSION": "中场休息(Intermission)",
 	"ROUND_TYPE.CLASSIC": "经典(Classic)",
@@ -200,9 +201,19 @@
 	"SETTINGS.XSOVERLAY.MESSAGE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>数据已保存</color>",
 	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>通知已启用</color>",
 
-	"SETTINGS.PLAYAUDIO": "播放通知音 ({0})",
-	"SETTINGS.PLAYAUDIO.TT": "双击设置自定义音频文件。\n右键重置为'default.wav'",
-	"SETTINGS.PLAYAUDIO.TITLE": "选择自定义音频",
+
+	"SETTINGS.PLAYAUDIO.TITLE": "选择自定义音频文件",
+
+	"SETTINGS.PLAYAUDIOSAVE": "保存时播放音频",
+	"SETTINGS.PLAYAUDIOSAVE.TT": "当新保存代码创建时播放音频。",
+
+	"SETTINGS.PLAYAUDIOCOPY": "复制时播放音频",
+	"SETTINGS.PLAYAUDIOCOPY.TT": "当复制保存代码时播放音频。",
+
+	"SETTINGS.PLAYAUDIO_SELECT": "(选择音频文件)",
+	"SETTINGS.PLAYAUDIO_SELECT.TT": "为此通知选择电脑上的自定义音频文件。",
+	"SETTINGS.PLAYAUDIO_SELECT.ALT": "$$SETTINGS.PLAYAUDIO_SELECT.TT$$\n右键单击此按钮可将通知音频重置为默认。",
+
 
 	"SETTINGS.GROUP.TIME_FORMAT": "时间格式",
 	"SETTINGS.USE24HOUR": "24小时制",

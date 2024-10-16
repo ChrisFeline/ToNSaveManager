@@ -39,8 +39,10 @@ namespace ToNSaveManager.Utils
         internal const string ParamTerrorColorB = "ToN_ColorB";
 
         const string ParamAlive = "ToN_IsAlive";
+        const string ParamReborn = "ToN_Reborn";
         const string ParamStarted = "ToN_IsStarted";
         const string ParamDamaged = "ToN_Damaged";
+        const string ParamDeath = "ToN_DeathID";
         const string ParamPages = "ToN_Pages";
         const string ParamItemStatus = "ToN_ItemStatus";
 
@@ -49,7 +51,7 @@ namespace ToNSaveManager.Utils
             ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
             ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV, ParamTerrorColorL,
             ParamTerrorColorR, ParamTerrorColorG, ParamTerrorColorB,
-            ParamAlive, ParamDamaged, ParamPages, ParamItemStatus
+            ParamAlive, ParamReborn, ParamDamaged, ParamDeath, ParamPages, ParamItemStatus
         ];
         const string ParameterFileName = "osc_parameters.txt";
         internal static void Initialize() {
@@ -73,6 +75,7 @@ namespace ToNSaveManager.Utils
         static bool LastOptedIn = false;
         static bool LastSaboteur = false;
         static bool LastAlive = true;
+        static bool LastReborn = false;
         static bool LastStarted = false;
         static int LastMapID = -1;
         static int LastItemID = -1;
@@ -108,6 +111,7 @@ namespace ToNSaveManager.Utils
         static int PageCount => ToNGameState.PageCount;
         static bool IsAlive => ToNGameState.IsAlive;
         static bool IsRoundActive => ToNGameState.IsRoundActive;
+        static bool IsReborn => ToNGameState.IsReborn;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -134,9 +138,56 @@ namespace ToNSaveManager.Utils
             }
         }
 
+        #region Death ID Ticker
+        private static Timer? DeathTimer;
+        private static Queue<int> DeathQueue = new Queue<int>();
+        private static int DeathSendID = -1;
+
+        internal static void SetDeathID(int id) {
+            if (DeathTimer == null) {
+                DeathTimer = new Timer();
+                DeathTimer.Tick += DeathTimer_Tick;
+            }
+
+            if (DeathSendID > -1) {
+                DeathQueue.Enqueue(id);
+                return;
+            }
+
+            DeathTimer.Stop();
+            DeathSendID = id;
+            DeathTimer.Interval = 100;
+            DeathTimer.Start();
+        }
+
+        private static void SendDeathID(int id) {
+            SendParam(ParamDeath, id);
+        }
+
+        private static void DeathTimer_Tick(object? sender, EventArgs e) {
+            if (DeathTimer == null) return;
+
+            SendDeathID(DeathSendID);
+            DeathTimer.Stop();
+
+            if (DeathSendID > 0) {
+                DeathSendID = 0;
+                DeathTimer.Interval = Settings.Get.OSCDeathDecay;
+                DeathTimer.Start();
+            } else if (DeathQueue.Count > 0) {
+                DeathSendID = DeathQueue.Dequeue();
+                DeathTimer.Interval = Settings.Get.OSCDeathCooldown;
+                DeathTimer.Start();
+            } else {
+                DeathSendID = -1;
+            }
+
+            Logger.Debug("Next Death ID Status: " + DeathSendID);
+        }
+        #endregion
+
         private static Timer? DamageTimer;
         private static int LastDamage = 0;
-
         internal static void SetDamage(int damage) {
             if (!MainWindow.Started || !Settings.Get.OSCDamagedEvent || !Settings.Get.OSCEnabled) return;
 
@@ -265,6 +316,7 @@ namespace ToNSaveManager.Utils
                 if (LastSaboteur != TMatrix.IsSaboteur || force) SendParam(ParamSaboteur, LastSaboteur = TMatrix.IsSaboteur);
                 if (LastPageCount != PageCount || force) SendParam(ParamPages, LastPageCount = PageCount);
                 if (LastAlive != IsAlive || force) SendParam(ParamAlive, LastAlive = IsAlive);
+                if (LastReborn != IsReborn || force) SendParam(ParamReborn, LastReborn = IsReborn);
                 if (LastStarted != IsRoundActive || force) SendParam(ParamStarted, LastStarted = IsRoundActive);
             }
 

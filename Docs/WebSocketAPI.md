@@ -79,6 +79,12 @@ The event data will be sent as a json object string.
 ```
 
 ```json
+// Sent when the user gets reborn using Maxwell.
+"Type": "REBORN",
+"Value": true // Set to false when the user dies or the round is over.
+```
+
+```json
 // Sent when the user opts in or out of the game. Usually when the enter the lobby or respawn.
 "Type": "OPTED_IN",
 "Value": true // Set to false if the user respawns, true if they walk into the lobby.

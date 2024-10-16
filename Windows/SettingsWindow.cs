@@ -89,9 +89,14 @@ namespace ToNSaveManager.Windows
             LANG.C(labelGroupStyle, "SETTINGS.GROUP.STYLE", toolTip);
             LANG.C(labelGroupOSC, "SETTINGS.GROUP.OSC", toolTip);
 
+            // OSC LINKS
             LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
-            LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
+            LANG.C(linkEditDeathID, "SETTINGS.OSCDEATHEVENT_EDIT", toolTip);
+            LANG.C(linkSetDeathDecay, "SETTINGS.OSCDEATHEVENT_DECAY", toolTip);
+            LANG.C(linkSetDeathCooldown, "SETTINGS.OSCDEATHEVENT_COOLDOWN", toolTip);
+
+            LANG.C(linkAddInfoFile, "SETTINGS.ROUNDINFOTOFILE_ADD", toolTip);
             LANG.C(linkOpenRGB, "SETTINGS.OPENRGB_JSONFILE", toolTip);
             LANG.C(linkLogUpdateRate, "SETTINGS.LOGUPDATERATE", toolTip);
             LANG.C(linkAutoNoteEdit, "SETTINGS.SAVEROUNDNOTE_EDIT", toolTip);
@@ -101,6 +106,7 @@ namespace ToNSaveManager.Windows
             LANG.C(linkEditDiscordImage, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordIcon, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
             LANG.C(linkEditDiscordStart, "SETTINGS.DISCORDRICHPRESENCE_EDIT", toolTip);
+
 
             LANG.C(linkSelectAudioSave, "SETTINGS.PLAYAUDIO_SELECT", toolTip);
             LANG.C(linkSelectAudioCopy, "SETTINGS.PLAYAUDIO_SELECT", toolTip);
@@ -213,6 +219,10 @@ namespace ToNSaveManager.Windows
             checkOSCSendColor.CheckedChanged += CheckOSCSendColor_CheckedChanged;
             linkOSCFormat.LinkClicked += LinkOSCFormat_LinkClicked;
             LinkOSCFormat_LinkClicked(null, null);
+            linkEditDeathID.LinkClicked += LinkEditDeathID_LinkClicked;
+            linkSetDeathDecay.LinkClicked += LinkEditDeathID_LinkClicked;
+            linkSetDeathCooldown.LinkClicked += LinkEditDeathID_LinkClicked;
+            checkOSCDeathEvent.CheckedChanged += CheckOSCDeathEvent_CheckedChanged;
 
             // OBS
             checkRoundToFile.CheckedChanged += CheckRoundToFile_CheckedChanged;
@@ -229,6 +239,54 @@ namespace ToNSaveManager.Windows
             CheckWebSocketServer_CheckedChanged(null, EventArgs.Empty);
 
             FillLanguageBox();
+        }
+
+        private void CheckOSCDeathEvent_CheckedChanged(object? sender, EventArgs e) {
+            if (checkOSCDeathEvent.Checked && (Settings.Get.OSCDeathIDs == null || Settings.Get.OSCDeathIDs.Length == 0)) {
+                LinkEditDeathID_LinkClicked(linkEditDeathID, null);
+            }
+        }
+
+        private void LinkEditDeathID_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs? e) {
+            if (sender == null) return;
+
+            if (sender == linkEditDeathID) {
+                string names = Settings.Get.OSCDeathIDs != null && Settings.Get.OSCDeathIDs.Length > 0 ? string.Join(',', Settings.Get.OSCDeathIDs) : string.Empty;
+                EditResult edit = EditWindow.Show(names, LANG.S("SETTINGS.OSCDEATHEVENT.TITLE") ?? "Set Name List", this);
+                if (edit.Accept) {
+                    names = edit.Text;
+                    Settings.Get.OSCDeathIDs = names.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+                    Settings.Export();
+                }
+            }
+
+            if (sender == linkSetDeathDecay) {
+                int original = Settings.Get.OSCDeathDecay;
+                string value = original.ToString();
+                EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDEATHEVENT_DECAY.TITLE") ?? "Set Decay Time", this);
+
+                if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                    Settings.Get.OSCDeathDecay = Math.Max(result, 10);
+                    Settings.Export();
+                } else if (show.Accept) {
+                    Settings.Get.OSCDeathDecay = Settings.Default.OSCDeathDecay;
+                    Settings.Export();
+                }
+            }
+
+            if (sender == linkSetDeathCooldown) {
+                int original = Settings.Get.OSCDeathCooldown;
+                string value = original.ToString();
+                EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDEATHEVENT_COOLDOWN.TITLE") ?? "Set Cooldown Time", this);
+
+                if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                    Settings.Get.OSCDeathCooldown = Math.Max(result, 10);
+                    Settings.Export();
+                } else if (show.Accept) {
+                    Settings.Get.OSCDeathCooldown = Settings.Default.OSCDeathCooldown;
+                    Settings.Export();
+                }
+            }
         }
 
         private void LinkSelectAudio_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e) {
@@ -628,7 +686,7 @@ namespace ToNSaveManager.Windows
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
             if (checkOSCEnabled.Checked && sender != null) LilOSC.SendData(true);
-            checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
+            checkOSCDeathEvent.ForeColor = checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
                 checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 

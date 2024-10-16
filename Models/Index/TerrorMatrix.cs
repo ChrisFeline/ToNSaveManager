@@ -139,6 +139,9 @@ namespace ToNSaveManager.Models.Index {
                             StartIndex = 1;
                         }
                     } else {
+                        if (RoundType == ToNRoundType.Double_Trouble)
+                            FirstEntry = new ToNIndex.TerrorInfo(indexes[0], ToNIndex.TerrorGroup.Terrors);
+
                         Dictionary<int, int> dupes = new Dictionary<int, int>();
 
                         for (int i = 0; i < indexes.Length; i++) {
@@ -157,15 +160,11 @@ namespace ToNSaveManager.Models.Index {
                         dupes.Clear();
                     }
 
-                    Terrors = new ToNIndex.TerrorInfo[3];
+                    Terrors = new ToNIndex.TerrorInfo[indexes.Length];
                     for (int i = 0; i < Terrors.Length; i++) {
-                        if (i < TerrorCount) {
-                            ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
-                            if (i == StartIndex && lvl > 1) info.Level = lvl;
-                            Terrors[i] = info;
-                        } else {
-                            Terrors[i] = Terrors[0];
-                        }
+                        ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
+                        if (i == StartIndex && lvl > 1) info.Level = lvl;
+                        Terrors[i] = info;
                     }
                     break;
 
@@ -206,6 +205,7 @@ namespace ToNSaveManager.Models.Index {
             }
         }
 
+        private ToNIndex.TerrorInfo FirstEntry = ToNIndex.TerrorInfo.Empty;
         public Color DisplayColor => GetDisplayColor();
         public Color RoundColor => (RoundType == ToNRoundType.Intermission ? Color.White : RoundTypeColors.ContainsKey(RoundType) ? Color.FromArgb((int)RoundTypeColors[RoundType]) : Color.White);
 
@@ -214,9 +214,11 @@ namespace ToNSaveManager.Models.Index {
                         RoundType != ToNRoundType.Eight_Pages &&
                         RoundType != ToNRoundType.Fog &&
                         RoundType != ToNRoundType.Fog_Alternate) {
+                if (!FirstEntry.IsEmpty) return FirstEntry.Value.Color;
+
                 Color c = Color.White;
                 int R = 0, G = 0, B = 0, L = 0;
-                for (int i = 0; i < Terrors.Length; i++) {
+                for (int i = StartIndex; i < TerrorCount; i++) {
                     if (i > 2) break;
 
                     if (Terrors[i].IsEmpty) continue;
