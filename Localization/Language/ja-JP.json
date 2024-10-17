@@ -1,4 +1,4 @@
-{
+﻿{
 	"DISPLAY_INIT": "JP",
 	"DISPLAY_NAME": "日本語",
 
@@ -60,6 +60,7 @@
 	"MAIN.ENTRY_PLAYERS": "インスタンス内のプレイヤー:",
 	"MAIN.ENTRY_MAP": "マップ:",
 	"MAIN.ENTRY_WARNING": "$$SAVE.TAG_X$$ 警告!! このセーブコードは、セーブコードを読み込む前に生成されました。\n新規プレイヤーでない場合は、一つ前のセーブコードを読み込んでください。",
+	"MAIN.ENTRY_COPIED": "クリップボードにコピーしました!",
 
 	"ROUND_TYPE.INTERMISSION": "休憩時間",
 	"ROUND_TYPE.CLASSIC": "クラシック",
@@ -91,7 +92,9 @@
 	"SAVE.TAG_D": "🔌",
 	"SAVE.TAG_L": "💀",
 	"SAVE.TAG_X": "❗",
-
+	"SAVE.TAG_B": "😇",
+	"SAVE.TAG_C": "✅",
+	
 	"SETTINGS.CHECK_UPDATE": "アップデートを確認",
 	"SETTINGS.OPEN_DATA_BTN": "データ",
 	"SETTINGS.OPEN_DATA_BTN.TT": "セーブデータが保存されているフォルダーを開きます。",
@@ -192,7 +195,17 @@
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT": "(インターバルを設定)",
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT.TT": "ダメージイベントの送信とそれをゼロにリセットするまでの間隔（ミリ秒）を設定します。",
 	"SETTINGS.OSCDAMAGEDEVENT.TITLE": "ダメージインターバルを設定",
-
+	"SETTINGS.OSCDEATHEVENT": "死亡イベントを送信",
+	"SETTINGS.OSCDEATHEVENT.TT": "INTパラメータ'ToN_DeathID'に死亡イベントを送信します。\nこの機能を使って、ゲーム内でフレンドがいつ死んだかを追跡できます。\n数値は死亡したユーザー名のリスト上の位置を表し、減衰時間が経過するとこの値は0にリセットされます。",
+	"SETTINGS.OSCDEATHEVENT.TITLE": "プレイヤー名を設定",
+	"SETTINGS.OSCDEATHEVENT_EDIT": "(編集)",
+	"SETTINGS.OSCDEATHEVENT_EDIT.TT": "このパラメータで使用するプレイヤー名のリストを設定します。\nプレイヤー名はカンマ(,)で区切ってください。",
+	"SETTINGS.OSCDEATHEVENT_DECAY": "(減衰)",
+	"SETTINGS.OSCDEATHEVENT_DECAY.TT": "値を0にリセットするまでの待機時間（ミリ秒単位）を設定します。",
+	"SETTINGS.OSCDEATHEVENT_DECAY.TITLE": "減衰時間を設定",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN": "(クールダウン)",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TT": "複数のプレイヤーが連続して死亡した場合に、このパラメータのID値を設定するまでの待機時間（ミリ秒）を設定します。",
+	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TITLE": "クールダウンタイムを設定",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "通知",
 
@@ -201,9 +214,19 @@
 	"SETTINGS.XSOVERLAY.MESSAGE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>セーブデータを保存しました。</color>",
 	"SETTINGS.XSOVERLAY.TOGGLE": "<color=#ff9999><b>ToN</b></color><color=grey>:</color> <color=#adff2f>通知が有効です。</color>",
 
-	"SETTINGS.PLAYAUDIO": "オーディオを再生 ({0})",
-	"SETTINGS.PLAYAUDIO.TT": "ダブルクリックしてカスタムオーディオファイルを選択します。\n右クリックで'default.wav'に戻します。",
+
 	"SETTINGS.PLAYAUDIO.TITLE": "カスタムオーディオを選択",
+
+	"SETTINGS.PLAYAUDIOSAVE": "セーブ時に音声を再生",
+	"SETTINGS.PLAYAUDIOSAVE.TT": "新しいセーブコードが作成されたときに音声を再生します。",
+
+	"SETTINGS.PLAYAUDIOCOPY": "コピー時に音声を再生",
+	"SETTINGS.PLAYAUDIOCOPY.TT": "セーブコードをコピーしたときに音声を再生します。",
+
+	"SETTINGS.PLAYAUDIO_SELECT": "(音声ファイルを選択)",
+	"SETTINGS.PLAYAUDIO_SELECT.TT": "通知に使うカスタムオーディオを選択します。",
+	"SETTINGS.PLAYAUDIO_SELECT.ALT": "$$SETTINGS.PLAYAUDIO_SELECT.TT$$\n通知音をデフォルトに戻すにはこのボタンを右クリックしてください。",
+
 
 	"SETTINGS.GROUP.TIME_FORMAT": "時刻フォーマット",
 	"SETTINGS.USE24HOUR": "24時間表示",
@@ -243,6 +266,7 @@
 	"OBJECTIVES.OMORI_PLUSH.TT": "Somethingを生存。",
 	"OBJECTIVES.PARADISE_LOST": "失楽園",
 	"OBJECTIVES.PARADISE_LOST.TT": "使徒を指定回数スタンさせる。",
+	
 	"OBJECTIVES.ITEM_SKIN_UNLOCKS": "解放したアイテムスキン",
 	"OBJECTIVES.RED_MEDKIT": "赤メッドキット",
 	"OBJECTIVES.RED_MEDKIT.TT": "メッドキットを持ちながらVirusを生存。",
@@ -273,6 +297,44 @@
 	"OBJECTIVES.SNOWY_SPEED_COIL.TT": "雪の中に何かがある。",
 	"OBJECTIVES.TORCH_OF_OBSESSION": "松明",
 	"OBJECTIVES.TORCH_OF_OBSESSION.TT": "Cold Nightを生存。",
+
+	"OBJECTIVES.HAVE_PLUSH": "Have人形",
+	"OBJECTIVES.HAVE_PLUSH.TT": "The Observationを生存。",
+	"OBJECTIVES.PORTABLE_SLOTS": "ポータブルスロット",
+	"OBJECTIVES.PORTABLE_SLOTS.TT": "Haveの秘密に包まれた酒を持ちながらアンバウンドを生存。",
+	"OBJECTIVES.SOUL_VISITOR": "ソウルビジター",
+	"OBJECTIVES.SOUL_VISITOR.TT": "テレポーターを持ちながらアンバウンドを生存。",
+	"OBJECTIVES.DEFLECT_COIL": "蒼白のコイル",
+	"OBJECTIVES.DEFLECT_COIL.TT": "リジェネコイルを持ちながらオルタネイトを生存。",
+	"OBJECTIVES.ROOT_COIL": "樹根リジェネコイル",
+	"OBJECTIVES.ROOT_COIL.TT": "草むらで待つ。",
+	"OBJECTIVES.GHOST_BAT": "ゴーストバット",
+	"OBJECTIVES.GHOST_BAT.TT": "金属バットを持ちながらゴーストを生存。",
+	"OBJECTIVES.BLOODY_CHARM": "血濡れチャーム",
+	"OBJECTIVES.BLOODY_CHARM.TT": "シルバーキャットチャームを持ちながらブラッドバスを生存。",
+	"OBJECTIVES.LUNA_CHARM": "ルナチャーム",
+	"OBJECTIVES.LUNA_CHARM.TT": "Kimeraを生存。",
+	"OBJECTIVES.DESTROYER_COIL": "デストロイヤーコイル",
+	"OBJECTIVES.DESTROYER_COIL.TT": "コルクスクリューコイルを持ちながらミッドナイトを生存。",
+	"OBJECTIVES.BLOODY_REVOLVER": "血濡れリボルバー",
+	"OBJECTIVES.BLOODY_REVOLVER.TT": "アンティークリボルバーを持ちながらブラッドバスを生存。",
+	"OBJECTIVES.HAUNTED_HAMBURGER": "ハウント ハンバーガー",
+	"OBJECTIVES.HAUNTED_HAMBURGER.TT": "ハンバーガーを持ちながらゴーストを生存。",
+	"OBJECTIVES.THORN_GLOGNUT": "ソーングロッグナッツ",
+	"OBJECTIVES.THORN_GLOGNUT.TT": "Glaggle Gangを生存。",
+	"OBJECTIVES.JAILBIRD": "ジェイルバード",
+	"OBJECTIVES.JAILBIRD.TT": "全てのクラシックテラーで生存。",
+	"OBJECTIVES.JOYOUS_ORB": "ジョイアスオーブ",
+	"OBJECTIVES.JOYOUS_ORB.TT": "JOYを生存。",
+
+	"OBJECTIVES.CLAW_MACHINE_UNLOCKS": "クレーンゲームで解放",
+	"OBJECTIVES.NORA_PLUSH": "Nora人形",
+	"OBJECTIVES.NORA_PLUSH.TT": "Beyond人形が必要。",
+	"OBJECTIVES.ROBLANDER_PLUSH": "Roblander人形",
+	"OBJECTIVES.ROBLANDER_PLUSH.TT": "Darkgrey人形が必要。",
+	"OBJECTIVES.OBSERVATION_PLUSH": "Observation人形",
+	"OBJECTIVES.OBSERVATION_PLUSH.TT": "Have人形が必要。",
+
 	
 	"STATS.TITLE": "ToN 統計トラッカー",
 	"STATS.SHOW_LOBBY": "ロビーの統計を表示",
@@ -333,6 +395,8 @@
 	"STATS.LABEL_MAPORIGIN.TT": "このマップの出典。",
 	"STATS.LABEL_ISALIVE": "生存中",
 	"STATS.LABEL_ISALIVE.TT": "プレイヤーが現在のラウンドで生きている場合「True」。",
+	"STATS.LABEL_ISREBORN": "復活",
+	"STATS.LABEL_ISREBORN.TT": "ラウンド中にマクスウェルで生き返った場合「True」。",
 	"STATS.LABEL_ISSTARTED": "ラウンド進行中",
 	"STATS.LABEL_ISSTARTED.TT": "ラウンドが開始して進行中の場合「True」。",
 	"STATS.LABEL_INSTANCEURL": "インスタンスURL",
