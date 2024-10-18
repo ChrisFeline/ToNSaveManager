@@ -1,5 +1,6 @@
 ﻿# Latest Changelog
 
-- Attempting to fix the False Positives with the two only FREE Anti Viruses. (Avast and AVG) again...
+- Added OSC parameter option: 'ToN_MasterChange'
+	- You can use this parameter to detect when the instance master has changed.
 - Updated Simplified Chinese localization (Thank you @Fallen-ice)
-- I always knew.
+- Updated Japanese localization (Thank you @nomlasvrc)

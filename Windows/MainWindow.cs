@@ -872,6 +872,9 @@ namespace ToNSaveManager
         const string STAT_STUN_LANDED = " landed a stun!";
         const string STAT_STUN_TARGET = " was stunned.";
         const string STAT_HIT = "Hit - ";
+
+        const string EVENT_MASTER_CHANGE = "[Behaviour] OnMasterClientSwitched";
+
         private bool HandleStatCollection(string line, DateTime timestamp, ToNLogContext context) {
             if (!context.IsRecent) return false;
 
@@ -893,6 +896,11 @@ namespace ToNSaveManager
                 }
 
                 if (Settings.Get.OSCEnabled) {
+                    if (Settings.Get.OSCMasterChange && line.StartsWith(EVENT_MASTER_CHANGE)) {
+                        LilOSC.SendHostChange();
+                        return true;
+                    }
+
                     bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
                     bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
                     if (isActivated || isDeactivated) {

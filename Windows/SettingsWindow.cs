@@ -71,7 +71,7 @@ namespace ToNSaveManager.Windows
 
         #region Form Events
         private Dictionary<string, Control> LocalizedControlCache = new Dictionary<string, Control>();
-        private readonly string[] ColorFormatLabels = [ "HSV", "RGB", "HSL", "RGB32" ];
+        private readonly string[] ColorFormatLabels = ["HSV", "RGB", "HSL", "RGB32"];
         private static string ColorFormatTooltip = "Sends the current Terror color represented as {3}.\nColor will be sent as 3 FLOAT parameters:\n- {0}\n- {1}\n- {2}";
 
         internal void LocalizeContent() {
@@ -92,6 +92,7 @@ namespace ToNSaveManager.Windows
             // OSC LINKS
             LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
+            LANG.C(linkSetMasterInterval, "SETTINGS.OSCMASTERCHANGE_EDIT", toolTip);
             LANG.C(linkEditDeathID, "SETTINGS.OSCDEATHEVENT_EDIT", toolTip);
             LANG.C(linkSetDeathDecay, "SETTINGS.OSCDEATHEVENT_DECAY", toolTip);
             LANG.C(linkSetDeathCooldown, "SETTINGS.OSCDEATHEVENT_COOLDOWN", toolTip);
@@ -636,6 +637,17 @@ namespace ToNSaveManager.Windows
             }
         }
 
+        private void linkSetMasterInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            int original = Settings.Get.OSCMasterChangeInterval;
+            string value = original.ToString();
+            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCMASTERCHANGE.TITLE") ?? "Set Interval", this);
+
+            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
+                Settings.Get.OSCMasterChangeInterval = result;
+                Settings.Export();
+            }
+        }
+
         private void linkSetDamageInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             int original = Settings.Get.OSCDamagedInterval;
             string value = original.ToString();
@@ -686,7 +698,7 @@ namespace ToNSaveManager.Windows
 
         private void checkOSCEnabled_CheckedChanged(object? sender, EventArgs e) {
             if (checkOSCEnabled.Checked && sender != null) LilOSC.SendData(true);
-            checkOSCDeathEvent.ForeColor = checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
+            checkOSCMasterChange.ForeColor = checkOSCDeathEvent.ForeColor = checkOSCSendDamage.ForeColor = checkOSCSendColor.ForeColor =
                 checkOSCEnabled.Checked ? Color.White : Color.Gray;
         }
 
@@ -778,6 +790,5 @@ namespace ToNSaveManager.Windows
             }
         }
         #endregion
-
     }
 }
