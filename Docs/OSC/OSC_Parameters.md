@@ -17,6 +17,7 @@ Parameter        | Type    | Description
 `ToN_ItemStatus` | `BOOL`  | (Experimental) Determines the active status of items like the **Chaos Coil**, **Emerald Coil**, **Corkscrew** and **TBH**.
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
 `ToN_DeathID`    | `INT`   | You can use this parameter to track when your friends die in the game.
+`ToN_MasterChange` | `BOOL` | Set to `true` for a short period of time when the instance master has changed.
 
 > You need to specify a list of player names to use with the **ToN_DeathID** parameter.<br>
 > You can do so under Settings > Send Death ID > (Edit)<br>
