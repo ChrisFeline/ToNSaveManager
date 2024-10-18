@@ -169,6 +169,16 @@ namespace ToNSaveManager.Models
             return Array.IndexOf(OSCDeathIDs, id) + 1;
         }
 
+
+        /// <summary>
+        /// OSC Master Changed event for OSC.
+        /// </summary>
+        public bool OSCMasterChange { get; set; } = true;
+        /// <summary>
+        /// OSC Master Change event interval.
+        /// </summary>
+        public int OSCMasterChangeInterval { get; set; } = 200;
+
         /// <summary>
         /// Enables OSC chatbox messages.
         /// </summary>
