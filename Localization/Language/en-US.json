@@ -206,6 +206,11 @@
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN": "(Cooldown)",
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TT": "Set the time (in milliseconds) to wait before setting the ID value for this parameter after multiple players die in quick succession.",
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TITLE": "Set Cooldown Time",
+	"SETTINGS.OSCMASTERCHANGE": "Send Master Change",
+	"SETTINGS.OSCMASTERCHANGE.TT": "Sends 'TRUE' to the parameter 'ToN_MasterChange' when the instance master has changed.",
+	"SETTINGS.OSCMASTERCHANGE_EDIT": "(Set Interval)",
+	"SETTINGS.OSCMASTERCHANGE_EDIT.TT": "Sets the interval (in milliseconds) to wait before setting this parameter value back to 'FALSE'",
+	"SETTINGS.OSCMASTERCHANGE.TITLE": "Set Master Interval",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "Notifications",
 

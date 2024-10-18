@@ -173,11 +173,11 @@ namespace ToNSaveManager.Models
         /// <summary>
         /// OSC Master Changed event for OSC.
         /// </summary>
-        public bool OSCMasterChange { get; set; } = true;
+        public bool OSCMasterChange { get; set; } = false;
         /// <summary>
         /// OSC Master Change event interval.
         /// </summary>
-        public int OSCMasterChangeInterval { get; set; } = 200;
+        public int OSCMasterChangeInterval { get; set; } = 500;
 
         /// <summary>
         /// Enables OSC chatbox messages.
