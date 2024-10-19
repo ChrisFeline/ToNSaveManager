@@ -26,7 +26,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             checkDiscordBackup = new CheckBox();
@@ -153,7 +154,7 @@
             // checkShowWinLose
             // 
             checkShowWinLose.AutoSize = true;
-            checkShowWinLose.ForeColor = Color.PowderBlue;
+            checkShowWinLose.ForeColor = Color.FromArgb(255, 192, 192);
             checkShowWinLose.Location = new Point(3, 239);
             checkShowWinLose.Margin = new Padding(3, 1, 3, 1);
             checkShowWinLose.Name = "checkShowWinLose";
@@ -167,7 +168,7 @@
             // checkSaveTerrorsNote
             // 
             checkSaveTerrorsNote.AutoSize = true;
-            checkSaveTerrorsNote.ForeColor = Color.PowderBlue;
+            checkSaveTerrorsNote.ForeColor = Color.FromArgb(255, 192, 192);
             checkSaveTerrorsNote.Location = new Point(3, 0);
             checkSaveTerrorsNote.Margin = new Padding(0);
             checkSaveTerrorsNote.Name = "checkSaveTerrorsNote";
@@ -326,6 +327,7 @@
             // btnCheckForUpdates
             // 
             btnCheckForUpdates.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnCheckForUpdates.BackColor = Color.FromArgb(40, 0, 0);
             btnCheckForUpdates.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnCheckForUpdates.FlatStyle = FlatStyle.Flat;
             btnCheckForUpdates.ForeColor = Color.White;
@@ -334,12 +336,13 @@
             btnCheckForUpdates.Size = new Size(510, 24);
             btnCheckForUpdates.TabIndex = 4;
             btnCheckForUpdates.Text = "Check For Updates";
-            btnCheckForUpdates.UseVisualStyleBackColor = true;
+            btnCheckForUpdates.UseVisualStyleBackColor = false;
             btnCheckForUpdates.Click += btnCheckForUpdates_Click;
             // 
             // btnOpenData
             // 
             btnOpenData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenData.BackColor = Color.FromArgb(40, 0, 0);
             btnOpenData.ContextMenuStrip = ctxData;
             btnOpenData.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnOpenData.FlatStyle = FlatStyle.Flat;
@@ -350,7 +353,7 @@
             btnOpenData.TabIndex = 5;
             btnOpenData.Tag = "|Open local app data folder.";
             btnOpenData.Text = "Data";
-            btnOpenData.UseVisualStyleBackColor = true;
+            btnOpenData.UseVisualStyleBackColor = false;
             btnOpenData.Click += btnOpenData_Click;
             // 
             // ctxData
@@ -402,10 +405,11 @@
             // languageSelectBox
             // 
             languageSelectBox.AllowDrop = true;
-            languageSelectBox.BackColor = SystemColors.Window;
+            languageSelectBox.BackColor = Color.FromArgb(20, 0, 0);
             languageSelectBox.Dock = DockStyle.Top;
             languageSelectBox.DropDownStyle = ComboBoxStyle.DropDownList;
             languageSelectBox.FlatStyle = FlatStyle.Flat;
+            languageSelectBox.ForeColor = Color.White;
             languageSelectBox.FormattingEnabled = true;
             languageSelectBox.Location = new Point(8, 8);
             languageSelectBox.Name = "languageSelectBox";
@@ -443,7 +447,7 @@
             // checkOSCSendColor
             // 
             checkOSCSendColor.AutoSize = true;
-            checkOSCSendColor.ForeColor = Color.PowderBlue;
+            checkOSCSendColor.ForeColor = Color.FromArgb(255, 192, 192);
             checkOSCSendColor.Location = new Point(3, 0);
             checkOSCSendColor.Margin = new Padding(0);
             checkOSCSendColor.Name = "checkOSCSendColor";
@@ -564,7 +568,7 @@
             // 
             linkOpenLogs.ActiveLinkColor = Color.White;
             linkOpenLogs.AutoSize = true;
-            linkOpenLogs.BackColor = Color.LightBlue;
+            linkOpenLogs.BackColor = Color.FromArgb(255, 192, 192);
             linkOpenLogs.LinkBehavior = LinkBehavior.HoverUnderline;
             linkOpenLogs.LinkColor = SystemColors.Desktop;
             linkOpenLogs.Location = new Point(53, 37);
@@ -583,7 +587,7 @@
             // 
             linkCopyLogs.ActiveLinkColor = Color.White;
             linkCopyLogs.AutoSize = true;
-            linkCopyLogs.BackColor = Color.LightBlue;
+            linkCopyLogs.BackColor = Color.FromArgb(255, 192, 192);
             linkCopyLogs.LinkBehavior = LinkBehavior.HoverUnderline;
             linkCopyLogs.LinkColor = SystemColors.Desktop;
             linkCopyLogs.Location = new Point(53, 54);
@@ -628,7 +632,7 @@
             // checkCopyOnOpen
             // 
             checkCopyOnOpen.AutoSize = true;
-            checkCopyOnOpen.ForeColor = Color.PowderBlue;
+            checkCopyOnOpen.ForeColor = Color.FromArgb(255, 192, 192);
             checkCopyOnOpen.Location = new Point(3, 134);
             checkCopyOnOpen.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnOpen.Name = "checkCopyOnOpen";
@@ -642,7 +646,7 @@
             // checkCopyOnJoin
             // 
             checkCopyOnJoin.AutoSize = true;
-            checkCopyOnJoin.ForeColor = Color.PowderBlue;
+            checkCopyOnJoin.ForeColor = Color.FromArgb(255, 192, 192);
             checkCopyOnJoin.Location = new Point(3, 155);
             checkCopyOnJoin.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnJoin.Name = "checkCopyOnJoin";
@@ -656,7 +660,7 @@
             // checkCopyOnSave
             // 
             checkCopyOnSave.AutoSize = true;
-            checkCopyOnSave.ForeColor = Color.PowderBlue;
+            checkCopyOnSave.ForeColor = Color.FromArgb(255, 192, 192);
             checkCopyOnSave.Location = new Point(3, 176);
             checkCopyOnSave.Margin = new Padding(3, 1, 3, 1);
             checkCopyOnSave.Name = "checkCopyOnSave";
@@ -1130,7 +1134,7 @@
             // labelOSCFormat
             // 
             labelOSCFormat.AutoSize = true;
-            labelOSCFormat.BackColor = Color.LightBlue;
+            labelOSCFormat.BackColor = Color.FromArgb(255, 192, 192);
             labelOSCFormat.ForeColor = Color.Black;
             labelOSCFormat.Location = new Point(278, 0);
             labelOSCFormat.Margin = new Padding(0);
@@ -1157,7 +1161,7 @@
             // checkOSCSendDamage
             // 
             checkOSCSendDamage.AutoSize = true;
-            checkOSCSendDamage.ForeColor = Color.PowderBlue;
+            checkOSCSendDamage.ForeColor = Color.FromArgb(255, 192, 192);
             checkOSCSendDamage.Location = new Point(0, 0);
             checkOSCSendDamage.Margin = new Padding(0);
             checkOSCSendDamage.Name = "checkOSCSendDamage";
@@ -1203,7 +1207,7 @@
             // checkOSCDeathEvent
             // 
             checkOSCDeathEvent.AutoSize = true;
-            checkOSCDeathEvent.ForeColor = Color.PowderBlue;
+            checkOSCDeathEvent.ForeColor = Color.FromArgb(255, 192, 192);
             checkOSCDeathEvent.Location = new Point(0, 0);
             checkOSCDeathEvent.Margin = new Padding(0);
             checkOSCDeathEvent.Name = "checkOSCDeathEvent";
@@ -1377,7 +1381,7 @@
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            BackColor = Color.FromArgb(46, 52, 64);
+            BackColor = Color.Black;
             ClientSize = new Size(585, 614);
             Controls.Add(panel2);
             Controls.Add(panel1);

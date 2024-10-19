@@ -26,7 +26,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditWindow));
             textBox1 = new TextBox();
@@ -40,7 +41,7 @@
             // 
             // textBox1
             // 
-            textBox1.BackColor = Color.FromArgb(59, 66, 82);
+            textBox1.BackColor = Color.FromArgb(20, 0, 0);
             textBox1.Dock = DockStyle.Top;
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(10, 10);
@@ -51,6 +52,7 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.FromArgb(40, 0, 0);
             button1.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
@@ -59,12 +61,13 @@
             button1.Size = new Size(75, 29);
             button1.TabIndex = 1;
             button1.Text = "Save";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // button2
             // 
             button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.BackColor = Color.FromArgb(40, 0, 0);
             button2.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
@@ -73,7 +76,7 @@
             button2.Size = new Size(75, 29);
             button2.TabIndex = 2;
             button2.Text = "Cancel";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // contextMenuStrip1
@@ -90,6 +93,7 @@
             // 
             // buttonInsert
             // 
+            buttonInsert.BackColor = Color.FromArgb(40, 0, 0);
             buttonInsert.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             buttonInsert.FlatStyle = FlatStyle.Flat;
             buttonInsert.ForeColor = Color.White;
@@ -98,7 +102,7 @@
             buttonInsert.Size = new Size(238, 29);
             buttonInsert.TabIndex = 3;
             buttonInsert.Text = "Insert Template Key";
-            buttonInsert.UseVisualStyleBackColor = true;
+            buttonInsert.UseVisualStyleBackColor = false;
             buttonInsert.MouseClick += buttonInsert_MouseClick;
             // 
             // EditWindow
@@ -108,7 +112,7 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = Color.FromArgb(46, 52, 64);
+            BackColor = Color.Black;
             CancelButton = button2;
             ClientSize = new Size(426, 79);
             Controls.Add(buttonInsert);

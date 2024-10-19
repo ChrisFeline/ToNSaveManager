@@ -25,7 +25,8 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmulatorWindow));
             comboRoundType = new ComboBox();
             panel1 = new Panel();
@@ -128,7 +129,7 @@
             // 
             // comboMonster3
             // 
-            comboMonster3.BackColor = Color.Black;
+            comboMonster3.BackColor = Color.FromArgb(40, 0, 0);
             comboMonster3.Dock = DockStyle.Right;
             comboMonster3.DrawMode = DrawMode.OwnerDrawFixed;
             comboMonster3.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -155,7 +156,7 @@
             // 
             // comboMonster2
             // 
-            comboMonster2.BackColor = Color.Black;
+            comboMonster2.BackColor = Color.FromArgb(40, 0, 0);
             comboMonster2.Dock = DockStyle.Right;
             comboMonster2.DrawMode = DrawMode.OwnerDrawFixed;
             comboMonster2.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -195,7 +196,7 @@
             // 
             // comboMonster
             // 
-            comboMonster.BackColor = Color.Black;
+            comboMonster.BackColor = Color.FromArgb(40, 0, 0);
             comboMonster.Dock = DockStyle.Right;
             comboMonster.DrawMode = DrawMode.OwnerDrawFixed;
             comboMonster.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -309,7 +310,7 @@
             // 
             buttonStepEndRound.AutoSize = true;
             buttonStepEndRound.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonStepEndRound.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepEndRound.BackColor = Color.FromArgb(40, 0, 0);
             buttonStepEndRound.FlatStyle = FlatStyle.Flat;
             buttonStepEndRound.ForeColor = Color.White;
             buttonStepEndRound.Location = new Point(128, 36);
@@ -325,7 +326,7 @@
             // 
             buttonStepReveal.AutoSize = true;
             buttonStepReveal.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonStepReveal.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepReveal.BackColor = Color.FromArgb(40, 0, 0);
             buttonStepReveal.FlatStyle = FlatStyle.Flat;
             flowLayoutPanel1.SetFlowBreak(buttonStepReveal, true);
             buttonStepReveal.ForeColor = Color.White;
@@ -342,7 +343,7 @@
             // 
             buttonStepKillerSet.AutoSize = true;
             buttonStepKillerSet.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonStepKillerSet.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepKillerSet.BackColor = Color.FromArgb(40, 0, 0);
             buttonStepKillerSet.FlatStyle = FlatStyle.Flat;
             buttonStepKillerSet.ForeColor = Color.White;
             buttonStepKillerSet.Location = new Point(52, 3);
@@ -358,7 +359,7 @@
             // 
             buttonStepStart.AutoSize = true;
             buttonStepStart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonStepStart.BackColor = Color.FromArgb(46, 52, 64);
+            buttonStepStart.BackColor = Color.FromArgb(40, 0, 0);
             buttonStepStart.FlatStyle = FlatStyle.Flat;
             buttonStepStart.ForeColor = Color.White;
             buttonStepStart.Location = new Point(3, 3);
@@ -390,7 +391,7 @@
             // 
             buttonDamage.AutoSize = true;
             buttonDamage.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonDamage.BackColor = Color.FromArgb(46, 52, 64);
+            buttonDamage.BackColor = Color.FromArgb(40, 0, 0);
             buttonDamage.FlatStyle = FlatStyle.Flat;
             buttonDamage.ForeColor = Color.Red;
             buttonDamage.Location = new Point(3, 36);
@@ -406,7 +407,7 @@
             // 
             buttonDeath.AutoSize = true;
             buttonDeath.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonDeath.BackColor = Color.FromArgb(46, 52, 64);
+            buttonDeath.BackColor = Color.FromArgb(40, 0, 0);
             buttonDeath.FlatStyle = FlatStyle.Flat;
             buttonDeath.ForeColor = Color.Red;
             buttonDeath.Location = new Point(72, 36);
@@ -424,7 +425,7 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = Color.FromArgb(46, 52, 64);
+            BackColor = Color.Black;
             ClientSize = new Size(334, 384);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(panel5);

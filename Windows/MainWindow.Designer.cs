@@ -26,7 +26,8 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             listBoxKeys = new ListBox();
@@ -49,18 +50,22 @@
             splitContainer1 = new SplitContainer();
             btnStats = new Button();
             linkSupport = new Button();
+            imagePanel = new Panel();
+            pictureBackground = new PictureBox();
             ctxMenuEntries.SuspendLayout();
             ctxMenuKeys.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            imagePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBackground).BeginInit();
             SuspendLayout();
             // 
             // listBoxKeys
             // 
             listBoxKeys.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            listBoxKeys.BackColor = Color.FromArgb(59, 66, 82);
+            listBoxKeys.BackColor = Color.FromArgb(20, 0, 0);
             listBoxKeys.BorderStyle = BorderStyle.FixedSingle;
             listBoxKeys.DrawMode = DrawMode.OwnerDrawFixed;
             listBoxKeys.ForeColor = Color.FromArgb(236, 239, 244);
@@ -69,7 +74,7 @@
             listBoxKeys.ItemHeight = 15;
             listBoxKeys.Location = new Point(0, 0);
             listBoxKeys.Name = "listBoxKeys";
-            listBoxKeys.Size = new Size(178, 217);
+            listBoxKeys.Size = new Size(179, 180);
             listBoxKeys.TabIndex = 0;
             listBoxKeys.TabStop = false;
             listBoxKeys.DrawItem += listBoxEntries_DrawItem;
@@ -80,7 +85,7 @@
             // listBoxEntries
             // 
             listBoxEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            listBoxEntries.BackColor = Color.FromArgb(59, 66, 82);
+            listBoxEntries.BackColor = Color.FromArgb(20, 0, 0);
             listBoxEntries.BorderStyle = BorderStyle.FixedSingle;
             listBoxEntries.DrawMode = DrawMode.OwnerDrawFixed;
             listBoxEntries.ForeColor = Color.FromArgb(236, 239, 244);
@@ -89,7 +94,7 @@
             listBoxEntries.ItemHeight = 15;
             listBoxEntries.Location = new Point(0, 0);
             listBoxEntries.Name = "listBoxEntries";
-            listBoxEntries.Size = new Size(323, 217);
+            listBoxEntries.Size = new Size(327, 180);
             listBoxEntries.TabIndex = 1;
             listBoxEntries.TabStop = false;
             listBoxEntries.DrawItem += listBoxEntries_DrawItem;
@@ -185,13 +190,13 @@
             // btnSettings
             // 
             btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnSettings.BackColor = Color.FromArgb(46, 52, 64);
+            btnSettings.BackColor = Color.FromArgb(40, 0, 0);
             btnSettings.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnSettings.FlatStyle = FlatStyle.Flat;
             btnSettings.ForeColor = Color.White;
-            btnSettings.Location = new Point(0, 223);
+            btnSettings.Location = new Point(0, 186);
             btnSettings.Name = "btnSettings";
-            btnSettings.Size = new Size(178, 24);
+            btnSettings.Size = new Size(179, 24);
             btnSettings.TabIndex = 0;
             btnSettings.TabStop = false;
             btnSettings.Text = "Settings";
@@ -201,13 +206,13 @@
             // btnObjectives
             // 
             btnObjectives.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnObjectives.BackColor = Color.FromArgb(46, 52, 64);
+            btnObjectives.BackColor = Color.FromArgb(40, 0, 0);
             btnObjectives.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnObjectives.FlatStyle = FlatStyle.Flat;
             btnObjectives.ForeColor = Color.White;
-            btnObjectives.Location = new Point(0, 223);
+            btnObjectives.Location = new Point(0, 186);
             btnObjectives.Name = "btnObjectives";
-            btnObjectives.Size = new Size(165, 24);
+            btnObjectives.Size = new Size(169, 24);
             btnObjectives.TabIndex = 0;
             btnObjectives.TabStop = false;
             btnObjectives.Text = "Objectives";
@@ -217,11 +222,11 @@
             // linkWiki
             // 
             linkWiki.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            linkWiki.BackColor = Color.FromArgb(46, 52, 64);
+            linkWiki.BackColor = Color.FromArgb(40, 0, 0);
             linkWiki.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             linkWiki.FlatStyle = FlatStyle.Flat;
             linkWiki.ForeColor = Color.White;
-            linkWiki.Location = new Point(235, 223);
+            linkWiki.Location = new Point(239, 186);
             linkWiki.Name = "linkWiki";
             linkWiki.Size = new Size(58, 24);
             linkWiki.TabIndex = 3;
@@ -233,7 +238,7 @@
             // splitContainer1
             // 
             splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            splitContainer1.Location = new Point(12, 12);
+            splitContainer1.Location = new Point(12, 230);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -248,8 +253,8 @@
             splitContainer1.Panel2.Controls.Add(listBoxEntries);
             splitContainer1.Panel2.Controls.Add(btnObjectives);
             splitContainer1.Panel2.Controls.Add(linkWiki);
-            splitContainer1.Size = new Size(505, 247);
-            splitContainer1.SplitterDistance = 178;
+            splitContainer1.Size = new Size(510, 210);
+            splitContainer1.SplitterDistance = 179;
             splitContainer1.TabIndex = 0;
             splitContainer1.TabStop = false;
             splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
@@ -257,11 +262,11 @@
             // btnStats
             // 
             btnStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnStats.BackColor = Color.FromArgb(46, 52, 64);
+            btnStats.BackColor = Color.FromArgb(40, 0, 0);
             btnStats.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             btnStats.FlatStyle = FlatStyle.Flat;
             btnStats.ForeColor = Color.White;
-            btnStats.Location = new Point(171, 223);
+            btnStats.Location = new Point(175, 186);
             btnStats.Name = "btnStats";
             btnStats.Size = new Size(58, 24);
             btnStats.TabIndex = 5;
@@ -273,12 +278,12 @@
             // linkSupport
             // 
             linkSupport.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            linkSupport.BackColor = Color.FromArgb(46, 52, 64);
+            linkSupport.BackColor = Color.FromArgb(40, 0, 0);
             linkSupport.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
             linkSupport.FlatStyle = FlatStyle.Flat;
             linkSupport.ForeColor = Color.White;
             linkSupport.Image = (Image)resources.GetObject("linkSupport.Image");
-            linkSupport.Location = new Point(299, 223);
+            linkSupport.Location = new Point(303, 186);
             linkSupport.Name = "linkSupport";
             linkSupport.Size = new Size(24, 24);
             linkSupport.TabIndex = 4;
@@ -286,16 +291,37 @@
             linkSupport.UseVisualStyleBackColor = false;
             linkSupport.Click += linkSupport_Click;
             // 
+            // imagePanel
+            // 
+            imagePanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            imagePanel.Controls.Add(pictureBackground);
+            imagePanel.Location = new Point(12, 12);
+            imagePanel.Name = "imagePanel";
+            imagePanel.Size = new Size(510, 212);
+            imagePanel.TabIndex = 2;
+            // 
+            // pictureBackground
+            // 
+            pictureBackground.Dock = DockStyle.Fill;
+            pictureBackground.Image = (Image)resources.GetObject("pictureBackground.Image");
+            pictureBackground.Location = new Point(0, 0);
+            pictureBackground.Name = "pictureBackground";
+            pictureBackground.Size = new Size(510, 212);
+            pictureBackground.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBackground.TabIndex = 0;
+            pictureBackground.TabStop = false;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            BackColor = Color.FromArgb(46, 52, 64);
-            ClientSize = new Size(529, 271);
+            BackColor = Color.Black;
+            ClientSize = new Size(534, 452);
+            Controls.Add(imagePanel);
             Controls.Add(splitContainer1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MinimumSize = new Size(412, 256);
+            MinimumSize = new Size(550, 350);
             Name = "MainWindow";
             Text = "ToN Save Manager";
             Activated += MainWindow_Activated;
@@ -308,6 +334,8 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            imagePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBackground).EndInit();
             ResumeLayout(false);
         }
 
@@ -333,5 +361,7 @@
         private ToolStripMenuItem ctxMenuEntriesBackup;
         private Button linkSupport;
         private Button btnStats;
+        private Panel imagePanel;
+        private PictureBox pictureBackground;
     }
 }

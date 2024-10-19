@@ -26,7 +26,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatsWindow));
             toolTip = new ToolTip(components);
@@ -60,7 +61,7 @@
             // listBox1
             // 
             listBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            listBox1.BackColor = Color.FromArgb(59, 66, 82);
+            listBox1.BackColor = Color.FromArgb(20, 0, 0);
             listBox1.BorderStyle = BorderStyle.FixedSingle;
             listBox1.DrawMode = DrawMode.OwnerDrawFixed;
             listBox1.ForeColor = Color.FromArgb(236, 239, 244);
@@ -82,7 +83,7 @@
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            BackColor = Color.FromArgb(46, 52, 64);
+            BackColor = Color.Black;
             ClientSize = new Size(324, 201);
             Controls.Add(listBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
