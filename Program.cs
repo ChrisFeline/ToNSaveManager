@@ -25,10 +25,8 @@ namespace ToNSaveManager
         internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher<ToNLogContext>.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
-        internal static void ReleaseMutex()
-        {
-            if (AppMutex != null)
-            {
+        internal static void ReleaseMutex() {
+            if (AppMutex != null) {
                 AppMutex.ReleaseMutex();
                 AppMutex.Dispose();
                 AppMutex = null;
