@@ -18,7 +18,7 @@ namespace ToNSaveManager
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string ProgramLocation = Path.Combine(ProgramDirectory, ProgramFile);
-        internal static readonly string ProgramLocationTemporary = Path.Combine(ProgramDirectory, "__" + ProgramFile);
+        internal static readonly string ProgramLocationTemporary = Path.Combine(ProgramDirectory, "_" + ProgramFile.ToLowerInvariant() + ".old");
         internal const string ProgramFile = ProgramName + ".exe";
 
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);

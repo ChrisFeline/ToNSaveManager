@@ -9,7 +9,7 @@ namespace ToNSaveManager {
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
 
-        const string POST_UPDATE_ARG = "--clean-update";
+        static string POST_UPDATE_FILE => Program.ProgramLocationTemporary;
         internal static void Start(GitHubRelease release, GitHubRelease.Asset asset) {
             AllocConsole();
 
@@ -22,7 +22,7 @@ namespace ToNSaveManager {
                 if (File.Exists(TempFileLocation))
                     File.Delete(TempFileLocation);
 
-                Console.Write($"Downloading '{asset.name}' . . . ");
+                Console.WriteLine($"Downloading '{asset.name}' . . . ");
 
                 string downloadUrl = asset.browser_download_url;
                 using (HttpClient client = new HttpClient()) {
@@ -49,10 +49,8 @@ namespace ToNSaveManager {
                 Console.WriteLine("Update complete, restarting . . .");
 
                 Program.ReleaseMutex(); // Release mutex so downloaded app opens properly
-                                        // Start new process with --post-update
-                ProcessStartInfo processInfo = new ProcessStartInfo(Program.ProgramFile, POST_UPDATE_ARG);
-                Process.Start(processInfo);
-                // Exit this app
+
+                MessageBox.Show("Successfully downloaded update v" + release.tag_name + "\nOpen the ToN Save Manager again to continue...", Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Application.Exit();
                 return;
             } catch (Exception ex) {
@@ -71,23 +69,10 @@ namespace ToNSaveManager {
         const string LEGACY_POST_UPDATE_ARG = "--post-update";
         internal static void CheckPostUpdate(string[] args) {
             bool updateLegacy = Program.ContainsArg(LEGACY_POST_UPDATE_ARG);
-            if (!updateLegacy && !Program.ContainsArg(POST_UPDATE_ARG)) return;
+            if (!updateLegacy && !File.Exists(POST_UPDATE_FILE)) return;
             Logger.Info("Running post-update cleanup.");
 
             try {
-                using (Process currentProcess = Process.GetCurrentProcess()) {
-                    Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
-                    foreach (Process process in processes) {
-                        using (process) {
-                            if (process.Id != currentProcess.Id) {
-                                Logger.Info("Killing old running process: " + process.Id);
-                                process.Kill();
-                                process.WaitForExit();
-                            }
-                        }
-                    }
-                }
-
                 if (updateLegacy) {
                     // Run legacy cleanup, old to new transition
                     Logger.Info("Updated from legacy version, running legacy cleanup...");
