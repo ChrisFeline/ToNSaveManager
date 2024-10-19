@@ -21,6 +21,9 @@
 	"MESSAGE.UPDATE_SUCCESS": "Successfully downloaded update: {0}\nOpen 'ToNSaveManager' again to continue...",
 	"MESSAGE.UPDATE_FAILED": "Automatic update has failed. Try using the file 'update.bat' instead.\nPlease report this error on the GitHub page.",
 
+	"MESSAGE.LARGE_LOG_WARNING": "You are about to parse a very large VRChat log file!\nFile Name: {0}\nFile Size: {1}\n\nScanning this log file for save codes will take some extra time.\nWould you like to continue reading this file?",
+	"MESSAGE.LARGE_LOG_WARNING.TITLE": "PARSING LARGE LOG FILE!",
+
 	"MESSAGE.COPY_TO_CLIPBOARD": "Copied to clipboard!\n\nYou can now paste the code in game.",
 	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "Copied",
 

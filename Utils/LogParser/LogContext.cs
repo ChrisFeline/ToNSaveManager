@@ -124,6 +124,10 @@ namespace ToNSaveManager.Utils.LogParser {
 
         }
 
+        public virtual bool Validate(long position, FileInfo fileInfo) {
+            return true;
+        }
+
         /// <summary>
         /// Get's a list of players in this room as a string.
         /// </summary>
