@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using ToNSaveManager.Models;
 using ICSharpCode.SharpZipLib.Zip;
+using ToNSaveManager.Localization;
 
 namespace ToNSaveManager {
     internal static class Updater {
@@ -46,19 +47,19 @@ namespace ToNSaveManager {
                 Console.WriteLine("Finishing update . . .");
                 File.Delete(TempFileLocation); // .zip file cleanup
 
-                Console.WriteLine("Update complete, restarting . . .");
+                Console.WriteLine("Update complete . . .");
 
                 Program.ReleaseMutex(); // Release mutex so downloaded app opens properly
 
-                MessageBox.Show("Successfully downloaded update v" + release.tag_name + "\nOpen the ToN Save Manager again to continue...", Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(LANG.S("MESSAGE.UPDATE_SUCCESS") ?? "Successfully downloaded update: {0}\nOpen 'ToNSaveManager' again to continue...", release.tag_name),
+                    Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Application.Exit();
                 return;
             } catch (Exception ex) {
                 Logger.Error("Automatic update failed.");
                 Logger.Error(ex);
 
-
-                MessageBox.Show("Automatic update has failed. Try using the file 'update.bat' instead.\nPlease report this error to on the GitHub page.\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show((LANG.S("MESSAGE.UPDATE_FAILED") ?? "Automatic update has failed. Try using the file 'update.bat' instead.\nPlease report this error to on the GitHub page.") + "\n\n" + ex, "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (File.Exists(Program.ProgramLocationTemporary)) {
@@ -108,8 +109,7 @@ namespace ToNSaveManager {
                     File.Delete(Program.ProgramLocationTemporary);
                 }
 
-                Logger.Info("Post-update success.");
-                // MessageBox.Show("Successfully updated to version " + Program.GetVersion(), Program.ProgramName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Logger.Info("Post-update success. I always knew.");
             } catch (Exception ex) {
                 Logger.Error("Failed to run post-update.");
                 Logger.Error(ex);

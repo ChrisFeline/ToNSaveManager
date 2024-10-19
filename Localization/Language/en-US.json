@@ -18,6 +18,8 @@
 	"MESSAGE.UPDATE_AVAILABLE.TITLE": "New update available",
 	"MESSAGE.UPDATE_UNAVAILABLE": "No updates are currently available.",
 	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "No updates available",
+	"MESSAGE.UPDATE_SUCCESS": "Successfully downloaded update: {0}\nOpen 'ToNSaveManager' again to continue...",
+	"MESSAGE.UPDATE_FAILED": "Automatic update has failed. Try using the file 'update.bat' instead.\nPlease report this error on the GitHub page.",
 
 	"MESSAGE.COPY_TO_CLIPBOARD": "Copied to clipboard!\n\nYou can now paste the code in game.",
 	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "Copied",
