@@ -70,7 +70,8 @@ namespace ToNSaveManager {
         const string LEGACY_POST_UPDATE_ARG = "--post-update";
         internal static void CheckPostUpdate(string[] args) {
             bool updateLegacy = Program.ContainsArg(LEGACY_POST_UPDATE_ARG);
-            if (!updateLegacy && !File.Exists(POST_UPDATE_FILE)) return;
+            bool isPostUpdate = File.Exists(POST_UPDATE_FILE) || Program.ContainsArg("--clean-update");
+            if (!updateLegacy && !isPostUpdate) return;
             Logger.Info("Running post-update cleanup.");
 
             try {
@@ -107,6 +108,11 @@ namespace ToNSaveManager {
                 if (File.Exists(Program.ProgramLocationTemporary)) {
                     Logger.Info("Deleting old program files.");
                     File.Delete(Program.ProgramLocationTemporary);
+                }
+
+                if (File.Exists(Program.ProgramLocationTemporaryLegacy)) {
+                    Logger.Info("Deleting old program files again.");
+                    File.Delete(Program.ProgramLocationTemporaryLegacy);
                 }
 
                 Logger.Info("Post-update success. I always knew.");
