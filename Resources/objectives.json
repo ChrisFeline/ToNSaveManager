@@ -58,6 +58,30 @@
     "DisplayColor": "255, 94, 93"
   },
   {
+    "Name": "Thorn Glognut",
+    "Description": "Survive Glaggle Gang.",
+    "Reference": "https://terror.moe/items/thorn_glognut",
+    "DisplayColor": "255, 255, 136"
+  },
+  {
+    "Name": "Jailbird",
+    "Description": "Survive every classic terror at least once.",
+    "Reference": "https://terror.moe/items/jailbird",
+    "DisplayColor": "228, 255, 255"
+  },
+  {
+    "Name": "Joyous Orb",
+    "Description": "Survive JOY.",
+    "Reference": "https://terror.moe/items/joyous_orb",
+    "DisplayColor": "255, 255, 136"
+  },
+  {
+    "Name": "Have Plush",
+    "Description": "Survive The Observation.",
+    "Reference": "https://terror.moe/items/have_plush",
+    "DisplayColor": "48, 255, 55"
+  },
+  {
     "Name": "Item Skin Unlocks",
     "IsSeparator": true
   },
@@ -66,6 +90,12 @@
     "Description": "Survive Virus with Medkit.",
     "Reference": "https://terror.moe/items/medkit",
     "DisplayColor": "255, 48, 42"
+  },
+  {
+    "Name": "Portable Slots",
+    "Description": "Survive Unbound with Have's Mysterious Brew.",
+    "Reference": "https://terror.moe/items/portable_slot",
+    "DisplayColor": "231, 107, 82"
   },
   {
     "Name": "Psycho Coil",
@@ -92,10 +122,28 @@
     "DisplayColor": "186, 255, 219"
   },
   {
+    "Name": "Soul Visitor",
+    "Description": "Survive an Unbound round with Teleporter.",
+    "Reference": "https://terror.moe/items/soul_visitor",
+    "DisplayColor": "253, 165, 97"
+  },
+  {
     "Name": "Bloody Coil",
     "Description": "Survive a Bloodbath round with Speed Coil.",
     "Reference": "https://terror.moe/items/speed_coil",
     "DisplayColor": "255, 77, 71"
+  },
+  {
+    "Name": "Deflect Coil",
+    "Description": "Survive an Alternate round with Regen Coil.",
+    "Reference": "https://terror.moe/items/deflect_coil",
+    "DisplayColor": "226, 77, 71"
+  },
+  {
+    "Name": "Root Coil",
+    "Description": "Touch grass.",
+    "Reference": "https://terror.moe/items/root_coil",
+    "DisplayColor": "35, 149, 0"
   },
   {
     "Name": "Bloody Bat",
@@ -122,16 +170,74 @@
     "DisplayColor": "127, 242, 243"
   },
   {
+    "Name": "Ghost Bat",
+    "Description": "Survive a Ghost round with Metal Bat.",
+    "Reference": "https://terror.moe/items/ghost_bat",
+    "DisplayColor": "128, 128, 128"
+  },
+  {
+    "Name": "Bloody Charm",
+    "Description": "Survive a Bloodbath round with Silver Kat Charm.",
+    "Reference": "https://terror.moe/items/bloodstained_charm",
+    "DisplayColor": "255, 21, 28"
+  },
+  {
+    "Name": "Luna Charm",
+    "Description": "Survive Kimera.",
+    "Reference": "https://terror.moe/items/luna_charm",
+    "DisplayColor": "136, 21, 98"
+  },
+  {
     "Name": "Twilight Coil",
     "Description": "Survive Apocalypse Bird with Chaos Coil.",
     "Reference": "https://terror.moe/items/chaos_coil",
     "DisplayColor": "255, 232, 158"
   },
   {
+    "Name": "Destroyer Coil",
+    "Description": "Survive a Midnight round with Corkscrew Coil.",
+    "Reference": "https://terror.moe/items/destroyer_coil",
+    "DisplayColor": "255, 94, 82"
+  },
+  {
+    "Name": "Bloody Revolver",
+    "Description": "Survive a Bloodbath round with Antique Revolver.",
+    "Reference": "https://terror.moe/items/bloody_revolver",
+    "DisplayColor": "89, 1, 1"
+  },
+  {
     "Name": "Pale Pistol",
     "Description": "Survive an Alternate round with Antique Revolver.",
     "Reference": "https://terror.moe/items/antique_revolver",
     "DisplayColor": "158, 254, 255"
+  },
+  {
+    "Name": "Haunted Hamburger",
+    "Description": "Survive a Ghost round with Hamburger.",
+    "Reference": "https://terror.moe/items/haunted_hamburger",
+    "DisplayColor": "128, 128, 128"
+  },
+  {
+    "Name": "Claw Machine Unlocks",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Nora Plush",
+    "Description": "Requires: Beyond Plush.",
+    "Reference": "https://terror.moe/items/nora_plush",
+    "DisplayColor": "210, 137, 207"
+  },
+  {
+    "Name": "Roblander Plush",
+    "Description": "Requires: Darkgrey Plush.",
+    "Reference": "https://terror.moe/items/roblander_plush",
+    "DisplayColor": "115, 112, 95"
+  },
+  {
+    "Name": "Observation Plush",
+    "Description": "Requires: Have Plush.",
+    "Reference": "https://terror.moe/items/observation_plush",
+    "DisplayColor": "248, 16, 18"
   },
   {
     "Name": "Winterfest Unlocks",

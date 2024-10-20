@@ -18,17 +18,16 @@ namespace ToNSaveManager
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
         internal static readonly string ProgramLocation = Path.Combine(ProgramDirectory, ProgramFile);
-        internal static readonly string ProgramLocationTemporary = Path.Combine(ProgramDirectory, "__" + ProgramFile);
+        internal static readonly string ProgramLocationTemporary = Path.Combine(ProgramDirectory, "_" + ProgramFile.ToLowerInvariant() + ".old");
+        internal static readonly string ProgramLocationTemporaryLegacy = Path.Combine(ProgramDirectory, "__" + ProgramFile);
         internal const string ProgramFile = ProgramName + ".exe";
 
         internal static readonly string DataLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProgramName);
         internal static readonly string LegacyDataLocation = Path.Combine(LogWatcher<ToNLogContext>.GetVRChatDataLocation(), ProgramName);
 
         internal static Mutex? AppMutex = new Mutex(true, ProgramName);
-        internal static void ReleaseMutex()
-        {
-            if (AppMutex != null)
-            {
+        internal static void ReleaseMutex() {
+            if (AppMutex != null) {
                 AppMutex.ReleaseMutex();
                 AppMutex.Dispose();
                 AppMutex = null;

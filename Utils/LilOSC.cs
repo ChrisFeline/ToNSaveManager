@@ -45,13 +45,14 @@ namespace ToNSaveManager.Utils
         const string ParamDeath = "ToN_DeathID";
         const string ParamPages = "ToN_Pages";
         const string ParamItemStatus = "ToN_ItemStatus";
+        const string ParamMaster = "ToN_MasterChange";
 
         static readonly string[] ParamAll = [
             ParamRoundType, ParamTerror1, ParamTerror2, ParamTerror3, ParamTPhase1, ParamTPhase2, ParamTPhase3,
             ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
             ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV, ParamTerrorColorL,
             ParamTerrorColorR, ParamTerrorColorG, ParamTerrorColorB,
-            ParamAlive, ParamReborn, ParamDamaged, ParamDeath, ParamPages, ParamItemStatus
+            ParamAlive, ParamReborn, ParamDamaged, ParamMaster, ParamDeath, ParamPages, ParamItemStatus
         ];
         const string ParameterFileName = "osc_parameters.txt";
         internal static void Initialize() {
@@ -186,6 +187,36 @@ namespace ToNSaveManager.Utils
         }
         #endregion
 
+        #region Host Change
+        private static Timer? HostTimer;
+        private static bool LastHost = false;
+        internal static void SendHostChange() {
+            if (LastHost || !MainWindow.Started || !Settings.Get.OSCMasterChange || !Settings.Get.OSCEnabled) return;
+
+            if (HostTimer == null) {
+                HostTimer = new Timer();
+                HostTimer.Tick += HostTimer_Tick;
+                HostTimer.Interval = Settings.Get.OSCMasterChangeInterval;
+            }
+
+            LastHost = true;
+            SendParam(ParamMaster, LastHost);
+
+            HostTimer.Stop();
+            if (Settings.Get.OSCMasterChangeInterval > 0) {
+                HostTimer.Interval = Settings.Get.OSCMasterChangeInterval;
+                HostTimer.Start();
+            } else LastHost = false;
+        }
+
+        private static void HostTimer_Tick(object? sender, EventArgs e) {
+            HostTimer?.Stop();
+
+            LastHost = false;
+            SendParam(ParamMaster, LastHost);
+        }
+        #endregion
+
         private static Timer? DamageTimer;
         private static int LastDamage = 0;
         internal static void SetDamage(int damage) {
@@ -198,11 +229,16 @@ namespace ToNSaveManager.Utils
             }
 
             if (LastDamage != damage) {
-                DamageTimer.Stop();
-                DamageTimer.Start();
-
                 LastDamage = damage;
                 SendParam(ParamDamaged, damage); // change param to a const
+
+                DamageTimer.Stop();
+                if (Settings.Get.OSCDamagedInterval > 0) {
+                    DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
+                    DamageTimer.Start();
+                } else {
+                    LastDamage = 0;
+                }
             }
         }
 

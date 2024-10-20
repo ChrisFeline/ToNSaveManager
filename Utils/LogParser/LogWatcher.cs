@@ -112,7 +112,11 @@
                         continue;
                     }
 
-                    ParseLog(fileInfo, logContext, sender == null);
+                    if (firstRun && logContext.Authenticated && !logContext.Validate(logContext.Position, fileInfo)) {
+                        logContext.RoomReadPos = logContext.Position = fileInfo.Length;
+                    } else {
+                        ParseLog(fileInfo, logContext, sender == null);
+                    }
 
                     if (!logContext.Initialized)
                     {
