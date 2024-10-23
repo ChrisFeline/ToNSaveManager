@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.API;
@@ -162,6 +163,35 @@ namespace ToNSaveManager.Utils.LogParser
         public void SetRoundResult(ToNRoundResult result) {
             Result = result;
         }
+
+        #region File Size Warnings
+        const long PLEASE_DONT_SLEEP_ON_VRCHAT = 200_000_000;
+        private static readonly string[] Units = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+
+        public override bool Validate(long position, FileInfo fileInfo) {
+            long remainingSize = fileInfo.Length - position;
+            if (remainingSize > PLEASE_DONT_SLEEP_ON_VRCHAT) {
+                DialogResult result = MessageBox.Show(
+                    string.Format(LANG.S("MESSAGE.LARGE_LOG_WARNING") ?? "You are about to parse a very large VRChat log file!\nFile Name: {0}\nFile Size: {1}\n\nParsing this log file will take some extra time.\nWould you like to continue reading this file?", fileInfo.Name, GetReadableFileSize(fileInfo.Length)),
+                    LANG.S("MESSAGE.LARGE_LOG_WARNING.TITLE") ?? "Parsing large log file!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                return result == DialogResult.Yes || result != DialogResult.No;
+            }
+
+            return true;
+        }
+
+        private static string GetReadableFileSize(long size)
+        {
+            int unitIndex = 0;
+            while (size >= 1024) {
+                size /= 1024;
+                ++unitIndex;
+            }
+
+            string unit = Units[unitIndex];
+            return string.Format("{0:0.#} {1}", size, unit);
+        }
+        #endregion
 
         #region Pickup Parsing
         private string? LastItemKey;

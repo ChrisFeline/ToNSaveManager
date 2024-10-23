@@ -89,9 +89,10 @@
 | ID | Item |
 | - | - |
 | `71` | Wave Coil
-| `72` | Shape
+| `72` | Shape & ???
 | `73` | Overseer Plush
 | `74` | Darkheart
 | `75` | Knife (SABOTAGE)
-| `76` | + Mara
-| `77` | + Wispy WISPYYY!!!
+| `76` | [Carrot (Mara)](https://terror.moe/items/carrot)
+| `77` | [Wispy WISPYYY!!!](https://terror.moe/items/wispy_plush)
+| `79` | [Judia (Nicomal)](https://terror.moe/items/judia) & [Memoria (バ亀⁄bakame)](https://terror.moe/items/memoria)

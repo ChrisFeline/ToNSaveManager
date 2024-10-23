@@ -630,6 +630,10 @@ namespace ToNSaveManager
         private void LogWatcher_OnLine(object? sender, OnLineArgs e) {
             DateTime timestamp = e.Timestamp;
             ToNLogContext context = e.Context;
+#if !DEBUG
+            if (!context.IsHomeWorld) return; // Don't read logs not from ToN.
+#endif
+
             string line = e.Content.Substring(34);
 
             if (HandleSaveCode(line, timestamp, context) ||
@@ -933,7 +937,7 @@ namespace ToNSaveManager
 
             return false;
         }
-        #endregion
+#endregion
 
         #region Data
         private Entry? RecentData;
