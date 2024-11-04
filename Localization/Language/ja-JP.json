@@ -18,6 +18,11 @@
 	"MESSAGE.UPDATE_AVAILABLE.TITLE": "新しいアップデートが利用可能",
 	"MESSAGE.UPDATE_UNAVAILABLE": "現在アップデートはありません。\n\n最新バージョンを使用中です。",
 	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "アップデートはありません",
+	"MESSAGE.UPDATE_SUCCESS": "アップデートのダウンロードに成功しました: {0}\n続行するには'ToNSaveManager'をもう一度開いてください...",
+	"MESSAGE.UPDATE_FAILED": "自動更新に失敗しました。代わりに'update.bat'ファイルを使用してみてください。\nこのエラーをGitHubで報告してください。",
+
+	"MESSAGE.LARGE_LOG_WARNING": "非常に大きなVRChatログファイルを解析しようとしています！\nファイル名: {0}\nファイルサイズ: {1}\n\nこのログファイルの解析には少し時間がかかります。\n読み取りを続行しますか？",
+	"MESSAGE.LARGE_LOG_WARNING.TITLE": "巨大なログファイルの解析",
 
 	"MESSAGE.COPY_TO_CLIPBOARD": "クリップボードにコピーしました！\n\nセーブコードをゲーム内で貼り付けられます。",
 	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "コピー完了",
@@ -179,7 +184,7 @@
 	"SETTINGS.ROUNDINFOTOFILE_NOKEYS.MESSAGE": "このテンプレートには統計キーが含まれていません。\n\n統計ウィンドウを開き、コピーしたい統計を右クリックしてください。",
 
 	"SETTINGS.GROUP.OSC": "OSC",
-	"SETTINGS.OSCENABLED": "OSCパラメーターを送信",
+	"SETTINGS.OSCENABLED": "OSCパラメータを送信",
 	"SETTINGS.OSCENABLED.TT": "OSCを使用してVRChatにアバターパラメータを送信します。\nこのエントリを右クリックすると、パラメータ名と型に関するドキュメントが開きます。",
 	"SETTINGS.OSCSENDCHATBOX": "チャットボックスメッセージを送信",
 	"SETTINGS.OSCSENDCHATBOX.TT": "ToNの情報をVRChatのチャットボックスに送信します。\nメッセージテンプレートをカスタマイズできます。",
@@ -206,6 +211,11 @@
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN": "(クールダウン)",
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TT": "複数のプレイヤーが連続して死亡した場合に、このパラメータのID値を設定するまでの待機時間（ミリ秒）を設定します。",
 	"SETTINGS.OSCDEATHEVENT_COOLDOWN.TITLE": "クールダウンタイムを設定",
+	"SETTINGS.OSCMASTERCHANGE": "マスター変更を送信",
+	"SETTINGS.OSCMASTERCHANGE.TT": "インスタンスマスター変更時に'ToN_MasterChange'パラメータに'TRUE'を送信します。",
+	"SETTINGS.OSCMASTERCHANGE_EDIT": "(インターバルを設定)",
+	"SETTINGS.OSCMASTERCHANGE_EDIT.TT": "値を'FALSE'に戻すまでの待機時間（ミリ秒単位）を設定します。",
+	"SETTINGS.OSCMASTERCHANGE.TITLE": "マスターインターバルを設定",
 
 	"SETTINGS.GROUP.NOTIFICATIONS": "通知",
 
@@ -276,7 +286,7 @@
 	"OBJECTIVES.BLOODY_TELEPORTER.TT": "テレポーターを持ちながらブラッドバスを生存。",
 	"OBJECTIVES.PALE_SUITCASE": "蒼白のテレポーター",
 	"OBJECTIVES.PALE_SUITCASE.TT": "テレポーターを持ちながらオルタネイトを生存。",
-	"OBJECTIVES.THORN_HACKER": "ソルスティステレポーター",
+	"OBJECTIVES.THORN_HACKER": "ソーンハッカー",
 	"OBJECTIVES.THORN_HACKER.TT": "テレポーターを持ちながらPandoraを生存。",
 	"OBJECTIVES.BLOODY_COIL": "血濡れコイル",
 	"OBJECTIVES.BLOODY_COIL.TT": "スピードコイルを持ちながらブラッドバスを生存。",
