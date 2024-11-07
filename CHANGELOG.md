@@ -1,5 +1,3 @@
 ﻿# Latest Changelog
 
-- Fixed 'Distorted Yan' appearing as ???????????
-- Updated Japanese localization (by @nomlasvrc)
-- Updated Simplifed Chinese localization (by @Fallen-ice)
+- Date list now sorts using Universal Time. This prevents unwanted behaviour when 'Daylight Saving' event occurs.

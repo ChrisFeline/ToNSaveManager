@@ -115,7 +115,7 @@ namespace ToNSaveManager.Models
                 if (a.IsCustom && !b.IsCustom) return i;
                 if (b.IsCustom && !a.IsCustom) continue;
 
-                if (b.Timestamp < a.Timestamp)
+                if (b.UniversalTime < a.UniversalTime)
                     return i;
             }
 

@@ -98,6 +98,8 @@ namespace ToNSaveManager.Models
         public string Guid = string.Empty;
         public string Name = string.Empty;
         public DateTime Timestamp = DateTime.MinValue;
+        [JsonIgnore]
+        public DateTime UniversalTime => Timestamp.ToUniversalTime();
         public bool IsCustom = false;
 
         public string? DisplayName = string.Empty;
@@ -211,7 +213,7 @@ namespace ToNSaveManager.Models
 
             if (!IsCustom && other.IsCustom) return -1;
             if (IsCustom && !other.IsCustom) return 1;
-            return Timestamp.CompareTo(other.Timestamp);
+            return UniversalTime.CompareTo(other.UniversalTime);
         }
     }
 }
