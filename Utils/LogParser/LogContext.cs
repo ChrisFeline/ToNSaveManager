@@ -32,7 +32,7 @@ namespace ToNSaveManager.Utils.LogParser {
         public bool IsHomeWorld { get; private set; }
 
         public DateTime RoomDate { get; private set; }
-        public readonly HashSet<string> Players = new HashSet<string>();
+        public readonly HashSet<LogPlayer> Players = new HashSet<LogPlayer>();
 
         /*
         // Hold temporal data in this log instance
@@ -78,17 +78,17 @@ namespace ToNSaveManager.Utils.LogParser {
         /// <summary>
         /// Called when a player joins the room.
         /// </summary>
-        public virtual void Join(string displayName) {
-            if (!Players.Contains(displayName))
-                Players.Add(displayName);
+        public virtual void Join(LogPlayer player) {
+            if (!Players.Contains(player))
+                Players.Add(player);
         }
 
         /// <summary>
         /// Called when a player leaves the room.
         /// </summary>
-        public virtual void Leave(string displayName) {
-            if (Players.Contains(displayName))
-                Players.Remove(displayName);
+        public virtual void Leave(LogPlayer player) {
+            if (Players.Contains(player))
+                Players.Remove(player);
         }
 
         /// <summary>

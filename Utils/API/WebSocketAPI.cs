@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Jint.Native;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -245,6 +246,26 @@ namespace ToNSaveManager.Utils.API {
                     Command = (byte)(item.IsEmpty ? 0 : 1)
                 };
                 QueueEvent(eventItem);
+            }
+        }
+
+        public struct EventPlayerJoin : IEvent {
+            const string EVENT_PLAYER_JOIN = "PLAYER_JOIN";
+            const string EVENT_PLAYER_LEAVE = "PLAYER_LEAVE";
+
+            public string Type { get; private set; }
+            [JsonIgnore] public byte Command { get; set; }
+
+            public string Value { get; set; }
+            public string ID { get; set; }
+
+            internal static void Send(LogPlayer player, bool joined) {
+                EventPlayerJoin eventPlayer = new EventPlayerJoin() {
+                    Type = joined ? EVENT_PLAYER_JOIN : EVENT_PLAYER_LEAVE,
+                    Value = player.Name,
+                    ID = player.GUID
+                };
+                QueueEvent(eventPlayer);
             }
         }
         #endregion

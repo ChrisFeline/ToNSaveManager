@@ -120,6 +120,7 @@ The event data will be sent as a json object string.
 // Sent when a player joins the instance.
 "TYPE": "PLAYER_JOIN",
 "Value": "Kittenji" // The name of the player that joined.
+"ID": "usr_7ac745b8-e50e-4c9c-95e5-8e7e3bcde682" // The GUID of the player that joined.
 ```
 
 ```json
