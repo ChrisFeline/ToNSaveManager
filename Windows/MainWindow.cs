@@ -902,6 +902,7 @@ namespace ToNSaveManager
                 if (Settings.Get.OSCEnabled) {
                     if (Settings.Get.OSCMasterChange && line.StartsWith(EVENT_MASTER_CHANGE)) {
                         LilOSC.SendHostChange();
+                        WebSocketAPI.SendValue<object?>("MASTER_CHANGE", null, false);
                         return true;
                     }
 

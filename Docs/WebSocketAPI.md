@@ -135,3 +135,10 @@ The event data will be sent as a json object string.
 "TYPE": "SAVED",
 "Value": "GENERATED_SAVE_CODE_VALUE"
 ```
+
+```json
+// Sent when the lobby Master has changed.
+// This event is not buffered and will not be included in the CONNECTED event.
+"TYPE": "MASTER_CHANGE"
+"Value": null // Value is a placeholder
+```
