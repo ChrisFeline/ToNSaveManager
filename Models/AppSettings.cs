@@ -151,7 +151,7 @@ namespace ToNSaveManager.Models
         /// Sends damage as an INT via OSC
         /// </summary>
         public bool OSCDamagedEvent { get; set; }
-        public RoundInfoTemplate OSCDamageTemplate { get; set; } = new RoundInfoTemplate("Damage * 2");
+        public RoundInfoTemplate OSCDamageTemplate { get; set; } = new RoundInfoTemplate("Damage");
         public RoundInfoTemplate OSCDamageIntervalTemplate { get; set; } = new RoundInfoTemplate("1000");
 
 
