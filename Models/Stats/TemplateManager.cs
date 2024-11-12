@@ -10,9 +10,15 @@ namespace ToNSaveManager.Models.Stats {
         internal static string ReplaceTemplate(string template) {
             return MessageEvalPattern.Replace(MessageTemplatePattern.Replace(template, UpdateChatboxEvaluator), JSEvaluator);
         }
+        internal static string? EvaluateTemplate(string template) {
+            return JSEvaluator(MessageTemplatePattern.Replace(template, GetMatchKey));
+        }
 
+        static string GetMatchKey(Match m) {
+            return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+        }
         static string UpdateChatboxEvaluator(Match m) {
-            string key = m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+            string key = GetMatchKey(m);
 
             if (!string.IsNullOrEmpty(key)) return ToNStats.Get(key)?.ToString() ?? m.Value;
 
@@ -20,12 +26,14 @@ namespace ToNSaveManager.Models.Stats {
         }
 
         static string JSEvaluator(Match m) {
-            string content = m.Groups[1].Value;
+            return JSEvaluator(m.Groups[1].Value) ?? "<js>ERROR</js>";
+        }
 
+        static string? JSEvaluator(string content) {
             try {
                 return ToNStats.JSEngine.Evaluate(content).ToString();
             } catch (Exception) {
-                return "<js>ERROR</js>";
+                return null;
             }
         }
     }

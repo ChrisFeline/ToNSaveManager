@@ -7,6 +7,9 @@ using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.API;
+using ToNSaveManager.Models.Stats;
+using Jint.Native;
+using Jint;
 
 namespace ToNSaveManager.Utils
 {
@@ -230,7 +233,7 @@ namespace ToNSaveManager.Utils
 
             if (LastDamage != damage) {
                 LastDamage = damage;
-                SendParam(ParamDamaged, damage); // change param to a const
+                SendParam(ParamDamaged, EvaluateDamage(damage)); // change param to a const
 
                 DamageTimer.Stop();
                 if (Settings.Get.OSCDamagedInterval > 0) {
@@ -240,6 +243,23 @@ namespace ToNSaveManager.Utils
                     LastDamage = 0;
                 }
             }
+        }
+
+        const string EVAL_DAMAGE_KEY = "Damage";
+        static float EvaluateDamage(int damage) {
+            Logger.Debug("Incoming Damage: " + damage);
+
+            ToNStats.JSEngine.SetValue(EVAL_DAMAGE_KEY, damage);
+            Logger.Debug("Evaluating: " + Settings.Get.OSCDamageTemplate.Template);
+            string evaluated = Settings.Get.OSCDamageTemplate.GetString(true);
+
+            float result;
+            if (!float.TryParse(evaluated, out result)) {
+                Logger.Debug("Could not evaluate: " + evaluated);
+                result = damage;
+            }
+
+            return result;
         }
 
         private static void DamageTimer_Tick(object? sender, EventArgs e) {

@@ -73,7 +73,10 @@ namespace ToNSaveManager.Models.Stats {
             Logger.Debug($"Write File ({FileName}): {content}");
         }
 
-        public string GetString() {
+        public string GetString(bool jsOnly = false) {
+            if (jsOnly) {
+                return TemplateManager.EvaluateTemplate(Template) ?? string.Empty;
+            }
             return TemplateManager.ReplaceTemplate(Template);
         }
     }
