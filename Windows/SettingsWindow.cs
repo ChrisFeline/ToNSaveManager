@@ -92,6 +92,7 @@ namespace ToNSaveManager.Windows
             // OSC LINKS
             LANG.C(linkEditChatbox, "SETTINGS.OSCSENDCHATBOX_EDIT", toolTip);
             LANG.C(linkSetDamageInterval, "SETTINGS.OSCDAMAGEDEVENT_EDIT", toolTip);
+            LANG.C(linkSetDamageOutput, "SETTINGS.OSCDAMAGEDEVENT_OUTPUT", toolTip);
             LANG.C(linkSetMasterInterval, "SETTINGS.OSCMASTERCHANGE_EDIT", toolTip);
             LANG.C(linkEditDeathID, "SETTINGS.OSCDEATHEVENT_EDIT", toolTip);
             LANG.C(linkSetDeathDecay, "SETTINGS.OSCDEATHEVENT_DECAY", toolTip);
@@ -649,13 +650,24 @@ namespace ToNSaveManager.Windows
         }
 
         private void linkSetDamageInterval_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            int original = Settings.Get.OSCDamagedInterval;
-            string value = original.ToString();
-            EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDAMAGEDEVENT.TITLE") ?? "Set Damage Interval", this);
+            if (sender == linkSetDamageOutput) {
+                string value = Settings.Get.OSCDamageTemplate.Template;
+                EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDAMAGEDEVENT_OUTPUT.TITLE") ?? "Set Output Code", this, true, insertKeyTemplate: true);
 
-            if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
-                Settings.Get.OSCDamagedInterval = result;
-                Settings.Export();
+                if (show.Accept) {
+                    Settings.Get.OSCDamageTemplate.Template = string.IsNullOrEmpty(show.Text) ? Settings.Default.OSCDamageTemplate.Template : show.Text.Trim();
+                    Settings.Export();
+                }
+            }
+
+            if (sender == linkSetDamageInterval) {
+                string value = Settings.Get.OSCDamageIntervalTemplate.Template;
+                EditResult show = EditWindow.Show(value, LANG.S("SETTINGS.OSCDAMAGEDEVENT.TITLE") ?? "Set Damage Interval", this, true, insertKeyTemplate: true);
+
+                if (show.Accept) {
+                    Settings.Get.OSCDamageIntervalTemplate.Template = string.IsNullOrEmpty(show.Text) ? Settings.Default.OSCDamageIntervalTemplate.Template : show.Text.Trim();
+                    Settings.Export();
+                }
             }
         }
 

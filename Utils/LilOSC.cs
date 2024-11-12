@@ -228,7 +228,6 @@ namespace ToNSaveManager.Utils
             if (DamageTimer == null) {
                 DamageTimer = new Timer();
                 DamageTimer.Tick += DamageTimer_Tick;
-                DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
             }
 
             if (LastDamage != damage) {
@@ -236,12 +235,8 @@ namespace ToNSaveManager.Utils
                 SendParam(ParamDamaged, EvaluateDamage(damage)); // change param to a const
 
                 DamageTimer.Stop();
-                if (Settings.Get.OSCDamagedInterval > 0) {
-                    DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
-                    DamageTimer.Start();
-                } else {
-                    LastDamage = 0;
-                }
+                DamageTimer.Interval = EvaluateInterval();
+                DamageTimer.Start();
             }
         }
 
@@ -250,16 +245,30 @@ namespace ToNSaveManager.Utils
             Logger.Debug("Incoming Damage: " + damage);
 
             ToNStats.JSEngine.SetValue(EVAL_DAMAGE_KEY, damage);
-            Logger.Debug("Evaluating: " + Settings.Get.OSCDamageTemplate.Template);
+            Logger.Debug("Evaluating Damage: " + Settings.Get.OSCDamageTemplate.Template);
             string evaluated = Settings.Get.OSCDamageTemplate.GetString(true);
 
             float result;
             if (!float.TryParse(evaluated, out result)) {
-                Logger.Debug("Could not evaluate: " + evaluated);
+                Logger.Debug("Could not evaluate damage: " + evaluated);
                 result = damage;
             }
 
             return result;
+        }
+        static int EvaluateInterval() {
+            Logger.Debug("Evaluating Interval: " + Settings.Get.OSCDamageIntervalTemplate.Template);
+            string evaluated = Settings.Get.OSCDamageIntervalTemplate.GetString(true);
+
+            float result;
+            if (!float.TryParse(evaluated, out result)) {
+                Logger.Debug("Could not evaluate interval: " + evaluated);
+                result = 1000;
+            } else {
+                Logger.Debug("Result Interval: " + result);
+            }
+
+            return Math.Max(10, (int)result);
         }
 
         private static void DamageTimer_Tick(object? sender, EventArgs e) {

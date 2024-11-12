@@ -15,10 +15,10 @@ namespace ToNSaveManager.Models.Stats {
         }
 
         static string GetMatchKey(Match m) {
-            return m.Value.Substring(1, m.Length - 2).ToUpperInvariant();
+            return m.Value.Substring(1, m.Length - 2);
         }
         static string UpdateChatboxEvaluator(Match m) {
-            string key = GetMatchKey(m);
+            string key = GetMatchKey(m).ToUpperInvariant();
 
             if (!string.IsNullOrEmpty(key)) return ToNStats.Get(key)?.ToString() ?? m.Value;
 

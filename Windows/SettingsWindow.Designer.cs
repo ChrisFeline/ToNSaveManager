@@ -102,6 +102,7 @@
             labelOSCFormat = new Label();
             flowLayoutPanel3 = new FlowLayoutPanel();
             checkOSCSendDamage = new CheckBox();
+            linkSetDamageOutput = new LinkLabel();
             linkSetDamageInterval = new LinkLabel();
             flowLayoutPanel9 = new FlowLayoutPanel();
             checkOSCDeathEvent = new CheckBox();
@@ -1151,11 +1152,12 @@
             flowLayoutPanel3.AutoSize = true;
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(checkOSCSendDamage);
+            flowLayoutPanel3.Controls.Add(linkSetDamageOutput);
             flowLayoutPanel3.Controls.Add(linkSetDamageInterval);
             flowLayoutPanel3.Location = new Point(3, 661);
             flowLayoutPanel3.Margin = new Padding(3, 1, 3, 1);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Size = new Size(286, 19);
+            flowLayoutPanel3.Size = new Size(361, 19);
             flowLayoutPanel3.TabIndex = 18;
             flowLayoutPanel3.WrapContents = false;
             // 
@@ -1173,13 +1175,31 @@
             checkOSCSendDamage.Text = "Send Damage Event (INT)";
             checkOSCSendDamage.UseVisualStyleBackColor = true;
             // 
+            // linkSetDamageOutput
+            // 
+            linkSetDamageOutput.ActiveLinkColor = Color.White;
+            linkSetDamageOutput.AutoSize = true;
+            linkSetDamageOutput.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkSetDamageOutput.LinkColor = Color.Gray;
+            linkSetDamageOutput.Location = new Point(213, 0);
+            linkSetDamageOutput.Margin = new Padding(0);
+            linkSetDamageOutput.Name = "linkSetDamageOutput";
+            linkSetDamageOutput.Padding = new Padding(0, 0, 3, 0);
+            linkSetDamageOutput.Size = new Size(75, 15);
+            linkSetDamageOutput.TabIndex = 13;
+            linkSetDamageOutput.TabStop = true;
+            linkSetDamageOutput.Text = "(Set Output)";
+            linkSetDamageOutput.TextAlign = ContentAlignment.MiddleLeft;
+            linkSetDamageOutput.VisitedLinkColor = Color.Gray;
+            linkSetDamageOutput.LinkClicked += linkSetDamageInterval_LinkClicked;
+            // 
             // linkSetDamageInterval
             // 
             linkSetDamageInterval.ActiveLinkColor = Color.White;
             linkSetDamageInterval.AutoSize = true;
             linkSetDamageInterval.LinkBehavior = LinkBehavior.HoverUnderline;
             linkSetDamageInterval.LinkColor = Color.Gray;
-            linkSetDamageInterval.Location = new Point(213, 0);
+            linkSetDamageInterval.Location = new Point(288, 0);
             linkSetDamageInterval.Margin = new Padding(0);
             linkSetDamageInterval.Name = "linkSetDamageInterval";
             linkSetDamageInterval.Size = new Size(73, 15);
@@ -1574,5 +1594,6 @@
         private FlowLayoutPanel flowLayoutPanel10;
         private CheckBox checkOSCMasterChange;
         private LinkLabel linkSetMasterInterval;
+        private LinkLabel linkSetDamageOutput;
     }
 }
