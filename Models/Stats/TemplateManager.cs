@@ -32,7 +32,8 @@ namespace ToNSaveManager.Models.Stats {
         static string? JSEvaluator(string content) {
             try {
                 return ToNStats.JSEngine.Evaluate(content).ToString();
-            } catch (Exception) {
+            } catch (Exception e) {
+                Logger.Error(e);
                 return null;
             }
         }

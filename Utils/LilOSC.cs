@@ -251,8 +251,8 @@ namespace ToNSaveManager.Utils
             string evaluated = Settings.Get.OSCDamageTemplate.GetString(true);
 
             float result;
-            if (!float.TryParse(evaluated, out result)) {
-                Logger.Debug("Could not evaluate damage: " + evaluated);
+            if (string.IsNullOrEmpty(evaluated) || !float.TryParse(evaluated, out result)) {
+                Logger.Error("Could not evaluate damage value: " + evaluated);
                 result = damage;
             }
 
@@ -263,9 +263,9 @@ namespace ToNSaveManager.Utils
             string evaluated = Settings.Get.OSCDamageIntervalTemplate.GetString(true);
 
             float result;
-            if (!float.TryParse(evaluated, out result)) {
-                Logger.Debug("Could not evaluate interval: " + evaluated);
-                result = 1000;
+            if (string.IsNullOrEmpty(evaluated) || !float.TryParse(evaluated, out result)) {
+                Logger.Error("Could not evaluate damage interval: " + evaluated);
+                result = 500;
             } else {
                 Logger.Debug("Result Interval: " + result);
             }
