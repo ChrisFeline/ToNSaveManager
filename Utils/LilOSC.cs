@@ -123,13 +123,15 @@ namespace ToNSaveManager.Utils
         static int ChatboxInterval;
         static int ChatboxCountdown;
 
-        internal static void SetChatboxMessage(string message, int interval = 5000) {
-            ChatboxInterval = Math.Max(interval, 3000);
-            if (message.Length > 144) message = message.Substring(0, 144);
-            ChatboxMessage = message;
+        internal static void SetChatboxMessage(string message, int interval = 5000, bool force = false) {
+            if (ToNLogContext.CanSendChatbox || force) {
+                ChatboxInterval = Math.Max(interval, 3000);
+                if (message.Length > 144) message = message.Substring(0, 144);
+                ChatboxMessage = message;
 
-            ChatboxCountdown = Math.Max(3000 - (ChatboxInterval - ChatboxCountdown), 0);
-            ChatboxClear = string.IsNullOrEmpty(message);
+                ChatboxCountdown = Math.Max(3000 - (ChatboxInterval - ChatboxCountdown), 0);
+                ChatboxClear = string.IsNullOrEmpty(message);
+            }
         }
 
 

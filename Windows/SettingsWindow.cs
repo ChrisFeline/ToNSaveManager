@@ -615,7 +615,7 @@ namespace ToNSaveManager.Windows
 
         private void checkSendChatbox_CheckedChanged(object? sender, EventArgs e) {
             if (checkSendChatbox.Checked) StatsWindow.UpdateChatboxContent();
-            else LilOSC.SetChatboxMessage(string.Empty);
+            else LilOSC.SetChatboxMessage(string.Empty, force: true);
         }
 
         private void linkEditChatbox_Click(object sender, LinkLabelLinkClickedEventArgs e) {
