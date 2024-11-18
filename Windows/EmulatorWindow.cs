@@ -376,8 +376,8 @@ namespace ToNSaveManager.Windows
                     if (Operation.RoundType == ToNRoundType.Eight_Pages) {
                         ToNGameState.SetPageCount(ToNGameState.PageCount + 1);
                         if (ToNGameState.PageCount == 1) OnRoundSetKillers(true);
-                        if (ToNGameState.PageCount == 8) buttonStepEndRound.PerformClick();
-                        buttonStepReveal.Text = "Find Page " + (ToNGameState.PageCount + 1);
+                        else if (ToNGameState.PageCount == 8) buttonStepReveal.Enabled = false;
+                        else buttonStepReveal.Text = "Find Page " + (ToNGameState.PageCount + 1);
                     } else {
                         buttonStepReveal.Enabled = false;
                         OnRoundSetKillers(true);
