@@ -69,6 +69,8 @@ namespace ToNSaveManager {
 
         const string LEGACY_POST_UPDATE_ARG = "--post-update";
         internal static void CheckPostUpdate(string[] args) {
+            Logger.Info("Checking post-update.");
+
             bool updateLegacy = Program.ContainsArg(LEGACY_POST_UPDATE_ARG);
             bool isPostUpdate = File.Exists(POST_UPDATE_FILE) || Program.ContainsArg("--clean-update");
             if (!updateLegacy && !isPostUpdate) return;

@@ -151,10 +151,9 @@ namespace ToNSaveManager.Models
         /// Sends damage as an INT via OSC
         /// </summary>
         public bool OSCDamagedEvent { get; set; }
-        /// <summary>
-        /// Interval between damage events.
-        /// </summary>
-        public int OSCDamagedInterval { get; set; } = 200;
+        public RoundInfoTemplate OSCDamageTemplate { get; set; } = new RoundInfoTemplate("Damage");
+        public RoundInfoTemplate OSCDamageIntervalTemplate { get; set; } = new RoundInfoTemplate("1000");
+
 
         /// <summary>
         /// Sends a death event for known users specified on a list.

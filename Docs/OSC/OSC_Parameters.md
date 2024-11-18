@@ -12,13 +12,26 @@ Parameter        | Type    | Description
 `ToN_IsAlive`    | `BOOL`  | Is the player alive or not. Should be `true` on Intermission.
 `ToN_Reborn`     | `BOOL`  | Set to `true` when the player gets reborn using Maxwell. Should reset back to `false` if you die again.
 `ToN_IsStarted`  | `BOOL`  | `True` if the round has started and ongoing.
-`ToN_Damaged`    | `INT`   | Set to `true` for a few frames when the player takes damage. The number represents the amount of damage taken on that hit. If the player dies this number will be `255`
 `ToN_Pages`      | `INT`   | The amount of pages collected on an **Eight Pages** round. This number can be a value from `0` to `8`
 `ToN_ItemStatus` | `BOOL`  | (Experimental) Determines the active status of items like the **Chaos Coil**, **Emerald Coil**, **Corkscrew** and **TBH**.
 `ToN_Saboteur`   | `BOOL`  | The player is the killer on a Sabotage round.
-`ToN_DeathID`    | `INT`   | You can use this parameter to track when your friends die in the game.
 `ToN_MasterChange` | `BOOL` | Set to `true` for a short period of time when the instance master has changed.
+`ToN_Damaged`    | `INT`<br>`FLOAT`   | Value set for a few frames when the player takes damage. The number represents the amount of damage taken on that hit. If the player dies the base damage number will be `255`
+`ToN_DeathID`    | `INT`   | You can use this parameter to track when your friends die in the game.
 
+### ToN_Damaged
+> You can customize the output value for the `ToN_Damaged` parameter using [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript).<br>
+> Just click on **Settings > Send Damage Event > (Set Output)** and here you can specify the code that will be evaluated before sending the damage value as a float.
+>
+> For example:
+> - Let's assume the incoming damage value in every example is `34`
+> - If the code is set to `Damage / 100` it will send `0.34` instead.
+> - Remember, this is JavaScript so you can use almost any native function:
+>	- `Math.random()` = `0.8461484`
+>	- `Math.pow(Damage / 100, 0.3)` = `0.72350856231`
+>	- `Math.min(Damage / 30, 0.9)` = `0.9`
+
+### ToN_DeathID
 > You need to specify a list of player names to use with the **ToN_DeathID** parameter.<br>
 > You can do so under Settings > Send Death ID > (Edit)<br>
 > Specify here a list of player names that you want to track. Each display name needs to be separated by a comma (,) to be identified as a different user.

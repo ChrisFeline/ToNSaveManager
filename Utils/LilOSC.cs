@@ -7,6 +7,9 @@ using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.API;
+using ToNSaveManager.Models.Stats;
+using Jint.Native;
+using Jint;
 
 namespace ToNSaveManager.Utils
 {
@@ -120,13 +123,15 @@ namespace ToNSaveManager.Utils
         static int ChatboxInterval;
         static int ChatboxCountdown;
 
-        internal static void SetChatboxMessage(string message, int interval = 5000) {
-            ChatboxInterval = Math.Max(interval, 3000);
-            if (message.Length > 144) message = message.Substring(0, 144);
-            ChatboxMessage = message;
+        internal static void SetChatboxMessage(string message, int interval = 5000, bool force = false) {
+            if (ToNLogContext.CanSendChatbox || force) {
+                ChatboxInterval = Math.Max(interval, 3000);
+                if (message.Length > 144) message = message.Substring(0, 144);
+                ChatboxMessage = message;
 
-            ChatboxCountdown = Math.Max(3000 - (ChatboxInterval - ChatboxCountdown), 0);
-            ChatboxClear = string.IsNullOrEmpty(message);
+                ChatboxCountdown = Math.Max(3000 - (ChatboxInterval - ChatboxCountdown), 0);
+                ChatboxClear = string.IsNullOrEmpty(message);
+            }
         }
 
 
@@ -225,21 +230,47 @@ namespace ToNSaveManager.Utils
             if (DamageTimer == null) {
                 DamageTimer = new Timer();
                 DamageTimer.Tick += DamageTimer_Tick;
-                DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
             }
 
             if (LastDamage != damage) {
                 LastDamage = damage;
-                SendParam(ParamDamaged, damage); // change param to a const
+                SendParam(ParamDamaged, EvaluateDamage(damage)); // change param to a const
 
                 DamageTimer.Stop();
-                if (Settings.Get.OSCDamagedInterval > 0) {
-                    DamageTimer.Interval = Settings.Get.OSCDamagedInterval;
-                    DamageTimer.Start();
-                } else {
-                    LastDamage = 0;
-                }
+                DamageTimer.Interval = EvaluateInterval();
+                DamageTimer.Start();
             }
+        }
+
+        const string EVAL_DAMAGE_KEY = "Damage";
+        static float EvaluateDamage(int damage) {
+            Logger.Debug("Incoming Damage: " + damage);
+
+            ToNStats.JSEngine.SetValue(EVAL_DAMAGE_KEY, damage);
+            Logger.Debug("Evaluating Damage: " + Settings.Get.OSCDamageTemplate.Template);
+            string evaluated = Settings.Get.OSCDamageTemplate.GetString(true);
+
+            float result;
+            if (string.IsNullOrEmpty(evaluated) || !float.TryParse(evaluated, out result)) {
+                Logger.Error("Could not evaluate damage value: " + evaluated);
+                result = damage;
+            }
+
+            return result;
+        }
+        static int EvaluateInterval() {
+            Logger.Debug("Evaluating Interval: " + Settings.Get.OSCDamageIntervalTemplate.Template);
+            string evaluated = Settings.Get.OSCDamageIntervalTemplate.GetString(true);
+
+            float result;
+            if (string.IsNullOrEmpty(evaluated) || !float.TryParse(evaluated, out result)) {
+                Logger.Error("Could not evaluate damage interval: " + evaluated);
+                result = 500;
+            } else {
+                Logger.Debug("Result Interval: " + result);
+            }
+
+            return Math.Max(10, (int)result);
         }
 
         private static void DamageTimer_Tick(object? sender, EventArgs e) {

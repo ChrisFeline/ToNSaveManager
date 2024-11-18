@@ -1,5 +1,9 @@
 ﻿# Latest Changelog
 
-- Fixed 'Distorted Yan' appearing as ???????????
-- Updated Japanese localization (by @nomlasvrc)
-- Updated Simplifed Chinese localization (by @Fallen-ice)
+- Fixed player names showing their GUID on the tooltips after VRChat's latest update.
+	- In addition, the GUID is sent on the WebSocket API too.
+- OSC Damage event got an overhaul, you can use JavaScript to manipulate the value of this parameter so it can be used as a float in other "things".
+	- For example, if you set "Damage / 100" as the code and the damage value is '50', this will be evaluated to '0.5' before sending the value.
+- Added new WebSocket API event: MASTER_CHANGE
+- Chatbox no longer clears on teleport to map if you have the 'Send Chatbox' feature disabled.
+- Date list now sorts using Universal Time. This prevents unwanted behaviour when 'Daylight Saving' event occurs.

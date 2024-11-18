@@ -167,6 +167,8 @@ namespace ToNSaveManager.Localization {
         }
 
         internal static void Initialize() {
+            Logger.Log("Initializing localization.");
+
             Assembly assembly = Assembly.GetExecutingAssembly();
             string[] streamNames = assembly.GetManifestResourceNames();
 

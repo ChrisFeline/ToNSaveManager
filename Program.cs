@@ -49,37 +49,44 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
+            Directory.SetCurrentDirectory(ProgramDirectory);
+            Logger.Log("Initializing logging.");
+
             Arguments = args;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
-
-            LANG.Initialize();
-            Updater.CheckPostUpdate(args);
-
-            if (CheckMutex())
-            {
+            if (CheckMutex()) {
                 // Don't run program if it's already running, instead we focus the already existing window
                 NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
                 return;
             }
 
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
+            LANG.Initialize();
+            Updater.CheckPostUpdate(args);
+
+            Logger.Log("Initializing application rendering.");
             ApplicationConfiguration.Initialize();
             Application.SetCompatibleTextRenderingDefault(true);
+
+            Logger.Log("Initializing font.");
             InitializeFont();
 
             MainWindow.Started = false;
 
             if (!StartCheckForUpdate()) {
                 Application.ApplicationExit += OnApplicationExit;
+
+                Logger.Log("Running 'MainWindow'");
                 Application.Run(new MainWindow());
             }
 
             // Check when all forms close
-            Logger.Info("All windows are closed...");
+            Logger.Log("All windows are closed...");
             GitHubUpdate.Start();
         }
 
@@ -144,11 +151,13 @@ namespace ToNSaveManager
             Version? currentVersion = GetVersion();
             if (currentVersion == null) return false; // No current version?
 
+            Logger.Log("Checking for updates...");
             GitHubRelease? release = GitHubRelease.GetLatest();
             if (release == null || release.assets.Length == 0 || (!showUpToDate && release.tag_name == Settings.Get.IgnoreRelease)) return false;
             GitHubRelease.Asset? asset = release.assets.FirstOrDefault(v => v.name == "ToNSaveManager.zip" && v.content_type == "application/zip" && v.state == "uploaded");
             if (asset == null) return false;
 
+            Logger.Log("Latest release: " + release.tag_name);
             if (Version.TryParse(release.tag_name, out Version? releaseVersion) && releaseVersion > currentVersion)
             {
                 const string log_start = "[changelog]: <> (START)";

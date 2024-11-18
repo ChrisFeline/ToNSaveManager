@@ -339,28 +339,35 @@
         const string UserLeaveKeyword = "[Behaviour] OnPlayerLeft";
         private bool ParsePlayerJoin(string line, DateTime lineDate, T logContext)
         {
-            int index;
-            string displayName;
-
             if (line.Contains(UserJoinKeyword))
             {
-                index = line.IndexOf(UserJoinKeyword, StringComparison.InvariantCulture) + UserJoinKeyword.Length;
-                displayName = line.Substring(index + 1).Trim();
-
-                logContext.Join(displayName);
+                logContext.Join(ParsePlayerData(line, UserJoinKeyword));
                 return true;
             }
 
             if (line.Contains(UserLeaveKeyword))
             {
-                index = line.IndexOf(UserLeaveKeyword, StringComparison.InvariantCulture) + UserLeaveKeyword.Length;
-                displayName = line.Substring(index + 1).Trim();
-
-                logContext.Leave(displayName);
+                logContext.Leave(ParsePlayerData(line, UserLeaveKeyword));
                 return true;
             }
 
             return false;
+        }
+        private static LogPlayer ParsePlayerData(string line, string keyword) {
+            int start = line.IndexOf(keyword, StringComparison.InvariantCulture) + keyword.Length + 1;
+
+            string guid = string.Empty;
+
+            int id_start = line.LastIndexOf('(');
+            int id_end = line.LastIndexOf(')');
+            int length = line.Length - start;
+            if (id_start > 0 && id_end > 0 && id_end > id_start) {
+                guid = line.Substring(id_start + 1, (id_end - id_start) - 1).Trim();
+                length = id_start - start;
+            }
+
+            string name = line.Substring(start, length).Trim();
+            return new LogPlayer() { GUID = guid, Name = name };
         }
 
         const string PickupGrabKeyword = "[Behaviour] Pickup object: '";
