@@ -620,7 +620,7 @@ namespace ToNSaveManager.Windows
 
         private void linkEditChatbox_Click(object sender, LinkLabelLinkClickedEventArgs e) {
             string template = Settings.Get.OSCMessageInfoTemplate.Template;
-            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: true, insertKeyTemplate: true);
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.OSCSENDCHATBOX.TITLE") ?? "Chatbox Message Template", this, handleNewLine: false, insertKeyTemplate: true);
             if (edit.Accept) {
                 Settings.Get.OSCMessageInfoTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.OSCMessageInfoTemplate.Template : edit.Text;
                 Settings.Export();
@@ -631,7 +631,7 @@ namespace ToNSaveManager.Windows
 
         private void linkAutoNoteEdit_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             string template = Settings.Get.RoundNoteTemplate.Template;
-            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.SAVEROUNDNOTE.TITLE") ?? "Automatic Note Template", this, handleNewLine: true, insertKeyTemplate: true);
+            EditResult edit = EditWindow.Show(template, LANG.S("SETTINGS.SAVEROUNDNOTE.TITLE") ?? "Automatic Note Template", this, handleNewLine: false, insertKeyTemplate: true);
             if (edit.Accept) {
                 Settings.Get.RoundNoteTemplate.Template = string.IsNullOrEmpty(edit.Text) ? Settings.Default.RoundNoteTemplate.Template : edit.Text;
                 Settings.Export();

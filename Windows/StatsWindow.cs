@@ -220,26 +220,9 @@ namespace ToNSaveManager
             Refresh();
         }
 
-        /*
-        public static string NormalizeLabelText(string text) {
-            for (int i = 0; i < text.Length; i++) {
-                if (i > 0 && char.IsUpper(text[i])) {
-                    string a = text.Substring(0, i);
-                    Console.WriteLine(a);
-                    text = a + ' ' + text.Substring(i);
-                    i++;
-                } else if (i == 0 && !char.IsUpper(text[i])) {
-                    text = char.ToUpperInvariant(text[i]) + text.Substring(1);
-                }
-            }
-
-            return text;
-        }
-        */
-
         internal static void UpdateChatboxContent() {
             if (IsRoundActive || !MainWindow.Started || !ToNLogContext.CanSendChatbox || string.IsNullOrEmpty(Settings.Get.OSCMessageInfoTemplate.Template)) return;
-            string template = TemplateManager.ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template);
+            string template = TemplateManager.ReplaceTemplate(Settings.Get.OSCMessageInfoTemplate.Template).Replace("\\n", "\n");
             LilOSC.SetChatboxMessage(template);
         }
 
