@@ -956,7 +956,7 @@ namespace ToNSaveManager
                 if (temp == null || temp.UniversalTime < h.UniversalTime) temp = h;
             }
 
-            if (Settings.Get.AutoCopy) {
+            if (Settings.Get.AutoCopy && Settings.Get.CopyOnOpen) {
                 Entry? first = temp?.Database.FirstOrDefault();
                 if (first != null) {
                     SetRecent(first);
