@@ -18,7 +18,7 @@
 	"MESSAGE.UPDATE_AVAILABLE.TITLE": "新しいアップデートが利用可能",
 	"MESSAGE.UPDATE_UNAVAILABLE": "現在アップデートはありません。\n\n最新バージョンを使用中です。",
 	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "アップデートはありません",
-	"MESSAGE.UPDATE_SUCCESS": "アップデートのダウンロードに成功しました: {0}\n続行するには'ToNSaveManager'をもう一度開いてください...",
+	"MESSAGE.UPDATE_SUCCESS": "アップデートのダウンロードに成功しました: {0}\n続行するにはToNSaveManagerをもう一度開いてください...",
 	"MESSAGE.UPDATE_FAILED": "自動更新に失敗しました。代わりに'update.bat'ファイルを使用してみてください。\nこのエラーをGitHubで報告してください。",
 
 	"MESSAGE.LARGE_LOG_WARNING": "非常に大きなVRChatログファイルを解析しようとしています！\nファイル名: {0}\nファイルサイズ: {1}\n\nこのログファイルの解析には少し時間がかかります。\n読み取りを続行しますか？",
@@ -28,7 +28,7 @@
 	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "コピー完了",
 
 	"MAIN.SETTINGS": "設定",
-	"MAIN.SETTINGS.TT": "設定メニューでその他のオプションを設定します。",
+	"MAIN.SETTINGS.TT": "設定メニューで追加のオプションを設定します。",
 	"MAIN.OBJECTIVES": "アイテム",
 	"MAIN.OBJECTIVES.TT": "ゲーム内のアンロック可能なアイテムを記録します。",
 	"MAIN.WIKI": "Wiki",
@@ -252,7 +252,7 @@
 
 	"SETTINGS.GROUP.STYLE": "スタイル",
 	"SETTINGS.COLORFULOBJECTIVES": "カラフルなアイテム",
-	"SETTINGS.COLORFULOBJECTIVES.TT": "'アイテム'ウィンドウ内のアイテムをゲーム内のアイテムに対応した色で表示します。",
+	"SETTINGS.COLORFULOBJECTIVES.TT": "アイテムウィンドウ内のアイテムをゲーム内のアイテムに対応した色で表示します。",
 
 	"SETTINGS.OPENRGBENABLED": "OpenRGBを有効化",
 	"SETTINGS.OPENRGBENABLED.TT": "OpenRGB連携を有効にします。このオプションにより、OpenRGBを使用してデバイス上のRGBカラーを変更できます。\nこれは非常に高度な機能で、現在はあまりユーザーフレンドリーではありません。JSONやOpenRGBに詳しい場合にのみ使用してください。",
