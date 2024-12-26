@@ -18,7 +18,7 @@
 	"MESSAGE.UPDATE_AVAILABLE.TITLE": "新しいアップデートが利用可能",
 	"MESSAGE.UPDATE_UNAVAILABLE": "現在アップデートはありません。\n\n最新バージョンを使用中です。",
 	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "アップデートはありません",
-	"MESSAGE.UPDATE_SUCCESS": "アップデートのダウンロードに成功しました: {0}\n続行するには'ToNSaveManager'をもう一度開いてください...",
+	"MESSAGE.UPDATE_SUCCESS": "アップデートのダウンロードに成功しました: {0}\n続行するにはToNSaveManagerをもう一度開いてください...",
 	"MESSAGE.UPDATE_FAILED": "自動更新に失敗しました。代わりに'update.bat'ファイルを使用してみてください。\nこのエラーをGitHubで報告してください。",
 
 	"MESSAGE.LARGE_LOG_WARNING": "非常に大きなVRChatログファイルを解析しようとしています！\nファイル名: {0}\nファイルサイズ: {1}\n\nこのログファイルの解析には少し時間がかかります。\n読み取りを続行しますか？",
@@ -28,7 +28,7 @@
 	"MESSAGE.COPY_TO_CLIPBOARD.TITLE": "コピー完了",
 
 	"MAIN.SETTINGS": "設定",
-	"MAIN.SETTINGS.TT": "設定メニューでその他のオプションを設定します。",
+	"MAIN.SETTINGS.TT": "設定メニューで追加のオプションを設定します。",
 	"MAIN.OBJECTIVES": "アイテム",
 	"MAIN.OBJECTIVES.TT": "ゲーム内のアンロック可能なアイテムを記録します。",
 	"MAIN.WIKI": "Wiki",
@@ -89,7 +89,7 @@
 	"ROUND_TYPE.RUN": "走れ！",
 	"ROUND_TYPE.EIGHT_PAGES": "8ページ",
 	"ROUND_TYPE.GIGABYTE": "GIGABYTE",
-	"ROUND_TYPE.COLD_NIGHT": "冷たい夜",
+	"ROUND_TYPE.COLD_NIGHT": "コールドナイト",
 	"ROUND_TYPE.CUSTOM": "カスタム",
 
 	"SAVE.TAG_R": "🔄",
@@ -200,6 +200,9 @@
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT": "(インターバルを設定)",
 	"SETTINGS.OSCDAMAGEDEVENT_EDIT.TT": "ダメージイベントの送信とそれをゼロにリセットするまでの間隔（ミリ秒）を設定します。",
 	"SETTINGS.OSCDAMAGEDEVENT.TITLE": "ダメージインターバルを設定",
+	"SETTINGS.OSCDAMAGEDEVENT_OUTPUT": "(出力コードを設定)",
+	"SETTINGS.OSCDAMAGEDEVENT_OUTPUT.TT": "ダメージを受けた時に使用するJavaScriptコードを設定します。その結果の値がOSCパラメータに送信されます。",
+	"SETTINGS.OSCDAMAGEDEVENT_OUTPUT.TITLE": "出力コードを設定",
 	"SETTINGS.OSCDEATHEVENT": "死亡イベントを送信",
 	"SETTINGS.OSCDEATHEVENT.TT": "INTパラメータ'ToN_DeathID'に死亡イベントを送信します。\nこの機能を使って、ゲーム内でフレンドがいつ死んだかを追跡できます。\n数値は死亡したユーザー名のリスト上の位置を表し、減衰時間が経過するとこの値は0にリセットされます。",
 	"SETTINGS.OSCDEATHEVENT.TITLE": "プレイヤー名を設定",
@@ -249,7 +252,7 @@
 
 	"SETTINGS.GROUP.STYLE": "スタイル",
 	"SETTINGS.COLORFULOBJECTIVES": "カラフルなアイテム",
-	"SETTINGS.COLORFULOBJECTIVES.TT": "'アイテム'ウィンドウ内のアイテムをゲーム内のアイテムに対応した色で表示します。",
+	"SETTINGS.COLORFULOBJECTIVES.TT": "アイテムウィンドウ内のアイテムをゲーム内のアイテムに対応した色で表示します。",
 
 	"SETTINGS.OPENRGBENABLED": "OpenRGBを有効化",
 	"SETTINGS.OPENRGBENABLED.TT": "OpenRGB連携を有効にします。このオプションにより、OpenRGBを使用してデバイス上のRGBカラーを変更できます。\nこれは非常に高度な機能で、現在はあまりユーザーフレンドリーではありません。JSONやOpenRGBに詳しい場合にのみ使用してください。",
