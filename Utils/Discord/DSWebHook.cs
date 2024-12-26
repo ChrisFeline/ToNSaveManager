@@ -35,7 +35,7 @@ namespace ToNSaveManager.Utils.Discord
             LABEL_ROUND = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_ROUND") ?? "**Round Type**: `{0}`";
             LABEL_MAP = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_MAP") ?? "**Map**: `{0}`";
             LABEL_TERRORS = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS") ?? "**Terrors in Round**: `{0}`";
-            LABEL_TERRORS_SPLIT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT") ?? "**Terrors in Round**: `{0}`";
+            LABEL_TERRORS_SPLIT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_TERRORS_SPLIT") ?? "`, `";
             LABEL_COUNT = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_COUNT") ?? "**Player Count**: `{0}`";
             LABEL_NOTE = LANG.S("SETTINGS.DISCORDWEBHOOK.LABEL_NOTE") ?? "**Note**: `{0}`";
         }
@@ -117,7 +117,7 @@ namespace ToNSaveManager.Utils.Discord
                         if (entry.TD != null && entry.TD.Length > 0)
                         {
                             if (EmbedData.Description.Length > 0) EmbedData.Description += "\n";
-                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.TD.Select(ToNIndex.Instance.GetTerror)));
+                            EmbedData.Description += string.Format(LABEL_TERRORS, string.Join(LABEL_TERRORS_SPLIT, entry.TD.Select(n => n.Name)));
                         }
 
                         if (entry.PlayerCount > 0)

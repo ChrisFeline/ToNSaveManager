@@ -17,6 +17,8 @@ namespace ToNSaveManager.Utils {
         }
 
         internal static void PlaySave() {
+            Logger.Debug("Playing - Save");
+
             if (StartPlaying(Settings.Get.AudioLocation, Random.Shared.Next(0,127) == 87 ? SecretSaveStream : DefaultSaveStream)) {
                 Settings.Get.AudioLocation = null;
                 Settings.Export();
@@ -24,6 +26,8 @@ namespace ToNSaveManager.Utils {
         }
 
         internal static void PlayCopy() {
+            Logger.Debug("Playing - Copy");
+
             if (StartPlaying(Settings.Get.AudioCopyLocation, DefaultCopyStream)) {
                 Settings.Get.AudioCopyLocation = null;
                 Settings.Export();
