@@ -264,7 +264,7 @@ namespace ToNSaveManager.Models.Index {
             "8 Pages"     , "8ページ",
 
             // Events
-            "Cold Night"  , "冷たい夜", // Winterfest
+            "Cold Night"  , "コールドナイト", // Winterfest
 
             // New
             "Unbound"     , "アンバウンド",
