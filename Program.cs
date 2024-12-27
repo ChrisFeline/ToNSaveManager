@@ -51,6 +51,7 @@ namespace ToNSaveManager
         {
             Directory.SetCurrentDirectory(ProgramDirectory);
             Logger.Log("Initializing logging.");
+            Logger.Log("Program Directory: " + ProgramDirectory);
 
             Arguments = args;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
