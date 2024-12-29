@@ -1050,8 +1050,6 @@ namespace ToNSaveManager
 
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;
-
-            NotificationManager.PlayCopy();
         }
 
         internal static void CopyRecentData() {
