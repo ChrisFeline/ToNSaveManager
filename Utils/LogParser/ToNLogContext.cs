@@ -52,10 +52,8 @@ namespace ToNSaveManager.Utils.LogParser
                 WebSocketAPI.SendValue("INSTANCE", instanceID);
                 DSRichPresence.SetInstanceID(instanceID, isHomeWorld);
 
-                if (isHomeWorld && Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started) {
+                if (isHomeWorld && Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started)
                     MainWindow.CopyRecentData();
-                    NotificationManager.PlayCopy();
-                }
             }
         }
 

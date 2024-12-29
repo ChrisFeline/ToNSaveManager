@@ -95,8 +95,8 @@ namespace ToNSaveManager
             Started = true;
             SetTitle(null);
 
-            if (Settings.Get.CopyOnOpen)
-                CopyRecent(true);
+            if (Settings.Get.AutoCopy && Settings.Get.CopyOnOpen)
+                CopyRecentData();
 
             LilOSC.Initialize();
             WebSocketAPI.Initialize();
@@ -643,7 +643,7 @@ namespace ToNSaveManager
         }
 
         private void LogWatcher_OnTick(object? sender, EventArgs e) {
-            if ((Settings.Get.CopyOnSave && Started))
+            if (Settings.Get.CopyOnSave && Started)
                 CopyRecent(false);
 
             Export();
@@ -955,14 +955,6 @@ namespace ToNSaveManager
 
                 if (temp == null || temp.UniversalTime < h.UniversalTime) temp = h;
             }
-
-            if (Settings.Get.AutoCopy && Settings.Get.CopyOnOpen) {
-                Entry? first = temp?.Database.FirstOrDefault();
-                if (first != null) {
-                    SetRecent(first);
-                    NotificationManager.PlayCopy();
-                }
-            }
         }
 
         private void AddCustomEntry(Entry entry, History? collection) {
@@ -1058,9 +1050,18 @@ namespace ToNSaveManager
 
             RecentData.CopyToClipboard();
             RecentData.Fresh = false;
+
+            NotificationManager.PlayCopy();
         }
 
-        internal static void CopyRecentData() => SaveData.FindRecentEntry()?.CopyToClipboard();
+        internal static void CopyRecentData() {
+            Entry? entry = SaveData.FindRecentEntry();
+
+            if (entry != null) {
+                entry.CopyToClipboard();
+                NotificationManager.PlayCopy();
+            }
+        }
         #endregion
 
     }

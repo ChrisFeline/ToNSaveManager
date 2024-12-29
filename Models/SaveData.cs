@@ -149,7 +149,7 @@ namespace ToNSaveManager.Models
 
             Entry? recent = null;
             foreach (Entry e in latest.Database) {
-                if (recent == null || e.Timestamp > latest.Timestamp)
+                if (recent == null || e.Timestamp > recent.Timestamp)
                     recent = e;
             }
 
