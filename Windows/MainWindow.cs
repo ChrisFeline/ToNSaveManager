@@ -1060,6 +1060,7 @@ namespace ToNSaveManager
             RecentData.Fresh = false;
         }
 
+        internal static void CopyRecentData() => SaveData.FindRecentEntry()?.CopyToClipboard();
         #endregion
 
     }

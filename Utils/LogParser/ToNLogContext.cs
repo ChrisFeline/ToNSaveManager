@@ -53,7 +53,7 @@ namespace ToNSaveManager.Utils.LogParser
                 DSRichPresence.SetInstanceID(instanceID, isHomeWorld);
 
                 if (isHomeWorld && Settings.Get.AutoCopy && Settings.Get.CopyOnJoin && MainWindow.Started) {
-                    MainWindow.Instance?.CopyRecent(true);
+                    MainWindow.CopyRecentData();
                     NotificationManager.PlayCopy();
                 }
             }
