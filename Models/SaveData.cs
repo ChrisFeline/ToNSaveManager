@@ -136,6 +136,26 @@ namespace ToNSaveManager.Models
             if (save) SetDirty();
         }
 
+        public Entry? FindRecentEntry() {
+            if (Collection.Count == 0) return null;
+
+            History? latest = null;
+            foreach (History h in Collection) {
+                if (!h.IsCustom && (latest == null || h.UniversalTime > latest.UniversalTime))
+                    latest = h;
+            }
+
+            if (latest == null || latest.Database.Count == 0) return null;
+
+            Entry? recent = null;
+            foreach (Entry e in latest.Database) {
+                if (recent == null || e.Timestamp > recent.Timestamp)
+                    recent = e;
+            }
+
+            return recent;
+        }
+
         public static void OpenDataLocation()
         {
             MainWindow.OpenExternalLink(Path.GetDirectoryName(Destination) ?? string.Empty);
