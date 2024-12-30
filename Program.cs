@@ -49,15 +49,15 @@ namespace ToNSaveManager
         [STAThread]
         static void Main(string[] args)
         {
+            if (CheckMutex()) {
+                // Don't run program if it's already running, instead we focus the already existing window
+                NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
+                return;
+            }
+
+            if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
             try {
-                if (CheckMutex()) {
-                    // Don't run program if it's already running, instead we focus the already existing window
-                    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
-                    return;
-                }
-
-                if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
-
                 Logger.Log("Initializing logging.");
 
                 Directory.SetCurrentDirectory(ProgramDirectory);
@@ -93,6 +93,7 @@ namespace ToNSaveManager
                 GitHubUpdate.Start();
             } catch (Exception e) {
                 // What the heck happened?
+                MessageBox.Show(e.ToString(), "APP STARTUP FAILED!");
                 File.WriteAllText(Path.Combine(DataLocation, "output.error"), e.ToString());
             }
         }
