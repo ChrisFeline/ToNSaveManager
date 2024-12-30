@@ -50,6 +50,14 @@ namespace ToNSaveManager
         static void Main(string[] args)
         {
             try {
+                if (CheckMutex()) {
+                    // Don't run program if it's already running, instead we focus the already existing window
+                    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
+                    return;
+                }
+
+                if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
+
                 Logger.Log("Initializing logging.");
 
                 Directory.SetCurrentDirectory(ProgramDirectory);
@@ -60,14 +68,6 @@ namespace ToNSaveManager
                 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
-                if (CheckMutex()) {
-                    // Don't run program if it's already running, instead we focus the already existing window
-                    NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST, NativeMethods.WM_FOCUSINST, IntPtr.Zero, IntPtr.Zero);
-                    return;
-                }
-
-                if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
                 LANG.Initialize();
                 Updater.CheckPostUpdate(args);
