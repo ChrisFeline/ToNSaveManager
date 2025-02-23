@@ -2,7 +2,7 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "main", "dev", "test" ]
+    branches: [ "main", "dev", "test", "linux" ]
     paths-ignore:
       - '**.md'  # Ignore markdown files
       - '**.png' # Ignore image files
