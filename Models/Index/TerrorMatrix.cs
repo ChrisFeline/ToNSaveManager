@@ -163,7 +163,7 @@ namespace ToNSaveManager.Models.Index {
                     Terrors = new ToNIndex.TerrorInfo[indexes.Length];
                     for (int i = 0; i < Terrors.Length; i++) {
                         ToNIndex.TerrorInfo info = new(indexes[i], i > 1 && RoundType == ToNRoundType.Midnight ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors);
-                        if (i == StartIndex && lvl > 1) info.Level = lvl;
+                        if ((i == StartIndex || RoundType == ToNRoundType.Double_Trouble) && lvl > 1) info.Level = lvl;
                         Terrors[i] = info;
                     }
                     break;
