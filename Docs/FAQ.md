@@ -20,7 +20,7 @@
 > You can enable it by opening your Quick Menu, go to settings, scroll all the way down and turn logging **on**.
 > <details>
 > <summary><b>Show Image</b></summary>
-> <p> <img src="Resources/logging.png" height="420px" > </p>
+> <p> <img src="Images/logging.png" height="420px" > </p>
 > </details>
 
 > ## Program is stuck on "Loading, please wait..."
@@ -44,9 +44,9 @@
 > NOTE: If you want to test this functionality, you can right click on a save entry then click **Backup**. If everything is right, save will be uploaded to the discord channel.
 > <details>
 > <summary><b>Show Discord Screenshots</b></summary>
-> <p> <img src="Resources/Webhook/screenshot_0.png" height="auto"> </p>
-> <p> <img src="Resources/Webhook/screenshot_1.png" width="682px"> </p>
-> <p> <img src="Resources/Webhook/screenshot_2.png" width="512px"> </p>
+> <p> <img src="Images/Webhook/screenshot_0.png" height="auto"> </p>
+> <p> <img src="Images/Webhook/screenshot_1.png" width="682px"> </p>
+> <p> <img src="Images/Webhook/screenshot_2.png" width="512px"> </p>
 > </details>
 
 > ## Why is the .exe so big? >100MB
