@@ -78,12 +78,20 @@
 | `65` | Jailbird
 | `66` | Thorn Glognut
 | `67` | Silver Coil
+| | |
+| `80` | Dev Phone
+| `81` | Fuwatti Plush
+| `82` | Seer Pen
+| `83` | NeoTamago
+| `84` | IJED
+| `85` | Mini Chest
 
 # Special Events
 | ID | Item |
 | - | - |
 | `68` | Snowy Coil
 | `69` | Torch of Obsession
+| `86` | Panthera MK.II
 
 # Exclusive
 | ID | Item |
