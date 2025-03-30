@@ -85,12 +85,14 @@
 | `83` | NeoTamago
 | `84` | IJED
 | `85` | Mini Chest
+| `87` | King's Kit
 
 # Special Events
 | ID | Item |
 | - | - |
 | `68` | Snowy Coil
 | `69` | Torch of Obsession
+| `70` | Dropkick
 | `86` | Panthera MK.II
 
 # Exclusive
