@@ -892,6 +892,7 @@ namespace ToNSaveManager
                     if (Settings.Get.OSCDeathEvent) {
                         int deathId = Settings.Get.GetDeathID(name);
                         if (deathId > 0) LilOSC.SetDeathID(deathId);
+                        else LilOSC.SetDeathID();
                     }
                     return true;
                 }

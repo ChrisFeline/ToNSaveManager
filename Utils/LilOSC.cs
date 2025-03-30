@@ -149,7 +149,7 @@ namespace ToNSaveManager.Utils
         private static Queue<int> DeathQueue = new Queue<int>();
         private static int DeathSendID = -1;
 
-        internal static void SetDeathID(int id) {
+        internal static void SetDeathID(int id = 255) {
             if (DeathTimer == null) {
                 DeathTimer = new Timer();
                 DeathTimer.Tick += DeathTimer_Tick;

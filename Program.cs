@@ -39,9 +39,7 @@ namespace ToNSaveManager
         }
 
         static string[] Arguments = Array.Empty<string>();
-        internal static bool ContainsArg(string arg) {
-            return Array.IndexOf(Arguments, arg) != -1;
-        }
+        internal static bool ContainsArg(string arg) => Array.IndexOf(Arguments, arg) != -1;
 
         /// <summary>
         ///  The main entry point for the application.
