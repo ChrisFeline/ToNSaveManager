@@ -53,6 +53,7 @@ namespace ToNSaveManager.Utils {
         }
 
         public static void SetInstanceURL(string instanceURL) {
+            InstanceURL = instanceURL;
             StatsWindow.SetInstanceURL(instanceURL);
         }
 
