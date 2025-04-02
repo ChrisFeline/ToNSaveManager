@@ -73,11 +73,6 @@ namespace ToNSaveManager
 
             SetBackupButton(Settings.Get.DiscordWebhookEnabled && !string.IsNullOrWhiteSpace(Settings.Get.DiscordWebhookURL));
             TooltipUtil.Set(linkSupport, "Buy Me A Coffee ♥");
-
-#if PARAMETER_EMULATOR
-            if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
-                EmulatorWindow.Open(this);
-#endif
         }
 
         private void mainWindow_Shown(object sender, EventArgs e) {
@@ -103,6 +98,11 @@ namespace ToNSaveManager
             DSRichPresence.Initialize(true);
             StatsWindow.UpdateChatboxContent();
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
+
+#if PARAMETER_EMULATOR
+            if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
+                EmulatorWindow.Open(this);
+#endif
         }
 
         static readonly Dictionary<ToNRoundType, string> RoundTypeNames = new Dictionary<ToNRoundType, string>();
