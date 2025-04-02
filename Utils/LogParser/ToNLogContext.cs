@@ -48,7 +48,7 @@ namespace ToNSaveManager.Utils.LogParser
             base.Enter(instanceID, isHomeWorld);
 
             if (IsRecent) {
-                StatsWindow.SetInstanceURL(instanceID);
+                ToNGameState.SetInstanceURL(instanceID);
                 WebSocketAPI.SendValue("INSTANCE", instanceID);
                 DSRichPresence.SetInstanceID(instanceID, isHomeWorld);
 
