@@ -6,10 +6,7 @@ using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.LogParser;
-using ToNSaveManager.Utils.API;
 using ToNSaveManager.Models.Stats;
-using Jint.Native;
-using Jint;
 
 namespace ToNSaveManager.Utils
 {
@@ -505,6 +502,33 @@ namespace ToNSaveManager.Utils
             }
         }
 
+        private static void EncodeInto(byte[] data, ref int offset, string path, string value) {
+            byte[] tmp = Encoding.UTF8.GetBytes(path);
+            Array.Copy(tmp, 0, data, offset, tmp.Length);
+            data[tmp.Length + offset] = 0;
+            offset += tmp.Length;
+            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
+                data[offset] = 0;
+            }
+
+            tmp = new byte[] { 44, 115 }; // ",sTT"
+
+            Array.Copy(tmp, 0, data, offset, tmp.Length);
+            data[tmp.Length + offset] = 0;
+            offset += tmp.Length;
+            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
+                data[offset] = 0;
+            }
+
+            tmp = Encoding.UTF8.GetBytes(value);
+            Array.Copy(tmp, 0, data, offset, tmp.Length);
+            data[tmp.Length + offset] = 0;
+            offset += tmp.Length;
+            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
+                data[offset] = 0;
+            }
+        }
+
         private static void SendParam(string name, int value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
@@ -527,6 +551,14 @@ namespace ToNSaveManager.Utils
             SendBuffer(temp_buffer, encodedLength);
 
             Logger.Debug("Sending Param: " + name + " = " + value);
+        }
+
+        internal static void SendAvatar(string avatarId) {
+            int encodedLength = 0;
+            EncodeInto(temp_buffer, ref encodedLength, "/avatar/change", avatarId);
+            SendBuffer(temp_buffer, encodedLength);
+
+            Logger.Debug("Sending Avatar: " + avatarId);
         }
 
         private static void SendChatbox(string message, bool direct = true, bool complete = false) {
