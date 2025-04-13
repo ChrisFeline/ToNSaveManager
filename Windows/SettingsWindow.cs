@@ -270,7 +270,7 @@ namespace ToNSaveManager.Windows
                 if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
                     Settings.Get.OSCDeathDecay = Math.Max(result, 10);
                     Settings.Export();
-                } else if (show.Accept) {
+                } else if (show.Accept && string.IsNullOrEmpty(show.Text)) {
                     Settings.Get.OSCDeathDecay = Settings.Default.OSCDeathDecay;
                     Settings.Export();
                 }
@@ -284,7 +284,7 @@ namespace ToNSaveManager.Windows
                 if (show.Accept && !string.IsNullOrEmpty(show.Text) && int.TryParse(show.Text.Trim(), out int result) && result != original) {
                     Settings.Get.OSCDeathCooldown = Math.Max(result, 10);
                     Settings.Export();
-                } else if (show.Accept) {
+                } else if (show.Accept && string.IsNullOrEmpty(show.Text)) {
                     Settings.Get.OSCDeathCooldown = Settings.Default.OSCDeathCooldown;
                     Settings.Export();
                 }
