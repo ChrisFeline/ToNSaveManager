@@ -7,6 +7,7 @@ using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Models.Stats;
+using System.Xml.Linq;
 
 namespace ToNSaveManager.Utils
 {
@@ -529,41 +530,38 @@ namespace ToNSaveManager.Utils
             }
         }
 
-        internal static void SendParam(string name, int value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
+        internal static void SendParam(string name, int value) => SendValue("/avatar/parameters/" + name, value);
+        internal static void SendParam(string name, float value) => SendValue("/avatar/parameters/" + name, value);
 
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        internal static void SendParam(string name, float value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        internal static void SendParam(string name, bool value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        internal static void SendAvatar(string avatarId) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/change", avatarId);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Avatar: " + avatarId);
-        }
+        internal static void SendParam(string name, bool value) => SendValue("/avatar/parameters/" + name, value);
+        internal static void SendAvatar(string avatarId) => SendValue("/avatar/change", avatarId);
 
         internal static void SendChatbox(string message, bool direct = true, bool complete = false) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/chatbox/input", message, direct, complete);
+            SendBuffer(temp_buffer, encodedLength);
+        }
+
+        internal static void SendValue(string path, object value) {
+            int encodedLength = 0;
+            switch (value) {
+                case float f:
+                    EncodeInto(temp_buffer, ref encodedLength, path, f);
+                    break;
+                case int i:
+                    EncodeInto(temp_buffer, ref encodedLength, path, i);
+                    break;
+                case string s:
+                    EncodeInto(temp_buffer, ref encodedLength, path, s);
+                    break;
+                case bool b:
+                    EncodeInto(temp_buffer, ref encodedLength, path, b);
+                    break;
+                default:
+                    Logger.Error("Unsupported OSC value type: " + value?.GetType());
+                    return;
+            }
+
             SendBuffer(temp_buffer, encodedLength);
         }
 
