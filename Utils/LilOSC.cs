@@ -529,7 +529,7 @@ namespace ToNSaveManager.Utils
             }
         }
 
-        private static void SendParam(string name, int value) {
+        internal static void SendParam(string name, int value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
@@ -537,7 +537,7 @@ namespace ToNSaveManager.Utils
             Logger.Debug("Sending Param: " + name + " = " + value);
         }
 
-        private static void SendParam(string name, float value) {
+        internal static void SendParam(string name, float value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
@@ -545,7 +545,7 @@ namespace ToNSaveManager.Utils
             Logger.Debug("Sending Param: " + name + " = " + value);
         }
 
-        private static void SendParam(string name, bool value) {
+        internal static void SendParam(string name, bool value) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
             SendBuffer(temp_buffer, encodedLength);
@@ -561,7 +561,7 @@ namespace ToNSaveManager.Utils
             Logger.Debug("Sending Avatar: " + avatarId);
         }
 
-        private static void SendChatbox(string message, bool direct = true, bool complete = false) {
+        internal static void SendChatbox(string message, bool direct = true, bool complete = false) {
             int encodedLength = 0;
             EncodeInto(temp_buffer, ref encodedLength, "/chatbox/input", message, direct, complete);
             SendBuffer(temp_buffer, encodedLength);

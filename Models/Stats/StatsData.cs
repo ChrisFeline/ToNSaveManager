@@ -55,7 +55,7 @@ namespace ToNSaveManager.Models.Stats
         public int TopStuns { get; set; } = 0;
         public int TopStunsAll { get; set; } = 0;
 
-        public static StatsData Import(string path)
+        internal static StatsData Import(string path)
         {
             StatsData? statsData;
 
@@ -76,7 +76,7 @@ namespace ToNSaveManager.Models.Stats
         }
 
         [JsonIgnore] internal string? Destination { get; set; }
-        public void Export(bool force)
+        internal void Export(bool force)
         {
             if (string.IsNullOrEmpty(Destination)) return;
 
