@@ -50,6 +50,12 @@ function OnLine(line) {
 export { OnEvent, OnTick, OnReady, OnLine }
 ```
 
+## Custom WebSocketAPI Events
+```js
+WS.Enabled; // Bool, true if the WebSocketAPI is enabled by the user
+WS.SendEvent("name", value);
+```
+
 ## Storing Data
 > Try not to abuse this too much, it writes to a json file with the same name as your JavaScript file.
 ```js
