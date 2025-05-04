@@ -1,5 +1,6 @@
 ﻿using Jint;
 using Jint.Native;
+using ToNSaveManager.Models;
 using ToNSaveManager.Utils.API;
 
 /* TODO:
@@ -35,6 +36,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             var storage = new Storage(scriptsPath);
             EngineInstance.SetValue("TON", API.Instance);
             EngineInstance.SetValue("OSC", OSC.Instance);
+            EngineInstance.SetValue("Settings", Settings.Get);
 
             foreach (string file in Directory.GetFiles(scriptsPath).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {
                 Plugin? plugin = Plugin.Import(file);

@@ -1,10 +1,12 @@
-﻿using ToNSaveManager.Models.Index;
+﻿using ToNSaveManager.Models;
+using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal class WS {
         private string Source;
+        public bool Enabled => Settings.Get.WebSocketEnabled;
 
         public WS(string source) {
             Source = source;
