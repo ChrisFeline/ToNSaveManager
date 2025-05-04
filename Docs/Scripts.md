@@ -52,7 +52,7 @@ export { OnEvent, OnTick, OnReady, OnLine }
 
 ## Storing Data
 > Try not to abuse this too much, it writes to a json file with the same name as your JavaScript file.
-```
+```js
 storage.set("best_number_ever", 42);
 storage.get("best_number_ever") // returns 42, null if value is not set or invalid
 storage.del("best_number_ever") // deletes the value from storage
