@@ -1,5 +1,6 @@
 ﻿# Scripts - Documentation
 > (Under Construction)
+> These APIs can change at any moment during beta.
 
 - To enable the use of scripts, simply create a folder called `scripts` under the same folder as the executable.
 - Create a `.js` file inside this folder and have fun.
@@ -10,6 +11,15 @@
 console.log("MEOW!");
 console.error("OUCH!");
 console.warn("OOF!");
+```
+
+## Sending OSC Parameters
+```js
+OSC.SendInt(parameterName, value);
+OSC.SendFloat(parameterName, value);
+OSC.SendBool(parameterName, value);
+OSC.SendAvatar(avatarId);
+OSC.SendChatbox(chatboxMessage, direct, complete);
 ```
 
 ## Listening to events
