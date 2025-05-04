@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
+using ToNSaveManager.Utils.JSPlugins;
 using ToNSaveManager.Utils.LogParser;
 // using WebSocketSharp;
 // using WebSocketSharp.Server;
@@ -281,6 +282,8 @@ namespace ToNSaveManager.Utils.API {
         private static void QueueEvent(IEvent ev, bool buffer = true) {
             if (MainWindow.Started) EventQueue.Enqueue(ev);
             if (buffer) EventBuffer.Add(ev);
+
+            JSEngine.InvokeOnEvent(ev);
         }
 
         internal static void SendEventUpdate() {

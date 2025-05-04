@@ -12,9 +12,9 @@ using ToNSaveManager.Models.Index;
 using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.OpenRGB;
 using ToNSaveManager.Utils.API;
+using ToNSaveManager.Utils.JSPlugins;
 
-namespace ToNSaveManager
-{
+namespace ToNSaveManager {
     public partial class MainWindow : Form {
         #region Initialization
         internal static readonly LogWatcher<ToNLogContext> LogWatcher = new LogWatcher<ToNLogContext>("wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd");
@@ -79,6 +79,7 @@ namespace ToNSaveManager
             LocalizeContent();
 
             if (Started) return;
+            JSEngine.Initialize();
 
             FirstImport();
 
@@ -103,6 +104,8 @@ namespace ToNSaveManager
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
 #endif
+
+            JSEngine.InvokeOnReady();
         }
 
         static readonly Dictionary<ToNRoundType, string> RoundTypeNames = new Dictionary<ToNRoundType, string>();
@@ -632,6 +635,7 @@ namespace ToNSaveManager
             ToNLogContext context = e.Context;
 
             string line = e.Content.Substring(34);
+            JSEngine.InvokeOnLine(line);
 
             if (HandleSaveCode(line, timestamp, context) ||
                 HandleTerrorIndex(line, timestamp, context) ||
@@ -652,6 +656,8 @@ namespace ToNSaveManager
             LilOSC.SendData();
 
             WebSocketAPI.SendEventUpdate();
+
+            JSEngine.InvokeOnTick();
         }
 
         private bool HandleSaveCode(string line, DateTime timestamp, ToNLogContext context) {
