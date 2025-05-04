@@ -2,6 +2,8 @@
 > (Under Construction)
 > These APIs can change at any moment during beta.
 
+> Undocumented Global variable: `TON` contains a lot of in-game related values.
+
 - To enable the use of scripts, simply create a folder called `scripts` under the same folder as the executable.
 - Create a `.js` file inside this folder and have fun.
 
