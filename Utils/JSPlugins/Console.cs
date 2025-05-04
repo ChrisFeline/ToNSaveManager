@@ -12,10 +12,10 @@
             Logger.Log(Prefix + message);
         }
         public void Error(object message) {
-            Logger.Log(Prefix + "ERROR: " + message);
+            Logger.Error(Prefix + message);
         }
         public void Warn(object message) {
-            Logger.Log(Prefix + "WARNING: " + message);
+            Logger.Warning(Prefix + message);
         }
     }
 }
