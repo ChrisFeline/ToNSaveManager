@@ -29,6 +29,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             EngineInstance = new Jint.Engine(options => {
                 options.EnableModules(scriptsPath);
                 options.Interop.AllowWrite = false;
+                options.TimeoutInterval(TimeSpan.FromSeconds(60)); // Timeout if it takes too long to import a script, sorry :(
             });
 
             var storage = new Storage(scriptsPath);

@@ -269,6 +269,25 @@ namespace ToNSaveManager.Utils.API {
                 QueueEvent(eventPlayer);
             }
         }
+        
+        public struct EventCustom : IEvent {
+            public string Type => "CUSTOM";
+            [JsonIgnore] public byte Command { get; set; }
+
+            public string Source { get; set; }
+            public string Name { get; set; }
+            public object? Value { get; set; }
+
+            internal static void Send(string source, string name, object? value = null) {
+                EventCustom eventCustom = new EventCustom() {
+                    Source = source,
+                    Name = name,
+                    Value = value
+                };
+
+                QueueEvent(eventCustom, false);
+            }
+        }
         #endregion
 
         #region Save Manager Events

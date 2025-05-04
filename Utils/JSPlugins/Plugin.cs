@@ -64,11 +64,12 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     Console console = new Console(fileId);
 
                     EngineInstance.Modules.Add(tempId, builder => {
-                        builder.ExportValue("console", JsValue.FromObject(EngineInstance, console));
-                        builder.ExportValue("storage", JsValue.FromObject(EngineInstance, new Storage(filePath + "on"))); // .js+on
+                        builder.ExportObject("console", console);
+                        builder.ExportObject("storage", new Storage(filePath + "on")); // .js+on
+                        builder.ExportObject("WS", new WS(fileId));
                     });
 
-                    string header = "import { console, storage } from '" + tempId + "';\n";
+                    string header = "import { console, storage, WS } from '" + tempId + "';\n";
                     header += File.ReadAllText(filePath);
 
                     EngineInstance.Modules.Add(fileId, header);

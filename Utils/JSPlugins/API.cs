@@ -1,7 +1,21 @@
 ﻿using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
+using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils.JSPlugins {
+    internal class WS {
+        private string Source;
+
+        public WS(string source) {
+            Source = source;
+        }
+
+        public void SendEvent(string name, object? value = null) {
+            if (!string.IsNullOrEmpty(name))
+                WebSocketAPI.EventCustom.Send(Source, name, value);
+        }
+    }
+
     internal class API {
         internal static API Instance = new();
 
