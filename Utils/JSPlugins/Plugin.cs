@@ -2,7 +2,7 @@
 using Jint.Native;
 using Jint.Native.Function;
 using Jint.Native.Object;
-using ToNSaveManager.Utils.API;
+using Jint.Runtime;
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal static partial class JSEngine {
@@ -30,29 +30,37 @@ namespace ToNSaveManager.Utils.JSPlugins {
                 try {
                     OnEventFunction?.Call(@event);
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'function OnEvent()' event: " + e.Message);
+                    ConsoleInstance.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendTick() {
                 try {
                     OnTickFunction?.Call();
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'function OnTick()' event: " + e.Message);
+                    ConsoleInstance.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendReady() {
                 try {
                     OnReadyFunction?.Call();
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'function OnReady()' event: " + e.Message);
+                    ConsoleInstance.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendLine(string line) {
                 try {
                     OnLineFunction?.Call(line);
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'function OnLine()' event: " + e.Message);
+                    ConsoleInstance.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
                 }
+            }
+
+            private string? GetStackTrace(Exception e) {
+                if (e is JavaScriptException je) {
+                    return je.GetJavaScriptErrorString();
+                }
+
+                return e.Message;
             }
 
             public static Plugin? Import(string filePath) {
@@ -60,20 +68,16 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     string fileId = Path.GetFileName(filePath);
                     Logger.Info("Importing: " + fileId);
 
-                    string tempId = Guid.NewGuid().ToString();
                     Console console = new Console(fileId);
 
-                    EngineInstance.Modules.Add(tempId, builder => {
+                    EngineInstance.Modules.Add(fileId, builder => {
                         builder.ExportObject("console", console);
                         builder.ExportObject("storage", new Storage(filePath + "on")); // .js+on
                         builder.ExportObject("WS", new WS(fileId));
                         builder.ExportFunction("print", console.Print);
+                        // Unsafe, but better for stacktrace, sorry
+                        builder.AddSource(File.ReadAllText(filePath));
                     });
-
-                    string header = "import { console, storage, WS, print } from '" + tempId + "';\n";
-                    header += File.ReadAllText(filePath);
-
-                    EngineInstance.Modules.Add(fileId, header);
 
                     ObjectInstance instance = EngineInstance.Modules.Import(fileId);
 

@@ -1,4 +1,5 @@
-﻿using Jint;
+﻿using System.Text;
+using Jint;
 using Jint.Native;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils.API;
@@ -10,6 +11,7 @@ using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal static partial class JSEngine {
+        internal static readonly StringBuilder SharedSB = new StringBuilder();
         internal static readonly LoggerSource Logger = new LoggerSource("JavaScript");
         static bool Initialized { get; set; } = false;
 
