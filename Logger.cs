@@ -60,7 +60,29 @@ namespace ToNSaveManager {
                 SharedStringBuilder.Append(message ?? string.Empty);
 
                 string content = SharedStringBuilder.ToString();
-                if (AllocConsoleAllowed) Console.WriteLine(content);
+                if (AllocConsoleAllowed) {
+                    switch (logType) {
+                        case LogType.Log:
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            break;
+                        case LogType.Debug:
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            break;
+                        case LogType.Warning:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
+                        case LogType.Info:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                        case LogType.Error:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        default:
+                            break;
+                    }
+                    Console.WriteLine(content);
+                    Console.ResetColor();
+                }
                 System.Diagnostics.Debug.WriteLine(content);
                 LogFileWriter.WriteLine(content);
                 LogFileWriter.Flush();
