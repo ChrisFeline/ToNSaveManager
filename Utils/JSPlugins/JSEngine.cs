@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
+using Acornima.Ast;
 using Jint;
 using Jint.Native;
 using ToNSaveManager.Models;
@@ -10,6 +12,18 @@ using ToNSaveManager.Utils.API;
 */
 
 namespace ToNSaveManager.Utils.JSPlugins {
+    internal static class JSEngineExtensions {
+        static MethodInfo? Method_GetLastSyntaxElement;
+
+        internal static Node? GetLastSyntaxElement(this Engine engine) {
+            if (Method_GetLastSyntaxElement == null) {
+                Method_GetLastSyntaxElement = typeof(Engine).GetMethod("GetLastSyntaxElement", BindingFlags.Instance | BindingFlags.NonPublic);
+            }
+
+            return (Node?)Method_GetLastSyntaxElement?.Invoke(engine, null);
+        }
+    }
+
     internal static partial class JSEngine {
         internal static readonly StringBuilder SharedSB = new StringBuilder();
         internal static readonly LoggerSource Logger = new LoggerSource("JavaScript");
@@ -25,6 +39,10 @@ namespace ToNSaveManager.Utils.JSPlugins {
         static readonly List<Plugin> P_OnReady = new();
         static readonly List<Plugin> P_OnLine = new();
 
+        internal static string GetLastSyntaxSource() {
+            return EngineInstance.GetLastSyntaxElement()?.Location.SourceFile ?? "Unknown Source";
+        }
+
         internal static void Initialize() {
             string scriptsPath = Path.Combine(Program.ProgramDirectory, "scripts");
             if (!Directory.Exists(scriptsPath)) return;
@@ -36,25 +54,27 @@ namespace ToNSaveManager.Utils.JSPlugins {
             });
 
             var storage = new Storage(scriptsPath);
+            // general
+            EngineInstance.SetValue("console", Console.Instance);
+            EngineInstance.SetValue("print", Console.Instance.Print);
+            // api
             EngineInstance.SetValue("TON", API.Instance);
             EngineInstance.SetValue("OSC", OSC.Instance);
             EngineInstance.SetValue("Settings", Settings.Get);
+            EngineInstance.SetValue("WS", WS.Instance);
 
-            // Preloading
+            // pre-process
             foreach (string file in Directory.GetFiles(scriptsPath).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {
                 Plugin? plugin = Plugin.LoadFrom(file);
-                if (plugin != null) {
-                    Plugins.Add(plugin);
-                    // Post process plugin
-                    if (plugin.HasOnEvent) P_OnEvent.Add(plugin);
-                    if (plugin.HasOnReady) P_OnReady.Add(plugin);
-                    if (plugin.HasOnTick ) P_OnTick.Add(plugin);
-                    if (plugin.HasOnLine ) P_OnLine.Add(plugin);
-                }
+                if (plugin != null) Plugins.Add(plugin);
             }
-            // Postloading
+            // post-process
             foreach (Plugin plugin in Plugins) {
                 plugin.Import();
+                if (plugin.HasOnEvent) P_OnEvent.Add(plugin);
+                if (plugin.HasOnReady) P_OnReady.Add(plugin);
+                if (plugin.HasOnTick) P_OnTick.Add(plugin);
+                if (plugin.HasOnLine) P_OnLine.Add(plugin);
             }
 
             Initialized = true;

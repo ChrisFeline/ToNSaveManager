@@ -22,10 +22,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             internal bool HasOnReady => OnReadyFunction != null;
             internal bool HasOnLine => OnLineFunction != null;
 
-            private Console ConsoleInstance;
-
-            internal Plugin(string fileID, string filePath, Console console) {
-                ConsoleInstance = console;
+            internal Plugin(string fileID, string filePath) {
                 FileID = fileID;
                 FilePath = filePath;
             }
@@ -34,28 +31,28 @@ namespace ToNSaveManager.Utils.JSPlugins {
                 try {
                     OnEventFunction?.Call(@event);
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
+                    Console.Instance.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendTick() {
                 try {
                     OnTickFunction?.Call();
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
+                    Console.Instance.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendReady() {
                 try {
                     OnReadyFunction?.Call();
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
+                    Console.Instance.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendLine(string line) {
                 try {
                     OnLineFunction?.Call(line);
                 } catch (Exception e) {
-                    ConsoleInstance.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
+                    Console.Instance.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
                 }
             }
 
@@ -98,18 +95,12 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     string fileId = Path.GetFileName(filePath);
                     Logger.Log("Loading: " + fileId);
 
-                    Console console = new Console(fileId);
-
                     EngineInstance.Modules.Add(fileId, builder => {
-                        builder.ExportObject("console", console);
                         builder.ExportObject("storage", new Storage(filePath + "on")); // .js+on
-                        builder.ExportObject("WS", new WS(fileId));
-                        builder.ExportFunction("print", console.Print);
-                        // Unsafe, but better for stacktrace, sorry
                         builder.AddSource(File.ReadAllText(filePath));
                     });
 
-                    Plugin plugin = new Plugin(fileId, filePath, console);
+                    Plugin plugin = new Plugin(fileId, filePath);
 
                     Logger.Log("Loaded: " + fileId);
                     return plugin;

@@ -2,13 +2,11 @@
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal class Console {
+        internal static readonly Console Instance = new ();
+
         static LoggerSource Logger => JSEngine.Logger;
 
-        private string Prefix;
-
-        internal Console(string prefix) {
-            Prefix = $"[{prefix}] ";
-        }
+        private static string Prefix => $"[{JSEngine.GetLastSyntaxSource()}] ";
 
         internal void Print(params JsValue[] message) {
             Logger.Log(Prefix + string.Join(' ', message.Select(a => a.ToString())));

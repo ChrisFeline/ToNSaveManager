@@ -5,12 +5,10 @@ using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal class WS {
-        private string Source;
-        public bool Enabled => Settings.Get.WebSocketEnabled;
+        internal static readonly WS Instance = new WS();
+        private static string Source => JSEngine.GetLastSyntaxSource();
 
-        public WS(string source) {
-            Source = source;
-        }
+        public bool Enabled => Settings.Get.WebSocketEnabled;
 
         public void SendEvent(string name, object? value = null) {
             if (!string.IsNullOrEmpty(name))
