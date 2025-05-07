@@ -67,9 +67,10 @@ namespace ToNSaveManager.Utils.JSPlugins {
                         builder.ExportObject("console", console);
                         builder.ExportObject("storage", new Storage(filePath + "on")); // .js+on
                         builder.ExportObject("WS", new WS(fileId));
+                        builder.ExportFunction("print", console.Print);
                     });
 
-                    string header = "import { console, storage, WS } from '" + tempId + "';\n";
+                    string header = "import { console, storage, WS, print } from '" + tempId + "';\n";
                     header += File.ReadAllText(filePath);
 
                     EngineInstance.Modules.Add(fileId, header);

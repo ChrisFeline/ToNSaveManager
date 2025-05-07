@@ -1,4 +1,6 @@
-﻿namespace ToNSaveManager.Utils.JSPlugins {
+﻿using Jint.Native;
+
+namespace ToNSaveManager.Utils.JSPlugins {
     internal class Console {
         static LoggerSource Logger => JSEngine.Logger;
 
@@ -8,14 +10,17 @@
             Prefix = $"[{prefix}] ";
         }
 
-        public void Log(object message) {
-            Logger.Log(Prefix + message);
+        internal void Print(params JsValue[] message) {
+            Logger.Log(Prefix + string.Join(' ', message.Select(a => a.ToString())));
         }
-        public void Error(object message) {
-            Logger.Error(Prefix + message);
+        public void Log(params object[] message) {
+            Logger.Log(Prefix + string.Join(' ', message));
         }
-        public void Warn(object message) {
-            Logger.Warning(Prefix + message);
+        public void Error(params object[] message) {
+            Logger.Error(Prefix + string.Join(' ', message));
+        }
+        public void Warn(params object[] message) {
+            Logger.Warning(Prefix + string.Join(' ', message));
         }
     }
 }
