@@ -40,8 +40,9 @@ namespace ToNSaveManager.Utils.JSPlugins {
             EngineInstance.SetValue("OSC", OSC.Instance);
             EngineInstance.SetValue("Settings", Settings.Get);
 
+            // Preloading
             foreach (string file in Directory.GetFiles(scriptsPath).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {
-                Plugin? plugin = Plugin.Import(file);
+                Plugin? plugin = Plugin.LoadFrom(file);
                 if (plugin != null) {
                     Plugins.Add(plugin);
                     // Post process plugin
@@ -50,6 +51,10 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     if (plugin.HasOnTick ) P_OnTick.Add(plugin);
                     if (plugin.HasOnLine ) P_OnLine.Add(plugin);
                 }
+            }
+            // Postloading
+            foreach (Plugin plugin in Plugins) {
+                plugin.Import();
             }
 
             Initialized = true;
