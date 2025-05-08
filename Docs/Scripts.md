@@ -14,14 +14,54 @@ console.warn("OOF!");
 print("RUN!!!");
 ```
 
-## Sending OSC Parameters
-> More endpoints will be added soon, maybe.
+## Sending OSC Parameters & Values
 ```js
-OSC.SendInt(parameterName, value);
-OSC.SendFloat(parameterName, value);
-OSC.SendBool(parameterName, value);
-OSC.SendAvatar(avatarId);
-OSC.SendChatbox(chatboxMessage, direct, complete);
+// General
+OSC.Send(string path, object value); 
+OSC.SendFloat(string path, float value);
+OSC.SendInt(string path, int value);
+OSC.SendBool(string path, bool value);
+OSC.SendParameter(string name, float/int/bool value);
+// Parameters & Chatbox
+OSC.SendChatbox(string message, bool direct, bool complete); // Send chatbox text.
+// direct:
+//     true  - Send the text immediately, bypassing the keyboard.
+//     false - send the text to the keyboard.
+// complete:
+//     true  - Trigger the notification SFX.
+//     false - Do not play notification SFX.
+OSC.SetChatboxTyping(bool value); // Toggle the typing indicator on or off.
+// Axis
+OSC.MoveVertical(float value);   // Move forwards (1) or Backwards (-1)
+OSC.MoveHorizontal(float value); // Move right (1) or left (-1)
+OSC.LookHorizontal(float value); // Look Left and Right.
+OSC.UseAxisRight(float value);   // ...
+OSC.GrabAxisRight(float value);  // ...
+OSC.MoveHoldFB(float value);     // Move a held object forwards (1) and backwards (-1)
+OSC.SpinHoldCW(float value);     // Spin a held object Clockwise or Counter-Clockwise.
+OSC.SpinHoldUD(float value);     // Spin a held object Up or Down.
+OSC.SpinHoldLR(float value);     // Spin a held object Left or Right.
+// Buttons
+OSC.MoveForward(bool value);     // Move forward while true.
+OSC.MoveBackward(bool value);    // Move backwards while true.
+OSC.MoveLeft(bool value);        // Move left while true.
+OSC.MoveRight(bool value);       // Move right while true.
+OSC.LookLeft(bool value);        // Turn to the left while this is 1. Smooth in Desktop, VR will do a snap-turn if Comfort Turning is on.
+OSC.LookRight(bool value);       // ...
+OSC.Jump(bool value);            // Jump if the world supports it.
+OSC.Run(bool value);             // Walk faster if the world supports it.
+OSC.ComfortLeft(bool value);     // Snap-Turn to the left - VR Only.
+OSC.ComfortRight(bool value);    // Snap-Turn to the right - VR Only.
+OSC.GrabRight(bool value);       // Grab the item highlighted by your right hand - VR Only.
+OSC.DropRight(bool value);       // Drop the item held in your right hand - VR Only.
+OSC.UseRight(bool value);        // Use the item highlighted by your right hand - VR Only.
+OSC.GrabLeft(bool value);        // ...
+OSC.DropLeft(bool value);        // ...
+OSC.UseLeft(bool value);         // ...
+OSC.PanicButton(bool value);     // Turn on Safe Mode.
+OSC.QuickMenuToggleLeft(bool value);  // Toggle QuickMenu On/Off. Will toggle upon receiving '1' if it's currently '0'. 
+OSC.QuickMenuToggleRight(bool value); // ...
+OSC.Voice(bool value);           // Toggle Voice
 ```
 
 ## Listening to events
