@@ -27,6 +27,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
 
         // General Game State
         #region ToNGameState
+
         public static bool IsEmulated => ToNGameState.IsEmulated;
         public static bool IsAlive => ToNGameState.IsAlive;
         public static bool IsReborn => ToNGameState.IsReborn;
@@ -36,9 +37,12 @@ namespace ToNSaveManager.Utils.JSPlugins {
         public static int PageCount => ToNGameState.PageCount;
 
         public static ToNRoundType RoundType => ToNGameState.RoundType;
-        public static TerrorMatrix Terrors => ToNGameState.Terrors;
+        public static Color RoundColor => ToNGameState.Terrors.RoundColor;
         public static ToNIndex.Map Location => ToNGameState.Location;
         public static ToNIndex.Item Item => ToNGameState.Item;
+
+        public static ToNIndex.TerrorInfo[] Terrors => ToNGameState.Terrors.Terrors;
+        public static Color DisplayColor => ToNGameState.Terrors.DisplayColor;
 
         // Instance Information
         public static int PlayerCount => ToNGameState.PlayerCount;
