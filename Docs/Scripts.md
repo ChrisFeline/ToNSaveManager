@@ -178,6 +178,7 @@ TON.Item.Store    // The type of store this item is from
 TON.Item.Points   // Points required to unlock this item. (INT)
 TON.Item.IsEmpty  // TRUE if held item is empty/not-active.
 ```
+> [List of item IDs](./OSC/OSC_Items.md)
 
 ```js
 TON.Terrors;   // An array of terrors on the current round. Empty if none.
