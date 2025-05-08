@@ -24,6 +24,8 @@
         public void MoveBackward(bool value) => OSCLib.MoveBackward(value);
         public void MoveLeft(bool value) => OSCLib.MoveLeft(value);
         public void MoveRight(bool value) => OSCLib.MoveRight(value);
+        public void LookLeft(bool value) => OSCLib.LookLeft(value);
+        public void LookRight(bool value) => OSCLib.LookRight(value);
         public void Jump(bool value) => OSCLib.Jump(value);
         public void Run(bool value) => OSCLib.Run(value);
         public void ComfortLeft(bool value) => OSCLib.ComfortLeft(value);

@@ -37,6 +37,8 @@ namespace ToNSaveManager.Utils
         internal static void MoveBackward(bool value) => OscButtonInput.MoveBackward.Send(value);
         internal static void MoveLeft(bool value) => OscButtonInput.MoveLeft.Send(value);
         internal static void MoveRight(bool value) => OscButtonInput.MoveRight.Send(value);
+        internal static void LookLeft(bool value) => OscButtonInput.LookLeft.Send(value);
+        internal static void LookRight(bool value) => OscButtonInput.LookRight.Send(value);
         internal static void Jump(bool value) => OscButtonInput.Jump.Send(value);
         internal static void Run(bool value) => OscButtonInput.Run.Send(value);
 
