@@ -149,6 +149,9 @@ TON.RoundType; // Current Round Type (INT)
 105 // Eight_Pages
 106 // GIGABYTE
 107 // Cold_Night
+```
+
+```js
 TON.RoundColor;   // Display (HUD) color of the current round.
 TON.DisplayColor; // Display (HUD) color of the current terror.
 ```
