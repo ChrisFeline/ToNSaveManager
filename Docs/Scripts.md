@@ -25,7 +25,7 @@ OSC.SendChatbox(chatboxMessage, direct, complete);
 ```
 
 ## Listening to events
-> You can see a list of objects the `OnReady()` event can receive on the [WebSocketAPI DOCS](../WebSocketAPI.md).
+> You can see a list of objects the `OnReady()` event can receive on the [WebSocketAPI DOCS](./WebSocketAPI.md).
 ```js
 // Called when an event happens, these are the same events as the WebSocketAPI events.
 function OnEvent(args) {}
