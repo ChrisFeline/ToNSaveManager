@@ -1,6 +1,7 @@
 ﻿# Scripts API Documentation
 > (Under Construction)
-> These APIs can change at any moment during beta.
+> Some APIs might change and more will be added later on.
+> You can request changes or additions by creating an Issue here or posting a request on the Discord server.
 
 - To enable the use of scripts, simply create a folder called `scripts` under the same folder as the executable.
 - Create or copy a `.js` file inside this folder and have fun.
