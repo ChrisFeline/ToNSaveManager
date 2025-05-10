@@ -19,7 +19,6 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
             return result;
         }
 
-        public static History[] Collection => MainWindow.SaveData.Collection.ToArray();
         public static Entry? LatestSave => MainWindow.SaveData.FindRecentEntry();
     }
 }
