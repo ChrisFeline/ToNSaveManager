@@ -17,10 +17,12 @@ print("RUN!!!");
 // You can show Dialog Boxes with the 'alert' command.
 // ? are optional args
 let result = alert(String message, AlertButtons buttons?, AlertIcon icon?);
+
 // Examples:
 alert("Hello World");
 alert("Hello World", AlertButtons.OKCancel);
 alert("Hello World", AlertButtons.OKCancel, AlertIcon.Error);
+
 // You can compare the result with <AlertResult> properties:
 if (result == AlertResult.OK) { /* DO SOMETHING */ }
 
