@@ -13,6 +13,52 @@ console.error("OUCH!");
 console.warn("OOF!");
 print("RUN!!!");
 ```
+```js
+// You can show Dialog Boxes with the 'alert' command.
+// ? are optional args
+let result = alert(String message, AlertButtons buttons?, AlertIcon icon?);
+// Examples:
+alert("Hello World");
+alert("Hello World", AlertButtons.OKCancel);
+alert("Hello World", AlertButtons.OKCancel, AlertIcon.Error);
+// You can compare the result with <AlertResult> properties:
+if (result == AlertResult.OK) { /* DO SOMETHING */ }
+```
+```js
+// Alert Result values
+AlertResult.None
+AlertResult.OK
+AlertResult.Cancel
+AlertResult.Abort
+AlertResult.Retry
+AlertResult.Ignore
+AlertResult.Yes
+AlertResult.No
+AlertResult.TryAgain
+AlertResult.Continue
+```
+```js
+// AlertButtons values
+AlertButtons.OK
+AlertButtons.OKCancel
+AlertButtons.AbortRetryIgnore
+AlertButtons.YesNoCancel
+AlertButtons.YesNo
+AlertButtons.RetryCancel
+AlertButtons.CancelTryContinue
+```
+```js
+// AlertIcon values
+AlertIcon.None
+AlertIcon.Hand
+AlertIcon.Question
+AlertIcon.Exclamation
+AlertIcon.Asterisk
+AlertIcon.Stop
+AlertIcon.Error
+AlertIcon.Warning
+AlertIcon.Information
+```
 
 ## Sending OSC Parameters & Values
 ```js

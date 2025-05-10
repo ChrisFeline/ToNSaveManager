@@ -66,6 +66,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             // general
             EngineInstance.SetValue("console", Console.Instance);
             EngineInstance.SetValue("print", Console.Instance.Print);
+            SM.Register(EngineInstance);
             // api
             EngineInstance.SetValue("TON", API.Instance);
             EngineInstance.SetValue("OSC", OSC.Instance);

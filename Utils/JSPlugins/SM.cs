@@ -1,0 +1,21 @@
+﻿using Jint;
+using Jint.Runtime.Interop;
+using static ToNSaveManager.Utils.JSPlugins.SM;
+
+namespace ToNSaveManager.Utils.JSPlugins {
+    internal class SM {
+        private static string Source => JSEngine.GetLastSyntaxSource();
+
+        internal static void Register(Engine engine) {
+            engine.SetValue("AlertButtons", TypeReference.CreateTypeReference<MessageBoxButtons>(engine));
+            engine.SetValue("AlertIcon", TypeReference.CreateTypeReference<MessageBoxIcon>(engine));
+            engine.SetValue("AlertResult", TypeReference.CreateTypeReference<DialogResult>(engine));
+            engine.SetValue("alert", Alert);
+        }
+
+        internal static DialogResult Alert(string message, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
+            DialogResult result = MessageBox.Show(message, Source, buttons, icon);
+            return result;
+        }
+    }
+}

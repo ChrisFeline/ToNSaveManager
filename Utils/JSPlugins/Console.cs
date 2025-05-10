@@ -8,8 +8,8 @@ namespace ToNSaveManager.Utils.JSPlugins {
 
         private static string Prefix => $"[{JSEngine.GetLastSyntaxSource()}] ";
 
-        internal void Print(params JsValue[] message) {
-            Logger.Log(Prefix + string.Join(' ', message.Select(a => a.ToString())));
+        internal void Print(params object[] message) {
+            Logger.Log(Prefix + string.Join(' ', message));
         }
         public void Log(params object[] message) {
             Logger.Log(Prefix + string.Join(' ', message));
