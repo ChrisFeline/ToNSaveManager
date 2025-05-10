@@ -78,7 +78,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             JsValue val = JsValue.FromObject(JSEngine.EngineInstance, values);
             foreach (Function function in list) {
                 try {
-                    function.Call(val);
+                    function.Call(path, val);
                 } catch (Exception e) {
                     Console.Instance.Error("An exception was thrown while calling a function.\n" + JSEngine.GetStackTrace(e));
                 }

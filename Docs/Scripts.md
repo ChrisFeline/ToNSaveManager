@@ -66,13 +66,13 @@ OSC.SetAvatar(string id);        // Changes the user's avatar in VRC (Must on fa
 ```
 ```js
 // Subscribing to OSC Events...
-OSC.Register("/avatar/parameters/VelocityZ", function(values) {
+OSC.Register("/avatar/parameters/VelocityZ", function(path, values) {
     let value = values[0];
     console.log(value);
 });
 
 // You can subscribe to avatar parameters directly.
-OSC.RegisterParam("YourCoolToggle", function(values) {
+OSC.RegisterParam("YourCoolToggle", function(path, values) {
     // ...
 })
 ```
