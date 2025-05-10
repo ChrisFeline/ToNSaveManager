@@ -62,6 +62,19 @@ OSC.PanicButton(bool value);     // Turn on Safe Mode.
 OSC.QuickMenuToggleLeft(bool value);  // Toggle QuickMenu On/Off. Will toggle upon receiving '1' if it's currently '0'. 
 OSC.QuickMenuToggleRight(bool value); // ...
 OSC.Voice(bool value);           // Toggle Voice
+OSC.SetAvatar(string id);        // Changes the user's avatar in VRC (Must on favorites or uploaded)
+```
+```js
+// Subscribing to OSC Events...
+OSC.Register("/avatar/parameters/VelocityZ", function(values) {
+    let value = values[0];
+    console.log(value);
+});
+
+// You can subscribe to avatar parameters directly.
+OSC.RegisterParam("YourCoolToggle", function(values) {
+    // ...
+})
 ```
 
 ## Listening to events
