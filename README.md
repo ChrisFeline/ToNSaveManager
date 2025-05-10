@@ -64,6 +64,10 @@ If your parameters are not being received properly... try resetting the OSC conf
 <img src="Resources/osc_reset.png" >
 </p></details>
 
+## Scripting
+- You can extend this tool using JavaScript.
+  - Read the [Script Documentation](Docs/Scripts.md) to get started.
+
 # 🌐 Available Translations
 > Check [`Localization/CONTRIBUTE.md`](Localization/CONTRIBUTE.md) to help translate the Save Manager to your language.
 
