@@ -296,6 +296,12 @@
     "DisplayColor": "138, 235, 255"
   },
   {
+    "Name": "Panthera MK.II",
+    "Description": "Survive Neo Pilot.",
+    "Reference": "https://terror.moe/items/panthera_mkII",
+    "DisplayColor": "156, 199, 208"
+  },
+  {
     "Name": "April Fools Unlocks",
     "IsSeparator": true
   },
