@@ -64,8 +64,11 @@ namespace ToNSaveManager.Utils.JSPlugins {
             EngineInstance.SetValue("WS", WS.Instance);
 
             // pre-process
-            foreach (string file in Directory.GetFiles(scriptsPath).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {
-                Plugin? plugin = Plugin.LoadFrom(file);
+            foreach (string file in Directory.GetFiles(scriptsPath, "*.js", SearchOption.AllDirectories).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {
+                string fileId = Path.GetRelativePath(scriptsPath, file).Replace('\\', '/');
+                Plugin.Source source = new Plugin.Source(file, fileId);
+
+                Plugin? plugin = Plugin.LoadFrom(source);
                 if (plugin != null) Plugins.Add(plugin);
             }
             // post-process

@@ -1,5 +1,4 @@
-﻿using System;
-using Jint;
+﻿using Jint;
 using Jint.Native;
 using Jint.Native.Function;
 using Jint.Native.Object;
@@ -8,9 +7,22 @@ using Jint.Runtime;
 namespace ToNSaveManager.Utils.JSPlugins {
     internal static partial class JSEngine {
         internal class Plugin {
+            internal struct Source {
+                public string FilePath;
+                public string FileID;
+                public string FileName;
+
+                internal Source(string filePath, string fileId) {
+                    FilePath = filePath;
+                    FileID = fileId;
+                    FileName = Path.GetFileName(filePath);
+                }
+            }
+
             public ObjectInstance? ModuleInstance;
-            public string FileID;
-            public string FilePath;
+            public Source FileSource;
+            private string FileID => FileSource.FileID;
+            private string FilePath => FileSource.FilePath;
 
             private Function? OnEventFunction;
             private Function? OnTickFunction;
@@ -22,9 +34,8 @@ namespace ToNSaveManager.Utils.JSPlugins {
             internal bool HasOnReady => OnReadyFunction != null;
             internal bool HasOnLine => OnLineFunction != null;
 
-            internal Plugin(string fileID, string filePath) {
-                FileID = fileID;
-                FilePath = filePath;
+            internal Plugin(Source fileSource) {
+                FileSource = fileSource;
             }
 
             public void SendEvent(JsValue @event) {
@@ -90,9 +101,11 @@ namespace ToNSaveManager.Utils.JSPlugins {
                 }
             }
 
-            public static Plugin? LoadFrom(string filePath) {
+            public static Plugin? LoadFrom(Source source) {
                 try {
-                    string fileId = Path.GetFileName(filePath);
+                    string filePath = source.FilePath;
+                    string fileId = source.FileID;
+
                     Logger.Log("Loading: " + fileId);
 
                     EngineInstance.Modules.Add(fileId, builder => {
@@ -100,12 +113,12 @@ namespace ToNSaveManager.Utils.JSPlugins {
                         builder.AddSource(File.ReadAllText(filePath));
                     });
 
-                    Plugin plugin = new Plugin(fileId, filePath);
+                    Plugin plugin = new Plugin(source);
 
                     Logger.Log("Loaded: " + fileId);
                     return plugin;
                 } catch (Exception e) {
-                    Logger.Error($"Error while loading module '{Path.GetFileName(filePath)}' : {e.Message}");
+                    Logger.Error($"Error while loading module '{source.FileID}' : {e.Message}");
                     return null;
                 }
             }
