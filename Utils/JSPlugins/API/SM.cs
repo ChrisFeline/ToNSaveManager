@@ -1,6 +1,6 @@
 ﻿using Jint;
 using Jint.Runtime.Interop;
-using static ToNSaveManager.Utils.JSPlugins.API.SM;
+using ToNSaveManager.Models;
 
 namespace ToNSaveManager.Utils.JSPlugins.API {
     [JSEngineAPI("SM")]
@@ -18,5 +18,8 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
             DialogResult result = MessageBox.Show(message, Source, buttons, icon);
             return result;
         }
+
+        public static History[] Collection => MainWindow.SaveData.Collection.ToArray();
+        public static Entry? LatestSave => MainWindow.SaveData.FindRecentEntry();
     }
 }
