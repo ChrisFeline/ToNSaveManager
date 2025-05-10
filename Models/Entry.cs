@@ -138,7 +138,7 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
+        internal string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
         {
             StringBuilder sb = new StringBuilder();
             if (Pre) {

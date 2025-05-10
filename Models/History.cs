@@ -123,13 +123,13 @@ namespace ToNSaveManager.Models
             SetDirty();
         }
 
-        public void SetLogContext(ToNLogContext context)
+        internal void SetLogContext(ToNLogContext context)
         {
             DisplayName = context.DisplayName;
             SetDirty();
         }
 
-        public void SetLogKey(string logKey)
+        internal void SetLogKey(string logKey)
         {
             if (IsCustom) return;
             Guid = logKey;
@@ -144,7 +144,7 @@ namespace ToNSaveManager.Models
 
         [Obsolete] public List<Entry> Entries = new List<Entry>();
 
-        public Entry this[int i]
+        internal Entry this[int i]
         {
             get
             {
@@ -174,7 +174,7 @@ namespace ToNSaveManager.Models
             return Database.Count;
         }
 
-        public int Add(Entry entry)
+        internal int Add(Entry entry)
         {
             int index = FindIndex(entry.Content, entry.Timestamp);
             if (index > -1)
@@ -185,7 +185,7 @@ namespace ToNSaveManager.Models
             return index;
         }
 
-        public int Add(string content, DateTime timestamp, out Entry? entry)
+        internal int Add(string content, DateTime timestamp, out Entry? entry)
         {
             int index = FindIndex(content, timestamp);
             if (index < 0)
