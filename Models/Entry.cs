@@ -93,10 +93,10 @@ namespace ToNSaveManager.Models
 
         public ToNRoundResult RResult;
 
-        [JsonIgnore] public History? Parent;
-        [JsonIgnore] public bool Fresh;
-        [JsonIgnore] public int Length => Content.Length;
-        [JsonIgnore] public bool Pre;
+        [JsonIgnore] internal History? Parent;
+        [JsonIgnore] internal bool Fresh;
+        [JsonIgnore] internal int Length => Content.Length;
+        [JsonIgnore] internal bool Pre;
 
         public Entry(string content, DateTime timestamp)
         {
