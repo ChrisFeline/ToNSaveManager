@@ -67,14 +67,6 @@ namespace ToNSaveManager.Utils.JSPlugins {
                 }
             }
 
-            private string? GetStackTrace(Exception e) {
-                if (e is JavaScriptException je) {
-                    return je.GetJavaScriptErrorString();
-                }
-
-                return e.Message;
-            }
-
             public void Import() {
                 try {
                     Logger.Info("Importing: " + FileID);

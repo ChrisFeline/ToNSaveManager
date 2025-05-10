@@ -3,6 +3,7 @@ using System.Text;
 using Acornima.Ast;
 using Jint;
 using Jint.Native;
+using Jint.Runtime;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils.API;
 
@@ -38,6 +39,14 @@ namespace ToNSaveManager.Utils.JSPlugins {
         static readonly List<Plugin> P_OnTick = new();
         static readonly List<Plugin> P_OnReady = new();
         static readonly List<Plugin> P_OnLine = new();
+
+        internal static string? GetStackTrace(Exception e) {
+            if (e is JavaScriptException je) {
+                return je.GetJavaScriptErrorString();
+            }
+
+            return e.Message;
+        }
 
         internal static string GetLastSyntaxSource() {
             return EngineInstance.GetLastSyntaxElement()?.Location.SourceFile ?? "Unknown Source";

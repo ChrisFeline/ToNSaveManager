@@ -1,4 +1,8 @@
-﻿namespace ToNSaveManager.Utils.JSPlugins {
+﻿using Jint;
+using Jint.Native;
+using Jint.Native.Function;
+
+namespace ToNSaveManager.Utils.JSPlugins {
     // Re-Wrapping anything here so I can handle type errors and such...
     internal class OSC {
         internal static readonly OSC Instance = new();
@@ -40,5 +44,53 @@
         public void QuickMenuToggleLeft(bool value) => OSCLib.QuickMenuToggleLeft(value);
         public void QuickMenuToggleRight(bool value) => OSCLib.QuickMenuToggleRight(value);
         public void Voice(bool value) => OSCLib.Voice(value);
+        public void SetAvatar(string id) => OSCLib.SetAvatar(id);
+
+        public void Register(string path, Function? function) {
+            if (string.IsNullOrEmpty(path) || function == null) return;
+            StartListening();
+
+            AddAt(path, function);
+            Console.Instance.Log($"Listening to OSC Path: {path}");
+        }
+
+        public void RegisterParam(string name, Function? function) {
+            if (string.IsNullOrEmpty(name) || function == null) return;
+            StartListening();
+
+            AddAt("/avatar/parameters/" + name, function);
+        }
+
+        private static Dictionary<string, List<Function>> RegistredPaths = new Dictionary<string, List<Function>>();
+        private static List<Function>? GetAt(string path) => RegistredPaths.TryGetValue(path, out List<Function>? list) ? list : null;
+        private static void AddAt(string path, Function function) {
+            if (!RegistredPaths.ContainsKey(path))
+                RegistredPaths.Add(path, new List<Function>());
+
+            List<Function> list = RegistredPaths[path];
+            if (!list.Contains(function)) list.Add(function);
+        }
+
+        private static void ReceiveMessage(string path, object?[] values) {
+            List<Function>? list = GetAt(path);
+            if (list == null || list.Count == 0) return;
+
+            JsValue val = JsValue.FromObject(JSEngine.EngineInstance, values);
+            foreach (Function function in list) {
+                try {
+                    function.Call(val);
+                } catch (Exception e) {
+                    Console.Instance.Error("An exception was thrown while calling a function.\n" + JSEngine.GetStackTrace(e));
+                }
+            }
+        }
+
+        private static bool IsListening { get; set; } = false;
+        private static void StartListening() {
+            if (IsListening) return;
+
+            IsListening = true;
+            OSCLib.StartOSCMonitor(ReceiveMessage);
+        }
     }
 }

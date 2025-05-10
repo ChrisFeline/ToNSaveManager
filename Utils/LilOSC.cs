@@ -1,7 +1,4 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using ToNSaveManager.Models;
+﻿using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
@@ -10,6 +7,8 @@ using ToNSaveManager.Models.Stats;
 
 namespace ToNSaveManager.Utils
 {
+    using BlobHandles;
+    using BuildSoft.OscCore;
     using BuildSoft.VRChat.Osc;
     using BuildSoft.VRChat.Osc.Chatbox;
     using BuildSoft.VRChat.Osc.Input;
@@ -58,6 +57,50 @@ namespace ToNSaveManager.Utils
         internal static void QuickMenuToggleRight(bool value) => OscButtonInput.QuickMenuToggleRight.Send(value);
 
         internal static void Voice(bool value) => OscButtonInput.Voice.Send(value);
+
+        internal static void SetAvatar(string id) => Send("/avatar/change", id);
+
+        private static Action<string, object?[]>? MonitorCallback;
+
+        internal static void StartOSCMonitor(Action<string, object?[]>? callback) {
+            MonitorCallback = callback;
+            if (MonitorCallback != null) {
+                OscUtility.RegisterMonitorCallback(ReceiveMessage);
+            }
+        }
+
+        static void ReceiveMessage(BlobString address, OscMessageValues values) {
+            var addressString = address.ToString();
+            if (values.ElementCount <= 0) return;
+
+            object?[] objects = new object[values.ElementCount];
+            for (int i = 0; i < values.ElementCount; i++) objects[i] = ReadValue(values, i);
+
+            if (MonitorCallback != null) MonitorCallback(addressString, objects);
+        }
+
+        // https://github.com/ChanyaVRC/VRCOscLib/blob/e593b7ec1934abacb853c0481ebcb24735a8ffea/src/VRCOscLib/VRCOscLib/Utility/OscUtility.cs#L66
+        static object? ReadValue(OscMessageValues value, int index) {
+            return value.GetTypeTag(index) switch {
+                TypeTag.Float32 => value.ReadFloatElementUnchecked(index),
+                TypeTag.Int32 => value.ReadIntElementUnchecked(index),
+                TypeTag.True => true,
+                TypeTag.False => false,
+                TypeTag.AltTypeString or TypeTag.String => value.ReadStringElement(index),
+                TypeTag.Float64 => value.ReadFloat64ElementUnchecked(index),
+                TypeTag.Int64 => value.ReadInt64ElementUnchecked(index),
+                TypeTag.Blob => value.ReadBlobElement(index),
+                TypeTag.Color32 => value.ReadColor32ElementUnchecked(index),
+                TypeTag.MIDI => value.ReadMidiElementUnchecked(index),
+                TypeTag.AsciiChar32 => value.ReadAsciiCharElement(index),
+                TypeTag.TimeTag => value.ReadTimestampElementUnchecked(index),
+                TypeTag.Infinitum => double.PositiveInfinity,
+                TypeTag.Nil => null,
+                TypeTag.ArrayStart => null,
+                TypeTag.ArrayEnd => null,
+                _ => null,
+            };
+        }
     }
 
     internal static class LilOSC {
