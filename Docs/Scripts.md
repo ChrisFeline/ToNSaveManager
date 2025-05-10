@@ -286,3 +286,25 @@ Terror.Stunnable;     // Can be stunned? (BOOL)
 Terror.Group;         // Same as <TerrorInfo>.Group
 Terror.Color;         // The color for this terror.
 ```
+
+## Save Manager Data
+> Save Manager data and properties are accessible with the global variable `SM`
+```js
+SM.LatestSave;            // Returns the latest save entry.
+SM.LatestSave.Content     // This is the save code generated in-game.
+SM.LatestSave.Note        // Custom note attached to this entry.
+SM.LatestSave.TimeStamp   // Date time for this save entry.
+SM.LatestSave.PlayerCount // Player count at the time of saving.
+SM.LatestSave.Players     // Player names present in the lobby at the time of saving.
+SM.LatestSave.RT          // Round Type. Same values as TON.RoundType
+SM.LatestSave.TD          // Terror Data, this is a TerrorInfo[] array. Same values as ToN.Terrors
+SM.LatestSave.RResult     // Round Result (INT)
+    0 // Respawn
+    1 // Win
+    2 // Leaving
+    3 // Lost < never happens, kept for legacy
+    4 // Forgot to save lol
+    5 // REBORN (Died with Maxwell)
+
+SM.LatestSave.CopyToClipboard(); // Copy the content of this save to the clipboard.
+```
