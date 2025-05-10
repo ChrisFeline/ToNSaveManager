@@ -23,42 +23,21 @@ alert("Hello World", AlertButtons.OKCancel);
 alert("Hello World", AlertButtons.OKCancel, AlertIcon.Error);
 // You can compare the result with <AlertResult> properties:
 if (result == AlertResult.OK) { /* DO SOMETHING */ }
+
+// See the property table below for possible values:
 ```
-```js
-// Alert Result values
-AlertResult.None
-AlertResult.OK
-AlertResult.Cancel
-AlertResult.Abort
-AlertResult.Retry
-AlertResult.Ignore
-AlertResult.Yes
-AlertResult.No
-AlertResult.TryAgain
-AlertResult.Continue
-```
-```js
-// AlertButtons values
-AlertButtons.OK
-AlertButtons.OKCancel
-AlertButtons.AbortRetryIgnore
-AlertButtons.YesNoCancel
-AlertButtons.YesNo
-AlertButtons.RetryCancel
-AlertButtons.CancelTryContinue
-```
-```js
-// AlertIcon values
-AlertIcon.None
-AlertIcon.Hand
-AlertIcon.Question
-AlertIcon.Exclamation
-AlertIcon.Asterisk
-AlertIcon.Stop
-AlertIcon.Error
-AlertIcon.Warning
-AlertIcon.Information
-```
+| AlertResult | AlertButtons | AlertIcon |
+| - | - | - |
+| **AlertResult**.None     |                                    | **AlertIcon**.None
+| **AlertResult**.OK       | **AlertButtons**.OK                | **AlertIcon**.Hand
+| **AlertResult**.Cancel   | **AlertButtons**.OKCancel          | **AlertIcon**.Question
+| **AlertResult**.Abort    | **AlertButtons**.AbortRetryIgnore  | **AlertIcon**.Exclamation
+| **AlertResult**.Retry    | **AlertButtons**.RetryCancel       | **AlertIcon**.Asterisk
+| **AlertResult**.Ignore   |                                    | **AlertIcon**.Stop
+| **AlertResult**.Yes      | **AlertButtons**.YesNoCancel       | **AlertIcon**.Error
+| **AlertResult**.No       |                                    | **AlertIcon**.Warning
+| **AlertResult**.TryAgain | **AlertButtons**.CancelTryContinue | **AlertIcon**.Information
+| **AlertResult**.Continue |                                    | 
 
 ## Sending OSC Parameters & Values
 ```js
