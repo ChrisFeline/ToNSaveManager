@@ -88,6 +88,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
         private static void StartListening() {
             if (IsListening) return;
 
+            Console.Log("OSC Listening Requested!");
             IsListening = true;
             OSCLib.StartOSCMonitor(ReceiveMessage);
         }
