@@ -1,9 +1,10 @@
 ﻿using Jint;
 using Jint.Runtime.Interop;
-using static ToNSaveManager.Utils.JSPlugins.SM;
+using static ToNSaveManager.Utils.JSPlugins.API.SM;
 
-namespace ToNSaveManager.Utils.JSPlugins {
-    internal class SM {
+namespace ToNSaveManager.Utils.JSPlugins.API {
+    [JSEngineAPI("SM")]
+    internal static class SM {
         private static string Source => JSEngine.GetLastSyntaxSource();
 
         internal static void Register(Engine engine) {

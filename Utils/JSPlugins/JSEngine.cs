@@ -4,6 +4,7 @@ using Acornima.Ast;
 using Jint;
 using Jint.Native;
 using Jint.Runtime;
+using Jint.Runtime.Interop;
 using ToNSaveManager.Models;
 using ToNSaveManager.Utils.API;
 
@@ -22,6 +23,18 @@ namespace ToNSaveManager.Utils.JSPlugins {
             }
 
             return (Node?)Method_GetLastSyntaxElement?.Invoke(engine, null);
+        }
+
+        internal static Engine SetType<T>(this Engine engine, string name) {
+            return engine.SetValue(name, Jint.Runtime.Interop.TypeReference.CreateTypeReference<T>(engine));
+        }
+    }
+
+    internal class JSEngineAPIAttribute : Attribute {
+        public string Name { get; set; }
+
+        public JSEngineAPIAttribute(string name) {
+            Name = name;
         }
     }
 
@@ -63,15 +76,29 @@ namespace ToNSaveManager.Utils.JSPlugins {
             });
 
             var storage = new Storage(scriptsPath);
+            // scan apis
+            TypeReference? typeReference;
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes()) {
+                typeReference = null;
+                foreach (JSEngineAPIAttribute attr in type.GetCustomAttributes<JSEngineAPIAttribute>()) {
+                    if (typeReference == null)
+                        typeReference = TypeReference.CreateTypeReference(EngineInstance, type);
+
+                    EngineInstance.SetValue(attr.Name, typeReference);
+                    Logger.Debug("Registered API: " + attr.Name);
+                }
+
+                if (typeReference != null) {
+                    MethodInfo? registerMethod = type.GetMethod("Register", BindingFlags.NonPublic | BindingFlags.Static);
+                    if (registerMethod != null) {
+                        registerMethod.Invoke(null, [EngineInstance]);
+                        Logger.Debug("Called Register()");
+                    }
+                }
+            }
             // general
-            EngineInstance.SetValue("console", Console.Instance);
-            EngineInstance.SetValue("print", Console.Instance.Print);
-            SM.Register(EngineInstance);
-            // api
-            EngineInstance.SetValue("TON", API.Instance);
-            EngineInstance.SetValue("OSC", OSC.Instance);
             EngineInstance.SetValue("Settings", Settings.Get);
-            EngineInstance.SetValue("WS", WS.Instance);
 
             // pre-process
             foreach (string file in Directory.GetFiles(scriptsPath, "*.js", SearchOption.AllDirectories).Where(f => !f.StartsWith('.') && f.EndsWith(".js"))) {

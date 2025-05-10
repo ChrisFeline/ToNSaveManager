@@ -3,6 +3,7 @@ using Jint.Native;
 using Jint.Native.Function;
 using Jint.Native.Object;
 using Jint.Runtime;
+using ToNSaveManager.Utils.JSPlugins.API;
 
 namespace ToNSaveManager.Utils.JSPlugins {
     internal static partial class JSEngine {
@@ -42,28 +43,28 @@ namespace ToNSaveManager.Utils.JSPlugins {
                 try {
                     OnEventFunction?.Call(@event);
                 } catch (Exception e) {
-                    Console.Instance.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
+                    API.Console.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendTick() {
                 try {
                     OnTickFunction?.Call();
                 } catch (Exception e) {
-                    Console.Instance.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
+                    API.Console.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendReady() {
                 try {
                     OnReadyFunction?.Call();
                 } catch (Exception e) {
-                    Console.Instance.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
+                    API.Console.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
                 }
             }
             public void SendLine(string line) {
                 try {
                     OnLineFunction?.Call(line);
                 } catch (Exception e) {
-                    Console.Instance.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
+                    API.Console.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
                 }
             }
 

@@ -3,31 +3,28 @@ using ToNSaveManager.Models.Index;
 using ToNSaveManager.Models.Stats;
 using ToNSaveManager.Utils.API;
 
-namespace ToNSaveManager.Utils.JSPlugins {
-    internal class WS {
-        internal static readonly WS Instance = new WS();
+namespace ToNSaveManager.Utils.JSPlugins.API {
+    [JSEngineAPI("WS")]
+    internal static class WS {
         private static string Source => JSEngine.GetLastSyntaxSource();
 
-        public bool Enabled => Settings.Get.WebSocketEnabled;
-
-        public void SendEvent(string name, object? value = null) {
+        public static bool Enabled => Settings.Get.WebSocketEnabled;
+        public static void SendEvent(string name, object? value = null) {
             if (!string.IsNullOrEmpty(name))
                 WebSocketAPI.EventCustom.Send(Source, name, value);
         }
     }
 
-    internal class API {
-        internal static API Instance = new();
-
+    [JSEngineAPI("TON")]
+    internal static class API {
         #region ToN Stats Data
-        public StatsData Stats => ToNStats.Local;
-        public StatsLobby StatsLobby => ToNStats.Lobby;
-        public StatsRound StatsRound => ToNStats.Round;
+        public static StatsData Stats => ToNStats.Local;
+        public static StatsLobby StatsLobby => ToNStats.Lobby;
+        public static StatsRound StatsRound => ToNStats.Round;
         #endregion
 
         // General Game State
         #region ToNGameState
-
         public static bool IsEmulated => ToNGameState.IsEmulated;
         public static bool IsAlive => ToNGameState.IsAlive;
         public static bool IsReborn => ToNGameState.IsReborn;
