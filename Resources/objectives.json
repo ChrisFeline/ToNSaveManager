@@ -92,6 +92,12 @@
     "IsSeparator": true
   },
   {
+    "Name": "Thorn Scanner",
+    "Description": "Survive a Midnight round with Radar.",
+    "Reference": "https://terror.moe/items/thorn_scanner",
+    "DisplayColor": "253, 119, 126"
+  },
+  {
     "Name": "Red Medkit",
     "Description": "Survive Virus with Medkit.",
     "Reference": "https://terror.moe/items/medkit",
@@ -132,6 +138,12 @@
     "Description": "Survive an Unbound round with Teleporter.",
     "Reference": "https://terror.moe/items/soul_visitor",
     "DisplayColor": "253, 165, 97"
+  },
+  {
+    "Name": "Broken Teleporter",
+    "Description": "Survive Cracked with Teleporter.",
+    "Reference": "https://terror.moe/items/broken_teleporter",
+    "DisplayColor": "255, 116, 255"
   },
   {
     "Name": "Bloody Coil",
