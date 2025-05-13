@@ -145,8 +145,6 @@ namespace ToNSaveManager.Utils.JSPlugins {
         }
 
         internal static void Process() {
-            CreateEngine();
-
             while (true) {
                 if (JSQueue.TryDequeue(out JSOperation operation)) {
                     Function[] funcs = operation.Functions;
@@ -169,6 +167,8 @@ namespace ToNSaveManager.Utils.JSPlugins {
         static Thread? JSThread = null;
         internal static void Initialize() {
             if (!Directory.Exists(scriptsPath) || JSThread != null) return;
+
+            CreateEngine();
 
             JSThread = new Thread(new ThreadStart(Process)) { IsBackground = true };
             JSThread.Start();
