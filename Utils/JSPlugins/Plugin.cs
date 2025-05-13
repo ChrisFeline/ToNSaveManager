@@ -62,7 +62,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     ModuleInstance = instance;
                 } catch (Exception e) {
                     if (e is TimeoutException) {
-                        Logger.Error($"Importing '{Path.GetFileName(FilePath)}' is taking too long. {e.Message}");
+                        Logger.Error($"Importing '{Path.GetFileName(FilePath)}' is taking too long. {e.Message}\n" + EngineInstance.Advanced.StackTrace);
                         return;    
                     }
 

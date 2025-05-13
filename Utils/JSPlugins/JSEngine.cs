@@ -30,6 +30,11 @@ namespace ToNSaveManager.Utils.JSPlugins {
         internal static Engine SetType<T>(this Engine engine, string name) {
             return engine.SetValue(name, Jint.Runtime.Interop.TypeReference.CreateTypeReference<T>(engine));
         }
+
+        internal static string GetName(this Function function) {
+            const string @string = " { [native code] }";
+            return function.ToString().Replace(@string, string.Empty);
+        }
     }
 
     internal class JSEngineAPIAttribute : Attribute {
@@ -73,7 +78,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
             EngineInstance = new Jint.Engine(options => {
                 options.EnableModules(scriptsPath);
                 options.Interop.AllowWrite = false;
-                options.TimeoutInterval(TimeSpan.FromMinutes(3)); // Timeout if it takes too long to import a script, sorry :(
+                options.TimeoutInterval(TimeSpan.FromSeconds(30)); // Timeout if it takes too long to import a script, sorry :(
             });
 
             // scan apis
@@ -127,6 +132,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
         struct JSOperation {
             public Function[] Functions;
             public object?[]? Arguments;
+            public Action<JsValue>? Callback;
         }
 
         static readonly ConcurrentQueue<JSOperation> JSQueue = new ConcurrentQueue<JSOperation>();
@@ -152,9 +158,15 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     JsValue[]? args = operation.Arguments?.Select(p => JsValue.FromObject(EngineInstance, p)).ToArray();
                     foreach (Function func in operation.Functions) {
                         try {
-                            _ = args != null ? func.Call(args) : func.Call();
+                            JsValue jsv = args != null ? func.Call(args) : func.Call();
+                            operation.Callback?.Invoke(jsv);
                         } catch (Exception e) {
-                            API.Console.Error($"An exception was thrown while calling {func}.\n': {GetStackTrace(e)}");
+                            if (e is TimeoutException) {
+                                API.Console.Error($"Calling '{func.GetName()}' is taking too long. {e.Message}\n" + EngineInstance.Advanced.StackTrace);
+                                continue;
+                            }
+
+                            API.Console.Error($"An exception was thrown while calling {func.GetName()}.\n: {GetStackTrace(e)}");
                         }
                     }
                 } else {
