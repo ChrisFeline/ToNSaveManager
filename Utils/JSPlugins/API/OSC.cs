@@ -6,6 +6,8 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
     // Re-Wrapping anything here so I can handle type errors and such...
     [JSEngineAPI("OSC")]
     internal static class OSC {
+        static LoggerSource Logger => JSEngine.Logger;
+
         public static void Send(string path, object value) => OSCLib.Send(path, value);
         public static void SendFloat(string path, float value) => OSCLib.Send(path, value);
         public static void SendInt(string path, int value) => OSCLib.Send(path, value);
@@ -47,7 +49,11 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
 
         public static void Register(string path, Function? function) {
             if (string.IsNullOrEmpty(path) || function == null) return;
-            StartListening();
+
+            if (JSEngine.Initialized) {
+                Console.Error("Listening to OSC paths or parameters can only be registered at initialization.");
+                return;
+            }
 
             AddAt(path, function);
             Console.Log($"Listening to OSC Path: {path}");
@@ -55,13 +61,35 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
 
         public static void RegisterParam(string name, Function? function) {
             if (string.IsNullOrEmpty(name) || function == null) return;
-            StartListening();
+
+            if (JSEngine.Initialized) {
+                Console.Error("Listening to OSC paths or parameters can only be registered at initialization.");
+                return;
+            }
 
             AddAt("/avatar/parameters/" + name, function);
         }
 
+        internal static void Init() {
+            if (RegistredPaths.Count == 0) return;
+
+            foreach (var kvp in RegistredPaths) {
+                var path = kvp.Key;
+                var value = kvp.Value;
+
+                RegistredPathsFinal[path] = value.ToArray();
+                value.Clear();
+            }
+
+            RegistredPaths.Clear();
+            StartListening();
+        }
+
         private static Dictionary<string, List<Function>> RegistredPaths = new Dictionary<string, List<Function>>();
-        private static List<Function>? GetAt(string path) => RegistredPaths.TryGetValue(path, out List<Function>? list) ? list : null;
+        private static Dictionary<string, Function[]> RegistredPathsFinal = new Dictionary<string, Function[]>();
+
+        private static Function[]? GetAt(string path) => RegistredPathsFinal.TryGetValue(path, out Function[]? list) ? list : null;
+
         private static void AddAt(string path, Function function) {
             if (!RegistredPaths.ContainsKey(path))
                 RegistredPaths.Add(path, new List<Function>());
@@ -71,24 +99,20 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
         }
 
         private static void ReceiveMessage(string path, object?[] values) {
-            List<Function>? list = GetAt(path);
-            if (list == null || list.Count == 0) return;
+            var list = GetAt(path);
+            if (list == null || list.Length == 0 || values == null || values.Length == 0) return;
 
-            JsValue val = JsValue.FromObject(JSEngine.EngineInstance, values);
-            foreach (Function function in list) {
-                try {
-                    function.Call(path, val);
-                } catch (Exception e) {
-                    Console.Error("An exception was thrown while calling a function.\n" + JSEngine.GetStackTrace(e));
-                }
-            }
+            object? value = values[0];
+            if (value == null) return;
+
+            JSEngine.Enqueue(list, path, values);
         }
 
         private static bool IsListening { get; set; } = false;
         private static void StartListening() {
             if (IsListening) return;
 
-            Console.Log("OSC Listening Requested!");
+            Logger.Log("OSC Listening Requested!");
             IsListening = true;
             OSCLib.StartOSCMonitor(ReceiveMessage);
         }

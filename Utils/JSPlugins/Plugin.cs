@@ -25,10 +25,10 @@ namespace ToNSaveManager.Utils.JSPlugins {
             private string FileID => FileSource.FileID;
             private string FilePath => FileSource.FilePath;
 
-            private Function? OnEventFunction;
-            private Function? OnTickFunction;
-            private Function? OnReadyFunction;
-            private Function? OnLineFunction;
+            internal Function? OnEventFunction;
+            internal Function? OnTickFunction;
+            internal Function? OnReadyFunction;
+            internal Function? OnLineFunction;
 
             internal bool HasOnEvent => OnEventFunction != null;
             internal bool HasOnTick => OnTickFunction != null;
@@ -37,35 +37,6 @@ namespace ToNSaveManager.Utils.JSPlugins {
 
             internal Plugin(Source fileSource) {
                 FileSource = fileSource;
-            }
-
-            public void SendEvent(JsValue @event) {
-                try {
-                    OnEventFunction?.Call(@event);
-                } catch (Exception e) {
-                    API.Console.Error("An exception was thrown while calling 'OnEvent()' function.\n" + GetStackTrace(e));
-                }
-            }
-            public void SendTick() {
-                try {
-                    OnTickFunction?.Call();
-                } catch (Exception e) {
-                    API.Console.Error("An exception was thrown while calling 'OnTick()' function.\n" + GetStackTrace(e));
-                }
-            }
-            public void SendReady() {
-                try {
-                    OnReadyFunction?.Call();
-                } catch (Exception e) {
-                    API.Console.Error("An exception was thrown while calling 'OnReady()' function.\n" + GetStackTrace(e));
-                }
-            }
-            public void SendLine(string line) {
-                try {
-                    OnLineFunction?.Call(line);
-                } catch (Exception e) {
-                    API.Console.Error("An exception was thrown while calling 'OnLine()' function.\n': " + GetStackTrace(e));
-                }
             }
 
             public void Import() {

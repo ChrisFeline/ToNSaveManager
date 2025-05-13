@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using System.Text;
 using Acornima.Ast;
 using Jint;
 using Jint.Native;
+using Jint.Native.Function;
 using Jint.Runtime;
 using Jint.Runtime.Interop;
 using ToNSaveManager.Models;
@@ -39,19 +41,21 @@ namespace ToNSaveManager.Utils.JSPlugins {
     }
 
     internal static partial class JSEngine {
+        static string scriptsPath = Path.Combine(Program.ProgramDirectory, "scripts");
+
         internal static readonly StringBuilder SharedSB = new StringBuilder();
         internal static readonly LoggerSource Logger = new LoggerSource("JavaScript");
-        static bool Initialized { get; set; } = false;
+        internal static bool Initialized { get; set; } = false;
 
 #pragma warning disable CS8618
         internal static Engine EngineInstance;
 #pragma warning restore CS8618
         static readonly HashSet<Plugin> Plugins = new ();
 
-        static readonly List<Plugin> P_OnEvent = new();
-        static readonly List<Plugin> P_OnTick = new();
-        static readonly List<Plugin> P_OnReady = new();
-        static readonly List<Plugin> P_OnLine = new();
+        static Function[] P_OnEvent_Fn = Array.Empty<Function>();
+        static Function[] P_OnTick_Fn = Array.Empty<Function>();
+        static Function[] P_OnReady_Fn = Array.Empty<Function>();
+        static Function[] P_OnLine_Fn = Array.Empty<Function>();
 
         internal static string? GetStackTrace(Exception e) {
             if (e is JavaScriptException je) {
@@ -65,17 +69,13 @@ namespace ToNSaveManager.Utils.JSPlugins {
             return EngineInstance.GetLastSyntaxElement()?.Location.SourceFile ?? "Unknown Source";
         }
 
-        internal static void Initialize() {
-            string scriptsPath = Path.Combine(Program.ProgramDirectory, "scripts");
-            if (!Directory.Exists(scriptsPath)) return;
-
+        internal static void CreateEngine() {
             EngineInstance = new Jint.Engine(options => {
                 options.EnableModules(scriptsPath);
                 options.Interop.AllowWrite = false;
                 options.TimeoutInterval(TimeSpan.FromMinutes(3)); // Timeout if it takes too long to import a script, sorry :(
             });
 
-            var storage = new Storage(scriptsPath);
             // scan apis
             TypeReference? typeReference;
 
@@ -111,38 +111,87 @@ namespace ToNSaveManager.Utils.JSPlugins {
             // post-process
             foreach (Plugin plugin in Plugins) {
                 plugin.Import();
-                if (plugin.HasOnEvent) P_OnEvent.Add(plugin);
-                if (plugin.HasOnReady) P_OnReady.Add(plugin);
-                if (plugin.HasOnTick) P_OnTick.Add(plugin);
-                if (plugin.HasOnLine) P_OnLine.Add(plugin);
             }
 
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+            P_OnEvent_Fn = Plugins.Where(p => p.HasOnEvent).Select(p => p.OnEventFunction).ToArray();
+            P_OnTick_Fn = Plugins.Where(p => p.HasOnTick).Select(p => p.OnTickFunction).ToArray();
+            P_OnLine_Fn = Plugins.Where(p => p.HasOnLine).Select(p => p.OnLineFunction).ToArray();
+            P_OnReady_Fn = Plugins.Where(p => p.HasOnReady).Select(p => p.OnReadyFunction).ToArray();
+#pragma warning restore CS8619
+
+            API.OSC.Init();
             Initialized = true;
         }
 
-        internal static void InvokeOnEvent(WebSocketAPI.IEvent arg) {
-            if (!Initialized || P_OnEvent.Count == 0) return;
+        struct JSOperation {
+            public Function[] Functions;
+            public object?[]? Arguments;
+        }
 
-            var eventValue = JsValue.FromObject(EngineInstance, arg);
-            foreach (Plugin plugin in P_OnEvent) plugin.SendEvent(eventValue);
+        static readonly ConcurrentQueue<JSOperation> JSQueue = new ConcurrentQueue<JSOperation>();
+        static readonly ManualResetEvent JSEvent = new ManualResetEvent(false);
+
+        internal static void Enqueue(Function[] functions, params object?[] arguments) {
+            JSOperation op = new JSOperation() {
+                Functions = functions,
+                Arguments = arguments.Length == 0 ? null : arguments
+            };
+            JSQueue.Enqueue(op);
+            JSEvent.Set();
+        }
+        internal static void Enqueue(Function function, params object?[] arguments) {
+            Enqueue([function], arguments);
+        }
+
+        internal static void Process() {
+            CreateEngine();
+
+            while (true) {
+                if (JSQueue.TryDequeue(out JSOperation operation)) {
+                    Function[] funcs = operation.Functions;
+
+                    JsValue[]? args = operation.Arguments?.Select(p => JsValue.FromObject(EngineInstance, p)).ToArray();
+                    foreach (Function func in operation.Functions) {
+                        try {
+                            _ = args != null ? func.Call(args) : func.Call();
+                        } catch (Exception e) {
+                            API.Console.Error($"An exception was thrown while calling {func}.\n': {GetStackTrace(e)}");
+                        }
+                    }
+                } else {
+                    JSEvent.Reset();
+                    JSEvent.WaitOne();
+                }
+            }
+        }
+
+        static Thread? JSThread = null;
+        internal static void Initialize() {
+            if (!Directory.Exists(scriptsPath) || JSThread != null) return;
+
+            JSThread = new Thread(new ThreadStart(Process)) { IsBackground = true };
+            JSThread.Start();
+        }
+
+        internal static void InvokeOnEvent(WebSocketAPI.IEvent arg) {
+            if (!Initialized || P_OnEvent_Fn.Length == 0) return;
+            Enqueue(P_OnEvent_Fn, arg);
         }
 
         internal static void InvokeOnTick() {
-            if (!Initialized) return;
-
-            foreach (Plugin plugin in P_OnTick) plugin.SendTick();
+            if (!Initialized || P_OnTick_Fn.Length == 0) return;
+            Enqueue(P_OnTick_Fn);
         }
 
         internal static void InvokeOnReady() {
-            if (!Initialized) return;
-
-            foreach (Plugin plugin in P_OnReady) plugin.SendReady();
+            if (!Initialized || P_OnReady_Fn.Length == 0) return;
+            Enqueue(P_OnReady_Fn);
         }
 
         internal static void InvokeOnLine(string line) {
-            if (!Initialized || P_OnLine.Count == 0) return;
-
-            foreach (Plugin plugin in P_OnLine) plugin.SendLine(line);
+            if (!Initialized || P_OnLine_Fn.Length == 0) return;
+            Enqueue(P_OnLine_Fn, line);
         }
     }
 }
