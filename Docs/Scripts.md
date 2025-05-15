@@ -336,3 +336,13 @@ AudioPlayer.SetVolume(value); // Sets the volume value (Value must be a float fr
 
 AudioPlayer.IsPlaying;        // 'true' if something is playing.
 ```
+
+## Text to Speech
+```js
+TTS.Speak(prompt);    // Speak the prompted string into TTS.
+TTS.Stop();           // Stops the TTS from speaking.
+TTS.GetVolume();      // Gets the current volume value.
+TTS.SetVolume(value); // Sets the volume value (Value must be a int from 0 to 100)
+
+TTS.IsSpeaking;       // 'true' if TTS is still playing the previous prompt.
+```
