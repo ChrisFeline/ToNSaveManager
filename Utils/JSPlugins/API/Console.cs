@@ -1,5 +1,4 @@
 ﻿using Jint;
-using Jint.Native;
 
 namespace ToNSaveManager.Utils.JSPlugins.API {
     [JSEngineAPI("console")]

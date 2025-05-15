@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToNSaveManager.Models;
+﻿using ToNSaveManager.Models;
 using ToNSaveManager.Utils.API;
 
 namespace ToNSaveManager.Utils.JSPlugins.API {

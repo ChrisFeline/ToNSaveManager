@@ -1,6 +1,4 @@
-﻿using Jint;
-using Jint.Native;
-using Jint.Native.Function;
+﻿using Jint.Native.Function;
 
 namespace ToNSaveManager.Utils.JSPlugins.API {
     // Re-Wrapping anything here so I can handle type errors and such...
