@@ -309,3 +309,30 @@ SM.LatestSave.RResult     // Round Result (INT)
 
 SM.LatestSave.CopyToClipboard(); // Copy the content of this save to the clipboard.
 ```
+
+## File System
+> You are only allowed to locate files inside the scripts folder.
+```js
+// Reading a file
+FS.Read(path); // Returns a string with the file's content
+// Writing a file
+FS.Write(path, content);  // 'content' must be the string to write to this file.
+// Checking if file exists
+FS.Exists(path); // Returns 'true' if the file is found.
+
+FS.GetFiles(path); // Returns an array of files inside a folder
+FS.GetDirs(path); // Returns an array of directories inside a folder
+```
+The `path` is resolved relative to the script location.<br>
+For example, on a script located at `scripts/cats/meow.js` passing `hello.txt` will resolve this path as `scripts/cats/hello.txt`
+
+## Playing Audio (Experimental)
+> Paths follow the same rules as **File System**.
+```js
+AudioPlayer.Play(path);       // Play audio file at path.
+AudioPlayer.Stop();           // Stops the audio player.
+AudioPlayer.GetVolume();      // Gets the current volume value.
+AudioPlayer.SetVolume(value); // Sets the volume value (Value must be a float from 0.0 to 1.0)
+
+AudioPlayer.IsPlaying;        // 'true' if something is playing.
+```

@@ -46,7 +46,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
     }
 
     internal static partial class JSEngine {
-        static string scriptsPath = Path.Combine(Program.ProgramDirectory, "scripts");
+        internal static string scriptsPath = Path.Combine(Program.ProgramDirectory, "scripts");
 
         internal static readonly StringBuilder SharedSB = new StringBuilder();
         internal static readonly LoggerSource Logger = new LoggerSource("JavaScript");
