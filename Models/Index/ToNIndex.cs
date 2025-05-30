@@ -167,6 +167,7 @@ namespace ToNSaveManager.Models.Index {
         {
             [JsonIgnore] public bool IsEmpty { get; set; }
             [JsonProperty("i")] public int Id { get; set; }
+            public int ID => Id; // oops, facilitate JS access to this value
 
 #if NO_SPOILERS
             [JsonIgnore] private string m_Name { get; set; } = string.Empty;
