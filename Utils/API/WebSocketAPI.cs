@@ -49,6 +49,7 @@ namespace ToNSaveManager.Utils.API {
 
                 Server.ClientConnected += Server_ClientConnected;
                 Server.ClientDisconnected += Server_ClientDisconnected;
+                Server.MessageReceived += Server_MessageReceived;
             }
 
             if (Settings.Get.WebSocketEnabled && Server != null && !Server.IsListening) {
@@ -60,6 +61,15 @@ namespace ToNSaveManager.Utils.API {
                 Server.Dispose();
                 Server = null;
             }
+        }
+
+        private static void Server_MessageReceived(object? sender, WatsonWebsocket.MessageReceivedEventArgs e) {
+            if (e.MessageType != System.Net.WebSockets.WebSocketMessageType.Text || !JSEngine.Initialized) return;
+
+            string message = Encoding.UTF8.GetString(e.Data);
+            Logger.Debug("Received: " + message);
+
+            JSEngine.InvokeOnEvent(new EventValue<string>("WEBSOCKET", message));
         }
 
         private static void Server_ClientDisconnected(object? sender, WatsonWebsocket.DisconnectionEventArgs e) {
