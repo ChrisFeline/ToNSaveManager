@@ -229,6 +229,9 @@ namespace ToNSaveManager.Models.Index {
                     L++;
                 }
 
+                // prevent division by zero
+                if (L == 0) return Color.White;
+
                 return Color.FromArgb(R / L, G / L, B / L);
             } else return Color.White;
         }
