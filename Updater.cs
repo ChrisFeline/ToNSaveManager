@@ -6,13 +6,9 @@ using ToNSaveManager.Localization;
 
 namespace ToNSaveManager {
     internal static class Updater {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-
         static string POST_UPDATE_FILE => Program.ProgramLocationTemporary;
         internal static void Start(GitHubRelease release, GitHubRelease.Asset asset) {
-            AllocConsole();
+            Logger.AllowConsole();
 
             Console.Title = "ToNSaveManager - Updating " + release.name;
 

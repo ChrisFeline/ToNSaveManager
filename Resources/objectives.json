@@ -82,8 +82,20 @@
     "DisplayColor": "48, 255, 55"
   },
   {
+    "Name": "Dev Phone",
+    "Description": "Survive all Alternate killers.",
+    "Reference": "https://terror.moe/items/dev_phone",
+    "DisplayColor": "178, 255, 255"
+  },
+  {
     "Name": "Item Skin Unlocks",
     "IsSeparator": true
+  },
+  {
+    "Name": "Thorn Scanner",
+    "Description": "Survive a Midnight round with Radar.",
+    "Reference": "https://terror.moe/items/thorn_scanner",
+    "DisplayColor": "253, 119, 126"
   },
   {
     "Name": "Red Medkit",
@@ -126,6 +138,12 @@
     "Description": "Survive an Unbound round with Teleporter.",
     "Reference": "https://terror.moe/items/soul_visitor",
     "DisplayColor": "253, 165, 97"
+  },
+  {
+    "Name": "Broken Teleporter",
+    "Description": "Survive Cracked with Teleporter.",
+    "Reference": "https://terror.moe/items/broken_teleporter",
+    "DisplayColor": "255, 116, 255"
   },
   {
     "Name": "Bloody Coil",
@@ -240,19 +258,69 @@
     "DisplayColor": "248, 16, 18"
   },
   {
+    "Name": "Fuwatti Plush",
+    "Description": "Obtainable from the Claw Machine after all 3 other plushies have been obtained.",
+    "Reference": "https://terror.moe/items/fuwatti_plush",
+    "DisplayColor": "106, 105, 219"
+  },
+  {
+    "Name": "Collab Items",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Seer Pen",
+    "Description": "Obtained from: Roomz 4 Dayz.",
+    "Reference": "https://terror.moe/items/seer_pen",
+    "DisplayColor": "255, 21, 28"
+  },
+  {
+    "Name": "NeoTamago",
+    "Description": "Obtained from: NeoWorlds. Collect Slenderman's pages, must be bought for 25 EPH after unlocking.",
+    "Reference": "https://terror.moe/items/neotamago",
+    "DisplayColor": "128, 223, 155"
+  },
+  {
+    "Name": "IJED",
+    "Description": "Obtained from: SlashCo VR. Collect the sloppy stickers.",
+    "Reference": "https://terror.moe/items/ijed",
+    "DisplayColor": "255, 255, 122"
+  },
+  {
+    "Name": "Mini Chest",
+    "Description": "Obtained from: Probability Labs. Scan a crystal in UFO.",
+    "Reference": "https://terror.moe/items/mini_chest",
+    "DisplayColor": "154, 250, 255"
+  },
+  {
     "Name": "Winterfest Unlocks",
     "IsSeparator": true
   },
   {
     "Name": "Snowy Speed Coil",
     "Description": "There's something in the snow for you.",
-    "Reference": "",
+    "Reference": "https://terror.moe/items/snowy_speed_coil",
     "DisplayColor": "138, 235, 255"
   },
   {
     "Name": "Torch Of Obsession",
     "Description": "Survive the Cold Night.",
-    "Reference": "",
+    "Reference": "https://terror.moe/items/torch_of_obsession",
     "DisplayColor": "138, 235, 255"
+  },
+  {
+    "Name": "Panthera MK.II",
+    "Description": "Survive Neo Pilot.",
+    "Reference": "https://terror.moe/items/panthera_mkII",
+    "DisplayColor": "156, 199, 208"
+  },
+  {
+    "Name": "April Fools Unlocks",
+    "IsSeparator": true
+  },
+  {
+    "Name": "Dropkick",
+    "Description": "Drops the kick or something... IDK",
+    "Reference": "https://terror.moe/items/dropkick",
+    "DisplayColor": "110, 0, 109"
   }
 ]

@@ -56,12 +56,14 @@ namespace ToNSaveManager
             if (!Directory.Exists(DataLocation)) Directory.CreateDirectory(DataLocation);
 
             try {
+                Arguments = args;
+
+                if (ContainsArg("--console")) Logger.AllowConsole();
                 Logger.Log("Initializing logging.");
 
                 Directory.SetCurrentDirectory(ProgramDirectory);
                 Logger.Log("Program Directory: " + ProgramDirectory);
 
-                Arguments = args;
                 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
                 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;

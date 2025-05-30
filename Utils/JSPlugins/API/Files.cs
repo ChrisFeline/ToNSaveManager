@@ -1,0 +1,73 @@
+﻿namespace ToNSaveManager.Utils.JSPlugins.API {
+    [JSEngineAPI("FS")]
+    internal class Files {
+        static string SourceDir => Path.Combine(JSEngine.scriptsPath, Path.GetDirectoryName(JSEngine.GetLastSyntaxSource()) ?? string.Empty);
+        internal static string? ResolvePath(string filePath, bool toScript) {
+            if (string.IsNullOrEmpty(filePath)) return null;
+
+            string source = toScript ? Path.GetDirectoryName(JSEngine.GetLastSyntaxSource()) ?? string.Empty : string.Empty;
+            string fullPath = Path.Combine(JSEngine.scriptsPath, source, filePath);
+
+            if (!Path.GetFullPath(fullPath).StartsWith(Path.GetFullPath(JSEngine.scriptsPath))) {
+                Console.Error($"Invalid path: {fullPath}\nPaths resolved outside of the 'scripts' folder are not allowed...");
+                return null;
+            }
+
+            if (fullPath.EndsWith(".js", StringComparison.InvariantCultureIgnoreCase)) {
+                Console.Error($"Invalid path: {fullPath}\nDo not resolve paths to other scripts.");
+                return null;
+            }
+
+            return fullPath;
+        }
+
+        public static string[]? GetFiles(string dirPath = "./", bool recursive = false) {
+            string? fullPath = ResolvePath(dirPath, true);
+            if (string.IsNullOrEmpty(fullPath)) return null;
+
+            if (!Directory.Exists(fullPath)) {
+                Console.Error($"Directory does not exist: {dirPath} ({fullPath})");
+                return Array.Empty<string>();
+            }
+
+            return Directory.GetFiles(fullPath, "*.*", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                .Select(p => Path.GetRelativePath(SourceDir, p))
+                .Where(p => !p.EndsWith(".js", StringComparison.InvariantCultureIgnoreCase)).ToArray();
+        }
+
+        public static string[]? GetDirs(string dirPath = "./") {
+            string? fullPath = ResolvePath(dirPath, true);
+            if (string.IsNullOrEmpty(fullPath)) return null;
+
+            if (!Directory.Exists(fullPath)) {
+                Console.Error($"Directory does not exist: {dirPath} ({fullPath})");
+                return Array.Empty<string>();
+            }
+
+            return Directory.GetDirectories(fullPath).Select(p => Path.GetRelativePath(SourceDir, p)).ToArray();
+        }
+
+        public static string? Read(string filePath) {
+            string? fullPath = ResolvePath(filePath, true);
+
+            if (string.IsNullOrEmpty(fullPath) || !File.Exists(fullPath)) {
+                Console.Error($"Could not find file: {fullPath}");
+                return null;
+            }
+
+            return File.ReadAllText(fullPath);
+        }
+
+        public static void Write(string filePath, string value) {
+            string? fullPath = ResolvePath(filePath, true);
+            if (string.IsNullOrEmpty(fullPath)) return;
+
+            File.WriteAllText(fullPath, value);
+        }
+
+        public static bool Exists(string filePath) {
+            string? fullPath = ResolvePath(filePath, true);
+            return !string.IsNullOrEmpty(fullPath) && (File.Exists(fullPath) || Directory.Exists(fullPath));
+        }
+    }
+}

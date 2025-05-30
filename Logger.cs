@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ToNSaveManager {
@@ -31,6 +32,17 @@ namespace ToNSaveManager {
     }
 
     internal static class Logger {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+        static bool AllocConsoleAllowed = false;
+        internal static void AllowConsole() {
+            if (AllocConsoleAllowed) return;
+            AllocConsole();
+            Console.Title = "ToNSaveManager - OUTPUT";
+            AllocConsoleAllowed = true;
+        }
+
         private static readonly StringBuilder SharedStringBuilder = new StringBuilder();
 
         private static readonly StreamWriter LogFileWriter;
@@ -47,9 +59,32 @@ namespace ToNSaveManager {
                 SharedStringBuilder.Append(" -  ");
                 SharedStringBuilder.Append(message ?? string.Empty);
 
-                // Console.WriteLine(SharedStringBuilder.ToString());
-                System.Diagnostics.Debug.WriteLine(SharedStringBuilder.ToString());
-                LogFileWriter.WriteLine(SharedStringBuilder.ToString());
+                string content = SharedStringBuilder.ToString();
+                if (AllocConsoleAllowed) {
+                    switch (logType) {
+                        case LogType.Log:
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            break;
+                        case LogType.Debug:
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            break;
+                        case LogType.Warning:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
+                        case LogType.Info:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                        case LogType.Error:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        default:
+                            break;
+                    }
+                    Console.WriteLine(content);
+                    Console.ResetColor();
+                }
+                System.Diagnostics.Debug.WriteLine(content);
+                LogFileWriter.WriteLine(content);
                 LogFileWriter.Flush();
             }
         }

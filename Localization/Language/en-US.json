@@ -310,6 +310,12 @@
 	"OBJECTIVES.SNOWY_SPEED_COIL.TT": "There's something in the snow for you.",
 	"OBJECTIVES.TORCH_OF_OBSESSION": "Torch Of Obsession",
 	"OBJECTIVES.TORCH_OF_OBSESSION.TT": "Survive the Cold Night.",
+	"OBJECTIVES.PANTHERA_MK.II": "Panthera MK.II",
+	"OBJECTIVES.PANTHERA_MK.II.TT": "Survive Neo Pilot.",
+	"OBJECTIVES.THORN_SCANNER": "Thorn Scanner",
+	"OBJECTIVES.THORN_SCANNER.TT": "Survive a Midnight round with Radar.",
+	"OBJECTIVES.BROKEN_TELEPORTER": "Broken Teleporter",
+	"OBJECTIVES.BROKEN_TELEPORTER.TT": "Survive Cracked with Teleporter.",
 
 	"OBJECTIVES.HAVE_PLUSH": "Have Plush",
 	"OBJECTIVES.HAVE_PLUSH.TT": "Survive The Observation.",
@@ -340,6 +346,9 @@
 	"OBJECTIVES.JOYOUS_ORB": "Joyous Orb",
 	"OBJECTIVES.JOYOUS_ORB.TT": "Survive JOY.",
 
+	"OBJECTIVES.DEV_PHONE": "Dev Phone",
+	"OBJECTIVES.DEV_PHONE.TT": "Survive all Alternate killers.",
+
 	"OBJECTIVES.CLAW_MACHINE_UNLOCKS": "Claw Machine Unlocks",
 	"OBJECTIVES.NORA_PLUSH": "Nora Plush",
 	"OBJECTIVES.NORA_PLUSH.TT": "Requires: Beyond Plush.",
@@ -348,6 +357,22 @@
 	"OBJECTIVES.OBSERVATION_PLUSH": "Observation Plush",
 	"OBJECTIVES.OBSERVATION_PLUSH.TT": "Requires: Have Plush.",
 
+	"OBJECTIVES.FUWATTI_PLUSH": "Fuwatti Plush",
+	"OBJECTIVES.FUWATTI_PLUSH.TT": "Obtainable from the Claw Machine after all 3 other plushies have been obtained.",
+
+	"OBJECTIVES.COLLAB_ITEMS": "Collab Items",
+	"OBJECTIVES.SEER_PEN": "Seer Pen",
+	"OBJECTIVES.SEER_PEN.TT": "Obtained from: Roomz 4 Dayz.",
+	"OBJECTIVES.NEOTAMAGO": "NeoTamago",
+	"OBJECTIVES.NEOTAMAGO.TT": "Obtained from: NeoWorlds. Collect Slenderman's pages, must be bought for 25 EPH after unlocking.",
+	"OBJECTIVES.IJED": "IJED",
+	"OBJECTIVES.IJED.TT": "Obtained from: SlashCo VR. Collect the sloppy stickers.",
+	"OBJECTIVES.MINI_CHEST": "Mini Chest",
+	"OBJECTIVES.MINI_CHEST.TT": "Obtained from: Probability Labs. Scan a crystal in UFO.",
+
+	"OBJECTIVES.APRIL_FOOLS_UNLOCKS": "April Fools Unlocks",
+	"OBJECTIVES.DROPKICK": "Dropkick",
+	"OBJECTIVES.DROPKICK.TT": "Drops the kick or something... IDK",
 
 	"STATS.TITLE": "ToN Stats Tracker",
 	"STATS.SHOW_LOBBY": "Show Lobby Stats",

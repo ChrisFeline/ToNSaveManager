@@ -19,7 +19,7 @@ namespace ToNSaveManager.Models.Index {
         public int ActualCount => TerrorCount - StartIndex;
 
         static readonly StringBuilder StrBuild = new StringBuilder();
-        public string GetTerrorAssets(string splitter = " & ") {
+        internal string GetTerrorAssets(string splitter = " & ") {
             StrBuild.Clear();
 
             for (int i = StartIndex; i < Length; i++) {
@@ -44,7 +44,6 @@ namespace ToNSaveManager.Models.Index {
             if (StrBuild.Length == 0) StrBuild.Append("???");
             return StrBuild.ToString();
         }
-        public ToNIndex.TerrorInfo[] GetTerrors() => Terrors.Where(t => t.IsEmpty).ToArray();
 
         public string RoundTypeRaw;
         public ToNRoundType RoundType;
@@ -229,6 +228,9 @@ namespace ToNSaveManager.Models.Index {
                     B += c.B;
                     L++;
                 }
+
+                // prevent division by zero
+                if (L == 0) return Color.White;
 
                 return Color.FromArgb(R / L, G / L, B / L);
             } else return Color.White;

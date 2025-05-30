@@ -371,7 +371,10 @@
         }
 
         const string PickupGrabKeyword = "[Behaviour] Pickup object: '";
+        const string PickupGrabKeywordEnd = "' equipped = ";
+
         const string PickupDropKeyword = "[Behaviour] Drop object: '";
+        const string PickupDropKeywordEnd = ", was equipped = ";
         private bool ParsePickupGrab(string line, DateTime lineDate, T logContext) {
             int index, length;
             string objectName;
@@ -379,7 +382,7 @@
             index = line.IndexOf(PickupGrabKeyword, StringComparison.InvariantCulture);
             if (index > 0) {
                 index = index + PickupGrabKeyword.Length;
-                length = line.IndexOf('\'', index) - index;
+                length = line.IndexOf(PickupGrabKeywordEnd, index) - index;
                 if (length < 0) return false;
 
                 objectName = line.Substring(index, length);
@@ -390,7 +393,7 @@
             index = line.IndexOf(PickupDropKeyword, StringComparison.InvariantCulture);
             if (index > 0) {
                 index = index + PickupDropKeyword.Length;
-                length = line.IndexOf(',', index) - index;
+                length = line.IndexOf(PickupDropKeywordEnd, index) - index;
                 if (length < 0) return false;
 
                 objectName = line.Substring(index, length);

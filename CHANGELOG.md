@@ -1,7 +1,10 @@
 ﻿# Latest Changelog
 
-- Fixed double trouble not showing both terrors at LVL2.
-- OSC Event 'ToN_DeathID' will set it's value to 255 when any player dies.
-- Added OSC value to some of the new items:
-	- Dev Phone, Fuwatti Plush, Seer Pen, NeoTamago, IJED, Mini Chest, King's Kit and Panthera MK.II
-	- You can find the new values in the OSC documentaion for items.
+- NEW!: Added JavaScript plugins support, you can now extend this tool by creating your own scripts that can also be shared.
+  * JavaScript documentation can be found in the Github repo, under Docs/Scripts.md
+  * This feature is still on an experimental phase and requires advanced JS understanding. Join the discord linked in the README for feedback, suggestions or requests.
+- Updated Objectives list with the new items. (Finally)
+- Fixed death event Decay and Cooldown not holding their values in settings.
+- Fixed King's Kit item not being detected properly for OSC.
+- Fixed ocassional division by zero.
+- New launch parameter: --console

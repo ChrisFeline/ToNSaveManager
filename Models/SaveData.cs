@@ -36,8 +36,8 @@ namespace ToNSaveManager.Models
         #region Objectives
         public HashSet<string> Completed = new HashSet<string>();
 
-        public bool GetCompleted(string name) => Completed.Contains(name);
-        public void SetCompleted(string name, bool value)
+        internal bool GetCompleted(string name) => Completed.Contains(name);
+        internal void SetCompleted(string name, bool value)
         {
             if (!string.IsNullOrEmpty(name) && value == !Completed.Contains(name))
             {
@@ -59,7 +59,7 @@ namespace ToNSaveManager.Models
         [JsonIgnore] public int Count => Collection.Count;
         [JsonIgnore] public bool IsDirty { get; private set; }
 
-        public History this[int i]
+        internal History this[int i]
         {
             get
             {
@@ -72,7 +72,7 @@ namespace ToNSaveManager.Models
                 Collection[i] = value;
             }
         }
-        public History? this[string id]
+        internal History? this[string id]
         {
             get
             {
@@ -82,13 +82,13 @@ namespace ToNSaveManager.Models
 
         public void SetDirty() => IsDirty = true;
 
-        public int Add(History h)
+        internal int Add(History h)
         {
             int index = FindIndex(h);
             Collection.Insert(index, h);
             return index;
         }
-        public void Remove(string id)
+        internal void Remove(string id)
         {
             for (int i = 0; i < Count; i++)
             {
@@ -100,12 +100,12 @@ namespace ToNSaveManager.Models
                 }
             }
         }
-        public void Remove(History h)
+        internal void Remove(History h)
         {
             Collection.Remove(h);
             if (!h.IsCustom && ParsedLog.ContainsKey(h.Guid)) ParsedLog.Remove(h.Guid);
         }
-        public bool ContainsID(string id) => Collection.Any(v => v.Guid == id);
+        internal bool ContainsID(string id) => Collection.Any(v => v.Guid == id);
 
         private int FindIndex(History a)
         {
@@ -122,8 +122,8 @@ namespace ToNSaveManager.Models
             return Count;
         }
 
-        public long GetParsedPos(string name) => ParsedLog.ContainsKey(name) ? Math.Max(0, ParsedLog[name]) : 0;
-        public void SetParsedPos(string name, long pos, bool save)
+        internal long GetParsedPos(string name) => ParsedLog.ContainsKey(name) ? Math.Max(0, ParsedLog[name]) : 0;
+        internal void SetParsedPos(string name, long pos, bool save)
         {
             if (pos < 0)
             {
@@ -371,7 +371,7 @@ namespace ToNSaveManager.Models
             return data;
         }
 
-        public void Export(bool force = false)
+        internal void Export(bool force = false)
         {
             try
             {

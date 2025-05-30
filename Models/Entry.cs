@@ -93,10 +93,10 @@ namespace ToNSaveManager.Models
 
         public ToNRoundResult RResult;
 
-        [JsonIgnore] public History? Parent;
-        [JsonIgnore] public bool Fresh;
-        [JsonIgnore] public int Length => Content.Length;
-        [JsonIgnore] public bool Pre;
+        [JsonIgnore] internal History? Parent;
+        [JsonIgnore] internal bool Fresh;
+        [JsonIgnore] internal int Length => Content.Length;
+        [JsonIgnore] internal bool Pre;
 
         public Entry(string content, DateTime timestamp)
         {
@@ -138,7 +138,7 @@ namespace ToNSaveManager.Models
             return sb.ToString();
         }
 
-        public string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
+        internal string GetTooltip(bool showPlayers, bool showTerrors, bool showNote = true, bool showMap = true)
         {
             StringBuilder sb = new StringBuilder();
             if (Pre) {

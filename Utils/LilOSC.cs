@@ -1,22 +1,111 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using ToNSaveManager.Models;
+﻿using ToNSaveManager.Models;
 using ToNSaveManager.Models.Index;
 using System.Numerics;
 using Timer = System.Windows.Forms.Timer;
 using ToNSaveManager.Utils.LogParser;
-using ToNSaveManager.Utils.API;
 using ToNSaveManager.Models.Stats;
-using Jint.Native;
-using Jint;
 
 namespace ToNSaveManager.Utils
 {
+    using BlobHandles;
+    using BuildSoft.OscCore;
+    using BuildSoft.VRChat.Osc;
+    using BuildSoft.VRChat.Osc.Chatbox;
+    using BuildSoft.VRChat.Osc.Input;
+
+    internal static class OSCLib {
+        internal static void Send(string path, object value) => OscParameter.SendValue(path, (dynamic)value);
+
+        internal static void SendParameter(string name, object value) => OscParameter.SendAvatarParameter(name, value);
+
+        internal static void SendChatbox(string message, bool direct = true, bool complete = false) => OscChatbox.SendMessage(message, direct, complete);
+        internal static void SetChatboxTyping(bool value) => OscChatbox.SetIsTyping(value);
+
+        internal static void MoveVertical(float value) => OscAxisInput.Vertical.Send(value);
+        internal static void MoveHorizontal(float value) => OscAxisInput.Horizontal.Send(value);
+        internal static void LookHorizontal(float value) => OscAxisInput.LookHorizontal.Send(value);
+
+        internal static void UseAxisRight(float value) => OscAxisInput.UseAxisRight.Send(value);
+        internal static void GrabAxisRight(float value) => OscAxisInput.UseAxisRight.Send(value);
+        internal static void MoveHoldFB(float value) => OscAxisInput.MoveHoldFB.Send(value);
+        internal static void SpinHoldCW(float value) => OscAxisInput.SpinHoldCwCcw.Send(value);
+        internal static void SpinHoldUD(float value) => OscAxisInput.SpinHoldUD.Send(value);
+        internal static void SpinHoldLR(float value) => OscAxisInput.SpinHoldLR.Send(value);
+
+        internal static void MoveForward(bool value) => OscButtonInput.MoveForward.Send(value);
+        internal static void MoveBackward(bool value) => OscButtonInput.MoveBackward.Send(value);
+        internal static void MoveLeft(bool value) => OscButtonInput.MoveLeft.Send(value);
+        internal static void MoveRight(bool value) => OscButtonInput.MoveRight.Send(value);
+        internal static void LookLeft(bool value) => OscButtonInput.LookLeft.Send(value);
+        internal static void LookRight(bool value) => OscButtonInput.LookRight.Send(value);
+        internal static void Jump(bool value) => OscButtonInput.Jump.Send(value);
+        internal static void Run(bool value) => OscButtonInput.Run.Send(value);
+
+        internal static void ComfortLeft(bool value) => OscButtonInput.ComfortLeft.Send(value);
+        internal static void ComfortRight(bool value) => OscButtonInput.ComfortRight.Send(value);
+
+        internal static void GrabRight(bool value) => OscButtonInput.GrabRight.Send(value);
+        internal static void DropRight(bool value) => OscButtonInput.DropRight.Send(value);
+        internal static void UseRight(bool value) => OscButtonInput.UseRight.Send(value);
+        internal static void GrabLeft(bool value) => OscButtonInput.GrabLeft.Send(value);
+        internal static void DropLeft(bool value) => OscButtonInput.DropLeft.Send(value);
+        internal static void UseLeft(bool value) => OscButtonInput.UseLeft.Send(value);
+
+        internal static void PanicButton(bool value) => OscButtonInput.PanicButton.Send(value);
+
+        internal static void QuickMenuToggleLeft(bool value) => OscButtonInput.QuickMenuToggleLeft.Send(value);
+        internal static void QuickMenuToggleRight(bool value) => OscButtonInput.QuickMenuToggleRight.Send(value);
+
+        internal static void Voice(bool value) => OscButtonInput.Voice.Send(value);
+
+        internal static void SetAvatar(string id) => Send("/avatar/change", id);
+
+        private static Action<string, object?[]>? MonitorCallback;
+
+        internal static void StartOSCMonitor(Action<string, object?[]>? callback) {
+            MonitorCallback = callback;
+            if (MonitorCallback != null) {
+                OscUtility.RegisterMonitorCallback(ReceiveMessage);
+            }
+        }
+
+        static void ReceiveMessage(BlobString address, OscMessageValues values) {
+            var addressString = address.ToString();
+            if (values.ElementCount <= 0) return;
+
+            object?[] objects = new object[values.ElementCount];
+            for (int i = 0; i < values.ElementCount; i++) objects[i] = ReadValue(values, i);
+
+            if (MonitorCallback != null) MonitorCallback(addressString, objects);
+        }
+
+        // https://github.com/ChanyaVRC/VRCOscLib/blob/e593b7ec1934abacb853c0481ebcb24735a8ffea/src/VRCOscLib/VRCOscLib/Utility/OscUtility.cs#L66
+        static object? ReadValue(OscMessageValues value, int index) {
+            return value.GetTypeTag(index) switch {
+                TypeTag.Float32 => value.ReadFloatElementUnchecked(index),
+                TypeTag.Int32 => value.ReadIntElementUnchecked(index),
+                TypeTag.True => true,
+                TypeTag.False => false,
+                TypeTag.AltTypeString or TypeTag.String => value.ReadStringElement(index),
+                TypeTag.Float64 => value.ReadFloat64ElementUnchecked(index),
+                TypeTag.Int64 => value.ReadInt64ElementUnchecked(index),
+                TypeTag.Blob => value.ReadBlobElement(index),
+                TypeTag.Color32 => value.ReadColor32ElementUnchecked(index),
+                TypeTag.MIDI => value.ReadMidiElementUnchecked(index),
+                TypeTag.AsciiChar32 => value.ReadAsciiCharElement(index),
+                TypeTag.TimeTag => value.ReadTimestampElementUnchecked(index),
+                TypeTag.Infinitum => double.PositiveInfinity,
+                TypeTag.Nil => null,
+                TypeTag.ArrayStart => null,
+                TypeTag.ArrayEnd => null,
+                _ => null,
+            };
+        }
+    }
+
     internal static class LilOSC {
         static readonly LoggerSource Logger = new LoggerSource("OSC");
 
-        static UdpClient? UdpClient;
         const string ParamRoundType = "ToN_RoundType";
 
         const string ParamTerror1 = "ToN_Terror1";
@@ -408,137 +497,7 @@ namespace ToNSaveManager.Utils
             return new Vector3(hue, sat, val);
         }
 
-        #region Encoding & Buffers
-        static readonly byte[] temp_buffer = new byte[2048];
-
-        private static void EncodeInto(byte[] data, ref int offset, string path, int value) {
-            byte[] tmp = Encoding.UTF8.GetBytes(path);
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = new byte[] { 44, 105 }; // ",i"
-
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            Array.Copy(BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)), 0, data, offset, 4);
-            offset += 4;
-        }
-
-        private static void EncodeInto(byte[] data, ref int offset, string path, float value) {
-            byte[] tmp = Encoding.UTF8.GetBytes(path);
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = new byte[] { 44, 102 }; // ",f"
-
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = BitConverter.GetBytes(value);
-            if (BitConverter.IsLittleEndian) {
-                Array.Reverse(tmp);
-            }
-            Array.Copy(tmp, 0, data, offset, 4);
-            offset += 4;
-        }
-
-        private static void EncodeInto(byte[] data, ref int offset, string path, bool value) {
-            byte[] tmp = Encoding.UTF8.GetBytes(path);
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = new byte[] { 44, (byte)(value ? 'T' : 'F') }; // ",T"
-
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-        }
-
-        private static void EncodeInto(byte[] data, ref int offset, string path, string value, bool direct, bool complete = false) {
-            byte[] tmp = Encoding.UTF8.GetBytes(path);
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = new byte[] { 44, 115, (byte)(direct ? 'T' : 'F'), (byte)(complete ? 'T' : 'F') }; // ",sTT"
-
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-
-            tmp = Encoding.UTF8.GetBytes(value);
-            Array.Copy(tmp, 0, data, offset, tmp.Length);
-            data[tmp.Length + offset] = 0;
-            offset += tmp.Length;
-            for (int endOffset = (offset + 4) & ~3; offset < endOffset; offset++) {
-                data[offset] = 0;
-            }
-        }
-
-        private static void SendParam(string name, int value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        private static void SendParam(string name, float value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        private static void SendParam(string name, bool value) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/avatar/parameters/" + name, value);
-            SendBuffer(temp_buffer, encodedLength);
-
-            Logger.Debug("Sending Param: " + name + " = " + value);
-        }
-
-        private static void SendChatbox(string message, bool direct = true, bool complete = false) {
-            int encodedLength = 0;
-            EncodeInto(temp_buffer, ref encodedLength, "/chatbox/input", message, direct, complete);
-            SendBuffer(temp_buffer, encodedLength);
-        }
-
-        private static void SendBuffer(byte[] buffer, int encodedLength, IPAddress? ipAddress = null, int port = 9000) {
-            if (UdpClient == null) UdpClient = new UdpClient();
-            UdpClient.Send(buffer, encodedLength, (ipAddress ?? IPAddress.Loopback).ToString(), port);
-        }
-        #endregion
+        static void SendParam(string name, object value) => OSCLib.SendParameter(name, value);
+        static void SendChatbox(string message, bool direct = true, bool complete = false) => OSCLib.SendChatbox(message, direct, complete);
     }
 }

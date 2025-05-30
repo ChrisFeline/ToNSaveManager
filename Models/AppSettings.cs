@@ -194,6 +194,16 @@ namespace ToNSaveManager.Models
         /// </summary>
         public int OSCMessageInterval { get; set; } = 5;
 
+        /// <summary>
+        /// Changes avatar when you become the saboteur on a Sabotage round.
+        /// </summary>
+        public bool OSCSabotageAvatarChange { get; set; } = false;
+
+        /// <summary>
+        /// Avatar ID to set on a Sabotage round.
+        /// </summary>
+        public string OSCSabotageAvatarID { get; set; } = string.Empty;
+
         #region OBS Features
         /// <summary>
         /// Enables writing round info to files using custom templates.

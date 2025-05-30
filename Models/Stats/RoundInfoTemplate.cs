@@ -62,7 +62,7 @@ namespace ToNSaveManager.Models.Stats {
         [JsonIgnore] public bool IsModified => m_TemplateKeys.Any(ToNStats.IsModified);
         [JsonIgnore] public bool HasKeys => m_TemplateKeys.Length > 0;
 
-        public void WriteToFile(bool force = false) {
+        internal void WriteToFile(bool force = false) {
             if (!IsModified && !force) return;
 
             if (!Directory.Exists(m_FileDir)) Directory.CreateDirectory(m_FileDir);
@@ -73,7 +73,7 @@ namespace ToNSaveManager.Models.Stats {
             Logger.Debug($"Write File ({FileName}): {content}");
         }
 
-        public string GetString(bool jsOnly = false) {
+        internal string GetString(bool jsOnly = false) {
             if (jsOnly) {
                 return TemplateManager.EvaluateTemplate(Template) ?? string.Empty;
             }
