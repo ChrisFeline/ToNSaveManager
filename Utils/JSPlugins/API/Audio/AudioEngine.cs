@@ -28,7 +28,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
             if (input.WaveFormat.Channels == 1 && mixer.WaveFormat.Channels == 2) {
                 return new MonoToStereoSampleProvider(input);
             }
-            throw new NotImplementedException("Not yet implemented this channel count conversion");
+            throw new NotImplementedException("Not yet implemented this channel count conversion, make sure your audio contains 2 or less channels.");
         }
 
         public void PlaySound(CachedSound sound) {
@@ -36,7 +36,11 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
         }
 
         private void AddMixerInput(ISampleProvider input) {
-            mixer.AddMixerInput(ConvertToRightChannelCount(input));
+            input = ConvertToRightChannelCount(input);
+            if (input.WaveFormat.SampleRate != mixer.WaveFormat.SampleRate) {
+                input = new WdlResamplingSampleProvider(input, mixer.WaveFormat.SampleRate);
+            }
+            mixer.AddMixerInput(input);
         }
 
         public void Dispose() {

@@ -38,11 +38,13 @@ namespace ToNSaveManager.Utils.JSPlugins {
     }
 
     internal class JSEngineAPIAttribute : Attribute {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public JSEngineAPIAttribute(string name) {
             Name = name;
         }
+
+        public JSEngineAPIAttribute() { }
     }
 
     internal static partial class JSEngine {
@@ -83,10 +85,15 @@ namespace ToNSaveManager.Utils.JSPlugins {
 
             // scan apis
             TypeReference? typeReference;
+            bool hasApiAttr = false;
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes()) {
                 typeReference = null;
+                hasApiAttr = false;
                 foreach (JSEngineAPIAttribute attr in type.GetCustomAttributes<JSEngineAPIAttribute>()) {
+                    hasApiAttr = true;
+                    if (string.IsNullOrEmpty(attr.Name)) continue;
+
                     if (typeReference == null)
                         typeReference = TypeReference.CreateTypeReference(EngineInstance, type);
 
@@ -94,7 +101,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
                     Logger.Debug("Registered API: " + attr.Name);
                 }
 
-                if (typeReference != null) {
+                if (hasApiAttr) {
                     MethodInfo? registerMethod = type.GetMethod("Register", BindingFlags.NonPublic | BindingFlags.Static);
                     if (registerMethod != null) {
                         registerMethod.Invoke(null, [EngineInstance]);
@@ -132,7 +139,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
         struct JSOperation {
             public Function[] Functions;
             public object?[]? Arguments;
-            public Action<JsValue>? Callback;
+            public Action<JsValue>? Callback { get; set; }
         }
 
         static readonly ConcurrentQueue<JSOperation> JSQueue = new ConcurrentQueue<JSOperation>();
