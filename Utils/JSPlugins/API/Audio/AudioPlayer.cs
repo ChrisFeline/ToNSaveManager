@@ -1,7 +1,40 @@
-﻿namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
+﻿using System.Diagnostics;
+
+namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
     [JSEngineAPI("AudioPlayer")]
     internal static class AudioPlayer {
         static AudioPlaybackEngine Playback => AudioPlaybackEngine.Instance;
+
+        static string YTDLPath = Path.Combine(Program.ProgramDirectory, "yt-dlp.exe");
+        static ProcessStartInfo? YTDLInfo;
+        static string? GetUrl(string url) {
+            if (!File.Exists(YTDLPath)) {
+                Logger.Error($"Error trying to resolve '{url}'. The binary 'yt-dlp.exe' was not found.");
+                return null;
+            }
+
+            if (YTDLInfo == null) {
+                YTDLInfo = new ProcessStartInfo() {
+                    FileName = YTDLPath,
+                    Arguments = "-q -f bestaudio --get-url " + url,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+            }
+
+            using (Process process = new Process()) {
+                process.StartInfo = YTDLInfo;
+                process.Start();
+
+                process.WaitForExit();
+
+                string stdout = process.StandardOutput.ReadToEnd().Trim();
+
+                return stdout;
+            }
+        }
 
         static Dictionary<string, AudioSource> AudioSourceList = new ();
         static AudioSource GetAudioSource() {
@@ -28,10 +61,20 @@
 
             internal AutoDisposeFileReader? Reader;
 
-            internal void Play(string filePath) {
+            internal void Play(string filePath, bool fromUrl = false) {
                 Reader?.Stop();
-                Reader = Playback.PlaySound(filePath);
+                Reader = Playback.PlaySound(filePath, fromUrl);
                 Reader.volume = Volume;
+            }
+            internal void PlayYT(string url) {
+                string? _url = GetUrl(url);
+                if (string.IsNullOrEmpty(_url)) {
+                    Reader?.Stop();
+                    Logger.Error("Couldn't play url: " + url);
+                    return;
+                }
+
+                Play(_url, true);
             }
 
             internal void Stop() {
@@ -53,9 +96,17 @@
                 return;
             }
 
-            Console.Log($"Playing: {filePath} ({fullPath})");
+            Console.Log($"Playing File: {filePath} ({fullPath})");
 
             CurrentSource.Play(fullPath);
+        }
+        public static void PlayURL(string fileUrl) {
+            Console.Log($"Playing URL: {fileUrl}");
+            CurrentSource.Play(fileUrl, true);
+        }
+        public static void PlayYTDL(string url) {
+            Console.Log($"Playing YTDL: {url}");
+            CurrentSource.PlayYT(url);
         }
 
         public static void Stop() {

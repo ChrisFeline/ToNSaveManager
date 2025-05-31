@@ -14,8 +14,8 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
             outputDevice.Play();
         }
 
-        public AutoDisposeFileReader PlaySound(string fileName) {
-            var input = new AudioFileReader(fileName);
+        public AutoDisposeFileReader PlaySound(string fileName, bool fromUrl = false) {
+            var input = new AudioReader(fileName, fromUrl);
             var reader = new AutoDisposeFileReader(input);
             AddMixerInput(reader);
             return reader;
@@ -88,10 +88,10 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
     }
 
     internal class AutoDisposeFileReader : ISampleProvider {
-        private readonly AudioFileReader reader;
+        private readonly AudioReader reader;
         internal bool isDisposed;
         internal float volume = 1f;
-        public AutoDisposeFileReader(AudioFileReader reader) {
+        public AutoDisposeFileReader(AudioReader reader) {
             this.reader = reader;
             this.WaveFormat = reader.WaveFormat;
         }
