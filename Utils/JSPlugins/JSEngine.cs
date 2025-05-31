@@ -139,7 +139,7 @@ namespace ToNSaveManager.Utils.JSPlugins {
         struct JSOperation {
             public Function[] Functions;
             public object?[]? Arguments;
-            public Action<JsValue>? Callback;
+            public Action<JsValue>? Callback { get; set; }
         }
 
         static readonly ConcurrentQueue<JSOperation> JSQueue = new ConcurrentQueue<JSOperation>();
