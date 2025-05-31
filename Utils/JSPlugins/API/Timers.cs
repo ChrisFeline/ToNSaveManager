@@ -87,6 +87,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
             public void Dispose() {
                 if (Disposed) return;
                 Disposed = true;
+                _Timer.Elapsed -= OnTick;
                 _Timer.Stop();
                 _Timer.Dispose();
             }

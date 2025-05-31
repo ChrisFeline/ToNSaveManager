@@ -1,7 +1,11 @@
 ﻿# Latest Changelog
 
-- Scripts: Implemented 'setInterval' and 'setTimeout'
-- Scripts: Added audio resampling for the Audio API, audio files with 48khz should work now.
+- Scripts now have additional features and APIs
+  * Implemented 'setInterval' and 'setTimeout'
+  * Added audio resampling for the Audio API, audio files with 48khz should work now.
+  * Added AudioPlayer.PlayURL  (Play audio from url)
+  * Added AudioPlayer.PlayYTDL (Play audio using yt-dlp)
+  * Added HTTP.GetString       (Get the content of an url as a string)
 
 - NEW!: Added JavaScript plugins support, you can now extend this tool by creating your own scripts that can also be shared.
   * JavaScript documentation can be found in the Github repo, under Docs/Scripts.md

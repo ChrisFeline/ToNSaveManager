@@ -330,6 +330,10 @@ For example, on a script located at `scripts/cats/meow.js` passing `hello.txt` w
 > Paths follow the same rules as **File System**.
 ```js
 AudioPlayer.Play(path);       // Play audio file at path.
+AudioPlayer.PlayURL(url);     // Play audio from an url.
+AudioPlayer.PlayYTDL(url);    // Play audio using yt-dlp.
+// ^ Users must download the 'yt-dlp.exe' manually and place it in the same folder as this program.
+
 AudioPlayer.Stop();           // Stops the audio player.
 AudioPlayer.GetVolume();      // Gets the current volume value.
 AudioPlayer.SetVolume(value); // Sets the volume value (Value must be a float from 0.0 to 1.0)
@@ -345,4 +349,9 @@ TTS.GetVolume();      // Gets the current volume value.
 TTS.SetVolume(value); // Sets the volume value (Value must be a int from 0 to 100)
 
 TTS.IsSpeaking;       // 'true' if TTS is still playing the previous prompt.
+```
+
+## HTTP Requests
+```js
+HTTP.GetString(url); // Returns a string with the content of the url (null if an error happens)
 ```
