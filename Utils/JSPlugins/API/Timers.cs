@@ -10,10 +10,11 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
         private static LoggerSource Logger => JSEngine.Logger;
 
         private static Dictionary<int, TimerInstance> Instances = new Dictionary<int, TimerInstance>();
+        private static Queue<int> OpenIDs = new Queue<int>();
         private static int CurrentTimer = 0;
 
         internal static int OpenTimer(Function callback, int time, bool loop, params JsValue[] args) {
-            int id = CurrentTimer++;
+            int id = OpenIDs.Count > 0 ? OpenIDs.Dequeue() : CurrentTimer++;
 
             Instances[id] = new TimerInstance(callback, args, time, id, loop);
 
@@ -25,6 +26,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
             if (Instances.ContainsKey(id)) {
                 Instances[id].Dispose();
                 Instances.Remove(id);
+                OpenIDs.Enqueue(id);
                 Logger.Debug("Timer closed: " + id);
             }
         }
