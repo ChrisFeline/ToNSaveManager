@@ -1,6 +1,8 @@
 ﻿namespace ToNSaveManager.Utils.JSPlugins.API {
     [JSEngineAPI("FS")]
     internal class Files {
+        static string[] ExecExtensions = ["ACTION", "APK", "APP", "BAT", "BIN", "CMD", "COM", "COMMAND", "CPL", "CSH", "EXE", "GADGET", "INF1", "INS", "INX", "IPA", "ISU", "JOB", "JSE", "KSH", "LNK", "MSC", "MSI", "MSP", "MST", "OSX", "OUT", "PAF", "PIF", "PRG", "PS1", "REG", "RGS", "RUN", "SCT", "SHB", "SHS", "U3P", "VB", "VBE", "VBS", "VBSCRIPT", "WORKFLOW", "WS", "WSF"];
+
         static string SourceDir => Path.Combine(JSEngine.scriptsPath, Path.GetDirectoryName(JSEngine.GetLastSyntaxSource()) ?? string.Empty);
         internal static string? ResolvePath(string filePath, bool toScript) {
             if (string.IsNullOrEmpty(filePath)) return null;
@@ -13,8 +15,16 @@
                 return null;
             }
 
-            if (fullPath.EndsWith(".js", StringComparison.InvariantCultureIgnoreCase)) {
+            string extension = Path.GetExtension(fullPath).ToUpperInvariant();
+            if (extension.Length > 0) {
+                extension = extension.Substring(1);
+            }
+            
+            if (extension.Equals("JS", StringComparison.InvariantCultureIgnoreCase)) {
                 Console.Error($"Invalid path: {fullPath}\nDo not resolve paths to other scripts.");
+                return null;
+            } else if (Array.IndexOf(ExecExtensions, extension) > -1) {
+                Console.Error($"Invalid path: {fullPath}\nDo not resolve paths to executables.");
                 return null;
             }
 
