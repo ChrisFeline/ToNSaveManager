@@ -346,3 +346,8 @@ TTS.SetVolume(value); // Sets the volume value (Value must be a int from 0 to 10
 
 TTS.IsSpeaking;       // 'true' if TTS is still playing the previous prompt.
 ```
+
+## HTTP Requests
+```js
+HTTP.GetString(url); // Returns a string with the content of the url (null if an error happens)
+```
