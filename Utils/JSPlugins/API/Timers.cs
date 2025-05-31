@@ -7,6 +7,8 @@ using Timer = System.Timers.Timer;
 namespace ToNSaveManager.Utils.JSPlugins.API {
     [JSEngineAPI]
     internal static class Timers {
+        private static LoggerSource Logger => JSEngine.Logger;
+
         private static Dictionary<int, TimerInstance> Instances = new Dictionary<int, TimerInstance>();
         private static int CurrentTimer = 0;
 
@@ -15,6 +17,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
 
             Instances[id] = new TimerInstance(callback, args, time, id, loop);
 
+            Logger.Debug($"Timer open: {id}, Timeout: {time}, Loop: {loop}");
             return id;
         }
 
@@ -22,6 +25,7 @@ namespace ToNSaveManager.Utils.JSPlugins.API {
             if (Instances.ContainsKey(id)) {
                 Instances[id].Dispose();
                 Instances.Remove(id);
+                Logger.Debug("Timer closed: " + id);
             }
         }
 
