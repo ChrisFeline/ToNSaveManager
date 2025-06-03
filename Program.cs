@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using ToNSaveManager.Localization;
 using ToNSaveManager.Models;
+using ToNSaveManager.Utils;
 using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.Discord;
 using ToNSaveManager.Utils.LogParser;
@@ -106,6 +107,7 @@ namespace ToNSaveManager
             Logger.Log("Saving before app exit...");
             MainWindow.SaveData.Export();
             StatsWindow.WriteChanges();
+            OSCLib.Dispose();
             Logger.Log("Done.");
         }
 

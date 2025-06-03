@@ -9,28 +9,16 @@ using NAudio.Wave;
 namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
     // https://github.com/naudio/NAudio/blob/5bd2860c20f8134a8021fa8e15f74b5209963e7d/NAudio/AudioFileReader.cs#L16
     internal class AudioReader : WaveStream, ISampleProvider {
-        private WaveStream readerStream; // the waveStream which we will use for all positioning
+        private WaveStream? readerStream; // the waveStream which we will use for all positioning
         private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
         private readonly int destBytesPerSample;
         private readonly int sourceBytesPerSample;
         private readonly long length;
         private readonly object lockObject;
 
-        public AudioReader(string filePath, bool fromUrl) {
+        public AudioReader(string fileName, bool fromUrl) {
             lockObject = new object();
-            CreateReaderStream(filePath, fromUrl);
-            sourceBytesPerSample = (readerStream.WaveFormat.BitsPerSample / 8) * readerStream.WaveFormat.Channels;
-            sampleChannel = new SampleChannel(readerStream, false);
-            destBytesPerSample = 4 * sampleChannel.WaveFormat.Channels;
-            length = SourceToDest(readerStream.Length);
-        }
-
-        /// <summary>
-        /// Creates the reader stream, supporting all filetypes in the core NAudio library,
-        /// and ensuring we are in PCM format
-        /// </summary>
-        /// <param name="fileName">File Name</param>
-        private void CreateReaderStream(string fileName, bool fromUrl) {
+            
             if (fromUrl) {
                 readerStream = new MediaFoundationReader(fileName);
             } else if (fileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)) {
@@ -50,6 +38,11 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
                 // fall back to media foundation reader, see if that can play it
                 readerStream = new MediaFoundationReader(fileName);
             }
+
+            sourceBytesPerSample = (readerStream.WaveFormat.BitsPerSample / 8) * readerStream.WaveFormat.Channels;
+            sampleChannel = new SampleChannel(readerStream, false);
+            destBytesPerSample = 4 * sampleChannel.WaveFormat.Channels;
+            length = SourceToDest(readerStream.Length);
         }
 
         public override WaveFormat WaveFormat => sampleChannel.WaveFormat;
@@ -57,8 +50,14 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
         public override long Length => length;
 
         public override long Position {
-            get { return SourceToDest(readerStream.Position); }
-            set { lock (lockObject) { readerStream.Position = DestToSource(value); } }
+            get { return SourceToDest(readerStream?.Position ?? 0); }
+            set {
+                if (readerStream != null) {
+                    lock (lockObject) {
+                        readerStream.Position = DestToSource(value);
+                    }
+                }
+            }
         }
 
         public override int Read(byte[] buffer, int offset, int count) {

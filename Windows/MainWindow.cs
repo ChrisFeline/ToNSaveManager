@@ -846,8 +846,13 @@ namespace ToNSaveManager {
                     ToNIndex.Terror terror = info.Value;
                     if (terror.Phases != null && terror.Phases.Length > 0) {
                         for (j = 0; j < terror.Phases.Length; j++) {
-                            if (line.StartsWith(terror.Phases[j].Keyword)) {
-                                info.Phase = j + 1;
+                            var ph = terror.Phases[j];
+                            if (line.StartsWith(ph.Keyword)) {
+                                if (ph.Increment) {
+                                    info.Phase = info.Phase + 1;
+                                } else {
+                                    info.Phase = j + 1;
+                                }
                                 matrix[i] = info;
 
                                 Logger.Log($"Terror {terror} changed to phase {j + 1}.");

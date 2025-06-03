@@ -110,6 +110,8 @@ OSC.RegisterParam("YourCoolToggle", function(path, values) {
 ```js
 // Called when an event happens, these are the same events as the WebSocketAPI events.
 function OnEvent(args) {}
+// If a message is sent to the WebSocket externally, you can actually receive it.
+/* Object will be like this: */ {TYPE: "WEBSOCKET", Value: "Your message"}
 
 // Called for each tick on the log parser, this is under a consistent timer, which can be modified under settings.
 function OnTick() {}
