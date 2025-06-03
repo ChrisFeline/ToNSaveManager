@@ -62,9 +62,13 @@ namespace ToNSaveManager.Utils.JSPlugins.API.Audio {
             internal AutoDisposeFileReader? Reader;
 
             internal void Play(string filePath, bool fromUrl = false) {
-                Reader?.Stop();
-                Reader = Playback.PlaySound(filePath, fromUrl);
-                Reader.volume = Volume;
+                try {
+                    Reader?.Stop();
+                    Reader = Playback.PlaySound(filePath, fromUrl);
+                    Reader.volume = Volume;
+                } catch (Exception e) {
+                    Logger.Error($"An error ocurred trying to play audio from: {filePath}\n{e}");
+                }
             }
             internal void PlayYT(string url) {
                 string? _url = GetUrl(url);
