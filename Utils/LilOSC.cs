@@ -7,13 +7,66 @@ using ToNSaveManager.Models.Stats;
 
 namespace ToNSaveManager.Utils
 {
+    using System.Net.Sockets;
+    using System.Net;
     using BlobHandles;
     using BuildSoft.OscCore;
     using BuildSoft.VRChat.Osc;
     using BuildSoft.VRChat.Osc.Chatbox;
     using BuildSoft.VRChat.Osc.Input;
+    using VRC.OSCQuery;
 
     internal static class OSCLib {
+        internal static int PortTCP = 9448;
+        internal static int PortUDP = 9449;
+
+#pragma warning disable CS8600,CS8602 // Converting null literal or possible null value to non-nullable type.
+        private static readonly IPEndPoint DefaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
+        public static int GetAvailableTcpPort() {
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)) {
+                socket.Bind(DefaultLoopbackEndpoint);
+                return ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+        }
+
+        public static int GetAvailableUdpPort() {
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
+                socket.Bind(DefaultLoopbackEndpoint);
+                return ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+        }
+#pragma warning restore CS8600,CS8602 // Converting null literal or possible null value to non-nullable type.
+
+        static OSCQueryService OscQuery;
+
+        static OSCLib() {
+            PortTCP = GetAvailableTcpPort();
+            PortUDP = GetAvailableUdpPort();
+
+            OscConnectionSettings.ReceivePort = PortUDP;
+
+            IDiscovery discovery = new MeaModDiscovery();
+
+            OscQuery = new OSCQueryServiceBuilder()
+                .WithServiceName("ToNSaveManager")
+                .WithHostIP(IPAddress.Loopback)
+                .WithOscIP(IPAddress.Loopback)
+                .WithTcpPort(PortTCP)
+                .WithUdpPort(PortUDP)
+                .WithDiscovery(discovery)
+                .StartHttpServer()
+                .AdvertiseOSC()
+                .AdvertiseOSCQuery()
+                .Build();
+
+            // Add any endpoint to make it work
+            OscQuery.AddEndpoint("/avatar/change", "f", Attributes.AccessValues.WriteOnly);
+            OscQuery.RefreshServices();
+
+            Logger.Info($"OSC QUERY - TCP:{PortTCP} UDP:{PortUDP}");
+
+        }
+
         internal static void Send(string path, object value) => OscParameter.SendValue(path, (dynamic)value);
 
         internal static void SendParameter(string name, object value) => OscParameter.SendAvatarParameter(name, value);
@@ -100,6 +153,10 @@ namespace ToNSaveManager.Utils
                 TypeTag.ArrayEnd => null,
                 _ => null,
             };
+        }
+
+        internal static void Dispose() {
+            OscQuery.Dispose();
         }
     }
 
