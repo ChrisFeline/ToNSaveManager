@@ -200,7 +200,6 @@ namespace ToNSaveManager.Models.Index {
             public struct PhaseIndex {
                 [JsonProperty("n")] public string Name { get; set; }
                 [JsonProperty("k")] public string Keyword { get; set; }
-                [JsonProperty("b")] public bool Increment { get; set; }
             }
 
             public struct Encounter {

@@ -745,18 +745,6 @@ namespace ToNSaveManager {
                 return true;
             }
 
-            // Handle map swap
-            if (line.StartsWith(ROUND_MAP_SWAPPED)) {
-                string id_str = line.Substring(ROUND_MAP_SWAPPED.Length).Trim();
-                if (int.TryParse(id_str, out int mapIndex)) {
-                    ToNIndex.Map map = ToNIndex.Instance.GetMap(mapIndex);
-                    Logger.Debug($"Map swapped to: {map} ({mapIndex})");
-                    if (context.IsRecent) ToNGameState.SetLocation(map);
-                }
-
-                return true;
-            }
-
             // REVISIT THIS LATER PLEASE
             if (line.StartsWith(ROUND_IS_SABO)) {
                 context.SetIsKiller(true);
@@ -838,6 +826,25 @@ namespace ToNSaveManager {
                     return true;
                 }
 
+                // Handle map swap
+                if (line.StartsWith(ROUND_MAP_SWAPPED) && matrix.Length > 0) {
+                    string id_str = line.Substring(ROUND_MAP_SWAPPED.Length).Trim();
+                    if (int.TryParse(id_str, out int mapIndex)) {
+                        ToNIndex.Map map = ToNIndex.Instance.GetMap(mapIndex);
+                        Logger.Debug($"Map swapped to: {map} ({mapIndex})");
+                        if (context.IsRecent) {
+                            ToNGameState.SetLocation(map);
+                            var info = matrix[0];
+                            info.Phase = info.Phase + 1;
+                            matrix[0] = info;
+                            ToNGameState.SetTerrorMatrix(matrix, true);
+                            Logger.Debug("Map Phase: " + info.Phase);
+                        }
+                    }
+
+                    return true;
+                }
+
                 for (int i = matrix.StartIndex; i < matrix.Length; i++) {
                     int j;
                     var info = matrix[i];
@@ -848,11 +855,7 @@ namespace ToNSaveManager {
                         for (j = 0; j < terror.Phases.Length; j++) {
                             var ph = terror.Phases[j];
                             if (line.StartsWith(ph.Keyword)) {
-                                if (ph.Increment) {
-                                    info.Phase = info.Phase + 1;
-                                } else {
-                                    info.Phase = j + 1;
-                                }
+                                info.Phase = j + 1;
                                 matrix[i] = info;
 
                                 Logger.Log($"Terror {terror} changed to phase {j + 1}.");
