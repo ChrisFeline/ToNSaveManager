@@ -116,16 +116,19 @@ namespace ToNSaveManager.Utils {
             WebSocketAPI.SendValue("IS_SABOTEUR", IsAlive);
         }
 
-        public static void SetTerrorMatrix(TerrorMatrix matrix) {
+        public static void SetTerrorMatrix(TerrorMatrix matrix, bool silent = false) {
             Terrors = matrix;
-            SetRoundType(Terrors.RoundType);
 
-            StatsWindow.SetTerrorMatrix(Terrors);
-            OpenRGBControl.SetTerrorMatrix(Terrors);
+            if (!silent) {
+                SetRoundType(Terrors.RoundType);
+
+                StatsWindow.SetTerrorMatrix(Terrors);
+                OpenRGBControl.SetTerrorMatrix(Terrors);
+                DSRichPresence.SetDirty();
+                WebSocketAPI.EventTerror.Send(Terrors);
+            }
+
             LilOSC.SetDirty();
-            DSRichPresence.SetDirty();
-
-            WebSocketAPI.EventTerror.Send(Terrors);
         }
 
         public static void SetRoundType(ToNRoundType roundType) {

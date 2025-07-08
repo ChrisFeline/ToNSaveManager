@@ -24,7 +24,7 @@ namespace ToNSaveManager.Models.Index {
 #endif
 
         #region Properties & Fields
-        [JsonProperty("x")] public HashSet<ulong> SpecialSnowflakes = new();
+        [JsonProperty("x")] public HashSet<string> SpecialSnowflakes = new();
 
         [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
         [JsonProperty("t")] public Dictionary<int, Terror> Terrors { get; private set; } = new();
@@ -200,7 +200,6 @@ namespace ToNSaveManager.Models.Index {
             public struct PhaseIndex {
                 [JsonProperty("n")] public string Name { get; set; }
                 [JsonProperty("k")] public string Keyword { get; set; }
-                [JsonProperty("b")] public bool Increment { get; set; }
             }
 
             public struct Encounter {

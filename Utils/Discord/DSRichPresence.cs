@@ -341,7 +341,7 @@ namespace ToNSaveManager.Utils.Discord {
         static string? CustomAssetID_1 = null;
 
         private static void Client_OnReady(object sender, ReadyMessage e) {
-            ulong userId = e.User.ID;
+            string userId = e.User.ID.ToString();
             Log.Debug("Received Ready from user: " + userId);
 
             ToNGameState.SetDisplayName(e.User.DisplayName, true);
