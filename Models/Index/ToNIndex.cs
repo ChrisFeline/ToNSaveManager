@@ -24,7 +24,7 @@ namespace ToNSaveManager.Models.Index {
 #endif
 
         #region Properties & Fields
-        [JsonProperty("x")] public HashSet<ulong> SpecialSnowflakes = new();
+        [JsonProperty("x")] public HashSet<string> SpecialSnowflakes = new();
 
         [JsonProperty("m")] public Dictionary<int, Map> Maps { get; private set; } = new();
         [JsonProperty("t")] public Dictionary<int, Terror> Terrors { get; private set; } = new();
