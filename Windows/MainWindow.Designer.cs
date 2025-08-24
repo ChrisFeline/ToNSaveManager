@@ -297,7 +297,7 @@
             MaximizeBox = false;
             MinimumSize = new Size(412, 256);
             Name = "MainWindow";
-            Text = "ToN Save Manager";
+            Text = "ToN Save Manager (Nomlas)";
             Activated += MainWindow_Activated;
             FormClosing += MainWindow_FormClosing;
             Load += mainWindow_Loaded;
