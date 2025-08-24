@@ -9,7 +9,7 @@ namespace ToNSaveManager.Models
     internal class GitHubRelease
     {
         private const string GitHubApiBaseUrl = "https://api.github.com";
-        private const string RepoOwner = "ChrisFeline";
+        private const string RepoOwner = "nomlasvrc";
         private const string RepoName = "ToNSaveManager";
 
         public int id { get; set; }

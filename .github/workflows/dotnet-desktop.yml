@@ -97,19 +97,22 @@ jobs:
         tag_name: ${{ steps.get_date.outputs.date }}
         name: Release ${{ steps.get_date.outputs.date }}
         body: |
-          # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip)
+          # [Download](https://github.com/nomlasvrc/ToNSaveManager/releases/latest/download/ToNSaveManager.zip)
+
+          > [!IMPORTANT]
+          > こちらはのむらすによる非公式ビルドです。本家リポジトリは[こちら](https://github.com/ChrisFeline/ToNSaveManager)です。
 
           [changelog]: <> (START)
-          ### Changes in this release
+          ### 変更点
           -
 
           [changelog]: <> (END)
 
-          **NOTE:** If you are unsure what to do, go check the [README](https://github.com/ChrisFeline/ToNSaveManager/blob/main/README.md#how-do-i-use-this), basically just extract and run.
+          **NOTE:** 何をすればいいのか分からない場合、[README](https://github.com/nomlasvrc/ToNSaveManager/blob/main/README.md#how-do-i-use-this)を確認してください。基本的には解凍して実行するだけです。
 
-          ### If you already downloaded and want to update an old release you have these options:
-          * Click on `Settings`, then click `Check For Updates`.
-          * If previous option doesn't work, open the file `update.bat`, the new files will be downloaded.
+          ### 既にToNSaveManagerを使用中で、更新をしたい場合
+          * 「設定」を開き、「更新を確認」をクリックします。
+          * うまく機能しない場合は、「update.bat」ファイルを開くと、新しいファイルがダウンロードされます。
         draft: true
         prerelease: false
         files: ./ToNSaveManager.zip
