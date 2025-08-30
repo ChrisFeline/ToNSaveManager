@@ -802,5 +802,45 @@ namespace ToNSaveManager.Windows
             }
         }
         #endregion
+
+        #region ManualImport
+        private void btnManualImport_Click(object sender, EventArgs e) {
+            // Temporary hard-coded localization
+            string title = LANG.S("SETTINGS.MANUALIMPORT.TITLE") ?? "Manual Import Save Code";
+            var edit = EditWindow.Show(string.Empty, title, this);
+            if (!edit.Accept) return;
+
+            string input = (edit.Text).Trim();
+            if (string.IsNullOrEmpty(input)) {
+                MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.EMPTY") ?? "Please paste the text that contains the save code.",
+                    title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (input.Length < 1000) {
+                MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.INVALID") ?? "No valid save data was found.",
+                    title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var sd = MainWindow.SaveData;
+
+            // Create a new custom collection named as the current timestamp (e.g., 08/30/2025 | 00:00:00)
+            string timeName = DateTime.Now.ToString(EntryDate.GetDateFormat());
+            History collection = new History(timeName, DateTime.Now);
+            int insertIndex = sd.Add(collection);
+
+            var entry = new Entry(input, DateTime.Now);
+            entry.Parent = collection;
+            collection.Add(entry);
+            sd.Export(true);
+
+            MainWindow.OnManualImport(collection, entry, insertIndex);
+            MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.SUCCESS") ?? "Imported successfully.",
+                title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        #endregion
     }
 }
+
+

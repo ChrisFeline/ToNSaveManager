@@ -563,6 +563,19 @@ namespace ToNSaveManager {
             Instance?.listBoxEntries.Refresh();
         }
 
+        internal static void OnManualImport(History collection, Entry entry, int? insertIndex = null) {
+            if (Instance == null) return;
+
+            if (!Instance.listBoxKeys.Items.Contains(collection)) {
+                int idx = insertIndex ?? SaveData.Collection.IndexOf(collection);
+                if (idx < 0) idx = Instance.listBoxKeys.Items.Count;
+                Instance.listBoxKeys.Items.Insert(Math.Min(Math.Max(idx, 0), Instance.listBoxKeys.Items.Count), collection);
+            }
+
+            Instance.listBoxKeys.SelectedItem = collection;
+            Instance.UpdateEntries();
+        }
+
         private void UpdateEntries() {
             listBoxEntries.Items.Clear();
             if (JustCopiedIndex > -1) SetJustCopied(-1);
