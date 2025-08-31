@@ -576,6 +576,33 @@ namespace ToNSaveManager {
             Instance.UpdateEntries();
         }
 
+        internal static void ImportManualSave(string content) {
+            if (Instance == null || string.IsNullOrWhiteSpace(content)) return;
+
+            try {
+                var context = ToNLogContext.Instance ?? new ToNLogContext();
+                string dateKey = ToNLogContext.Instance?.DateKey ?? DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                DateTime now = DateTime.Now;
+
+                Instance.AddLogEntry(dateKey, content, now, context);
+
+                var collection = SaveData[dateKey];
+                if (collection != null) {
+                    if (!Instance.listBoxKeys.Items.Contains(collection)) {
+                        int idx = SaveData.Collection.IndexOf(collection);
+                        if (idx < 0) idx = Instance.listBoxKeys.Items.Count;
+                        Instance.listBoxKeys.Items.Insert(Math.Min(Math.Max(idx, 0), Instance.listBoxKeys.Items.Count), collection);
+                    }
+                    Instance.listBoxKeys.SelectedItem = collection;
+                    Instance.UpdateEntries();
+                }
+
+                Instance.Export(null, true);
+            } catch (Exception ex) {
+                Logger.Error(ex);
+            }
+        }
+
         private void UpdateEntries() {
             listBoxEntries.Items.Clear();
             if (JustCopiedIndex > -1) SetJustCopied(-1);
