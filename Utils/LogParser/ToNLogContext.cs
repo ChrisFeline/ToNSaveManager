@@ -108,6 +108,7 @@ namespace ToNSaveManager.Utils.LogParser
 
             IsRoundActive = roundActive;
             SetIsAlive(IsOptedIn || !roundActive);
+            SetIsReborn(false);
 
             if (IsRecent) ToNGameState.SetRoundActive(IsRoundActive);
         }
@@ -115,7 +116,6 @@ namespace ToNSaveManager.Utils.LogParser
         public void SetIsAlive(bool alive) {
             if (IsAlive == alive) return;
 
-            SetIsReborn(false);
             IsAlive = alive;
             if (IsRecent) ToNGameState.SetAlive(IsAlive);
         }
