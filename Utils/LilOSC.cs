@@ -45,6 +45,7 @@ namespace ToNSaveManager.Utils
 
             OscConnectionSettings.ReceivePort = PortUDP;
 
+            /*
             IDiscovery discovery = new MeaModDiscovery();
 
             OscQuery = new OSCQueryServiceBuilder()
@@ -64,6 +65,7 @@ namespace ToNSaveManager.Utils
             OscQuery.RefreshServices();
 
             Logger.Info($"OSC QUERY - TCP:{PortTCP} UDP:{PortUDP}");
+            */
 
         }
 
@@ -116,10 +118,12 @@ namespace ToNSaveManager.Utils
         private static Action<string, object?[]>? MonitorCallback;
 
         internal static void StartOSCMonitor(Action<string, object?[]>? callback) {
+            /*
             MonitorCallback = callback;
             if (MonitorCallback != null) {
                 OscUtility.RegisterMonitorCallback(ReceiveMessage);
             }
+            */
         }
 
         static void ReceiveMessage(BlobString address, OscMessageValues values) {
@@ -156,7 +160,7 @@ namespace ToNSaveManager.Utils
         }
 
         internal static void Dispose() {
-            OscQuery.Dispose();
+            // OscQuery.Dispose();
         }
     }
 
