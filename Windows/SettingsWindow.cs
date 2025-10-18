@@ -802,5 +802,34 @@ namespace ToNSaveManager.Windows
             }
         }
         #endregion
+
+        #region ManualImport
+        private void btnManualImport_Click(object sender, EventArgs e) {
+            // Temporary hard-coded localization
+            string title = LANG.S("SETTINGS.MANUALIMPORT.TITLE") ?? "Manual Import Save Code";
+            var edit = EditWindow.Show(string.Empty, title, this);
+            if (!edit.Accept) return;
+
+            string input = (edit.Text).Trim();
+            if (string.IsNullOrEmpty(input)) {
+                MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.EMPTY") ?? "Please paste the text that contains the save code.",
+                    title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            if (input.Length < 1000) {
+                MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.INVALID") ?? "No valid save data was found.",
+                    title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MainWindow.ImportManualSave(input);
+
+            MessageBox.Show(LANG.S("SETTINGS.MANUALIMPORT.SUCCESS") ?? "Imported successfully.",
+                title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        #endregion
     }
 }
+
+
