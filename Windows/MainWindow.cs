@@ -100,10 +100,8 @@ namespace ToNSaveManager {
             StatsWindow.UpdateChatboxContent();
             OpenRGBControl.SetTerrorMatrix(OpenRGBControl.Terrors);
 
-#if PARAMETER_EMULATOR
             if (Program.ContainsArg("--emulator") || Program.ContainsArg("--emu") || Program.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
-#endif
 
             JSEngine.InvokeOnReady();
         }
