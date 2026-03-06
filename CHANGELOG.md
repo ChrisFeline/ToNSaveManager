@@ -1,5 +1,5 @@
 ﻿# Latest Changelog
 
-- OSC: Solstice changes phase on map change.
-- Rich Presence: Fixed special snowflakes.... Like YoBro.
-- Deleted YoBro (Sold his soul to the devil)
+- Unlocked the Round Emulator feature for everyone.
+  * You can open this by launching the save manager executable with the --emulator parameter.
+- Removed YoBro
