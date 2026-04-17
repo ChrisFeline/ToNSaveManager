@@ -314,6 +314,12 @@
     "DisplayColor": "156, 199, 208"
   },
   {
+    "Name": "Auric Coil",
+    "Description": "???",
+    "Reference": "https://terror.moe/items/auric_coil",
+    "DisplayColor": "220, 23, 255"
+  },
+  {
     "Name": "April Fools Unlocks",
     "IsSeparator": true
   },
