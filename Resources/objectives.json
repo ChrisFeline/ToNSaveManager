@@ -292,6 +292,12 @@
     "DisplayColor": "154, 250, 255"
   },
   {
+    "Name": "Auric Coil",
+    "Description": "???",
+    "Reference": "https://terror.moe/items/auric_coil",
+    "DisplayColor": "220, 23, 255"
+  },
+  {
     "Name": "Winterfest Unlocks",
     "IsSeparator": true
   },
@@ -312,12 +318,6 @@
     "Description": "Survive Neo Pilot.",
     "Reference": "https://terror.moe/items/panthera_mkII",
     "DisplayColor": "156, 199, 208"
-  },
-  {
-    "Name": "Auric Coil",
-    "Description": "???",
-    "Reference": "https://terror.moe/items/auric_coil",
-    "DisplayColor": "220, 23, 255"
   },
   {
     "Name": "April Fools Unlocks",
