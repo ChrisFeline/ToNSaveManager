@@ -1,5 +1,6 @@
 ﻿# Latest Changelog
 
-- Unlocked the Round Emulator feature for everyone.
-  * You can open this by launching the save manager executable with the --emulator parameter.
+- Added support for Randomizer & Classic.exe round types.
+- Added OSC support for some other activatable items.
+- Added OSC value for Auric Coil pickup.
 - Removed YoBro
