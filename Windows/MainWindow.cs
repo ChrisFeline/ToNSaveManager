@@ -13,6 +13,7 @@ using ToNSaveManager.Utils.LogParser;
 using ToNSaveManager.Utils.OpenRGB;
 using ToNSaveManager.Utils.API;
 using ToNSaveManager.Utils.JSPlugins;
+using System.Text.RegularExpressions;
 
 namespace ToNSaveManager {
     public partial class MainWindow : Form {
@@ -888,6 +889,8 @@ namespace ToNSaveManager {
 
         const string EVENT_MASTER_CHANGE = "[Behaviour] OnMasterClientSwitched";
 
+        static readonly Regex PATTERN_ITEM_ACTIVATED = new Regex(@"\[[\w ]+\] (Activated!|Deactivated!)", RegexOptions.Compiled);
+
         private bool HandleStatCollection(string line, DateTime timestamp, ToNLogContext context) {
             if (!context.IsRecent) return false;
 
@@ -916,10 +919,8 @@ namespace ToNSaveManager {
                         return true;
                     }
 
-                    bool isActivated = line.StartsWith("[UNSTABLE COIL] Activated!") || line.StartsWith("[EMERALD COIL] Activated!") || line.StartsWith("[CORKSCREW COIL] Activated!");
-                    bool isDeactivated = line.StartsWith("[UNSTABLE COIL] Deactivated!") || line.StartsWith("[EMERALD COIL] Deactivated!") || line.StartsWith("[CORKSCREW COIL] Deactivated!");
-                    if (isActivated || isDeactivated) {
-                        LilOSC.SetItemStatus(isActivated);
+                    if (PATTERN_ITEM_ACTIVATED.IsMatch(line)) {
+                        LilOSC.SetItemStatus(!line.Contains("Deactivated!"));
                         return true;
                     }
                 }

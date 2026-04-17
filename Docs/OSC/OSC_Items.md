@@ -86,6 +86,8 @@
 | `84` | IJED
 | `85` | Mini Chest
 | `87` | King's Kit
+| | |
+| `89` | Auric Coil
 
 # Special Events
 | ID | Item |

@@ -20,6 +20,9 @@ namespace ToNSaveManager.Models.Index {
         Ghost,           //  9
         Unbound,         // 10
 
+        Randomizer,      // 11
+        Classic_exe,     // 12
+
         // Contains alternates
         Midnight           =  50,
         Alternate,         // 51

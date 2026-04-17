@@ -92,6 +92,9 @@
 	"ROUND_TYPE.COLD_NIGHT": "Cold Night",
 	"ROUND_TYPE.CUSTOM": "Custom",
 
+	"ROUND_TYPE.RANDOMIZER": "Randomizer",
+	"ROUND_TYPE.CLASSIC_EXE": "Classic.exe",
+
 	"SAVE.TAG_R": "🔄",
 	"SAVE.TAG_W": "🏆",
 	"SAVE.TAG_D": "🔌",
