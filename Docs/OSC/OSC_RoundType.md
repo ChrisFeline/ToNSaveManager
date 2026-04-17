@@ -14,6 +14,8 @@ These are the possible values that will be sent to the `ToN_RoundType` [**parame
 | `8`   |  EX
 | `9`   |  Ghost
 | `10`  |  Unbound
+| `11`  |  Randomizer
+| `12`  |  Classic.exe
 
 | ID | Alternates |
 | - | - |

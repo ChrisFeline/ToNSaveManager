@@ -101,6 +101,8 @@ namespace ToNSaveManager.Models.Index {
 
             Terrors = new ToNIndex.TerrorInfo[indexes.Length];
 
+            Logger.Info($"{RoundTypeRaw} {RoundType}");
+
             switch (RoundType) {
                 // first index only
                 case ToNRoundType.Classic:
@@ -113,6 +115,9 @@ namespace ToNSaveManager.Models.Index {
                 case ToNRoundType.Alternate:
                 case ToNRoundType.Fog_Alternate:
                 case ToNRoundType.Ghost_Alternate:
+                // April 2026
+                case ToNRoundType.Randomizer:
+                case ToNRoundType.Classic_exe:
                     Terrors = [new(indexes[0], RoundType == ToNRoundType.Alternate || isAlt ? ToNIndex.TerrorGroup.Alternates : ToNIndex.TerrorGroup.Terrors)];
                     TerrorCount = 1;
                     break;
@@ -251,6 +256,10 @@ namespace ToNSaveManager.Models.Index {
             "Cracked"     , "狂気", // Like classic
             "Bloodbath"   , "ブラッドバス", // (0, 1, 2)
 
+            // April 2026
+            "Classic.exe" , "クラシック.exe",
+            "Randomizer"  , "ランダマイザー",
+
             // Contains alternates
             "Midnight"    , "ミッドナイト", // (0, 1, 2) last index is alt
             "Alternate"   , "オルタネイト", // first index is alt
@@ -286,8 +295,8 @@ namespace ToNSaveManager.Models.Index {
         }
 
         static ToNRoundType GetRoundType(string raw) {
-            raw = raw.Replace(' ', '_').Replace("8", "Eight");
-            return Enum.TryParse(typeof(ToNRoundType), raw, out object? result) && result != null ? (ToNRoundType)result : ToNRoundType.Intermission;
+            raw = raw.Replace(' ', '_').Replace("8", "Eight").Replace('.', '_');
+            return Enum.TryParse(typeof(ToNRoundType), raw, true, out object ? result) && result != null ? (ToNRoundType)result : ToNRoundType.Intermission;
         }
 
         internal static uint GetRoundColorFromType(ToNRoundType RoundType) => RoundTypeColors.ContainsKey(RoundType) ? RoundTypeColors[RoundType] : 16721714;
@@ -325,6 +334,10 @@ namespace ToNSaveManager.Models.Index {
             { ToNRoundType.Ghost_Alternate,     0xC3F7FF },
 
             { ToNRoundType.Custom,              0x2672FF },
+
+            // April - 2026
+            { ToNRoundType.Randomizer,          0xFFF800 },
+            { ToNRoundType.Classic_exe,         0xFF0000 }
         };
     }
 }
