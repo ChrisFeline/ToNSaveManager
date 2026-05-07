@@ -2,6 +2,7 @@
 | ID | Item |
 | - | - |
 | `1` | Radar
+| `91` | ^ **Thorn Scanner**
 | `2` | Medkit
 | `3` | ^ **Red Medkit**
 | `4` | Have's Mysterious Brew
@@ -13,6 +14,7 @@
 | `10` | ^ **Bloody Teleporter**
 | `11` | ^ **Thorn Hacker**
 | `12` | ^ **Soul Visitor**
+| `92` | ^ **Broken Teleporter**
 | `13` | Speed Coil
 | `14` | ^ **Bloody Coil**
 | `15` | Regen Coil
@@ -35,6 +37,8 @@
 | `32` | Antique Revolver
 | `33` | ^ **Bloody Revolver**
 | `34` | ^ **Pale Pistol**
+| | |
+| `90` | Girlfriend
 
 
 # Survival Shop
