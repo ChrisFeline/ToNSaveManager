@@ -200,12 +200,15 @@ namespace ToNSaveManager.Utils
         const string ParamItemStatus = "ToN_ItemStatus";
         const string ParamMaster = "ToN_MasterChange";
 
+        const string ParamPlayerCount = "ToN_PlayerCount";
+
         static readonly string[] ParamAll = [
             ParamRoundType, ParamTerror1, ParamTerror2, ParamTerror3, ParamTPhase1, ParamTPhase2, ParamTPhase3,
             ParamOptedIn, ParamSaboteur, ParamMap, ParamEncounter,
             ParamTerrorColorH, ParamTerrorColorS, ParamTerrorColorV, ParamTerrorColorL,
             ParamTerrorColorR, ParamTerrorColorG, ParamTerrorColorB,
-            ParamAlive, ParamReborn, ParamDamaged, ParamMaster, ParamDeath, ParamPages, ParamItemStatus
+            ParamAlive, ParamReborn, ParamDamaged, ParamMaster, ParamDeath, ParamPages, ParamItemStatus,
+            ParamPlayerCount
         ];
         const string ParameterFileName = "osc_parameters.txt";
         internal static void Initialize() {
@@ -237,6 +240,8 @@ namespace ToNSaveManager.Utils
 
         static int LastPageCount = 0;
 
+        static int LastPlayerCount = 0;
+
         static string[]? m_EncounterKeys { get; set; }
         static string[] EncounterKeys {
             get {
@@ -266,6 +271,8 @@ namespace ToNSaveManager.Utils
         static bool IsAlive => ToNGameState.IsAlive;
         static bool IsRoundActive => ToNGameState.IsRoundActive;
         static bool IsReborn => ToNGameState.IsReborn;
+
+        static int PlayerCount => ToNGameState.PlayerCount;
 
         static string ChatboxMessage = string.Empty;
         static bool ChatboxClear = false;
@@ -535,6 +542,8 @@ namespace ToNSaveManager.Utils
                 if (LastAlive != IsAlive || force) SendParam(ParamAlive, LastAlive = IsAlive);
                 if (LastReborn != IsReborn || force) SendParam(ParamReborn, LastReborn = IsReborn);
                 if (LastStarted != IsRoundActive || force) SendParam(ParamStarted, LastStarted = IsRoundActive);
+
+                if (LastPlayerCount != PlayerCount || force) SendParam(ParamPlayerCount, LastPlayerCount = PlayerCount);
             }
 
             if (ChatboxClear || (ToNLogContext.CanSendChatbox && MainWindow.Started && !force && !string.IsNullOrEmpty(ChatboxMessage))) {
