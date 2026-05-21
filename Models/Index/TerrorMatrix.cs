@@ -281,7 +281,7 @@ namespace ToNSaveManager.Models.Index {
             "Unbound"     , "アンバウンド",
             "Ghost"       , "ゴースト",
 
-            "Double Trouble", "ダブル・トラブル",
+            "Double Trouble", "ダブルトラブル",
 
             // Beyond's favorite
             "Custom"      , "カスタム",

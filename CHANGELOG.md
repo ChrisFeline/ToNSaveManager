@@ -1,6 +1,7 @@
 ﻿# Latest Changelog
 
-- Added support for Randomizer & Classic.exe round types.
-- Added OSC support for some other activatable items.
-- Added OSC value for Auric Coil pickup.
+- Fixed Double Trouble round detection in JP.
+- Updated Terror ID database for new and modified terrors.
+	* These changes won't be reflected on the Discord Rich presence for now.
+- Updated 繁體中文 localization (ty @XoF-eLtTiL).
 - Removed YoBro

@@ -15,6 +15,7 @@ namespace ToNSaveManager
 {
     internal static class Program
     {
+        const int N = 0;
         internal const string ProgramName = "ToNSaveManager";
 
         internal static readonly string ProgramDirectory = AppContext.BaseDirectory ?? string.Empty;
