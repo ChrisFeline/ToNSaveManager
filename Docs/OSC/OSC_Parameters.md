@@ -19,6 +19,11 @@ Parameter        | Type    | Description
 `ToN_Damaged`    | `INT`<br>`FLOAT`   | Value set for a few frames when the player takes damage. The number represents the amount of damage taken on that hit. If the player dies the base damage number will be `255`
 `ToN_DeathID`    | `INT`   | You can use this parameter to track when your friends die in the game.
 
+# Other
+Parameter        | Type    | Description
+-----------------|---------|--------------------------
+`ToN_PlayerCount`| `INT`   | Number of players in the lobby.
+
 ### ToN_Damaged
 > You can customize the output value for the `ToN_Damaged` parameter using [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript).<br>
 > Just click on **Settings > Send Damage Event > (Set Output)** and here you can specify the code that will be evaluated before sending the damage value as a float.
