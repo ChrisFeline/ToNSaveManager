@@ -247,6 +247,8 @@ namespace ToNSaveManager.Windows
                     case ToNRoundType.Alternate:
                     case ToNRoundType.Sabotage:
                     case ToNRoundType.Cracked:
+                    case ToNRoundType.Classic_exe:
+                    case ToNRoundType.Randomizer:
                         SetMonsterDataSource(
                             roundType == ToNRoundType.Alternate ||
                             roundType == ToNRoundType.Fog_Alternate ||
