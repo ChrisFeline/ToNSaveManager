@@ -260,6 +260,22 @@ namespace ToNSaveManager.Utils.API {
             }
         }
 
+        public struct EventEquip : IEvent {
+            public string Type => "EQUIP";
+            public byte Command { get; set; }
+
+            public int ID;
+            public int PREV;
+
+            internal static void Send(int id, int prev) {
+                EventEquip eventEquip = new() {
+                    ID = id,
+                    PREV = prev
+                };
+                QueueEvent(eventEquip);
+            }
+        }
+
         public struct EventPlayerJoin : IEvent {
             const string EVENT_PLAYER_JOIN = "PLAYER_JOIN";
             const string EVENT_PLAYER_LEAVE = "PLAYER_LEAVE";

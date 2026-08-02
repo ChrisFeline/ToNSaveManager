@@ -113,6 +113,9 @@ namespace ToNSaveManager.Utils.LogParser {
             IsLeavingRoom = false;
         }
 
+        public virtual void Equip(int curr, int prev) {
+
+        }
         public virtual void Pickup(string name) {
 
         }

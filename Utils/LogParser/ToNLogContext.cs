@@ -203,6 +203,10 @@ namespace ToNSaveManager.Utils.LogParser
         public override void Drop(string name) {
             if (name == LastItemKey) SetItem(ToNIndex.Item.Empty);
         }
+        public override void Equip(int curr, int prev) {
+            if (IsRecent)
+                ToNGameState.SetEquipped(curr, prev);
+        }
         #endregion
 
         public RoundSummary Summary { get; private set; } = new RoundSummary(ToNRoundResult.R, TerrorMatrix.Empty, ToNIndex.Map.Empty, null, true);

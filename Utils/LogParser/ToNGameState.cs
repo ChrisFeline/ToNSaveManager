@@ -24,6 +24,8 @@ namespace ToNSaveManager.Utils {
         public static ToNIndex.Map Location { get; private set; } = ToNIndex.Map.Empty;
         public static ToNIndex.Item Item { get; private set; } = ToNIndex.Item.Empty;
 
+        public static int Equipped { get; private set; } = 0;
+
         // Instance Information
         public static int PlayerCount { get; private set; }
         public static string DisplayName { get; private set; } = "Unknown";
@@ -146,6 +148,13 @@ namespace ToNSaveManager.Utils {
             LilOSC.SetDirty();
 
             WebSocketAPI.EventItem.Send(item);
+        }
+
+        public static void SetEquipped(int id, int prev) {
+            Equipped = id;
+
+            LilOSC.SetDirty();
+            WebSocketAPI.EventEquip.Send(id, prev);
         }
 
         public static void SetLocation(ToNIndex.Map location) {

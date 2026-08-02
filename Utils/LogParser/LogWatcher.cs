@@ -375,9 +375,25 @@
 
         const string PickupDropKeyword = "[Behaviour] Drop object: '";
         const string PickupDropKeywordEnd = ", was equipped = ";
+
+        const string PickupEquipKeyword = ". Was using ";
+        static readonly Regex PickupEquipPattern = new Regex(@" Equipping (\d+)\. Was using (\d+)", RegexOptions.Compiled);
         private bool ParsePickupGrab(string line, DateTime lineDate, T logContext) {
             int index, length;
             string objectName;
+
+            if (line.Contains(PickupEquipKeyword)) {
+                Match match = PickupEquipPattern.Match(line);
+                if (match == null || !match.Success) return false;
+
+                int curr, prev;
+                if (int.TryParse(match.Groups[1].Value, out curr) && int.TryParse(match.Groups[2].Value, out prev)) {
+                    logContext.Equip(curr, prev);
+                    return true;
+                }
+
+                return false;
+            }
 
             index = line.IndexOf(PickupGrabKeyword, StringComparison.InvariantCulture);
             if (index > 0) {
