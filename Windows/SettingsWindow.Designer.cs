@@ -45,6 +45,7 @@
             check24Hour = new CheckBox();
             btnCheckForUpdates = new Button();
             btnOpenData = new Button();
+            btnManualImport = new Button();
             ctxData = new ContextMenuStrip(components);
             setDataLocationToolStripMenuItem = new ToolStripMenuItem();
             ctxItemPickFolder = new ToolStripMenuItem();
@@ -336,11 +337,26 @@
             btnCheckForUpdates.ForeColor = Color.White;
             btnCheckForUpdates.Location = new Point(0, 4);
             btnCheckForUpdates.Name = "btnCheckForUpdates";
-            btnCheckForUpdates.Size = new Size(510, 24);
+            btnCheckForUpdates.Size = new Size(360, 24);
             btnCheckForUpdates.TabIndex = 4;
             btnCheckForUpdates.Text = "Check For Updates";
             btnCheckForUpdates.UseVisualStyleBackColor = true;
             btnCheckForUpdates.Click += btnCheckForUpdates_Click;
+            // 
+            // btnManualImport
+            // 
+            btnManualImport.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            btnManualImport.FlatAppearance.BorderColor = Color.FromArgb(122, 122, 122);
+            btnManualImport.FlatStyle = FlatStyle.Flat;
+            btnManualImport.ForeColor = Color.White;
+            btnManualImport.Location = new Point(366, 4);
+            btnManualImport.Name = "btnManualImport";
+            btnManualImport.Size = new Size(146, 24);
+            btnManualImport.TabIndex = 5;
+            btnManualImport.Tag = "|Manually import save code text";
+            btnManualImport.Text = "Import";
+            btnManualImport.UseVisualStyleBackColor = true;
+            btnManualImport.Click += btnManualImport_Click;
             // 
             // btnOpenData
             // 
@@ -352,7 +368,7 @@
             btnOpenData.Location = new Point(516, 4);
             btnOpenData.Name = "btnOpenData";
             btnOpenData.Size = new Size(53, 24);
-            btnOpenData.TabIndex = 5;
+            btnOpenData.TabIndex = 6;
             btnOpenData.Tag = "|Open local app data folder.";
             btnOpenData.Text = "Data";
             btnOpenData.UseVisualStyleBackColor = true;
@@ -425,6 +441,7 @@
             // 
             panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.Controls.Add(btnCheckForUpdates);
+            panel1.Controls.Add(btnManualImport);
             panel1.Controls.Add(btnOpenData);
             panel1.Location = new Point(8, 575);
             panel1.Name = "panel1";
@@ -1513,6 +1530,7 @@
         private CheckBox checkShowSeconds;
         private CheckBox check24Hour;
         private Button btnOpenData;
+        private Button btnManualImport;
         private ToolTip toolTip;
         private CheckBox checkColorObjectives;
         private CheckBox checkSaveTerrorsNote;
