@@ -151,6 +151,7 @@ namespace ToNSaveManager.Windows
         private void SettingsWindow_Load(object sender, EventArgs e) {
             BindControlsRecursive(Controls);
             LocalizeContent();
+            btnCheckForUpdates.Enabled = UpdateChecker.Enabled;
 
             // Clone font for group labels
             if (GroupLabelFont == null) {

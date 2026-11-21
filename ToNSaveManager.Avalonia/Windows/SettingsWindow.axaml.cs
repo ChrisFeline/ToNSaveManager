@@ -145,6 +145,7 @@ namespace ToNSaveManager.Windows {
         private void SettingsWindow_Load() {
             BindControlsRecursive();
             LocalizeContent();
+            btnCheckForUpdates.IsEnabled = UpdateChecker.Enabled;
 
             // Custom audio handling
             checkPlayAudioSave.IsCheckedChanged += CheckPlayAudio_CheckedChanged;

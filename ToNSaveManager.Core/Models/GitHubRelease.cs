@@ -8,8 +8,6 @@ namespace ToNSaveManager.Models
     internal class GitHubRelease
     {
         private const string GitHubApiBaseUrl = "https://api.github.com";
-        private const string RepoOwner = "ChrisFeline";
-        private const string RepoName = "ToNSaveManager";
 
         public int id { get; set; }
         public string name { get; set; } = string.Empty;
@@ -28,7 +26,7 @@ namespace ToNSaveManager.Models
             public string browser_download_url { get; set; } = string.Empty;
         }
 
-        public static GitHubRelease? GetLatest()
+        public static GitHubRelease? GetLatest(string repo)
         {
             try
             {
@@ -37,7 +35,7 @@ namespace ToNSaveManager.Models
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "ToNSaveManager");
                     httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
 
-                    string response = httpClient.GetStringAsync($"{GitHubApiBaseUrl}/repos/{RepoOwner}/{RepoName}/releases/latest").Result;
+                    string response = httpClient.GetStringAsync($"{GitHubApiBaseUrl}/repos/{repo}/releases/latest").Result;
                     GitHubRelease? latestRelease = JsonConvert.DeserializeObject<GitHubRelease>(response);
 
                     return latestRelease;

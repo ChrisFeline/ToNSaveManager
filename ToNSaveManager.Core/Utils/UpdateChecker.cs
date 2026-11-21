@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using ToNSaveManager.Models;
 
 namespace ToNSaveManager.Utils {
@@ -8,7 +9,18 @@ namespace ToNSaveManager.Utils {
     }
 
     internal static class UpdateChecker {
-        internal const string ReleasesUrl = "https://github.com/ChrisFeline/ToNSaveManager/releases";
+        const string DefaultRepo = "ChrisFeline/ToNSaveManager";
+
+#if DISABLE_UPDATES
+        // Packaged builds, the package manager updates the app
+        internal static bool Enabled => false;
+#else
+        internal static bool Enabled => !Args.ContainsArg("--no-update");
+#endif
+
+        // "owner/name", can be changed with --update-repo
+        internal static readonly string Repo = GetRepo();
+        internal static string ReleasesUrl => $"https://github.com/{Repo}/releases";
 
         const string log_start = "[changelog]: <> (START)";
         const string log_end = "[changelog]: <> (END)";
@@ -23,11 +35,12 @@ namespace ToNSaveManager.Utils {
             asset = null;
             changelog = string.Empty;
 
+            if (!Enabled) return UpdateStatus.None;
             Version? currentVersion = AppCore.Version;
             if (currentVersion == null) return UpdateStatus.None; // No current version?
 
             Logger.Log("Checking for updates...");
-            release = GitHubRelease.GetLatest();
+            release = GitHubRelease.GetLatest(Repo);
             if (release == null || release.assets.Length == 0 || (!showUpToDate && release.tag_name == Settings.Get.IgnoreRelease)) return UpdateStatus.None;
             if (assetName != null) {
                 asset = release.assets.FirstOrDefault(v => v.name == assetName && v.content_type == "application/zip" && v.state == "uploaded");
@@ -47,6 +60,15 @@ namespace ToNSaveManager.Utils {
             }
 
             return UpdateStatus.Available;
+        }
+
+        static string GetRepo() {
+            string? repo = Args.GetArgValue("--update-repo");
+            if (repo == null) return DefaultRepo;
+            if (Regex.IsMatch(repo, @"^[\w.-]+/[\w.-]+$")) return repo;
+
+            Logger.Warning("Invalid --update-repo, expected owner/name: " + repo);
+            return DefaultRepo;
         }
 
         // Don't ask again on startup
