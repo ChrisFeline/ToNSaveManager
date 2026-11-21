@@ -590,8 +590,10 @@ namespace ToNSaveManager.Windows {
             }
         }
 
-        private void btnCheckForUpdates_Click(object? sender, RoutedEventArgs e) {
-            MainWindow.OpenExternalLink(UpdateChecker.ReleasesUrl);
+        private async void btnCheckForUpdates_Click(object? sender, RoutedEventArgs e) {
+            btnCheckForUpdates.IsEnabled = false;
+            await MainWindow.CheckForUpdate(this, true);
+            btnCheckForUpdates.IsEnabled = true;
         }
 
         private void btnOpenData_Click(object? sender, RoutedEventArgs e) {

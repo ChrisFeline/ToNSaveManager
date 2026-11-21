@@ -16,6 +16,7 @@
 	"MESSAGE.SAVE_LOCATION_RESET.TITLE": "Reset Custom Data Location",
 	"MESSAGE.UPDATE_AVAILABLE": "A new update have been released on GitHub.\n\nWould you like to automatically download and update to the new version?",
 	"MESSAGE.UPDATE_AVAILABLE.TITLE": "New update available",
+	"MESSAGE.UPDATE_AVAILABLE_LINK": "A new update has been released on GitHub.\n\nWould you like to open the download page?",
 	"MESSAGE.UPDATE_UNAVAILABLE": "No updates are currently available.",
 	"MESSAGE.UPDATE_UNAVAILABLE.TITLE": "No updates available",
 	"MESSAGE.UPDATE_SUCCESS": "Successfully downloaded update: {0}\nOpen 'ToNSaveManager' again to continue...",

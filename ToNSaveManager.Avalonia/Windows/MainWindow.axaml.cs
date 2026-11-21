@@ -113,6 +113,8 @@ namespace ToNSaveManager.Windows {
 
             if (Args.ContainsArg("--emulator") || Args.ContainsArg("--emu") || Args.ContainsArg("-e"))
                 EmulatorWindow.Open(this);
+
+            _ = CheckForUpdate(this, false);
         }
 
         internal void LocalizeContent() {
@@ -468,6 +470,22 @@ namespace ToNSaveManager.Windows {
 
             if (opened) Logger.Info("Opening external link: " + url);
             else Logger.Warning("Could not open external link: " + url);
+        }
+
+        // No self update here, only links to the releases
+        internal static async Task CheckForUpdate(Window owner, bool showUpToDate) {
+            (UpdateStatus status, GitHubRelease? release, string changelog) = await Task.Run(() => {
+                UpdateStatus s = UpdateChecker.Check(showUpToDate, null, out GitHubRelease? r, out _, out string c);
+                return (s, r, c);
+            });
+
+            if (status == UpdateStatus.Available && release != null) {
+                AlertResult result = await MessageBox.Show(owner, (LANG.S("MESSAGE.UPDATE_AVAILABLE_LINK") ?? "A new update has been released on GitHub.\n\nWould you like to open the download page?") + changelog, LANG.S("MESSAGE.UPDATE_AVAILABLE.TITLE") ?? "New update available", AlertButtons.YesNo, AlertIcon.Information);
+                if (result == AlertResult.Yes) OpenExternalLink(UpdateChecker.ReleasesUrl);
+                else if (!showUpToDate) UpdateChecker.Ignore(release);
+            } else if (status == UpdateStatus.UpToDate && showUpToDate) {
+                await MessageBox.Show(owner, LANG.S("MESSAGE.UPDATE_UNAVAILABLE") ?? "No updates are currently available.", LANG.S("MESSAGE.UPDATE_UNAVAILABLE.TITLE") ?? "No updates available", AlertButtons.OK, AlertIcon.Information);
+            }
         }
         #endregion
 
