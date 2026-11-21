@@ -72,7 +72,7 @@ jobs:
 
     # Build the application
     - name: Build the application
-      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --property:PublishDir=./publish
+      run: dotnet publish $env:Project_Name -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true --property:PublishDir=./publish
       env:
         Configuration: ${{ matrix.configuration }}
 
