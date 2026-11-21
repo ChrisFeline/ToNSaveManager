@@ -12,7 +12,25 @@ on:
 
 jobs:
 
+  version:
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      date: ${{ steps.get_date.outputs.date }}
+
+    steps:
+    - name: Get the date
+      id: get_date
+      run: |
+        $timestamp = Get-Date -Format "yyyy.M.d"
+        $time = [int]((Get-Date) - (Get-Date).Date).TotalMinutes
+        echo "date=$timestamp.$time" >> "$env:GITHUB_OUTPUT"
+      shell: pwsh
+
   build:
+
+    needs: version
 
     strategy:
       matrix:
@@ -46,17 +64,9 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Get the date
-      id: get_date
-      run: |
-        $timestamp = Get-Date -Format "yyyy.M.d"
-        $time = [int]((Get-Date) - (Get-Date).Date).TotalMinutes
-        echo "date=$timestamp.$time" >> "$env:GITHUB_OUTPUT"
-      shell: pwsh
-
     - name: Update project version
       run: |
-        $date = "${{ steps.get_date.outputs.date }}"
+        $date = "${{ needs.version.outputs.date }}"
         $csprojPath = "${{ env.Project_Name }}"
         $csproj = Get-Content $csprojPath -Raw
         $csproj = $csproj -replace '<Version>.*?</Version>', "<Version>$date</Version>"
@@ -87,17 +97,69 @@ jobs:
         name: ToNSaveManager
         path: ToNSaveManager.zip
 
+  build-linux:
+
+    needs: version
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install appimagetool
+      run: |
+        mkdir -p "$RUNNER_TEMP/bin"
+        wget -q -O "$RUNNER_TEMP/bin/appimagetool" https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x "$RUNNER_TEMP/bin/appimagetool"
+        echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+    - name: Build the AppImage
+      env:
+        INDEX_DATA: ${{ secrets.TERROR_INDEX_DATA }}
+        APPIMAGE_EXTRACT_AND_RUN: 1 # No FUSE on the runner
+      run: |
+        set -- --version "${{ needs.version.outputs.date }}"
+        if [ -n "$INDEX_DATA" ]; then
+          echo "$INDEX_DATA" | base64 -d > "$RUNNER_TEMP/index.json"
+          set -- "$@" --index "$RUNNER_TEMP/index.json"
+        fi
+        ./ToNSaveManager.Avalonia/build-appimage.sh "$@"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ToNSaveManager-Linux
+        path: artifacts/ToNSaveManager-x86_64.AppImage
+
+  release:
+
+    needs: [version, build, build-linux]
+    if: startsWith(github.ref, 'refs/heads/main')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: .
+        merge-multiple: true
+
     - name: Create Release
-      if: startsWith(github.ref, 'refs/heads/main')
       id: create_release
       uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.get_date.outputs.date }}
-        name: Release ${{ steps.get_date.outputs.date }}
+        tag_name: ${{ needs.version.outputs.date }}
+        name: Release ${{ needs.version.outputs.date }}
         body: |
           # [Download](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager.zip)
+          ### [Download for Linux (AppImage)](https://github.com/ChrisFeline/ToNSaveManager/releases/latest/download/ToNSaveManager-x86_64.AppImage)
 
           [changelog]: <> (START)
           ### Changes in this release
@@ -112,4 +174,6 @@ jobs:
           * If previous option doesn't work, open the file `update.bat`, the new files will be downloaded.
         draft: true
         prerelease: false
-        files: ./ToNSaveManager.zip
+        files: |
+          ./ToNSaveManager.zip
+          ./ToNSaveManager-x86_64.AppImage
